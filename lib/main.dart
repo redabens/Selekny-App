@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Pages/chat_page.dart';
 import 'firebase_options.dart';
 import 'package:reda/Services/getMateriel.dart';
-/*import 'dart:convert';
-import 'package:http/http.dart' as http;*/
+import 'package:reda/Services/ConvertAdr.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  runApp(const MyApp());
 }
 /*void main() {
   runApp(const MyApp());
-}
+}*/
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      //title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -43,12 +46,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const ChatPage(receiverUserEmail: "mm_bensemane@esi.dz", receiverUserID: "hskvyxfATXnpgG8vsZlc"),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+/*class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
