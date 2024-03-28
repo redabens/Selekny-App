@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Pages/chat_page.dart';
+import 'package:reda/Pages/pub_demande_page.dart';
 import 'firebase_options.dart';
 import 'package:reda/Services/getMateriel.dart';
 import 'package:reda/Services/ConvertAdr.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       //title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ChatPage(receiverUserEmail: "mm_bensemane@esi.dz", receiverUserID: "hskvyxfATXnpgG8vsZlc"),
+      home: const PubDemandePage(),
     );
   }
 }
