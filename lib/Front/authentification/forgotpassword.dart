@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'inscription.dart';
+import 'package:flutter/services.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   @override
@@ -19,7 +20,11 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
+  String _email = '';
+
   TextEditingController _emailController = TextEditingController();
+
+  bool _isEnvoyerClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -78,40 +83,55 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           suffixIcon: Icon(Icons.alternate_email),
                         ),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (_isEnvoyerClicked && (value == null || value.isEmpty)) {
                             return 'Veuillez saisir votre email';
                           }
-                          // Add additional validation here if needed
                           return null;
                         },
-
+                        onSaved: (value) {
+                          _email = value ?? '';
+                        },
                       ),
                     ),
                     SizedBox(height: 5),
                     ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState?.validate() ?? false) {
-                          // Form is valid, handle form submission here
+                        setState(() {
+                          _isEnvoyerClicked = true;
+                        });
+                        if (_formKey.currentState!.validate()) {
                           showDialog(
                             context: context,
-                            builder: (context) => AlertDialog(
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    "Retour",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black, // Adjust the color as needed
-                                    ),
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Entrer le code recu'),
+                                content: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                    LengthLimitingTextInputFormatter(5),
+                                  ],
+                                  decoration: InputDecoration(
+                                    hintText: "ex: 00000",
                                   ),
                                 ),
-                              ],
-                              title: const Text('Confirmer le code'),
-                              content: Text('Form submitted successfully!'),
-                            ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('Retour'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('Envoyer'),
+                                    onPressed: () {
+
+                                      // Handle the submit action
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         }
                       },
@@ -173,3 +193,5 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 }
+
+

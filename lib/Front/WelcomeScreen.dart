@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'inscription.dart';
-import 'connexion.dart';
+import 'authentification/inscription.dart';
+import 'authentification/connexion.dart';
 
 class WelcomePage extends StatelessWidget {
   @override
