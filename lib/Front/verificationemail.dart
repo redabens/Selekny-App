@@ -56,8 +56,7 @@ class Verifieremail extends StatelessWidget {
 
             TextButton(
               onPressed: () {
-                // Action when "S'inscrire" is pressed
-                // Navigate to the registration page
+
 
               },
               child: Text(
