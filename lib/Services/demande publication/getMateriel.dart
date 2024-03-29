@@ -127,6 +127,26 @@ Future<List<String>> getPrestations(String domaine) async{
     return []; // Retourne une chaîne vide en cas d'erreur
   }
 }
+Future<String> getuserNameByid(String userID) async{
+  try {
+    String? userName;
+    final documentSnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userID)
+        .get();
+
+    if (documentSnapshot.exists) {
+      userName= documentSnapshot.data()?['Nom'] as String?;
+    } else {
+      print('las-bas');
+      // Aucun document trouvé dans la collection 'Prestations' pour le domaine spécifié
+    }
+    return userName ?? '';
+  } catch (e) {
+    print("Erreur lors de la recherche de Prestations : $e");
+    return ""; // Retourne une chaîne vide en cas d'erreur
+  }
+}
 // code test
 /*
 // Get the materiel for a specific prestation in a specific domain

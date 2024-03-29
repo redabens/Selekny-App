@@ -28,11 +28,11 @@ import 'commentaire.dart';
 
     }
 
-    Stream<QuerySnapshot> getCommentaires(String ArtisanId){
+    Stream<QuerySnapshot> getCommentaires(String artisanId){
 
       return _firestore
           .collection('Artisans')
-          .doc(ArtisanId).collection('Commentaires')
+          .doc(artisanId).collection('Commentaires')
           .orderBy('timestamp',descending: true)
           .snapshots();
     }
