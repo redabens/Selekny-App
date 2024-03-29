@@ -1,47 +1,15 @@
-import'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
-class MaterialTile extends StatefulWidget {
+class MaterialTile extends StatelessWidget {
   const MaterialTile({
     super.key,
     required this.domaine,
     required this.prestation,
+    this.materiel, // Optional material string
   });
   final String domaine;
   final String prestation;
-  @override
-  State<MaterialTile> createState() => _MaterialTileState();
-}
-
-class _MaterialTileState extends State<MaterialTile> {
-  String? materiel =''; // Declare materiel as nullable String
-  Future<void> getMateriel(String domaine, String prestation) async {
-    try {
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection('Domaine')
-          .where('Nom', isEqualTo: domaine)
-          .limit(1)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        String domaineId = querySnapshot.docs[0].id;
-        final prestationsSnapshot = await FirebaseFirestore.instance
-            .collection('Domaine')
-            .doc(domaineId)
-            .collection('Prestations')
-            .where('nom_prestation', isEqualTo: prestation)
-            .limit(1)
-            .get();
-        String prestationId = prestationsSnapshot.docs[0].id;
-        if (prestationsSnapshot.docs.isNotEmpty) {
-          materiel = prestationsSnapshot.docs[0].data()['materiel'] as String?;
-          setState(() {}); // Update UI after fetching data
-        }
-      }
-    } catch (e) {
-      print("Error fetching data: $e"); // Handle potential errors
-    }
-  }
+  final String? materiel; // Can be null
 
   @override
   Widget build(BuildContext context) {
@@ -61,17 +29,21 @@ class _MaterialTileState extends State<MaterialTile> {
             child: const Row(
               children: [
                 Icon(Icons.handyman_outlined),
-                Text("Le matériel necéssaire:"),
+                Text("Le matériel nécessaire:"),
               ],
-              //titre
             ),
           ),
           Expanded(
             child: Container(
               child: Row(
                 children: [
+                  const Text(
+                    '.',
+                    style: TextStyle(color: Colors.grey, fontSize: 30),
+                  ),
                   Text(
-                    '. ${getMateriel(widget.domaine, widget.prestation)}', style: const TextStyle(color: Colors.grey,fontSize: 20),
+                    materiel != null ? ' $materiel' : '', // Display material only if available
+                    style: const TextStyle(color: Colors.grey, fontSize: 25),
                   ),
                 ],
               ),
@@ -82,4 +54,5 @@ class _MaterialTileState extends State<MaterialTile> {
     );
   }
 }
+
 

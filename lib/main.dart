@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Pages/Ajout_commentaire_page.dart';
 import 'package:reda/Pages/chat_page.dart';
 import 'package:reda/Pages/pub_demande_page.dart';
 import 'firebase_options.dart';
-import 'package:reda/Services/getMateriel.dart';
+import 'package:reda/Services/demande publication/getMateriel.dart';
 import 'package:reda/Services/ConvertAdr.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const PubDemandePage(),
+      home: const AjoutCommentairePage(artisanID: "hskvyxfATXnpgG8vsZlc"),
     );
   }
 }

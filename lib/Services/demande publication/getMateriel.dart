@@ -22,13 +22,10 @@ Future<String> getMateriel(String domaine, String prestation) async {
           .limit(1)
           .get();
       String prestationId = prestationsSnapshot.docs[0].id;
-      print(prestationId);
       if (prestationsSnapshot.docs.isNotEmpty) {
         var materiel = prestationsSnapshot.docs[0].data()['materiel'] as String?;
-        print('ici');
         return materiel ?? ''; // Retourne la valeur de 'materiel' ou une chaîne vide si 'materiel' est null
       } else {
-        print('here');
         return ''; // Aucun document trouvé dans la sous-collection 'Prestations' pour la prestation spécifiée
       }
     } else {
@@ -58,13 +55,10 @@ Future<String> getPrix(String domaine, String prestation) async {
           .limit(1)
           .get();
       String prestationId = prestationsSnapshot.docs[0].id;
-      print(prestationId);
       if (prestationsSnapshot.docs.isNotEmpty) {
-        var materiel = prestationsSnapshot.docs[0].data()['prix'] as String?;
-        print('ici');
-        return materiel ?? ''; // Retourne la valeur de 'prix' ou une chaîne vide si 'prix' est null
+        var prix = prestationsSnapshot.docs[0].data()['prix'] as String?;
+        return prix ?? ''; // Retourne la valeur de 'prix' ou une chaîne vide si 'prix' est null
       } else {
-        print('here');
         return ''; // Aucun document trouvé dans la sous-collection 'Prestations' pour la prestation spécifiée
       }
     } else {
