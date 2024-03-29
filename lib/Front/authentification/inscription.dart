@@ -50,7 +50,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                 child: Column(
                   children: [
                     Image.asset(
-                      'lib/assets/logo.png',
+                      'lib/Front/assets/logo.png',
                       width: 85,
                       height: 90,
                     ),
@@ -118,7 +118,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
                               prefixIcon:
                               Image.asset(
-                                'lib/assets/Algeria.png',
+                                'lib/Front/assets/Algeria.png',
                                 width: 14,
                                 height: 14,
                               ),

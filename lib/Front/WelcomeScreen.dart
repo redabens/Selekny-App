@@ -30,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
                   children: [
                     SizedBox(height: 60),
                     Image.asset(
-                      'lib/assets/workersimg.png', // Replace with your image path
+                      'lib/Front/assets/workersimg.png', // Replace with your image path
                       width: 336,
                       height: 300,
                     ),
