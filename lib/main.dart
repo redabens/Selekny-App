@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:reda/Front/update_profile_screen.dart';
 import '../Front/WelcomeScreen.dart';
-import 'Front/profile_screen.dart';
 
 
 void main() {
@@ -13,7 +10,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ProfileScreen(),
+      theme: ThemeData(
+        // Define your light theme here
+        brightness: Brightness.light,
+        // Add other light theme configurations
+      ),
+      darkTheme: ThemeData(
+        // Define your dark theme here
+        brightness: Brightness.dark,
+        // Add other dark theme configurations
+      ),
+      home: WelcomePage(),
     );
   }
 }

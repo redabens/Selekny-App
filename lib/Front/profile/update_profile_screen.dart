@@ -1,7 +1,7 @@
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:reda/Front/profile_screen.dart';
+import 'package:reda/Front/profile/profile_screen.dart';
 
 class UpdateProfileScreen extends StatelessWidget {
    UpdateProfileScreen({Key? key}) : super(key: key);
@@ -31,16 +31,19 @@ class UpdateProfileScreen extends StatelessWidget {
 
    @override
   Widget build(BuildContext context) {
-     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
      //final controller = Get.put(ProfileController());
     return Scaffold(
+      backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
+
       appBar: AppBar(
+        backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
+
         leading: IconButton(
-          onPressed: () {Navigator.push(
-       context,
-       MaterialPageRoute(builder: (context) => ProfileScreen()),
-     );},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: Container(
             width: 36,
             height: 36,
