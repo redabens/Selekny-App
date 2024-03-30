@@ -6,6 +6,8 @@ class ForgotPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       home: Scaffold(
         body: ForgotPasswordScreen(),
       ),
@@ -28,6 +30,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var isDark = Theme.of(context).brightness == Brightness.dark;
+    var textColor = isDark ? Colors.white : Colors.black.withOpacity(0.5);
+
     return SingleChildScrollView(
       child: Center(
         child: Padding(
@@ -46,7 +51,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     Text(
                       "Mot de passe oublié",
                       style: TextStyle(
-                        color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -66,7 +70,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         "Saisissez votre email",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black.withOpacity(0.5),
+                          color: textColor,
                         ),
                       ),
                     ),
@@ -77,7 +81,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         decoration: InputDecoration(
                           labelText: 'Email',
                           labelStyle: TextStyle(
-                            color: Colors.black.withOpacity(0.4),
+                            color: textColor,
                           ),
                           border: UnderlineInputBorder(),
                           suffixIcon: Icon(Icons.alternate_email),
@@ -104,6 +108,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
+
                                 title: const Text('Entrer le code recu'),
                                 content: TextFormField(
                                   keyboardType: TextInputType.number,
@@ -117,13 +122,44 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 ),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: const Text('Retour'),
+                                    child: const Text('Retour',
+                                    style: TextStyle(
+                                      color:Colors.black ,
+                                    ),
+                                    ),
+                                    style: ButtonStyle(
+                                      // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10.10),
+                                        ),
+                                      ),
+                                      backgroundColor: MaterialStateProperty.all<Color>(
+                                        Colors.grey.shade400,
+                                      ),
+                                      elevation: MaterialStateProperty.all<double>(7),
+                                      shadowColor: MaterialStateProperty.all<Color>(Colors.black),
+                                    ),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
                                   ),
                                   TextButton(
-                                    child: const Text('Envoyer'),
+                                    child: const Text('Envoyer',
+                                    style: TextStyle(color:Colors.white,)),
+                                    style: ButtonStyle(
+                                      // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10.10),
+                                        ),
+                                      ),
+                                      backgroundColor: MaterialStateProperty.all<Color>(
+                                        Color(0xFF3E69FE),
+                                      ),
+                                      elevation: MaterialStateProperty.all<double>(7),
+                                      shadowColor: MaterialStateProperty.all<Color>(Colors.black),
+                                    ),
                                     onPressed: () {
 
                                       // Handle the submit action
@@ -135,6 +171,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           );
                         }
                       },
+
                       child: Text(
                         'Envoyer',
                         style: TextStyle(
@@ -143,16 +180,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ),
                       ),
                       style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all<Size>(Size(216, 37)),
+                        // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(13.13),
+                            borderRadius: BorderRadius.circular(10.10),
                           ),
                         ),
                         backgroundColor: MaterialStateProperty.all<Color>(
                           Color(0xFF3E69FE),
                         ),
+                        elevation: MaterialStateProperty.all<double>(7),
+                        shadowColor: MaterialStateProperty.all<Color>(Colors.black),
                       ),
+
                     ),
                     SizedBox(height: 30),
                     Row(
@@ -161,7 +201,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         Text(
                           "Vous n'avez pas un compte?",
                           style: TextStyle(
-                            color: Colors.black.withOpacity(0.5),
+                            color: textColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -176,7 +216,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           child: Text(
                             "Inscription",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: isDark? Colors.white:Colors.black.withOpacity(0.9),
                               fontWeight: FontWeight.bold,
                             ),
                           ),

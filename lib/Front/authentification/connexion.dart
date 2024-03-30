@@ -7,16 +7,20 @@ import 'inscription.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body:  LoginScreen(),
-        ),
 
+    return MaterialApp(
+      title: 'Welcome Page',
+      theme: ThemeData.light(), // Use light theme by default
+      darkTheme: ThemeData.dark(), // Define dark theme
+      home: Scaffold(
+        body: LoginScreen(),
+      ),
     );
   }
 }
 
 class LoginScreen extends StatefulWidget {
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -27,8 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
   String _email = '';
   String _password = '';
 
+
   @override
   Widget build(BuildContext context) {
+    var isDark = Theme.of(context).brightness == Brightness.dark;
+    var textColor = isDark ? Colors.white : Colors.black;
+
+
     return SingleChildScrollView(
       child: Center(
         child: Padding(
@@ -49,7 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       'Connexion',
                      style: TextStyle(
-                       color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -74,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Email',
                                 labelStyle: TextStyle(
-                                  color: Colors.black.withOpacity(0.4),
+                                  color: isDark ? Colors.white :Colors.black.withOpacity(0.4),
                                 ),
                                 border: UnderlineInputBorder(),
                                 suffixIcon: Icon(Icons.alternate_email),
@@ -95,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Mot de passe',
                                 labelStyle: TextStyle(
-                                  color: Colors.black.withOpacity(0.4),
+                                  color: isDark ? Colors.white :Colors.black.withOpacity(0.4),
                                 ),
                                 border: UnderlineInputBorder(),
                                 suffixIcon: IconButton(
@@ -134,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       '• Choisissez votre statut :',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black, // Adjust the color as needed
+                                        color: isDark ? Colors.white : Colors.black, // Adjust the color as needed
                                       ),
                                     ),
                                   ],
@@ -148,8 +156,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   initialLabelIndex: 0,
                                   activeBgColor: [Color(0xFF3E69FE)],
                                   activeFgColor: Colors.white,
-                                  inactiveBgColor: Colors.black.withOpacity(0.15),
-                                  inactiveFgColor: Colors.black,
+                                  inactiveBgColor: isDark? Colors.grey.shade300 : Colors.black.withOpacity(0.15),
+                                  inactiveFgColor: isDark?Colors.black : Colors.black,
                                   labels: ['Client', 'Prestataire'],
                                   onToggle: (index) {
 // Here we can handle the toggle change
@@ -173,7 +181,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         // If login failed, show error message (replace with your error handling)
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
-                                            content: Text(' email ou mot de passe invalide'),
+                                            content: Text(
+                                                ' email ou mot de passe invalide',
+                                          ),
                                           ),
                                         );
                                       }
@@ -206,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     '_____________________   ou   _____________________',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: Colors.black.withOpacity(0.35),
+                                      color: isDark? Colors.white : Colors.black.withOpacity(0.35),
                                       fontWeight: FontWeight.normal,
                                       fontSize: 12,
                                     ),
@@ -248,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       child: CircleAvatar(
                                         backgroundColor: Colors.white,
                                         child: Icon(
-                                          Icons.telegram,
+                                          Icons.telegram_outlined,
                                           color: Colors.lightBlue,
                                         ),
                                       ),
@@ -290,7 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       Text(
                                         'Mot de passe oublié?',
                                         style: TextStyle(
-                                          color: Colors.black.withOpacity(0.5),
+                                          color: isDark?Colors.white: Colors.black.withOpacity(0.5),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -311,7 +321,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         "S'inscrire",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black, // Adjust the color as needed
+                                          color: isDark? Colors.white:Colors.black.withOpacity(0.9),
                                         ),
                                       ),
                                     ),

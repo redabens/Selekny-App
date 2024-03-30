@@ -10,9 +10,10 @@ class InscriptionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Inscription Page',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+
+      theme: ThemeData.light(), // Use light theme by default
+      darkTheme: ThemeData.dark(),
+
       home: Scaffold(
 
         body: InscriptionScreen(),
@@ -37,6 +38,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var isDark = Theme.of(context).brightness == Brightness.dark;
+    var textColor = isDark ? Colors.white : Colors.black.withOpacity(0.4);
+
     return SingleChildScrollView(
       child: Center(
         child: Padding(
@@ -80,7 +84,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                             decoration: InputDecoration(
                               labelText: 'Nom',
                               labelStyle: TextStyle(
-                                color: Colors.black.withOpacity(0.4),
+                                color: textColor,
                               ),
                               border: UnderlineInputBorder(),
                             ),
@@ -97,7 +101,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                             decoration: InputDecoration(
                               labelText: 'Adresse',
                               labelStyle: TextStyle(
-                                color: Colors.black.withOpacity(0.4),
+                                color: textColor,
                               ),
                               border: UnderlineInputBorder(),
                               suffixIcon: Icon(Icons.location_pin),
@@ -141,7 +145,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                             decoration: InputDecoration(
                               labelText: 'Email',
                               labelStyle: TextStyle(
-                                color: Colors.black.withOpacity(0.4),
+                                color: textColor,
                               ),
                               border: UnderlineInputBorder(),
                               suffixIcon: Icon(Icons.alternate_email),
@@ -161,7 +165,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                             decoration: InputDecoration(
                               labelText: 'Créer mot de passe',
                               labelStyle: TextStyle(
-                                color: Colors.black.withOpacity(0.4),
+                                color: textColor,
                               ),
                               border: UnderlineInputBorder(),
                               suffixIcon: IconButton(
@@ -183,12 +187,12 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 6),
                           TextFormField(
                             decoration: InputDecoration(
                               labelText: 'Confirmer mot de passe',
                               labelStyle: TextStyle(
-                                color: Colors.black.withOpacity(0.4),
+                                color: textColor,
                               ),
                               border: UnderlineInputBorder(),
                               suffixIcon: IconButton(
@@ -258,14 +262,14 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                             'conditons et notre politique de confidentialité',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.black.withOpacity(0.35),
+                          color: isDark? Colors.white:Colors.black.withOpacity(0.35),
                           fontWeight: FontWeight.normal,
                           fontSize: 11,
                         ),
                         maxLines: 2,
                       ),
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: 12),
                     // Row for additional text widgets
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -273,7 +277,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                         Text(
                           'Vous avez déjà un compte?',
                           style: TextStyle(
-                            color: Colors.black.withOpacity(0.5),
+                            color: isDark? Colors.white:Colors.black.withOpacity(0.5),
                           ),
                         ),
                         TextButton(
@@ -288,7 +292,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                           child: Text(
                             "Se connecter",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: isDark?Colors.white:Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
