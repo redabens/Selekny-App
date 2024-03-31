@@ -48,6 +48,8 @@ dependencies:
   get: ^4.6.6
   theme_mode_handler: ^3.0.0
   flutter_social_button: ^1.1.4
+  firebase_core: ^2.27.2
+  firebase_auth: ^4.18.0
 
 dev_dependencies:
   flutter_test:

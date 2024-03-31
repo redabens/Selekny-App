@@ -28,9 +28,25 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _showPassword = false;
-  String _email = '';
-  String _password = '';
 
+  bool _loading = false;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void handleSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      // Save the form data
+      final email = _emailController.value.text;
+      final password = _passwordController.value.text;
+      setState(() => _loading=true);
+
+      //back pour rayane here
+
+      setState(() => _loading=false);
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(height: 60),
 // Email field
                             TextFormField(
+                              controller: _emailController,
                               decoration: InputDecoration(
                                 labelText: 'Email',
                                 labelStyle: TextStyle(
@@ -93,13 +110,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                                 return null;
                               },
-                              onSaved: (value) {
-                                _email = value ?? '';
-                              },
+
                             ),
                             SizedBox(height: 20),
 // Password field
                             TextFormField(
+                              controller: _passwordController,
                               decoration: InputDecoration(
                                 labelText: 'Mot de passe',
                                 labelStyle: TextStyle(
@@ -124,9 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                                 return null;
                               },
-                              onSaved: (value) {
-                                _password = value ?? '';
-                              },
+
                             ),
                             SizedBox(height: 35),
                             SizedBox( height: 35,),
@@ -166,30 +180,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SizedBox(height: 20),
 // Login button
                                 ElevatedButton(
-                                  onPressed: () {
-                                    // Validate the form before proceeding
-                                    if (_formKey.currentState!.validate()) {
-                                      // Save the form data
-                                      _formKey.currentState!.save();
-
-                                      // Simulate login process (replace with actual authentication logic)
-                                      // For example, check if email and password are correct
-                                      if (_email == 'user@example.com' && _password == 'password') {
-                                        // If login successful, navigate to home screen
-                                        Navigator.pushReplacementNamed(context, '/home');
-                                      } else {
-                                        // If login failed, show error message (replace with your error handling)
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                ' email ou mot de passe invalide',
-                                          ),
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  },
-                                  child: Text(
+                                  onPressed: () => handleSubmit (),
+                                  child: _loading?
+                                  SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                      strokeWidth: 2,
+                                    ),
+                                  ) : Text(
                                     'Se connecter',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -208,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-// Row for additional text widgets
+
                                 SizedBox(height: 20),
 
                                 Center(
@@ -222,7 +222,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),//
-//
                                 SizedBox(height: 20),
 
                                 Row(
@@ -230,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   children: [
                                     ElevatedButton(
                                       onPressed: () {
-// Action when Facebook button is pressed
+
                                       },
                                       style: ElevatedButton.styleFrom(
                                         shape: CircleBorder(),
@@ -249,7 +248,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                     ElevatedButton(
                                       onPressed: () {
-// Action when Google button is pressed
                                       },
                                       style: ElevatedButton.styleFrom(
                                         shape: CircleBorder(),
@@ -268,7 +266,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                     ElevatedButton(
                                       onPressed: () {
-// Action when WhatsApp button is pressed
                                       },
                                       style: ElevatedButton.styleFrom(
                                         shape: CircleBorder(),
@@ -310,8 +307,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     SizedBox(width: 42),
                                     TextButton(
                                       onPressed: () {
-// Action when "S'inscrire" is pressed
-// Navigate to the registration page
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(builder: (context) => InscriptionPage()),

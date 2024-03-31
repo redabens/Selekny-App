@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../WelcomeScreen.dart';
 import 'connexion.dart';
+import 'package:http/http.dart' as http;
+
 
 
 
@@ -23,18 +25,41 @@ class InscriptionPage extends StatelessWidget {
 }
 
 class InscriptionScreen extends StatefulWidget {
+
   @override
   _InscriptionScreenState createState() => _InscriptionScreenState();
+
 }
 
 class _InscriptionScreenState extends State<InscriptionScreen> {
   final _formKey = GlobalKey<FormState>(); // Define _formKey here
 
   bool _showPassword = false;
-  String _email = '';
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+ // String _email = '';
+  bool _loading = false;
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _adresseController = TextEditingController();
+  final TextEditingController _numController = TextEditingController();
+
+    void handleSubmit () async {
+      if (_formKey.currentState!.validate()) return; {
+      final email = _emailController.value.text;
+      final password = _passwordController.value.text;
+      final adresse = _adresseController.value.text;
+      final number = _numController.value.text;
+      final name = _nameController.value.text;
+
+      setState(() => _loading=true);
+
+      //back pour rayane here
+
+      setState(() => _loading=false);
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +106,16 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                       child: Column(
                         children: [
                           TextFormField(
+
+                            controller : _nameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez saisir votre Nom';
+                              }
+                              return null;
+                            },
+
+
                             decoration: InputDecoration(
                               labelText: 'Nom',
                               labelStyle: TextStyle(
@@ -88,16 +123,19 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               ),
                               border: UnderlineInputBorder(),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Veuillez saisir votre Nom';
-                              }
-                              return null;
-                            },
+
                           ),
                           SizedBox(height: 10),
 
                           TextFormField(
+                            controller: _adresseController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez saisir votre adresse';
+                              }
+                              return null;
+                            },
+
                             decoration: InputDecoration(
                               labelText: 'Adresse',
                               labelStyle: TextStyle(
@@ -106,20 +144,23 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               border: UnderlineInputBorder(),
                               suffixIcon: Icon(Icons.location_pin),
                             ),
+
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _numController,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Veuillez saisir votre adresse';
+                              if (value == '+213' || value == null || value.isEmpty) {
+                                return 'Numero obligatoir';
                               }
                               return null;
                             },
-                          ),
-                          SizedBox(height: 10),
 
-                          TextFormField(
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(),
-                              suffixIcon: Icon(Icons.phone),
+                              labelText: '+213',
 
+                              suffixIcon: Icon(Icons.phone),
                               prefixIcon:
                               Image.asset(
                                 'lib/Front/assets/Algeria.png',
@@ -127,21 +168,28 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                                 height: 14,
                               ),
                             ),
-                            initialValue: '+213 ',
+
                             style: TextStyle(
                               fontWeight :FontWeight.bold,
                             ),
                             keyboardType: TextInputType.phone,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Numero obligatoir';
-                              }
-                              return null;
-                            },
+                           // initialValue:  '+213',
+
                           ),
 
                           SizedBox(height: 10),
                           TextFormField(
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez saisir votre email';
+                              }
+                              return null;
+                            },
+                            // onSaved: (value) {
+                            //   _email = value ?? '';
+                            // },
+                            //
                             decoration: InputDecoration(
                               labelText: 'Email',
                               labelStyle: TextStyle(
@@ -150,18 +198,18 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               border: UnderlineInputBorder(),
                               suffixIcon: Icon(Icons.alternate_email),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Veuillez saisir votre email';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _email = value ?? '';
-                            },
+
                           ),
                           SizedBox(height: 10),
                           TextFormField(
+                            controller: _passwordController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez saisir votre mot de passe';
+                              }
+                              return null;
+                            },
+
                             decoration: InputDecoration(
                               labelText: 'Créer mot de passe',
                               labelStyle: TextStyle(
@@ -180,15 +228,24 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               ),
                             ),
                             obscureText: !_showPassword,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Veuillez saisir votre mot de passe';
-                              }
-                              return null;
-                            },
+
                           ),
                           SizedBox(height: 6),
                           TextFormField(
+                            controller: _confirmPasswordController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez confirmer votre mot de passe';
+                              }
+                              else {
+                                // Check if it matches the value in the "Créer mot de passe" field
+                                if (value != _passwordController.text) {
+                                  return 'Les mots de passe ne correspondent pas';
+                                }
+                              }
+                              return null;
+                            },
+
                             decoration: InputDecoration(
                               labelText: 'Confirmer mot de passe',
                               labelStyle: TextStyle(
@@ -207,42 +264,34 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               ),
                             ),
                             obscureText: !_showPassword,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Veuillez confirmer votre mot de passe';
-                              }
-                              // Check if it matches the value in the "Créer mot de passe" field
-                              if (value != _passwordController.text) {
-                                return 'Les mots de passe ne correspondent pas';
-                              }
-                              return null;
-                            },
+
                           ),
 
                         ],
                       ),
                     ),
                     SizedBox(height: 25),
-                    // Login button
+                    // signUp button
                     ElevatedButton(
-                      onPressed: () {
-                        // Check if the form is valid
-                        if (_formKey.currentState!.validate()) {
-                          // If valid, navigate to the next screen
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => WelcomePage()),
-                          );
-                        }
-                      },
-                      child: Text(
-                        'S\'inscrire',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
+                      onPressed: () => handleSubmit(),
+
+                      child: _loading?
+                          SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.black,
+                                strokeWidth: 2,
+                            ),
+                          )
+                          : Text(
+                      "S'inscrire",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
                       ),
+                    ),
                       style: ButtonStyle(
                         minimumSize: MaterialStateProperty.all<Size>(Size(350, 47)),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(

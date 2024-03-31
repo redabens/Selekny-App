@@ -22,11 +22,10 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
+  bool _loading = false;
 
   TextEditingController _emailController = TextEditingController();
-
-  bool _isEnvoyerClicked = false;
+  TextEditingController _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -87,23 +86,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           suffixIcon: Icon(Icons.alternate_email),
                         ),
                         validator: (value) {
-                          if (_isEnvoyerClicked && (value == null || value.isEmpty)) {
+                          if (value == null || value.isEmpty) {
                             return 'Veuillez saisir votre email';
                           }
                           return null;
                         },
-                        onSaved: (value) {
-                          _email = value ?? '';
-                        },
+
                       ),
                     ),
                     SizedBox(height: 5),
                     ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          _isEnvoyerClicked = true;
-                        });
+
                         if (_formKey.currentState!.validate()) {
+                         final  _email = _emailController.value.text;
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -111,6 +107,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                                 title: const Text('Entrer le code recu'),
                                 content: TextFormField(
+                                  controller: _codeController,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -119,6 +116,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   decoration: InputDecoration(
                                     hintText: "ex: 00000",
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Veuillez saisir le code';
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 actions: <Widget>[
                                   TextButton(
@@ -161,6 +164,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       shadowColor: MaterialStateProperty.all<Color>(Colors.black),
                                     ),
                                     onPressed: () {
+                                      final _code = _codeController.value.text;
+                                      setState(() => _loading=true);
+
+                                      //back pour rayane here
+
+                                      setState(() => _loading=false);
 
                                       // Handle the submit action
                                     },
@@ -172,7 +181,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         }
                       },
 
-                      child: Text(
+                      child: _loading?
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                          strokeWidth: 2,
+                        ),
+                      ) : Text(
                         'Envoyer',
                         style: TextStyle(
                           color: Colors.white,
