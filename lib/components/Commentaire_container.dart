@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -39,11 +40,11 @@ class Detcommentaire extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       child: Stack(
         children: [
           Container(
-            height:90,
+            height:100,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -61,10 +62,23 @@ class Detcommentaire extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.grey, // Placeholder color for the image
-                    backgroundImage: NetworkImage(profileImage), // Add your image here
+                  Container(
+                    width: 50, // Adjust as needed
+                    height: 50, // Adjust as needed
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.blueGrey,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50.0),
+                      child: CachedNetworkImage(
+                        imageUrl: profileImage,
+                        // ...
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -94,11 +108,14 @@ class Detcommentaire extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 5),
-                        Text(
-                          comment,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
+                        Container(
+                          width:MediaQuery.of(context).size.width*0.5,
+                          child :Text(
+                            comment,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ],
@@ -109,7 +126,7 @@ class Detcommentaire extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 40,
+            top: 50,
             right: 5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -137,3 +154,4 @@ class Detcommentaire extends StatelessWidget {
     );
   }
 }
+/**/

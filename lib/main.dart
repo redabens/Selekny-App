@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:reda/Pages/Ajout_commentaire_page.dart';
+import 'package:reda/Pages/Afficher_commentaire_page.dart';
+import 'package:reda/Pages/Ajouter_commentaire_page.dart';
 import 'package:reda/Pages/chat_page.dart';
 import 'package:reda/Pages/pub_demande_page.dart';
 import 'firebase_options.dart';
@@ -49,7 +50,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const AjoutCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
+      home: //const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
+      const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
+      //const ChatPage(receiverUserEmail:"mm_bensemane@esi.dz", receiverUserID: "hskvyxfATXnpgG8vsZlc"),
     );
   }
 }
