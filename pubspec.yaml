@@ -50,12 +50,9 @@ dependencies:
   flutter_social_button: ^1.1.4
   firebase_core: ^2.27.2
   firebase_auth: ^4.18.0
-<<<<<<< HEAD
-=======
   cloud_firestore: ^4.15.10
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.1.1
->>>>>>> main
 
 dev_dependencies:
   flutter_test:
