@@ -239,7 +239,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               }
                               else {
                                 // Check if it matches the value in the "Créer mot de passe" field
-                                if (value != _passwordController.text) {
+                                if (value != _passwordController.value.text) {
                                   return 'Les mots de passe ne correspondent pas';
                                 }
                               }
