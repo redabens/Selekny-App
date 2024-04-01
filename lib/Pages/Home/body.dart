@@ -4,6 +4,7 @@ import 'package:reda/Pages/Home/listeimage.dart';
 import 'package:reda/Pages/Home/listimag2.dart';
 import 'package:reda/Pages/Home/servicepop.dart';
 import 'package:reda/Pages/Home/services.dart';
+import 'package:reda/Pages/voirtout_page.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -36,7 +37,7 @@ class Body extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) =>  const DetailPage()),
+                        MaterialPageRoute(builder: (context) =>  const VoirtoutPage()),
                       );
                     },
                     child: const Text(
@@ -65,7 +66,7 @@ class Body extends StatelessWidget {
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: Servicepop(),
+                  child: const Servicepop(),
                 ),
               ],
             ),

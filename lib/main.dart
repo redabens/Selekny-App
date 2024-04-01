@@ -52,9 +52,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
+      home: //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
       //const PubDemandePage(),
-      // const HomePage(),
+      const HomePage(),
       //const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
       //const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
       //const ChatPage(receiverUserEmail:"ms_iratni@esi.dz", receiverUserID: "eOILQzRtIQlxwCGKhFMy"),
@@ -149,20 +149,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }*/
-/*Future<PrestationData> _getPrestationData(String prestationID) async {
-    final prestationDoc = await FirebaseFirestore.instance
-        .collection('Domaine')
-        .doc(widget.domaineID)
-        .collection('Prestations')
-        .doc(prestationID)
-        .get();
-
-    if (prestationDoc.exists && prestationDoc.data() != null) {
-      final pathImage = prestationDoc.get('PathImage') as String;
-      final nomPrestation = prestationDoc.get('nom_prestation') as String;
-      final url = await FirebaseStorage.instance.ref().child(pathImage).getDownloadURL();
-      return PrestationData(imageUrl: url, nomPrestation: nomPrestation);
-    } else {
-      return const PrestationData(imageUrl: 'default_image_url', nomPrestation: 'default_name');
-    }
-  }*/

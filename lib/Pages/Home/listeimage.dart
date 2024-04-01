@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Pages/Home/datails.dart';
+import 'package:reda/Pages/prestation_page.dart';
 
 class ImageList extends StatelessWidget {
   final List<String> imagePaths = [
@@ -15,7 +16,12 @@ class ImageList extends StatelessWidget {
     "Serrurier",
     "Ménage",
   ];
-
+  final List<String> ID = [
+    "default",
+    "default",
+    "default",
+    "FhihjpW4MAKVi7oVUtZq",
+  ];
   ImageList({super.key});
 
   @override
@@ -30,7 +36,7 @@ class ImageList extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const DetailPage()),
+                  MaterialPageRoute(builder: (context) => PrestationPage(domaineID: ID[index])),
                 );
               },
               child: Column(

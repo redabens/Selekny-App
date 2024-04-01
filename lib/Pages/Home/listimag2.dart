@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Pages/Home/datails.dart';
+import 'package:reda/Pages/prestation_page.dart';
 
 class ImageList2 extends StatelessWidget {
   final List<String> imagePaths = [
@@ -10,10 +11,16 @@ class ImageList2 extends StatelessWidget {
   ];
 
   final List<String> texts = [
-    "Plombier",
-    "Electricien",
-    "Maçon",
-    "Menuisier",
+    "Plomberie",
+    "Electricité",
+    "Maçonnerie",
+    "Menuiserie",
+  ];
+  final List<String> ID = [
+    "ajEON4X1fduQVsdVoqFJ",
+    "KYsR4cj4mdVoDlrbyZbB",
+    "s5Nry8HGyjjAgFsAxoum",
+    "default",
   ];
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,7 @@ class ImageList2 extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const DetailPage()),
+                  MaterialPageRoute(builder: (context) => PrestationPage(domaineID: ID[index])),
                 );
               },
               child: Column(
