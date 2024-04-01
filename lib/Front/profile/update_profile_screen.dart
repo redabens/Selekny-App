@@ -1,63 +1,42 @@
-<<<<<<< HEAD
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reda/Front/profile/profile_screen.dart';
 
 class UpdateProfileScreen extends StatelessWidget {
-   UpdateProfileScreen({Key? key}) : super(key: key);
-=======
-import 'package:flutter/material.dart';
+  UpdateProfileScreen({Key? key}) : super(key: key);
+  // Strings
+  String tFullName = 'Rachad Bachir';
+  String tEditProfile = 'Editer le Profile       ';
+  String tProfile = 'Profile';
+  String tProfileHeading = 'Profile Heading';
+  String tProfileSubHeading = 'Profile Sub Heading';
+  String tEmail = 'Email';
+  String tPhoneNo = 'numero';
+  String tPassword = 'Ancien mot de passe';
+  String tadress = 'Adresse';
 
-class UpdateProfileScreen extends StatelessWidget {
-   UpdateProfileScreen({super.key});
->>>>>>> main
-   // Strings
-   String tFullName = 'Rachad Bachir';
-   String tEditProfile = 'Editer le Profile       ';
-   String tProfile = 'Profile';
-   String tProfileHeading = 'Profile Heading';
-   String tProfileSubHeading = 'Profile Sub Heading';
-   String tEmail = 'Email';
-   String tPhoneNo = 'numero';
-   String tPassword = 'Ancien mot de passe';
-   String tadress = 'Adresse';
+  // Colors
+  Color tPrimaryColor = Colors.white;
+  Color tDarkColor = Colors.black;
 
-   // Colors
-   Color tPrimaryColor = Colors.white;
-   Color tDarkColor = Colors.black;
+  // Form height
+  double tFormHeight = 20.0;
 
-   // Form height
-   double tFormHeight = 20.0;
+  String password = '';
+  String confirmPassword = '';
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-   String password = '';
-   String confirmPassword = '';
-
-<<<<<<< HEAD
-   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-=======
-   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
->>>>>>> main
-
-   @override
+  @override
   Widget build(BuildContext context) {
-     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-     //final controller = Get.put(ProfileController());
+    //final controller = Get.put(ProfileController());
     return Scaffold(
-<<<<<<< HEAD
       backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
-
       appBar: AppBar(
         backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
-=======
-      backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.white,
-
-      appBar: AppBar(
-        backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.white,
->>>>>>> main
-
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -68,13 +47,10 @@ class UpdateProfileScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.grey.shade100,
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(9), // Adjust border radius as needed
+              borderRadius:
+                  BorderRadius.circular(9), // Adjust border radius as needed
             ),
-<<<<<<< HEAD
             child: Icon(Icons.arrow_back_ios_new, color: Colors.black),
-=======
-            child: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
->>>>>>> main
           ),
         ),
         title: Row(
@@ -87,7 +63,6 @@ class UpdateProfileScreen extends StatelessWidget {
           ],
         ),
       ),
-
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),
@@ -101,7 +76,8 @@ class UpdateProfileScreen extends StatelessWidget {
                     height: 120,
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: const Image(image: AssetImage('lib/Front/assets/profile.JPG'))),
+                        child: const Image(
+                            image: AssetImage('lib/Front/assets/profile.JPG'))),
                   ),
                   Positioned(
                     //edit small icon
@@ -127,153 +103,130 @@ class UpdateProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                 ],
               ),
               const SizedBox(height: 50),
 
               // -- Form Fields
-          Padding(
-          padding: const EdgeInsets.only(left: 30,right: 30),
-          child:
-              Form(
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration:  InputDecoration(
-                        labelText: 'nom/prenom',
-<<<<<<< HEAD
-                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
-=======
-                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: const UnderlineInputBorder(),
->>>>>>> main
+              Padding(
+                padding: const EdgeInsets.only(left: 30, right: 30),
+                child: Form(
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'nom/prenom',
+                          labelStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                          ),
+                          border: UnderlineInputBorder(),
+                        ),
+                        initialValue:
+                            'Rachad Bachir', // Set the initial value here
                       ),
-                      initialValue: 'Rachad Bachir', // Set the initial value here
-
-                    ),
-                     SizedBox(height: tFormHeight - 20),
-                    TextFormField(
-                      decoration:  InputDecoration(
-                        labelText: tEmail,
-<<<<<<< HEAD
-                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
-=======
-                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: const UnderlineInputBorder(),
->>>>>>> main
+                      SizedBox(height: tFormHeight - 20),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: tEmail,
+                          labelStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                          ),
+                          border: UnderlineInputBorder(),
+                        ),
+                        initialValue:
+                            'mr_bachir@esi.dz', // Set the initial value here
                       ),
-                      initialValue: 'mr_bachir@esi.dz', // Set the initial value here
-
-                    ),
-                     SizedBox(height: tFormHeight - 20),
-                    TextFormField(
-                      decoration:  InputDecoration(
-                        labelText: tPhoneNo,
-<<<<<<< HEAD
-                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
-=======
-                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: const UnderlineInputBorder(),
->>>>>>> main
+                      SizedBox(height: tFormHeight - 20),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: tPhoneNo,
+                          labelStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                          ),
+                          border: UnderlineInputBorder(),
+                        ),
+                        initialValue:
+                            '+213658557616', // Set the initial value here
                       ),
-                      initialValue: '+213658557616', // Set the initial value here
-
-                    ),
-                    SizedBox(height: tFormHeight - 20),
-                    TextFormField(
-                      decoration:  InputDecoration(
-                        labelText: tadress,
-<<<<<<< HEAD
-                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
-=======
-                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: const UnderlineInputBorder(),
->>>>>>> main
+                      SizedBox(height: tFormHeight - 20),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: tadress,
+                          labelStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                          ),
+                          border: UnderlineInputBorder(),
+                        ),
+                        initialValue:
+                            'Bab ezzouare ,Alger Algerie', // Set the initial value here
                       ),
-                      initialValue: 'Bab ezzouare ,Alger Algerie', // Set the initial value here
-
-                    ),
-                     SizedBox(height: tFormHeight ),
-                    // Password TextFormField
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: tPassword,
-                      ),
-
-                      onChanged: (value) {
-                        password = value;
-                      },
-                    ),
-                     SizedBox(height: tFormHeight -20 ),
-// Confirm Password TextFormField
-                    TextFormField(
-                      obscureText: true,
-<<<<<<< HEAD
-                      decoration: InputDecoration(
-=======
-                      decoration: const InputDecoration(
->>>>>>> main
-                        labelText: 'Confirmer le mot de passe',
-                      ),
-                      validator: (value) {
-                        if (value != password) {
-                          return 'Verifier votre mot de passe';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        confirmPassword = value;
-                      },
-                    ),
-                    SizedBox(height: tFormHeight +20),
-                    // -- Form Submit Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: (){
-                          if (_formKey.currentState!.validate()) {
-                            // Form is valid, perform action
-                            // Passwords match, proceed with further actions
-                          } else {
-                            // Form is not valid due to password mismatch
-                            // You can display an error message or perform any other action
-                            print('Passwords do not match');
-                          }
+                      SizedBox(height: tFormHeight),
+                      // Password TextFormField
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: tPassword,
+                        ),
+                        onChanged: (value) {
+                          password = value;
                         },
-<<<<<<< HEAD
-                        child:  Text('Sauvegarder', style: TextStyle(color: tPrimaryColor)),
-
-                        style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
-=======
-
-                        style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all<Size>(const Size(330, 52)),
->>>>>>> main
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(13.13),
-                            ),
-                          ),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-<<<<<<< HEAD
-                            Color(0xFF3E69FE),
-                          ),
-                          elevation: MaterialStateProperty.all<double>(5),
-                          shadowColor: MaterialStateProperty.all<Color>(Color(0xFF3E69FE)),
-                        ),
-=======
-                            const Color(0xFF3E69FE),
-                          ),
-                          elevation: MaterialStateProperty.all<double>(5),
-                          shadowColor: MaterialStateProperty.all<Color>(const Color(0xFF3E69FE)),
-                        ),
-                        child:  Text('Sauvegarder', style: TextStyle(color: tPrimaryColor)),
->>>>>>> main
                       ),
-                    ),
-                  ],
+                      SizedBox(height: tFormHeight - 20),
+// Confirm Password TextFormField
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Confirmer le mot de passe',
+                        ),
+                        validator: (value) {
+                          if (value != password) {
+                            return 'Verifier votre mot de passe';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          confirmPassword = value;
+                        },
+                      ),
+                      SizedBox(height: tFormHeight + 20),
+                      // -- Form Submit Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              // Form is valid, perform action
+                              // Passwords match, proceed with further actions
+                            } else {
+                              // Form is not valid due to password mismatch
+                              // You can display an error message or perform any other action
+                              print('Passwords do not match');
+                            }
+                          },
+                          child: Text('Sauvegarder',
+                              style: TextStyle(color: tPrimaryColor)),
+                          style: ButtonStyle(
+                            minimumSize:
+                                MaterialStateProperty.all<Size>(Size(330, 52)),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(13.13),
+                              ),
+                            ),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xFF3E69FE),
+                            ),
+                            elevation: MaterialStateProperty.all<double>(5),
+                            shadowColor: MaterialStateProperty.all<Color>(
+                                Color(0xFF3E69FE)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
             ],
           ),
         ),

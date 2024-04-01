@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 buildscript {
     ext.kotlin_version = '1.9.23'
     repositories {
@@ -15,7 +13,6 @@ buildscript {
 
 
 
->>>>>>> main
 plugins {
     id "com.android.application"
     id "kotlin-android"
@@ -38,22 +35,6 @@ if (flutterVersionCode == null) {
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
-<<<<<<< HEAD
-}
-
-android {
-    namespace "com.example.reda"
-    compileSdkVersion flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-=======
     
 }
 android {
@@ -76,35 +57,14 @@ android {
         release {
             signingConfig signingConfigs.debug // Note: Cela utilise la configuration de signature de débogage, vous devrez la remplacer pour les versions de production
         }
->>>>>>> main
     }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-<<<<<<< HEAD
-    defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.reda"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
-    }
-
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-        }
-=======
     kotlinOptions {
         jvmTarget = '1.8'
->>>>>>> main
     }
 }
 
@@ -112,9 +72,6 @@ flutter {
     source '../..'
 }
 
-<<<<<<< HEAD
-dependencies {}
-=======
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.23" // Mettez à jour la version de Kotlin ici
     implementation "com.android.support:multidex:2.0.1" // Ajouter la dépendance multidex
@@ -133,4 +90,3 @@ tasks.whenTaskAdded { task ->
     }
 }
 
->>>>>>> main

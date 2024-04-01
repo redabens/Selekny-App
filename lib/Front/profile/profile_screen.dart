@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:get/get.dart';
-=======
->>>>>>> main
 import 'package:reda/Front/WelcomeScreen.dart';
 import 'profile_menu.dart';
 import 'update_profile_screen.dart';
 
 class ProfilePage extends StatelessWidget {
-<<<<<<< HEAD
-=======
-  const ProfilePage({super.key});
-
->>>>>>> main
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,29 +20,21 @@ class ProfilePage extends StatelessWidget {
 }
 
 class ProfileScreen extends StatelessWidget {
-<<<<<<< HEAD
-   ProfileScreen({Key? key}) : super(key: key);
-=======
-   ProfileScreen({super.key});
->>>>>>> main
+  ProfileScreen({Key? key}) : super(key: key);
   String tProfile = 'Profile       ';
   String tProfileHeading = 'Bachir Rachad';
   String tProfileSubHeading = 'mr_bachir@esi.dz';
   String tEditProfile = 'Editer le Profile';
 
-<<<<<<< HEAD
-  Color tPrimaryColor = Color(0xFF3E69FE); // Use the appropriate color code or define your color
-=======
-  Color tPrimaryColor = const Color(0xFF3E69FE); // Use the appropriate color code or define your color
->>>>>>> main
-  Color tDarkColor = Colors.black.withOpacity(0.8); // Use the appropriate dark color or define your color
+  Color tPrimaryColor =
+      Color(0xFF3E69FE); // Use the appropriate color code or define your color
+  Color tDarkColor = Colors.black
+      .withOpacity(0.8); // Use the appropriate dark color or define your color
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
-
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -59,19 +43,11 @@ class ProfileScreen extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-<<<<<<< HEAD
               color: Color(0xFFF1F3FC),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(9),
             ),
             child: Icon(Icons.arrow_back_ios_new, color: Colors.black),
-=======
-              color: const Color(0xFFF1F3FC),
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(9),
-            ),
-            child: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
->>>>>>> main
           ),
         ),
         title: Center(
@@ -86,13 +62,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-<<<<<<< HEAD
-          decoration: BoxDecoration(
-=======
-          decoration: const BoxDecoration(
->>>>>>> main
-
-          ),
+          decoration: BoxDecoration(),
           child: Column(
             children: [
               /// -- IMAGE
@@ -112,7 +82,6 @@ class ProfileScreen extends StatelessWidget {
                     right: 0,
                     child: GestureDetector(
                       onTap: () {
-
                         print('Edit button tapped');
                       },
                       child: Container(
@@ -130,176 +99,147 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                 ],
               ),
               const SizedBox(height: 10),
-              Text(tProfileHeading, style: Theme.of(context).textTheme.bodyMedium),
-              Text(tProfileSubHeading, style: Theme.of(context).textTheme.bodyMedium),
+              Text(tProfileHeading,
+                  style: Theme.of(context).textTheme.bodyMedium),
+              Text(tProfileSubHeading,
+                  style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 50),
-
 
               /// -- MENU
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-<<<<<<< HEAD
                   borderRadius: BorderRadius.only(
-=======
-                  borderRadius: const BorderRadius.only(
->>>>>>> main
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
                   color: Theme.of(context).colorScheme.surface,
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade300 : Colors.black.withOpacity(0.6),
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.grey.shade300
+                          : Colors.black.withOpacity(0.6),
                       spreadRadius: 1,
                       blurRadius: 10,
-<<<<<<< HEAD
-                      offset: Offset( 0,-20),
-=======
-                      offset: const Offset( 0,-20),
->>>>>>> main
+                      offset: Offset(0, -20),
                     ),
                   ],
-
-
-
                 ),
                 child: Expanded(
-                child: Column(
-                  children: [
-                    ProfileMenuWidget(
-                      title: "Editer le profile",
-                      icon: Icons.person_outline_outlined,
-                      onPress: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => UpdateProfileScreen()),
-                        );
-                      },
-                    ),
-                    ProfileMenuWidget(title: "Mode sombre", icon: Icons.mode_night_outlined, onPress: () {}),
-                    ProfileMenuWidget(
-                      title: "Devenir prestataire",
-                      icon: Icons.work_outline_outlined,
-                      onPress: () {},
-                    ),
-                    ProfileMenuWidget(
-                      title: "Se deconnecter",
-                      icon: Icons.logout_outlined,
-                      endIcon: false,
-                      onPress: () {
-                        // Show AlertDialog
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-<<<<<<< HEAD
-                            title: Text("SE DECONNECTER"),
-                            content: Text("etes-vous sur de vouloir vous déconnecter ?"),
-=======
-                            title: const Text("SE DECONNECTER"),
-                            content: const Text("etes-vous sur de vouloir vous déconnecter ?"),
->>>>>>> main
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  // Close the dialog
-                                  Navigator.pop(context);
-                                },
-<<<<<<< HEAD
-                                child: Text(
-                                  "NON",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-
-                                  ),
-                                ),
-=======
->>>>>>> main
-                                style: ButtonStyle(
-                                  // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.10),
+                  child: Column(
+                    children: [
+                      ProfileMenuWidget(
+                        title: "Editer le profile",
+                        icon: Icons.person_outline_outlined,
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UpdateProfileScreen()),
+                          );
+                        },
+                      ),
+                      ProfileMenuWidget(
+                          title: "Mode sombre",
+                          icon: Icons.mode_night_outlined,
+                          onPress: () {}),
+                      ProfileMenuWidget(
+                        title: "Devenir prestataire",
+                        icon: Icons.work_outline_outlined,
+                        onPress: () {},
+                      ),
+                      ProfileMenuWidget(
+                        title: "Se deconnecter",
+                        icon: Icons.logout_outlined,
+                        endIcon: false,
+                        onPress: () {
+                          // Show AlertDialog
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text("SE DECONNECTER"),
+                              content: Text(
+                                  "etes-vous sur de vouloir vous déconnecter ?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    // Close the dialog
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "NON",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  backgroundColor: MaterialStateProperty.all<Color>(
-<<<<<<< HEAD
-                                    Color(0xFF3E69FE),
-=======
-                                    const Color(0xFF3E69FE),
->>>>>>> main
-                                  ),
-                                  elevation: MaterialStateProperty.all<double>(7),
-                                  shadowColor: MaterialStateProperty.all<Color>(Colors.black),
-                                ),
-<<<<<<< HEAD
-=======
-                                child: const Text(
-                                  "NON",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-
-                                  ),
-                                ),
->>>>>>> main
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-
-                                  Navigator.push(
-                                    context,
-<<<<<<< HEAD
-                                    MaterialPageRoute(builder: (context) => WelcomePage()), //to home page not login
-                                  );                                },
-                                child: Text(
-                                  "OUI",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                  style: ButtonStyle(
+                                    // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.10),
+                                      ),
+                                    ),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      Color(0xFF3E69FE),
+                                    ),
+                                    elevation:
+                                        MaterialStateProperty.all<double>(7),
+                                    shadowColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
                                   ),
                                 ),
-=======
-                                    MaterialPageRoute(builder: (context) => const WelcomePage()), //to home page not login
-                                  );                                },
->>>>>>> main
-                                style: ButtonStyle(
-                                  // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              WelcomePage()), //to home page not login
+                                    );
+                                  },
+                                  child: Text(
+                                    "OUI",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  backgroundColor: MaterialStateProperty.all<Color>(
-                                    Colors.grey.shade400,
+                                  style: ButtonStyle(
+                                    // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.10),
+                                      ),
+                                    ),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      Colors.grey.shade400,
+                                    ),
+                                    elevation:
+                                        MaterialStateProperty.all<double>(7),
+                                    shadowColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
                                   ),
-                                  elevation: MaterialStateProperty.all<double>(7),
-                                  shadowColor: MaterialStateProperty.all<Color>(Colors.black),
                                 ),
-<<<<<<< HEAD
-=======
-                                child: const Text(
-                                  "OUI",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
->>>>>>> main
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               ),
             ],
           ),
