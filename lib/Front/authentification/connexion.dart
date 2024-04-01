@@ -90,8 +90,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       //  Authentification's functions
       void _signin() async {
-        String email = _emailController.text;
-        String password = _passwordController.text;
         try {
           User? user = await _auth.signInwithEmailAndPassword(email, password);
           print("User connection success");
