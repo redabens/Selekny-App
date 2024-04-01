@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:reda/Front/WelcomeScreen.dart';
 import 'profile_menu.dart';
 import 'update_profile_screen.dart';
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,13 +20,13 @@ class ProfilePage extends StatelessWidget {
 }
 
 class ProfileScreen extends StatelessWidget {
-   ProfileScreen({Key? key}) : super(key: key);
+   ProfileScreen({super.key});
   String tProfile = 'Profile       ';
   String tProfileHeading = 'Bachir Rachad';
   String tProfileSubHeading = 'mr_bachir@esi.dz';
   String tEditProfile = 'Editer le Profile';
 
-  Color tPrimaryColor = Color(0xFF3E69FE); // Use the appropriate color code or define your color
+  Color tPrimaryColor = const Color(0xFF3E69FE); // Use the appropriate color code or define your color
   Color tDarkColor = Colors.black.withOpacity(0.8); // Use the appropriate dark color or define your color
 
   @override
@@ -43,11 +43,11 @@ class ProfileScreen extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: Color(0xFFF1F3FC),
+              color: const Color(0xFFF1F3FC),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(9),
             ),
-            child: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+            child: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           ),
         ),
         title: Center(
@@ -62,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
 
           ),
           child: Column(
@@ -115,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
@@ -125,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
                       color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade300 : Colors.black.withOpacity(0.6),
                       spreadRadius: 1,
                       blurRadius: 10,
-                      offset: Offset( 0,-20),
+                      offset: const Offset( 0,-20),
                     ),
                   ],
 
@@ -160,22 +160,14 @@ class ProfileScreen extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: Text("SE DECONNECTER"),
-                            content: Text("etes-vous sur de vouloir vous déconnecter ?"),
+                            title: const Text("SE DECONNECTER"),
+                            content: const Text("etes-vous sur de vouloir vous déconnecter ?"),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   // Close the dialog
                                   Navigator.pop(context);
                                 },
-                                child: Text(
-                                  "NON",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-
-                                  ),
-                                ),
                                 style: ButtonStyle(
                                   // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -184,10 +176,18 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                   ),
                                   backgroundColor: MaterialStateProperty.all<Color>(
-                                    Color(0xFF3E69FE),
+                                    const Color(0xFF3E69FE),
                                   ),
                                   elevation: MaterialStateProperty.all<double>(7),
                                   shadowColor: MaterialStateProperty.all<Color>(Colors.black),
+                                ),
+                                child: const Text(
+                                  "NON",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+
+                                  ),
                                 ),
                               ),
                               ElevatedButton(
@@ -195,15 +195,8 @@ class ProfileScreen extends StatelessWidget {
 
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => WelcomePage()), //to home page not login
+                                    MaterialPageRoute(builder: (context) => const WelcomePage()), //to home page not login
                                   );                                },
-                                child: Text(
-                                  "OUI",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
                                 style: ButtonStyle(
                                   // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -216,6 +209,13 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                   elevation: MaterialStateProperty.all<double>(7),
                                   shadowColor: MaterialStateProperty.all<Color>(Colors.black),
+                                ),
+                                child: const Text(
+                                  "OUI",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],

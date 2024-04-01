@@ -4,9 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
+  const ForgotPasswordPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
         body: ForgotPasswordScreen(),
       ),
@@ -15,6 +17,8 @@ class ForgotPasswordPage extends StatelessWidget {
 }
 
 class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
+
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
@@ -44,7 +48,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
 
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   bool _isEnvoyerClicked = false;
 
@@ -64,8 +68,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       width: 85,
                       height: 90,
                     ),
-                    SizedBox(height: 5),
-                    Text(
+                    const SizedBox(height: 5),
+                    const Text(
                       "Mot de passe oublié",
                       style: TextStyle(
                         color: Colors.black,
@@ -81,7 +85,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 60),
+                    const SizedBox(height: 60),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -101,8 +105,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           labelStyle: TextStyle(
                             color: Colors.black.withOpacity(0.4),
                           ),
-                          border: UnderlineInputBorder(),
-                          suffixIcon: Icon(Icons.alternate_email),
+                          border: const UnderlineInputBorder(),
+                          suffixIcon: const Icon(Icons.alternate_email),
                         ),
                         validator: (value) {
                           if (_isEnvoyerClicked &&
@@ -116,7 +120,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         },
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -135,7 +139,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                         RegExp(r'[0-9]')),
                                     LengthLimitingTextInputFormatter(5),
                                   ],
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: "ex: 00000",
                                   ),
                                 ),
@@ -158,16 +162,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           );
                         }
                       },
-                      child: Text(
-                        'Envoyer',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       style: ButtonStyle(
                         minimumSize:
-                            MaterialStateProperty.all<Size>(Size(216, 37)),
+                            MaterialStateProperty.all<Size>(const Size(216, 37)),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
@@ -175,11 +172,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                         ),
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xFF3E69FE),
+                          const Color(0xFF3E69FE),
+                        ),
+                      ),
+                      child: const Text(
+                        'Envoyer',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -190,16 +194,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 9),
+                        const SizedBox(width: 9),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => InscriptionPage()),
+                                  builder: (context) => const InscriptionPage()),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             "Inscription",
                             style: TextStyle(
                               color: Colors.black,

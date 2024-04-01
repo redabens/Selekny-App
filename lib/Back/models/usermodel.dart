@@ -50,7 +50,7 @@ class UserModel {
       String? motDePasse,
       String? role}) {
     return UserModel(
-        id: id ?? this.id,
+        id: id ?? id,
         nom: nom ?? this.nom,
         numTel: numTel ?? this.numTel,
         adresse: adresse ?? this.adresse,
@@ -75,19 +75,13 @@ class UserModel {
 
 class ClientModel extends UserModel {
   ClientModel({
-    required String id,
-    required String nom,
-    required String numTel,
-    required String adresse,
-    required String email,
-    required String motDePasse,
+    required super.id,
+    required super.nom,
+    required super.numTel,
+    required super.adresse,
+    required super.email,
+    required super.motDePasse,
   }) : super(
-          id: id,
-          nom: nom,
-          numTel: numTel,
-          adresse: adresse,
-          email: email,
-          motDePasse: motDePasse,
           role: 'client',
         );
 }
@@ -98,22 +92,16 @@ class ArtisanModel extends UserModel {
   final List<String> commentaires;
 
   ArtisanModel({
-    required String id,
-    required String nom,
-    required String numTel,
-    required String adresse,
-    required String email,
-    required String motDePasse,
+    required super.id,
+    required super.nom,
+    required super.numTel,
+    required super.adresse,
+    required super.email,
+    required super.motDePasse,
     required this.statut,
     required this.note,
     required this.commentaires,
   }) : super(
-          id: id,
-          nom: nom,
-          numTel: numTel,
-          adresse: adresse,
-          email: email,
-          motDePasse: motDePasse,
           role: 'artisan',
         );
 }

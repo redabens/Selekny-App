@@ -37,7 +37,7 @@ class Verifieremail extends StatelessWidget {
                 ),
               );
             }),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -50,7 +50,7 @@ class Verifieremail extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {},
-              child: Text(
+              child: const Text(
                 "Renvoyer",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,

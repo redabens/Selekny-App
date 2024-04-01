@@ -41,8 +41,10 @@ android {
     compileSdkVersion 34 // Mettez à jour la version de compilation SDK ici
     buildToolsVersion "34.0.0" // Mettez à jour la version des outils de build ici
     ndkVersion "25.1.8937393"
+    
     defaultConfig {
         applicationId "com.example.reda"
+        
         minSdkVersion 21 // Mettez à jour la version minimale de SDK ici
         targetSdkVersion 30 // Mettez à jour la version de SDK cible ici
         versionCode flutterVersionCode.toInteger()

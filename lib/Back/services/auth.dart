@@ -19,7 +19,7 @@ class FirebaseAuthService {
 
       return credential.user;
     } catch (e) {
-      print("Somme error occured in sign up" + e.toString());
+      print("Somme error occured in sign up$e");
     }
     return null;
   }
@@ -67,7 +67,7 @@ class FirebaseAuthService {
     try {
       _auth.currentUser?.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
-      print("Erreur dans la verification du mail" + e.toString());
+      print("Erreur dans la verification du mail$e");
       //afficher une erreur a l utilisateur
     }
   }

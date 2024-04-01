@@ -1,15 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../WelcomeScreen.dart';
 import 'connexion.dart';
 import 'package:reda/Back/models/usermodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reda/Back/respositories/user_repository.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:reda/Back/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class InscriptionPage extends StatelessWidget {
+  const InscriptionPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +17,7 @@ class InscriptionPage extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
+      home: const Scaffold(
         body: InscriptionScreen(),
       ),
     );
@@ -25,6 +25,8 @@ class InscriptionPage extends StatelessWidget {
 }
 
 class InscriptionScreen extends StatefulWidget {
+  const InscriptionScreen({super.key});
+
   @override
   _InscriptionScreenState createState() => _InscriptionScreenState();
 }
@@ -34,12 +36,12 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
   bool _showPassword = false;
   String _email = '';
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _phoneNumberController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
@@ -62,8 +64,8 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                       width: 85,
                       height: 90,
                     ),
-                    SizedBox(height: 3),
-                    Text(
+                    const SizedBox(height: 3),
+                    const Text(
                       'Inscrivez-vous !',
                       style: TextStyle(
                         fontSize: 24,
@@ -79,7 +81,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 85),
+                    const SizedBox(height: 85),
                     Form(
                       key:
                           _formKey, // Add this line to associate the Form with _formKey
@@ -91,7 +93,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               labelStyle: TextStyle(
                                 color: Colors.black.withOpacity(0.4),
                               ),
-                              border: UnderlineInputBorder(),
+                              border: const UnderlineInputBorder(),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -100,15 +102,15 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             decoration: InputDecoration(
                               labelText: 'Adresse',
                               labelStyle: TextStyle(
                                 color: Colors.black.withOpacity(0.4),
                               ),
-                              border: UnderlineInputBorder(),
-                              suffixIcon: Icon(Icons.location_pin),
+                              border: const UnderlineInputBorder(),
+                              suffixIcon: const Icon(Icons.location_pin),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -117,11 +119,11 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             decoration: InputDecoration(
-                              border: UnderlineInputBorder(),
-                              suffixIcon: Icon(Icons.phone),
+                              border: const UnderlineInputBorder(),
+                              suffixIcon: const Icon(Icons.phone),
                               prefixIcon: Image.asset(
                                 'lib/Front/assets/Algeria.png',
                                 width: 14,
@@ -129,7 +131,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               ),
                             ),
                             initialValue: '+213 ',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                             keyboardType: TextInputType.phone,
@@ -140,15 +142,15 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             decoration: InputDecoration(
                               labelText: 'Email',
                               labelStyle: TextStyle(
                                 color: Colors.black.withOpacity(0.4),
                               ),
-                              border: UnderlineInputBorder(),
-                              suffixIcon: Icon(Icons.alternate_email),
+                              border: const UnderlineInputBorder(),
+                              suffixIcon: const Icon(Icons.alternate_email),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -160,14 +162,14 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               _email = value ?? '';
                             },
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             decoration: InputDecoration(
                               labelText: 'Créer mot de passe',
                               labelStyle: TextStyle(
                                 color: Colors.black.withOpacity(0.4),
                               ),
-                              border: UnderlineInputBorder(),
+                              border: const UnderlineInputBorder(),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _showPassword
@@ -189,14 +191,14 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           TextFormField(
                             decoration: InputDecoration(
                               labelText: 'Confirmer mot de passe',
                               labelStyle: TextStyle(
                                 color: Colors.black.withOpacity(0.4),
                               ),
-                              border: UnderlineInputBorder(),
+                              border: const UnderlineInputBorder(),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _showPassword
@@ -225,7 +227,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                     // Login button
                     ElevatedButton(
                       onPressed: () {
@@ -234,17 +236,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                           _signUp();
                         }
                       },
-                      child: Text(
-                        'S\'inscrire',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
-                      ),
                       style: ButtonStyle(
                         minimumSize:
-                            MaterialStateProperty.all<Size>(Size(350, 47)),
+                            MaterialStateProperty.all<Size>(const Size(350, 47)),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
@@ -252,11 +246,19 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                           ),
                         ),
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xFF3E69FE),
+                          const Color(0xFF3E69FE),
+                        ),
+                      ),
+                      child: const Text(
+                        'S\'inscrire',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Center(
                       child: Text(
                         'En vous inscrivant, vous acceptez nos\n'
@@ -270,7 +272,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                         maxLines: 2,
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     // Row for additional text widgets
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -288,10 +290,10 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginPage()),
+                                  builder: (context) => const LoginPage()),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             "Se connecter",
                             style: TextStyle(
                               color: Colors.black,
@@ -336,7 +338,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
         UserRepository userRepository = UserRepository();
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => WelcomePage()),
+          MaterialPageRoute(builder: (context) => const WelcomePage()),
         );
         try {
           await userRepository.createUser(newClient);

@@ -31,7 +31,7 @@ class UserRepository extends GetxController {
       await db.collection("users").doc(user.id).delete();
       print("Utilisateur supprime avec succes");
     } catch (e) {
-      print('Erreur lors de la suppression de l\'utilisateur ' + e.toString());
+      print('Erreur lors de la suppression de l\'utilisateur $e');
     }
   }
 

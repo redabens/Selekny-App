@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:flutter/cupertino.dart';
 import 'forgotpassword.dart';
 import 'inscription.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:flutter_facebook_auth_platform_interface/flutter_facebook_auth_platform_interface.dart';
 import 'package:reda/Back/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 enum Role { client, artisan }
@@ -16,9 +11,11 @@ enum Role { client, artisan }
 String errorMessage = '';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
         body: LoginScreen(),
       ),
@@ -27,6 +24,8 @@ class LoginPage extends StatelessWidget {
 }
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -37,8 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String _email = '';
   String _password = '';
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   //  Authentification's functions
@@ -66,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // rediriger vers la page d acceuil
       }
     } catch (e) {
-      print("There is an error in sign in with google" + e.toString());
+      print("There is an error in sign in with google$e");
     }
   }
 
@@ -77,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // rediriger vers la page d acceuil
       }
     } catch (e) {
-      print("There is an error in sign in with facebook " + e.toString());
+      print("There is an error in sign in with facebook $e");
       //afficher une erreur
     }
   }
@@ -86,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
     DocumentSnapshot? userSnapshot =
         await FirebaseFirestore.instance.collection('users').doc(email).get();
 
-    if (userSnapshot != null && userSnapshot.exists) {
+    if (userSnapshot.exists) {
       Map<String, dynamic>? userData =
           userSnapshot.data() as Map<String, dynamic>?;
       if (userData != null) {
@@ -114,8 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 85,
                       height: 90,
                     ),
-                    SizedBox(height: 5),
-                    Text(
+                    const SizedBox(height: 5),
+                    const Text(
                       'Connexion',
                       style: TextStyle(
                         color: Colors.black,
@@ -136,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 60),
+                      const SizedBox(height: 60),
 // Email field
                       TextFormField(
                         decoration: InputDecoration(
@@ -144,8 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelStyle: TextStyle(
                             color: Colors.black.withOpacity(0.4),
                           ),
-                          border: UnderlineInputBorder(),
-                          suffixIcon: Icon(Icons.alternate_email),
+                          border: const UnderlineInputBorder(),
+                          suffixIcon: const Icon(Icons.alternate_email),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -157,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           _email = value ?? '';
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
 // Password field
                       TextFormField(
                         decoration: InputDecoration(
@@ -165,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelStyle: TextStyle(
                             color: Colors.black.withOpacity(0.4),
                           ),
-                          border: UnderlineInputBorder(),
+                          border: const UnderlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _showPassword
@@ -190,16 +189,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           _password = value ?? '';
                         },
                       ),
-                      SizedBox(height: 35),
-                      SizedBox(
+                      const SizedBox(height: 35),
+                      const SizedBox(
                         height: 35,
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(height: 0),
+                          const SizedBox(height: 0),
 
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -212,23 +211,23 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
 // ToggleSwitch
                           ToggleSwitch(
                             minWidth: 170.0,
                             minHeight: 35.0,
                             cornerRadius: 20,
                             initialLabelIndex: 0,
-                            activeBgColor: [Color(0xFF3E69FE)],
+                            activeBgColor: const [Color(0xFF3E69FE)],
                             activeFgColor: Colors.white,
                             inactiveBgColor: Colors.black.withOpacity(0.15),
                             inactiveFgColor: Colors.black,
-                            labels: ['Client', 'Prestataire'],
+                            labels: const ['Client', 'Prestataire'],
                             onToggle: (index) {
 // Here we can handle the toggle change
                             },
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
 // Login button
                           ElevatedButton(
                             onPressed: () {
@@ -247,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 } else {
                                   // If login failed, show error message (replace with your error handling)
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
+                                    const SnackBar(
                                       content: Text(
                                           ' email ou mot de passe invalide'),
                                     ),
@@ -255,16 +254,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               }
                             },
-                            child: Text(
-                              'Se connecter',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(
-                                  Size(216, 37)),
+                                  const Size(216, 37)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -272,12 +264,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xFF3E69FE),
+                                const Color(0xFF3E69FE),
+                              ),
+                            ),
+                            child: const Text(
+                              'Se connecter',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
 // Row for additional text widgets
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
                           Center(
                             child: Text(
@@ -291,7 +290,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ), //
 //
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -302,10 +301,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   authenticateWithFacebook();
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  shape: CircleBorder(),
+                                  shape: const CircleBorder(),
                                   elevation: 8,
                                 ),
-                                child: CircleAvatar(
+                                child: const CircleAvatar(
                                   backgroundColor: Colors.white,
                                   child: Icon(
                                     Icons.facebook,
@@ -319,10 +318,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   authenticateWithGoogle();
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  shape: CircleBorder(),
+                                  shape: const CircleBorder(),
                                   elevation: 8, // Add shadow
                                 ),
-                                child: CircleAvatar(
+                                child: const CircleAvatar(
                                   backgroundColor: Colors.white,
                                   child: Icon(
                                     Icons.telegram,
@@ -335,10 +334,10 @@ class _LoginScreenState extends State<LoginScreen> {
 // Action when WhatsApp button is pressed
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  shape: CircleBorder(),
+                                  shape: const CircleBorder(),
                                   elevation: 4, // Add shadow
                                 ),
-                                child: CircleAvatar(
+                                child: const CircleAvatar(
                                   backgroundColor: Colors.white,
                                   child: Icon(
                                     Icons.apple,
@@ -348,7 +347,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -370,7 +369,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 42),
+                              const SizedBox(width: 42),
                               TextButton(
                                 onPressed: () {
 // Action when "S'inscrire" is pressed
@@ -382,7 +381,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             InscriptionPage()),
                                   );
                                 },
-                                child: Text(
+                                child: const Text(
                                   "S'inscrire",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
