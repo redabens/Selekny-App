@@ -38,8 +38,48 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _loading = false;
 
+  final FirebaseAuthService _auth = FirebaseAuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  void authenticateWithGoogle() async {
+    try {
+      await _auth.signInWithGoogle();
+      if (context.mounted) {
+        // rediriger vers la page d acceuil
+      }
+    } catch (e) {
+      print("There is an error in sign in with google$e");
+    }
+  }
+
+  void authenticateWithFacebook() async {
+    try {
+      await _auth.signInWithFacebook();
+      if (context.mounted) {
+        // rediriger vers la page d acceuil
+      }
+    } catch (e) {
+      print("There is an error in sign in with facebook $e");
+      //afficher une erreur
+    }
+  }
+
+  Future<String> getUserRole(String email) async {
+    DocumentSnapshot? userSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(email).get();
+
+    if (userSnapshot.exists) {
+      Map<String, dynamic>? userData =
+          userSnapshot.data() as Map<String, dynamic>?;
+      if (userData != null) {
+        return userData['role'] ??
+            ''; // Utilisation de ?? pour fournir une valeur par défaut si 'role' n'existe pas ou si userData est null
+      }
+    }
+
+    return ''; // Valeur par défaut si userSnapshot est null ou si l'utilisateur n'existe pas
+  }
 
   void handleSubmit() async {
     if (_formKey.currentState!.validate()) {
@@ -47,8 +87,6 @@ class _LoginScreenState extends State<LoginScreen> {
       final email = _emailController.value.text;
       final password = _passwordController.value.text;
       setState(() => _loading = true);
-
-      final FirebaseAuthService _auth = FirebaseAuthService();
 
       //  Authentification's functions
       void _signin() async {
@@ -68,46 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
 
-      void authenticateWithGoogle() async {
-        try {
-          await _auth.signInWithGoogle();
-          if (context.mounted) {
-            // rediriger vers la page d acceuil
-          }
-        } catch (e) {
-          print("There is an error in sign in with google$e");
-        }
-      }
-
-      void authenticateWithFacebook() async {
-        try {
-          await _auth.signInWithFacebook();
-          if (context.mounted) {
-            // rediriger vers la page d acceuil
-          }
-        } catch (e) {
-          print("There is an error in sign in with facebook $e");
-          //afficher une erreur
-        }
-      }
-
-      Future<String> getUserRole(String email) async {
-        DocumentSnapshot? userSnapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(email)
-            .get();
-
-        if (userSnapshot.exists) {
-          Map<String, dynamic>? userData =
-              userSnapshot.data() as Map<String, dynamic>?;
-          if (userData != null) {
-            return userData['role'] ??
-                ''; // Utilisation de ?? pour fournir une valeur par défaut si 'role' n'existe pas ou si userData est null
-          }
-        }
-
-        return ''; // Valeur par défaut si userSnapshot est null ou si l'utilisateur n'existe pas
-      }
+      _signin();
 
       setState(() => _loading = false);
     }
