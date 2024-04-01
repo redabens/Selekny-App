@@ -101,6 +101,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
         }
       }
 
+      _signUp();
       setState(() => _loading = false);
     }
   }
@@ -287,7 +288,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                     SizedBox(height: 25),
                     // signUp button
                     ElevatedButton(
-                      onPressed: () => handleSubmit(),
+                      onPressed: () => {handleSubmit()},
                       child: _loading
                           ? SizedBox(
                               width: 20,
