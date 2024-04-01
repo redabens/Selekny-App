@@ -3,15 +3,10 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-<<<<<<< HEAD
-  firebase_auth
-  firebase_core
-=======
   cloud_firestore
   firebase_auth
   firebase_core
   flutter_secure_storage_windows
->>>>>>> main
   rive_common
 )
 

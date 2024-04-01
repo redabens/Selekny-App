@@ -65,8 +65,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-<<<<<<< HEAD
-=======
   cloud_firestore:
     dependency: "direct main"
     description:
@@ -91,7 +89,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.10.10"
->>>>>>> main
   collection:
     dependency: transitive
     description:
@@ -116,8 +113,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
-<<<<<<< HEAD
-=======
   facebook_auth_desktop:
     dependency: transitive
     description:
@@ -126,7 +121,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
->>>>>>> main
   fake_async:
     dependency: transitive
     description:
@@ -204,8 +198,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.0"
-<<<<<<< HEAD
-=======
   flutter_facebook_auth:
     dependency: "direct main"
     description:
@@ -230,7 +222,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
->>>>>>> main
   flutter_hooks:
     dependency: transitive
     description:
@@ -252,8 +243,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-<<<<<<< HEAD
-=======
   flutter_secure_storage:
     dependency: transitive
     description:
@@ -302,7 +291,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
->>>>>>> main
   flutter_shaders:
     dependency: transitive
     description:
@@ -369,8 +357,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.1"
-<<<<<<< HEAD
-=======
   google_identity_services_web:
     dependency: transitive
     description:
@@ -419,7 +405,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.12.4"
->>>>>>> main
   graphs:
     dependency: transitive
     description:
