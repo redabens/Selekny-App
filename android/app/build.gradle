@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.23" // Mettez à jour la version de Kotlin ici
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // Mettez à jour la version de Kotlin ici
         classpath 'com.google.gms:google-services:4.4.1' // Ajout de la dépendance Google Services
     }
 }
@@ -41,7 +41,6 @@ android {
     compileSdkVersion 34 // Mettez à jour la version de compilation SDK ici
     buildToolsVersion "34.0.0" // Mettez à jour la version des outils de build ici
     ndkVersion "25.1.8937393"
-
     defaultConfig {
         applicationId "com.example.reda"
         minSdkVersion 21 // Mettez à jour la version minimale de SDK ici
@@ -77,7 +76,7 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:32.8.0")
     implementation "com.google.firebase:firebase-auth"
     implementation "com.google.android.gms:play-services-auth:21.0.0"
-    implementation 'com.facebook.android:facebook-login:latest.release'
+    //implementation 'com.facebook.android:facebook-login:latest.release'
 
 }
 
