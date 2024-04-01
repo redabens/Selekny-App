@@ -47,8 +47,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   void handleSubmit() async {
-    if (_formKey.currentState!.validate()) return;
-    {
+    if (_formKey.currentState!.validate()) {
       final email = _emailController.value.text;
       final password = _passwordController.value.text;
       final adresse = _adresseController.value.text;
