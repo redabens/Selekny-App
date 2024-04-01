@@ -34,7 +34,7 @@ class _PubDemandePageState extends State<PubDemandePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Details de la Demande"),
+          title: const Text("Details de la Demande"),
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back_ios_new),

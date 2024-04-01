@@ -13,8 +13,8 @@ class ChatService extends ChangeNotifier {
     //current user info
     final currentUser = FirebaseAuth.instance.currentUser;
 
-    final currentUserId = "eOILQzRtIQlxwCGKhFMy";//currentUser!.uid;
-    final String currentUserEmail = "ms_iratni@esi.dz";//_firebaseAuth.currentUser!.email.toString();
+    final currentUserId ='hskvyxfATXnpgG8vsZlc';
+    final String currentUserEmail = 'mm_bensemane@esi.dz';
     final Timestamp timestamp = Timestamp.now();
 
     //create new message

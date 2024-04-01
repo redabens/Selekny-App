@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/components/chat_bubble.dart';
 import 'package:reda/components/my_text_filed.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:reda/Services/image_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -50,7 +49,7 @@ class _ChatPageState extends State<ChatPage> {
       return ''; // Or return a default placeholder URL if desired
     }
   }
-  late String _imageUrl;
+  late String _imageUrl = '';
 
   @override
   void initState() {
@@ -77,7 +76,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {},
-          icon: Icon(Icons.arrow_back_ios_new),
+          icon: const Icon(Icons.arrow_back_ios_new),
         ),
         title: Row(
           children: [
@@ -99,8 +98,8 @@ class _ChatPageState extends State<ChatPage> {
 
                       imageUrl: _imageUrl,
 
-                      placeholder: (context, url) => CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      placeholder: (context, url) => const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
                   )
               ),
@@ -111,7 +110,7 @@ class _ChatPageState extends State<ChatPage> {
                   children: [
                     TextSpan(
                       text: widget.receiverUserEmail,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFF333333),
                         fontFamily: 'Poppins',
                         fontSize: 20,
@@ -125,7 +124,7 @@ class _ChatPageState extends State<ChatPage> {
           ],
         ),
         backgroundColor: Colors.white,
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
           preferredSize: Size.fromHeight(9.0),
           child: Divider(
             color: Colors.black26,
@@ -168,7 +167,6 @@ class _ChatPageState extends State<ChatPage> {
   // build message item
   Widget _buildMessageItem(DocumentSnapshot doc){
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
     // align the messages to the right sender is the current user , otherwise the left
     var alignment = (data['senderId'] == currentUserId)
         ? Alignment.centerRight

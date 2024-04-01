@@ -18,13 +18,13 @@ class AfficherCommentairePage extends StatefulWidget {
 
 class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
   final TextEditingController _commentaireController = TextEditingController();
-  final CommentaireService _CommentaireService =CommentaireService();
+  final CommentaireService _commentaireService =CommentaireService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final int starRating= 3;
   void ajoutComment() async{
     if(_commentaireController.text.isNotEmpty){
-      await _CommentaireService.sendCommentaire((widget.artisanID), _commentaireController.text,starRating);
+      await _commentaireService.sendCommentaire((widget.artisanID), _commentaireController.text,starRating);
       // clear the text controller after sending the message
       _commentaireController.clear();
     }
@@ -63,7 +63,8 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -90,11 +91,12 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
           const SizedBox(height: 10),
         ],
       ),
+    )
     );
   }
   Widget _buildCommentList(){
     return StreamBuilder(
-      stream: _CommentaireService.getCommentaires(widget.artisanID), //_firebaseAuth.currentUser!.uid
+      stream: _commentaireService.getCommentaires(widget.artisanID), //_firebaseAuth.currentUser!.uid
       builder: (context, snapshot){
         if (snapshot.hasError){
           return Text('Error${snapshot.error}');
@@ -146,7 +148,7 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
       ),
     );
   }
-  Widget _buildCommentaireInput(){
+  /*Widget _buildCommentaireInput(){
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Row(
@@ -168,5 +170,5 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
           ],
         )
     );
-  }
+  }*/
 }

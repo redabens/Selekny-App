@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:reda/components/Prestation_container.dart';
 import 'package:reda/firebase_options.dart';
 
 Future<String> getMateriel(String domaine, String prestation) async {
@@ -98,35 +99,27 @@ Future<String> getPrestationId(String domaine, String prestation) async {
     return ''; // Retourne une chaîne vide en cas d'erreur
   }
 }
-Future<List<String>> getPrestations(String domaine) async{
+Future<List<Prestation>> getPrestation(String domaineId) async{
   try {
-    List<String> listeprestations = [];
-    final querySnapshot = await FirebaseFirestore.instance
+    List<Prestation> listeprestations = [];
+    final prestationsSnapshot = await FirebaseFirestore.instance
         .collection('Domaine')
-        .where('Nom', isEqualTo: domaine)
-        .limit(1)
+        .doc(domaineId)
+        .collection('Prestations')
         .get();
-
-    if (querySnapshot.docs.isNotEmpty) {
-      String domaineId = querySnapshot.docs[0].id;
-      final prestationsSnapshot = await FirebaseFirestore.instance
-          .collection('Domaine')
-          .doc(domaineId)
-          .collection('Prestations')
-          .get();
-      prestationsSnapshot.docs.forEach((doc) {
-        listeprestations.add(doc['nom_prestation']);
-      });
-    } else {
-      print('las-bas');
-       // Aucun document trouvé dans la collection 'Prestations' pour le domaine spécifié
-    }
+    listeprestations = prestationsSnapshot.docs.map((doc) {
+      return Prestation(
+        nomprestation: doc.data()['nom_prestation'],
+        imageUrl: doc.data()['image'],
+      );
+    }).toList();
     return listeprestations;
   } catch (e) {
-    print("Erreur lors de la recherche de Prestations : $e");
-    return []; // Retourne une chaîne vide en cas d'erreur
+      print("Erreur lors de la recherche de Prestations : $e");
+      return []; // Retourne une liste vide en cas d'erreur de connexion
   }
 }
+
 Future<String> getuserNameByid(String userID) async{
   try {
     String? userName;

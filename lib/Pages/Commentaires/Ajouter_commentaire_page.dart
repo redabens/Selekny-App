@@ -49,7 +49,8 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -145,6 +146,7 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
           ),
         ],
       ),
+    )
     );
   }
 }
