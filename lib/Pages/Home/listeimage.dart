@@ -36,7 +36,7 @@ class ImageList extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PrestationPage(domaineID: ID[index])),
+                  MaterialPageRoute(builder: (context) => PrestationPage(domaineID: ID[index],indexe: 2,)),
                 );
               },
               child: Column(

@@ -2,13 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Pages/Home/home.dart';
+import 'package:reda/Pages/voirtout_page.dart';
 import 'package:reda/components/Prestation_container.dart';
 
 class PrestationPage extends StatefulWidget {
+  final int indexe;
   final String domaineID;
   const PrestationPage({
     super.key,
     required this.domaineID,
+    required this.indexe,
   });
 
   @override
@@ -82,10 +85,17 @@ class _PrestationPageState extends State<PrestationPage> {
           backgroundColor: Colors.white,
           leading: IconButton(
             onPressed: () {
-              Navigator.push(
+              if(widget.indexe == 1){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const VoirtoutPage()),
+                );
+              }
+              else if(widget.indexe == 2){
+                Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage()),
-              );
+              );}
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),

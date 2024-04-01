@@ -9,7 +9,6 @@ import 'package:reda/Pages/chat_page.dart';
 import 'package:reda/Pages/prestation_page.dart';
 import 'package:reda/Pages/pub_demande_page.dart';
 import 'firebase_options.dart';
-import 'package:reda/Services/demande publication/getMateriel.dart';
 import 'package:reda/Services/ConvertAdr.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;

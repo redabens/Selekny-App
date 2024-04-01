@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Pages/prestation_page.dart';
 
 class Domaine extends StatelessWidget {
+  final String domaineID;
   final String nomdomaine;
   final String imageUrl;
 
   const Domaine({
     super.key,
+    required this.domaineID,
     required this.nomdomaine,
     required this.imageUrl,
   });
@@ -60,6 +63,10 @@ class Domaine extends StatelessWidget {
               size: 20,
             ),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PrestationPage(domaineID: domaineID,indexe: 1,),),
+              );
             },
           ),
           const SizedBox(width: 5), // Add spacing before the container's edge

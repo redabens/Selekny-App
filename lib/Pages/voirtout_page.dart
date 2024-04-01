@@ -35,6 +35,7 @@ class _VoirtoutPageState extends State<VoirtoutPage> {
 
       // Mapper chaque document de prestation à un objet Prestation
       final futures = domainesSnapshot.docs.map((doc) async {
+        final String domaineID= doc.id;
         // Obtenir la référence de l'image dans Firebase Storage
         final reference = FirebaseStorage.instance.ref().child(doc.data()['Image']);
 
@@ -42,13 +43,13 @@ class _VoirtoutPageState extends State<VoirtoutPage> {
         String? url;
         try {
           url = await reference.getDownloadURL();
-          print(url);
         } catch (e) {
           print("Error downloading image URL: $e");
           // Handle the error here (e.g., display a placeholder image)
         }
 
         return Domaine(
+          domaineID: domaineID,
           nomdomaine: doc.data()['Nom'],
           imageUrl: url ?? "placeholder_image.png", // Use downloaded URL or a placeholder
         );
@@ -59,7 +60,11 @@ class _VoirtoutPageState extends State<VoirtoutPage> {
 
       // Mettre à jour l'interface utilisateur après la récupération des données
       setState(() {
-        this.domaines = domaines; // Update state with fetched data
+        this.domaines = domaines;
+        Domaine domaine;
+        for(domaine in domaines){
+          print("${domaine.domaineID} et ${domaine.nomdomaine} et ${domaine.imageUrl}");
+        }// Update state with fetched data
         _isLoading = false; // Set loading state to false
       });
     } catch (e) {
@@ -105,6 +110,7 @@ class _VoirtoutPageState extends State<VoirtoutPage> {
                   return Column( // Wrap in a Column for vertical spacing
                     children: [
                       Domaine(
+                        domaineID: domaines[index].domaineID,
                         nomdomaine: domaines[index].nomdomaine,
                         imageUrl: domaines[index].imageUrl,
                       ),
