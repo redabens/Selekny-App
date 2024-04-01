@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="com_facebook_button_background_color_focused_disabled">#FF0000</color>
+    <color name="com_facebook_button_background_color_focused">#00FF00</color>
+    <color name="com_facebook_button_border_color_focused">#0000FF</color>
+    <color name="com_facebook_button_background_color_disabled">#CCCCCC</color>
+    <color name="com_facebook_button_send_background_color_pressed">#AAAAAA</color>
+    <color name="com_facebook_button_send_background_color">#333333</color>
+</resources>

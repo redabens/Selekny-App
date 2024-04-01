@@ -1,5 +1,9 @@
 buildscript {
+<<<<<<< HEAD
     ext.kotlin_version = '1.7.10'
+=======
+    ext.kotlin_version = '1.9.23'
+>>>>>>> main
     repositories {
         google()
         mavenCentral()

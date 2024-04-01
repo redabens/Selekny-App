@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,12 @@ import 'package:reda/Front/profile/profile_screen.dart';
 
 class UpdateProfileScreen extends StatelessWidget {
    UpdateProfileScreen({Key? key}) : super(key: key);
+=======
+import 'package:flutter/material.dart';
+
+class UpdateProfileScreen extends StatelessWidget {
+   UpdateProfileScreen({super.key});
+>>>>>>> main
    // Strings
    String tFullName = 'Rachad Bachir';
    String tEditProfile = 'Editer le Profile       ';
@@ -27,7 +34,11 @@ class UpdateProfileScreen extends StatelessWidget {
    String password = '';
    String confirmPassword = '';
 
+<<<<<<< HEAD
    GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+=======
+   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+>>>>>>> main
 
    @override
   Widget build(BuildContext context) {
@@ -35,10 +46,17 @@ class UpdateProfileScreen extends StatelessWidget {
 
      //final controller = Get.put(ProfileController());
     return Scaffold(
+<<<<<<< HEAD
       backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
 
       appBar: AppBar(
         backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
+=======
+      backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.white,
+
+      appBar: AppBar(
+        backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.white,
+>>>>>>> main
 
         leading: IconButton(
           onPressed: () {
@@ -52,7 +70,11 @@ class UpdateProfileScreen extends StatelessWidget {
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(9), // Adjust border radius as needed
             ),
+<<<<<<< HEAD
             child: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+=======
+            child: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+>>>>>>> main
           ),
         ),
         title: Row(
@@ -120,7 +142,11 @@ class UpdateProfileScreen extends StatelessWidget {
                     TextFormField(
                       decoration:  InputDecoration(
                         labelText: 'nom/prenom',
+<<<<<<< HEAD
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
+=======
+                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: const UnderlineInputBorder(),
+>>>>>>> main
                       ),
                       initialValue: 'Rachad Bachir', // Set the initial value here
 
@@ -129,7 +155,11 @@ class UpdateProfileScreen extends StatelessWidget {
                     TextFormField(
                       decoration:  InputDecoration(
                         labelText: tEmail,
+<<<<<<< HEAD
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
+=======
+                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: const UnderlineInputBorder(),
+>>>>>>> main
                       ),
                       initialValue: 'mr_bachir@esi.dz', // Set the initial value here
 
@@ -138,7 +168,11 @@ class UpdateProfileScreen extends StatelessWidget {
                     TextFormField(
                       decoration:  InputDecoration(
                         labelText: tPhoneNo,
+<<<<<<< HEAD
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
+=======
+                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: const UnderlineInputBorder(),
+>>>>>>> main
                       ),
                       initialValue: '+213658557616', // Set the initial value here
 
@@ -147,7 +181,11 @@ class UpdateProfileScreen extends StatelessWidget {
                     TextFormField(
                       decoration:  InputDecoration(
                         labelText: tadress,
+<<<<<<< HEAD
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
+=======
+                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: const UnderlineInputBorder(),
+>>>>>>> main
                       ),
                       initialValue: 'Bab ezzouare ,Alger Algerie', // Set the initial value here
 
@@ -168,7 +206,11 @@ class UpdateProfileScreen extends StatelessWidget {
 // Confirm Password TextFormField
                     TextFormField(
                       obscureText: true,
+<<<<<<< HEAD
                       decoration: InputDecoration(
+=======
+                      decoration: const InputDecoration(
+>>>>>>> main
                         labelText: 'Confirmer le mot de passe',
                       ),
                       validator: (value) {
@@ -196,21 +238,36 @@ class UpdateProfileScreen extends StatelessWidget {
                             print('Passwords do not match');
                           }
                         },
+<<<<<<< HEAD
                         child:  Text('Sauvegarder', style: TextStyle(color: tPrimaryColor)),
 
                         style: ButtonStyle(
                           minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
+=======
+
+                        style: ButtonStyle(
+                          minimumSize: MaterialStateProperty.all<Size>(const Size(330, 52)),
+>>>>>>> main
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(13.13),
                             ),
                           ),
                           backgroundColor: MaterialStateProperty.all<Color>(
+<<<<<<< HEAD
                             Color(0xFF3E69FE),
                           ),
                           elevation: MaterialStateProperty.all<double>(5),
                           shadowColor: MaterialStateProperty.all<Color>(Color(0xFF3E69FE)),
                         ),
+=======
+                            const Color(0xFF3E69FE),
+                          ),
+                          elevation: MaterialStateProperty.all<double>(5),
+                          shadowColor: MaterialStateProperty.all<Color>(const Color(0xFF3E69FE)),
+                        ),
+                        child:  Text('Sauvegarder', style: TextStyle(color: tPrimaryColor)),
+>>>>>>> main
                       ),
                     ),
                   ],
