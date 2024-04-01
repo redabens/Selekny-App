@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:reda/Pages/Home/home.dart';
+import 'package:reda/Services/image_service.dart';
 import 'package:reda/Services/prestation_service.dart';
 import 'package:reda/components/Prestation_container.dart';
 
@@ -16,38 +18,62 @@ class PrestationPage extends StatefulWidget {
 }
 
 class _PrestationPageState extends State<PrestationPage> {
-  final PrestationsService _PrestationsService = PrestationsService();
- Future<String> getPrestationPathImage(String prestationID) async{
-  final prestationDoc = await FirebaseFirestore.instance
-      .collection('Domaine')
-      .doc(widget.domaineID)
-      .collection('Prestations')
-      .doc(prestationID)
-      .get();
+  List<Prestation> prestations = [];
+  bool _isLoading = false;
 
-  if (prestationDoc.exists && prestationDoc.data() != null) {
-  final pathImage = prestationDoc.get('PathImage') as String;
-  final url = await FirebaseStorage.instance.ref().child(pathImage).getDownloadURL();
-  return url;
-  } else {
-  return 'default_image_url';
-  }
-}
-Future<String> getPrestationNom(String prestationID) async{
-  final prestationDoc = await FirebaseFirestore.instance
-      .collection('Domaine')
-      .doc(widget.domaineID)
-      .collection('Prestations')
-      .doc(prestationID)
-      .get();
-  if (prestationDoc.exists && prestationDoc.data() != null) {
-    final nomPrestation = prestationDoc.get('nom_prestation') as String;
-    return nomPrestation;
-  } else {
-    return 'default_name';
+  @override
+  void initState() {
+    super.initState();
+    _getPrestations(); // Call the function to fetch prestations on initialization
   }
 
-}
+  Future<void> _getPrestations() async {
+    setState(() {
+      _isLoading = true; // Set loading state to true
+    });
+    try {
+      // Récupérer les prestations de Firestore
+      final prestationsSnapshot = await FirebaseFirestore.instance
+          .collection('Domaine')
+          .doc(widget.domaineID)
+          .collection('Prestations')
+          .get();
+
+      // Mapper chaque document de prestation à un objet Prestation
+      final futures = prestationsSnapshot.docs.map((doc) async {
+        // Obtenir la référence de l'image dans Firebase Storage
+        final reference = FirebaseStorage.instance.ref().child(doc.data()['image']);
+
+        // Télécharger l'URL de l'image (handle potential errors)
+        String? url;
+        try {
+          url = await reference.getDownloadURL();
+          print(url);
+        } catch (e) {
+          print("Error downloading image URL: $e");
+          // Handle the error here (e.g., display a placeholder image)
+        }
+
+        return Prestation(
+          nomprestation: doc.data()['nom_prestation'],
+          imageUrl: url ?? "placeholder_image.png", // Use downloaded URL or a placeholder
+        );
+      });
+
+      // Attendre que toutes les images soient téléchargées
+      final prestations = await Future.wait(futures);
+
+      // Mettre à jour l'interface utilisateur après la récupération des données
+      setState(() {
+        this.prestations = prestations; // Update state with fetched data
+        _isLoading = false; // Set loading state to false
+      });
+    } catch (e) {
+      // Gérer les erreurs de manière appropriée
+      print("Erreur lors de la récupération des prestations : $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,7 +83,12 @@ Future<String> getPrestationNom(String prestationID) async{
           toolbarHeight: 70,
           backgroundColor: Colors.white,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+            },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
           title: const Text(
@@ -66,71 +97,35 @@ Future<String> getPrestationNom(String prestationID) async{
               fontWeight: FontWeight.bold,
             ),
           ),
-          centerTitle: true
-          ,
+          centerTitle: true,
         ),
-        body: Column(
-          children:[
+        body: _isLoading
+            ? const Center(child: CircularProgressIndicator()) // Show loading indicator while fetching data
+            : Column(
+          children: [
             const SizedBox(height: 20),
             Expanded(
-              child: _buildPrestationList(),
+              child: ListView.builder(
+                itemCount: prestations.length,
+                itemBuilder: (context, index) {
+                  return Column( // Wrap in a Column for vertical spacing
+                    children: [
+                      Prestation(
+                        nomprestation: prestations[index].nomprestation,
+                        imageUrl: prestations[index].imageUrl,
+                      ),
+                      const SizedBox(height: 20), // Add spacing between containers
+                    ],
+                  );
+                },
+              ),
             ),
           ],
         ),
       ),
     );
   }
-  Widget _buildPrestationList(){
-    return StreamBuilder(
-      stream: _PrestationsService.getPrestations(widget.domaineID), //_firebaseAuth.currentUser!.uid
-      builder: (context, snapshot){
-        if (snapshot.hasError){
-          return Text('Error${snapshot.error}');
-        }
-        if(snapshot.connectionState == ConnectionState.waiting){
-          return const Text('Loading..');
-        }
-        final documents = snapshot.data!.docs;
-
-        // Print details of each document
-        for (var doc in documents) {
-          print("Document Data: ${doc.data()}");
-        }
-        return FutureBuilder<List<Widget>>(
-            future: Future.wait(snapshot.data!.docs.map((document) => _buildPrestationItem(document))),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(child: Text('Error loading comments ${snapshot.error}'));
-              }
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return ListView(children: snapshot.data!);
-            });
-      },
-    );
-  } Future<Widget> _buildPrestationItem(DocumentSnapshot document) async {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    String profileImage = "assets/images/placeholder.png"; // Default image
-    String nomprestation = "";
-    try {
-      print(document.id);
-      profileImage = await getPrestationPathImage(document.id);
-      print("l'url:$profileImage");
-      nomprestation = await getPrestationNom(document.id);
-      print("le nom:$nomprestation");
-    } catch (error) {
-      print("Error fetching user image: $error");
-    }
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Prestation(nomprestation: nomprestation, imageUrl: profileImage),
-          const SizedBox(height: 20,),
-        ],
-      ),
-    );
-  }
 }
+
+
+
