@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reda/Back/models/usermodel.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter/cupertino.dart';
 import 'forgotpassword.dart';
@@ -37,6 +38,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _showPassword = false;
 
   bool _loading = false;
+  String selectedRole = 'client';
+  int selectedindex = 0;
 
   final FirebaseAuthService _auth = FirebaseAuthService();
   final TextEditingController _emailController = TextEditingController();
@@ -65,20 +68,28 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<String> getUserRole(String email) async {
-    DocumentSnapshot? userSnapshot =
-        await FirebaseFirestore.instance.collection('users').doc(email).get();
+  String role = ''; // Variable globale pour stocker le rôle de l'utilisateur
 
-    if (userSnapshot.exists) {
-      Map<String, dynamic>? userData =
-          userSnapshot.data() as Map<String, dynamic>?;
-      if (userData != null) {
-        return userData['role'] ??
-            ''; // Utilisation de ?? pour fournir une valeur par défaut si 'role' n'existe pas ou si userData est null
+  void getUserRole(String email) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .where('email', isEqualTo: email)
+              .limit(1)
+              .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        Map<String, dynamic> userData = querySnapshot.docs.first.data();
+        role = userData['role'] ?? '';
+      } else {
+        print('No user found for email: $email');
+        role = ''; // Réinitialiser le rôle si aucun utilisateur n'est trouvé
       }
+    } catch (e) {
+      print('Error retrieving user role: $e');
+      role = ''; // Réinitialiser le rôle en cas d'erreur
     }
-
-    return ''; // Valeur par défaut si userSnapshot est null ou si l'utilisateur n'existe pas
   }
 
   void handleSubmit() async {
@@ -92,7 +103,15 @@ class _LoginScreenState extends State<LoginScreen> {
       void _signin() async {
         try {
           User? user = await _auth.signInwithEmailAndPassword(email, password);
-          print("User connection success");
+          getUserRole(email);
+          print("Role : " + role);
+          if (role == selectedRole) {
+            print("User connection success");
+            //rediriger vers la page d acceuil
+          } else {
+            print("User don t match , user's email not found with that email");
+            // afficher une erreur dans le UI  'cet utilisateur n existe pas'
+          }
         } on FirebaseAuthException catch (e) {
           if (e.code == 'user-not-found') {
             // Afficher a l utilisateur une erreur lui indiquant que cet utlisateur n existe pas
@@ -235,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             minWidth: 170.0,
                             minHeight: 35.0,
                             cornerRadius: 20,
-                            initialLabelIndex: 0,
+                            initialLabelIndex: selectedindex,
                             activeBgColor: [Color(0xFF3E69FE)],
                             activeFgColor: Colors.white,
                             inactiveBgColor: isDark
@@ -246,6 +265,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             labels: ['Client', 'Prestataire'],
                             onToggle: (index) {
 // Here we can handle the toggle change
+
+                              setState(() {
+                                selectedindex = index != null ? index : -1;
+                                selectedRole =
+                                    index == 0 ? 'client' : 'prestataire';
+                              });
                             },
                           ),
                           SizedBox(height: 20),

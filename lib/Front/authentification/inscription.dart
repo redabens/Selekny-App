@@ -57,14 +57,13 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
       setState(() => _loading = true);
 
       void _signUp() async {
-        String numTel = number;
         try {
           User? user = await _auth.signUpwithEmailAndPassword(email, password);
           String id = user != null ? user.uid : '';
           ClientModel newClient = ClientModel(
               id: id,
               nom: name,
-              numTel: numTel,
+              numTel: number,
               adresse: adresse,
               email: email,
               motDePasse: password);
