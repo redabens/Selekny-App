@@ -66,7 +66,8 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
               numTel: number,
               adresse: adresse,
               email: email,
-              motDePasse: password);
+              motDePasse: password,
+              pathImage: '');
           // ajouter l utilisateur a la base de donnees firestore
           CollectionReference users =
               FirebaseFirestore.instance.collection('users');
@@ -174,12 +175,31 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               }
                               return null;
                             },
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormField(
                             decoration: InputDecoration(
-                              border: const UnderlineInputBorder(),
-                              suffixIcon: const Icon(Icons.phone),
+                              labelText: 'Adresse',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: UnderlineInputBorder(),
+                              suffixIcon: Icon(Icons.location_pin),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _numController,
+                            validator: (value) {
+                              if (value == '+213' ||
+                                  value == null ||
+                                  value.isEmpty) {
+                                return 'Numero obligatoire';
+                              }
+                              return null;
+                            },
+
+                            decoration: InputDecoration(
+                              border: UnderlineInputBorder(),
+                              labelText: '+213',
+                              suffixIcon: Icon(Icons.phone),
                               prefixIcon: Image.asset(
                                 'lib/Front/assets/Algeria.png',
                                 width: 14,
@@ -286,7 +306,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                     SizedBox(height: 25),
                     // signUp button
                     ElevatedButton(
-                      onPressed: () => {handleSubmit()},
+                      onPressed: () => handleSubmit(),
                       child: _loading
                           ? SizedBox(
                               width: 20,

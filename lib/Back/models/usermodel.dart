@@ -8,27 +8,28 @@ class UserModel {
   final String email;
   final String motDePasse;
   final String role;
+  final String pathImage;
 
-  UserModel({
-    required this.id,
-    required this.nom,
-    required this.numTel,
-    required this.adresse,
-    required this.email,
-    required this.motDePasse,
-    required this.role,
-  });
+  UserModel(
+      {required this.id,
+      required this.nom,
+      required this.numTel,
+      required this.adresse,
+      required this.email,
+      required this.motDePasse,
+      required this.role,
+      required this.pathImage});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'],
-      nom: json['nom'],
-      numTel: json['numTel'],
-      adresse: json['adresse'],
-      email: json['email'],
-      motDePasse: json['motDePasse'],
-      role: json['role'],
-    );
+        id: json['id'],
+        nom: json['nom'],
+        numTel: json['numTel'],
+        adresse: json['adresse'],
+        email: json['email'],
+        motDePasse: json['motDePasse'],
+        role: json['role'],
+        pathImage: json['PathImage']);
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +40,7 @@ class UserModel {
       'email': email,
       'motDePasse': motDePasse,
       'role': role,
+      'PathImage': pathImage
     };
   }
 
@@ -48,7 +50,8 @@ class UserModel {
       String? adresse,
       String? email,
       String? motDePasse,
-      String? role}) {
+      String? role,
+      String? pathImage}) {
     return UserModel(
         id: id ?? id,
         nom: nom ?? this.nom,
@@ -56,7 +59,8 @@ class UserModel {
         adresse: adresse ?? this.adresse,
         email: email ?? this.email,
         motDePasse: motDePasse ?? this.motDePasse,
-        role: role ?? this.role);
+        role: role ?? this.role,
+        pathImage: pathImage ?? this.pathImage);
   }
 
   factory UserModel.fromSnapshot(
@@ -69,20 +73,30 @@ class UserModel {
         adresse: data['adresse'],
         email: data['email'],
         motDePasse: data['motdepasse'],
-        role: data['role']);
+        role: data['role'],
+        pathImage: data['PathImage']);
   }
 }
 
 class ClientModel extends UserModel {
   ClientModel({
-    required super.id,
-    required super.nom,
-    required super.numTel,
-    required super.adresse,
-    required super.email,
-    required super.motDePasse,
+    required String id,
+    required String nom,
+    required String numTel,
+    required String adresse,
+    required String email,
+    required String motDePasse,
+    required String pathImage,
   }) : super(
+          id: id,
+          nom: nom,
+          numTel: numTel,
+          adresse: adresse,
+          email: email,
+          motDePasse: motDePasse,
           role: 'client',
+          pathImage:
+              pathImage, // Passer pathImage au constructeur de la classe mère
         );
 }
 
@@ -98,6 +112,7 @@ class ArtisanModel extends UserModel {
     required super.adresse,
     required super.email,
     required super.motDePasse,
+    required super.pathImage,
     required this.statut,
     required this.note,
     required this.commentaires,

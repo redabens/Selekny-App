@@ -351,22 +351,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: CircleAvatar(
                                   backgroundColor: Colors.white,
                                   child: Icon(
-                                    Icons.telegram_outlined,
+                                    Icons.telegram_outlined, // icon google
                                     color: Colors.lightBlue,
-                                  ),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  shape: CircleBorder(),
-                                  elevation: 4, // Add shadow
-                                ),
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Icon(
-                                    Icons.apple,
-                                    color: Colors.black,
                                   ),
                                 ),
                               ),
