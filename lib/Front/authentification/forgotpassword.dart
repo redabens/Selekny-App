@@ -27,6 +27,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _codeController = TextEditingController();
 
+
+  void handleSubmit () async {
+    if (_formKey.currentState!.validate()) return; {
+      final email = _emailController.value.text;
+
+      setState(() => _loading=true);
+
+      //back pour rayane here
+
+      setState(() => _loading=false);
+
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     var isDark = Theme.of(context).brightness == Brightness.dark;
@@ -96,19 +111,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                     SizedBox(height: 5),
                     ElevatedButton(
-                      onPressed: () {
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez saisir votre email';
-                          }
-                          return null;
-                        };
 
-                            },
-
-
-
-
+                      onPressed: () => handleSubmit(),
                       child: Text(
                         'Envoyer',
                         style: TextStyle(
