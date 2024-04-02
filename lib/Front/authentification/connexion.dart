@@ -262,23 +262,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                     ),
 
-
-
-                                    ElevatedButton(
-                                      onPressed: () {
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        shape: CircleBorder(),
-                                        elevation: 4, // Add shadow
-                                      ),
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        child: Icon(
-                                          Icons.apple,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 ),
                                 SizedBox(height: 8),
