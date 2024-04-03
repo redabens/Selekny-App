@@ -5,35 +5,33 @@ import 'package:reda/Front/profile/profile_screen.dart';
 
 class UpdateProfileScreen extends StatelessWidget {
    UpdateProfileScreen({Key? key}) : super(key: key);
-   // Strings
-   String tFullName = 'Rachad Bachir';
-   String tEditProfile = 'Editer le Profile       ';
-   String tProfile = 'Profile';
-   String tProfileHeading = 'Profile Heading';
-   String tProfileSubHeading = 'Profile Sub Heading';
-   String tEmail = 'Email';
-   String tPhoneNo = 'numero';
-   String tPassword = 'Ancien mot de passe';
-   String tadress = 'Adresse';
+   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-   // Colors
-   Color tPrimaryColor = Colors.white;
-   Color tDarkColor = Colors.black;
+   //Controllers
+   final TextEditingController _passwordController = TextEditingController();
+   final TextEditingController _confirmPasswordController = TextEditingController();
+   final TextEditingController _emailController = TextEditingController();
+   final TextEditingController _nameController = TextEditingController();
+   final TextEditingController _adresseController = TextEditingController();
+   final TextEditingController _numController = TextEditingController();
+
+
+   String tEditProfile = 'Editer le Profile       ';
+
+               //variables pour prendre mn firestore
+   String tFullName = 'Rachad Bachir';
+   String tEmail = 'mr_bachir@esi.dz';
+   String tAdresse = 'Bab ezzouar ,Alger Algerie';
+   String tnumero = '+213658557616';
 
    // Form height
    double tFormHeight = 20.0;
 
 
-   String password = '';
-   String confirmPassword = '';
-
-   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
    @override
   Widget build(BuildContext context) {
      final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-     //final controller = Get.put(ProfileController());
     return Scaffold(
       backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
 
@@ -44,7 +42,7 @@ class UpdateProfileScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Container(
+          icon: Container(  //icon retour
             width: 36,
             height: 36,
             decoration: BoxDecoration(
@@ -71,7 +69,7 @@ class UpdateProfileScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // -- IMAGE with ICON
+              // photo de profile
               Stack(
                 children: [
                   SizedBox(
@@ -79,7 +77,7 @@ class UpdateProfileScreen extends StatelessWidget {
                     height: 120,
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: const Image(image: AssetImage('lib/Front/assets/profile.JPG'))),
+                        child: const Image(image: AssetImage('lib/Front/assets/profile.JPG'))), //URL va etre recupere du firestore
                   ),
                   Positioned(
                     //edit small icon
@@ -88,7 +86,7 @@ class UpdateProfileScreen extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         // Add your onTap logic here
-                        print('Edit button tapped');
+                        print('sara can work here');
                       },
                       child: Container(
                         width: 35,
@@ -118,85 +116,83 @@ class UpdateProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     TextFormField(
+                    //  controller: _nameController,
                       decoration:  InputDecoration(
                         labelText: 'nom/prenom',
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
                       ),
-                      initialValue: 'Rachad Bachir', // Set the initial value here
+                      initialValue: tFullName, // Set the initial value here
 
                     ),
                      SizedBox(height: tFormHeight - 20),
+
                     TextFormField(
+                    //  controller: _emailController,
                       decoration:  InputDecoration(
                         labelText: tEmail,
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
                       ),
-                      initialValue: 'mr_bachir@esi.dz', // Set the initial value here
-
+                      initialValue: tEmail, // Set the initial value here
                     ),
+
                      SizedBox(height: tFormHeight - 20),
-                    TextFormField(
-                      decoration:  InputDecoration(
-                        labelText: tPhoneNo,
-                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
-                      ),
-                      initialValue: '+213658557616', // Set the initial value here
 
-                    ),
-                    SizedBox(height: tFormHeight - 20),
                     TextFormField(
+                    //  controller: _numController,
                       decoration:  InputDecoration(
-                        labelText: tadress,
+                        labelText: 'Numero',
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
                       ),
-                      initialValue: 'Bab ezzouare ,Alger Algerie', // Set the initial value here
+                      initialValue: tnumero, // Set the initial value here
+                    ),
+
+                    SizedBox(height: tFormHeight - 20),
+
+                    TextFormField(
+                   //   controller: _adresseController,
+                      decoration:  InputDecoration(
+                        labelText: 'Adresse',
+                        labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
+                      ),
+                      initialValue: tAdresse, // Set the initial value here
 
                     ),
                      SizedBox(height: tFormHeight ),
-                    // Password TextFormField
+
                     TextFormField(
+                   //   controller: _passwordController,
                       obscureText: true,
+                      initialValue: '',
                       decoration: InputDecoration(
-                        labelText: tPassword,
+                        labelText: 'Ancien mot de passe',
                       ),
 
-                      onChanged: (value) {
-                        password = value;
-                      },
+
                     ),
                      SizedBox(height: tFormHeight -20 ),
-// Confirm Password TextFormField
+
                     TextFormField(
+                    //  controller: _confirmPasswordController,
                       obscureText: true,
+                      initialValue: '',
                       decoration: InputDecoration(
                         labelText: 'Confirmer le mot de passe',
                       ),
-                      validator: (value) {
-                        if (value != password) {
-                          return 'Verifier votre mot de passe';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        confirmPassword = value;
-                      },
+
+
+
+
+
                     ),
+
+
                     SizedBox(height: tFormHeight +20),
                     // -- Form Submit Button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: (){
-                          if (_formKey.currentState!.validate()) {
-                            // Form is valid, perform action
-                            // Passwords match, proceed with further actions
-                          } else {
-                            // Form is not valid due to password mismatch
-                            // You can display an error message or perform any other action
-                            print('Passwords do not match');
-                          }
-                        },
-                        child:  Text('Sauvegarder', style: TextStyle(color: tPrimaryColor)),
+
+                        child:  Text('Sauvegarder', style: TextStyle(color: Colors.white)),
 
                         style: ButtonStyle(
                           minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
@@ -211,6 +207,11 @@ class UpdateProfileScreen extends StatelessWidget {
                           elevation: MaterialStateProperty.all<double>(5),
                           shadowColor: MaterialStateProperty.all<Color>(Color(0xFF3E69FE)),
                         ),
+
+
+                        onPressed: (){
+                          _formKey.currentState!.validate();
+                         },
                       ),
                     ),
                   ],
