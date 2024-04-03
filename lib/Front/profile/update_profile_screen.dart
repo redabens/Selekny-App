@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reda/Front/profile/profile_screen.dart';
 
-class UpdateProfileScreen extends StatelessWidget {
+   class UpdateProfileScreen extends StatelessWidget {
    UpdateProfileScreen({Key? key}) : super(key: key);
    GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -15,6 +15,7 @@ class UpdateProfileScreen extends StatelessWidget {
    final TextEditingController _adresseController = TextEditingController();
    final TextEditingController _numController = TextEditingController();
 
+   //final controller = get.put(ProfileController()); //back pour rayane here
 
    String tEditProfile = 'Editer le Profile       ';
 
@@ -78,7 +79,7 @@ class UpdateProfileScreen extends StatelessWidget {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: const Image(image: AssetImage('lib/Front/assets/profile.JPG'))), //URL va etre recupere du firestore
-                  ),
+                  ), //profile pic
                   Positioned(
                     //edit small icon
                     bottom: 0,
@@ -102,7 +103,7 @@ class UpdateProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
+                  ), //button edit profile pic
 
                 ],
               ),
@@ -116,51 +117,49 @@ class UpdateProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     TextFormField(
-                    //  controller: _nameController,
+                    //  controller: controller.name,
                       decoration:  InputDecoration(
                         labelText: 'nom/prenom',
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
                       ),
-                      initialValue: tFullName, // Set the initial value here
+                      initialValue: tFullName, // user.fullname //back rayane
 
                     ),
                      SizedBox(height: tFormHeight - 20),
 
                     TextFormField(
-                    //  controller: _emailController,
+                    //  controller: controller.email,
                       decoration:  InputDecoration(
                         labelText: tEmail,
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
                       ),
                       initialValue: tEmail, // Set the initial value here
                     ),
-
                      SizedBox(height: tFormHeight - 20),
 
                     TextFormField(
-                    //  controller: _numController,
+                    //  controller: controller.num,
                       decoration:  InputDecoration(
                         labelText: 'Numero',
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
                       ),
-                      initialValue: tnumero, // Set the initial value here
+                      initialValue: tnumero, // user.num back rayane
                     ),
-
                     SizedBox(height: tFormHeight - 20),
 
                     TextFormField(
-                   //   controller: _adresseController,
+                   //   controller: controller.adresse,
                       decoration:  InputDecoration(
                         labelText: 'Adresse',
                         labelStyle: TextStyle( color: Colors.grey.shade400,), border: UnderlineInputBorder(),
                       ),
-                      initialValue: tAdresse, // Set the initial value here
+                      initialValue: tAdresse, // user.adress back rayane
 
                     ),
                      SizedBox(height: tFormHeight ),
 
                     TextFormField(
-                   //   controller: _passwordController,
+                   //   controller: controller.password,
                       obscureText: true,
                       initialValue: '',
                       decoration: InputDecoration(
@@ -172,7 +171,7 @@ class UpdateProfileScreen extends StatelessWidget {
                      SizedBox(height: tFormHeight -20 ),
 
                     TextFormField(
-                    //  controller: _confirmPasswordController,
+                    //  controller: controller.confirmPassword,
                       obscureText: true,
                       initialValue: '',
                       decoration: InputDecoration(
@@ -184,8 +183,6 @@ class UpdateProfileScreen extends StatelessWidget {
 
 
                     ),
-
-
                     SizedBox(height: tFormHeight +20),
                     // -- Form Submit Button
                     SizedBox(
@@ -212,7 +209,7 @@ class UpdateProfileScreen extends StatelessWidget {
                         onPressed: (){
                           _formKey.currentState!.validate();
                          },
-                      ),
+                      ), //sauvegarder button
                     ),
                   ],
                 ),
