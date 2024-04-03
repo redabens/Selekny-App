@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Pages/Authentification/connexion.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/Commentaires/Afficher_commentaire_page.dart';
 import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 import 'package:reda/Pages/Home/home.dart';
-import 'package:reda/Pages/chat_page.dart';
+import 'package:reda/Pages/Chat/chat_page.dart';
 import 'package:reda/Pages/prestation_page.dart';
 import 'package:reda/Pages/pub_demande_page.dart';
 import 'firebase_options.dart';
@@ -17,6 +19,18 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  /*try {
+    final results1 = await geocode('National Museum of the Bardo, Algiers, Algeria');
+    final double latitude1 = results1['latitude'];
+    final double longitude1 = results1['longitude'];
+    print('Latitude: $latitude1, Longitude: $longitude1');
+    final results2 = await geocode('Great Mosque of Constantine, Constantine, Algeria');
+    final double latitude2 = results2['latitude'];
+    final double longitude2 = results2['longitude'];
+    print('Latitude: $latitude2, Longitude: $longitude2');
+  } on Exception catch (e) {
+    print('Une erreur est survenue : $e');
+  }*/
   runApp(const MyApp());
 }
 /*void main() {
@@ -51,9 +65,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
+      home: const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
+      //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
       //const PubDemandePage(),
-      const HomePage(),
+      //const LoginScreen(),
+      //const HomePage(),
       //const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
       //const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
       //const ChatPage(receiverUserEmail:"ms_iratni@esi.dz", receiverUserID: "eOILQzRtIQlxwCGKhFMy"),

@@ -1,24 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'message.dart';
+import 'message.dart'; // Assuming this defines the Message class
 
 class ChatService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  //send a message
-  Future<void> sendMessage(String recieverId,String message)async{
-    //current user info
-    final currentUser = FirebaseAuth.instance.currentUser;
-
+  // Send a message
+  Future<void> sendMessage(String recieverId, String message) async {
+    // Get current user infoo
     final currentUserId ='hskvyxfATXnpgG8vsZlc';
+    //    //final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
     final String currentUserEmail = 'mm_bensemane@esi.dz';
+    //final currentUser = _firebaseAuth.currentUser;
+
     final Timestamp timestamp = Timestamp.now();
 
-    //create new message
-    Message newMessage = Message (
+    // Create new message
+    Message newMessage = Message(
       senderId: currentUserId,
       senderEmail: currentUserEmail,
       recieverId: recieverId,
@@ -26,31 +26,40 @@ class ChatService extends ChangeNotifier {
       message: message,
     );
 
-    //construire chat room id sorted
+    // Construct chat room ID sorted
     List<String> ids = [currentUserId, recieverId];
     ids.sort();
     String chatRoomId = ids.join("_");
 
-    //add new message to DB
+    await _firestore.collection('Conversations').doc(chatRoomId).set({
+      'user1': currentUserId,
+      'user2': recieverId,
+      'timestamp': Timestamp.now(),
+    }, SetOptions(merge: true)); // Merge to avoid overwriting messages
+
+    // Add new message to DB
     await _firestore
         .collection('Conversations')
         .doc(chatRoomId)
         .collection('messages')
         .add(newMessage.toMap());
-
-    return Future.value(null);
+    notifyListeners(); // Call notify after successful operations
   }
 
-  Stream<QuerySnapshot> getMessages(String userId,  String otherUserId){
+  Stream<QuerySnapshot> getMessages(String userId, String otherUserId) {
     List<String> ids = [userId, otherUserId];
     ids.sort();
-    String chatRoomId =  ids.join("_");
+    String chatRoomId = ids.join("_");
 
     return _firestore
         .collection('Conversations')
-        .doc(chatRoomId).collection('messages')
-        .orderBy('timestamp',descending: false)
+        .doc(chatRoomId)
+        .collection('messages')
+        .orderBy('timestamp', descending: false)
         .snapshots();
   }
 
+  void notifyMessageSent() {
+    notifyListeners();
+  }
 }
