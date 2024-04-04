@@ -1,9 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:reda/Back/models/usermodel.dart';
 import 'package:reda/Front/WelcomeScreen.dart';
+import 'package:reda/Front/authentification/connexion.dart';
 import 'profile_menu.dart';
 import 'update_profile_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Back/respositories/user_repository.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -19,17 +25,52 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({Key? key}) : super(key: key);
-  String tProfile = 'Profile       ';
-  String tProfileHeading = 'Bachir Rachad';
-  String tProfileSubHeading = 'mr_bachir@esi.dz';
-  String tEditProfile = 'Editer le Profile';
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
 
-  Color tPrimaryColor =
-      Color(0xFF3E69FE); // Use the appropriate color code or define your color
-  Color tDarkColor = Colors.black
-      .withOpacity(0.8); // Use the appropriate dark color or define your color
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String tProfile = 'Profile';
+  String tProfileHeading = '';
+  String tProfileSubHeading = '';
+
+  late UserRepository userRepository;
+
+  @override
+  void initState() {
+    super.initState();
+    userRepository = UserRepository();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? currentUser = auth.currentUser;
+    String? email = currentUser?.email;
+    //String email = "taouacherayane7@gmailcom";
+
+    if (email != null) {
+      try {
+        UserModel? userModel = await userRepository.getUserDetails(email);
+        print("User data retrieved successfully");
+        setState(() {
+          tProfileHeading = userModel.nom;
+          tProfileSubHeading = email;
+          print(tProfile);
+          print(tProfileHeading);
+          print("User data fetched inside setState");
+        });
+        print("User data fetched");
+      } catch (e) {
+        print("Error occured in fetchdata : ${e.toString()}");
+      }
+    } else {
+      print("Email doesn't exist ");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -197,12 +238,14 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                                 ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    // Deconnexion de l utilisateur
+                                    await FirebaseAuth.instance.signOut();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              WelcomePage()), //to home page not login
+                                              LoginPage()), //to home page not login
                                     );
                                   },
                                   child: Text(

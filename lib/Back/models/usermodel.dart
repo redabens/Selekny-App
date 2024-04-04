@@ -20,16 +20,25 @@ class UserModel {
       required this.role,
       required this.pathImage});
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  UserModel.empty()
+      : id = '',
+        nom = '',
+        numTel = '',
+        adresse = '',
+        email = '',
+        motDePasse = '',
+        role = '',
+        pathImage = '';
+  static UserModel fromJson(Map<String, dynamic> json) {
     return UserModel(
-        id: json['id'],
-        nom: json['nom'],
-        numTel: json['numTel'],
-        adresse: json['adresse'],
-        email: json['email'],
-        motDePasse: json['motDePasse'],
-        role: json['role'],
-        pathImage: json['PathImage']);
+        id: json['id'] ?? '',
+        nom: json['nom'] ?? '',
+        numTel: json['numTel'] ?? '',
+        adresse: json['adresse'] ?? '',
+        email: json['email'] ?? '',
+        motDePasse: json['motDePasse'] ?? '',
+        role: json['role'] ?? '',
+        pathImage: json['pathImage'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
@@ -40,7 +49,7 @@ class UserModel {
       'email': email,
       'motDePasse': motDePasse,
       'role': role,
-      'PathImage': pathImage
+      'pathImage': pathImage
     };
   }
 
@@ -53,7 +62,7 @@ class UserModel {
       String? role,
       String? pathImage}) {
     return UserModel(
-        id: id ?? id,
+        id: id ?? this.id,
         nom: nom ?? this.nom,
         numTel: numTel ?? this.numTel,
         adresse: adresse ?? this.adresse,
@@ -74,7 +83,7 @@ class UserModel {
         email: data['email'],
         motDePasse: data['motdepasse'],
         role: data['role'],
-        pathImage: data['PathImage']);
+        pathImage: data['pathImage']);
   }
 }
 

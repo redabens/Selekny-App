@@ -1,18 +1,47 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../Front/WelcomeScreen.dart';
+import 'package:reda/Front/authentification/connexion.dart';
+import 'package:reda/Front/profile/profile_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  runApp(const MyApp());
-
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  var isLogin = false;
+  var auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfLogin(); // Appel de la méthode pour vérifier l'état de connexion
+  }
+
+  checkIfLogin() async {
+    auth.authStateChanges().listen((User? user) {
+      if (user != null && mounted) {
+        setState(() {
+          isLogin = true;
+        });
+      }
+    });
+  }
+
+// si user est deja connecte on le redirige directement vers la page d acceuil
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +56,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         // Add other dark theme configurations
       ),
-      home: WelcomePage(),
+      home: isLogin ? ProfilePage() : LoginPage(),
     );
   }
 }

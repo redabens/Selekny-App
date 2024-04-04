@@ -122,7 +122,7 @@ class UpdateProfileScreen extends StatelessWidget {
                           border: UnderlineInputBorder(),
                         ),
                         initialValue:
-                            'Rachad Bachir', // Set the initial value here
+                            'Rachad Bachir', // importer depuis firestore !!!!!!!!!!!!!!!!!!!!!!!!!!
                       ),
                       SizedBox(height: tFormHeight - 20),
                       TextFormField(
@@ -134,7 +134,7 @@ class UpdateProfileScreen extends StatelessWidget {
                           border: UnderlineInputBorder(),
                         ),
                         initialValue:
-                            'mr_bachir@esi.dz', // Set the initial value here
+                            'mr_bachir@esi.dz', // importer depuis firestore !!!!!!!!!!!!!!!!!!!!!!!!!!
                       ),
                       SizedBox(height: tFormHeight - 20),
                       TextFormField(
@@ -146,7 +146,7 @@ class UpdateProfileScreen extends StatelessWidget {
                           border: UnderlineInputBorder(),
                         ),
                         initialValue:
-                            '+213658557616', // Set the initial value here
+                            '+213658557616', // importer depuis firestore !!!!!!!!!!!!!!!!!!!!!!!!!!
                       ),
                       SizedBox(height: tFormHeight - 20),
                       TextFormField(
@@ -158,7 +158,7 @@ class UpdateProfileScreen extends StatelessWidget {
                           border: UnderlineInputBorder(),
                         ),
                         initialValue:
-                            'Bab ezzouare ,Alger Algerie', // Set the initial value here
+                            'Bab ezzouare ,Alger Algerie', // importer depuis firestore !!!!!!!!!!!!!!!!!!!!!!!!!!
                       ),
                       SizedBox(height: tFormHeight),
                       // Password TextFormField

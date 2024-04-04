@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reda/Back/models/usermodel.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter/cupertino.dart';
 import 'forgotpassword.dart';
@@ -70,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String role = ''; // Variable globale pour stocker le rôle de l'utilisateur
 
-  void getUserRole(String email) async {
+  Future<void> getUserRole(String email) async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await FirebaseFirestore.instance
@@ -103,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
       void _signin() async {
         try {
           User? user = await _auth.signInwithEmailAndPassword(email, password);
-          getUserRole(email);
+          await getUserRole(email);
           print("Role : " + role);
           if (role == selectedRole) {
             print("User connection success");
