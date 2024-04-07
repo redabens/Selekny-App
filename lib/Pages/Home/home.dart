@@ -3,7 +3,8 @@ import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/Home/body.dart';
 import 'package:reda/Pages/Home/datails.dart';
 import 'package:reda/Pages/Home/header.dart';
-import 'package:reda/Pages/Home/search.dart'; // Importation de la classe Searchbar
+import 'package:reda/Pages/Home/search.dart';
+import 'package:reda/Pages/profile/profile_screen.dart'; // Importation de la classe Searchbar
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     const HomePage(),
     const DetailPage(),
     const ChatListPage(currentUserID: 'hskvyxfATXnpgG8vsZlc'),
-    const DetailPage(),
+    const ProfilePage(),
   ];
 
   @override

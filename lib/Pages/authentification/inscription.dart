@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:reda/Pages/auth.dart';
+import 'package:reda/Pages/user_repository.dart';
+import 'package:reda/Pages/usermodel.dart';
+import '../WelcomeScreen.dart';
 import 'connexion.dart';
 import 'package:http/http.dart' as http;
-
-
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class InscriptionPage extends StatelessWidget {
   const InscriptionPage({super.key});
@@ -11,13 +14,13 @@ class InscriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Inscription Page',
 
       theme: ThemeData.light(), // Use light theme by default
       darkTheme: ThemeData.dark(),
 
       home: const Scaffold(
-
         body: InscriptionScreen(),
       ),
     );
@@ -27,39 +30,82 @@ class InscriptionPage extends StatelessWidget {
 class InscriptionScreen extends StatefulWidget {
   const InscriptionScreen({super.key});
 
-
   @override
   State<InscriptionScreen> createState() => _InscriptionScreenState();
-
 }
 
 class _InscriptionScreenState extends State<InscriptionScreen> {
   final _formKey = GlobalKey<FormState>(); // Define _formKey here
 
   bool _showPassword = false;
- // String _email = '';
+  // String _email = '';
   bool _loading = false;
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _adresseController = TextEditingController();
   final TextEditingController _numController = TextEditingController();
 
-    void handleSubmit () async {
-      if (_formKey.currentState!.validate()) return; {
+  final FirebaseAuthService _auth = FirebaseAuthService();
+
+  void handleSubmit() async {
+    if (_formKey.currentState!.validate()) {
       final email = _emailController.value.text;
       final password = _passwordController.value.text;
       final adresse = _adresseController.value.text;
       final number = _numController.value.text;
       final name = _nameController.value.text;
 
-      setState(() => _loading=true);
+      setState(() => _loading = true);
 
-      //back pour rayane here
+      void _signUp() async {
+        try {
+          User? user = await _auth.signUpwithEmailAndPassword(email, password);
+          String id = user != null ? user.uid : '';
+          ClientModel newClient = ClientModel(
+              id: id,
+              nom: name,
+              numTel: number,
+              adresse: adresse,
+              email: email,
+              motDePasse: password,
+              pathImage: '');
+          // ajouter l utilisateur a la base de donnees firestore
+          CollectionReference users =
+              FirebaseFirestore.instance.collection('users');
+          if (user != null) {
+            print("User successfully created");
+            UserRepository userRepository = UserRepository();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => WelcomePage()),
+            );
+            try {
+              await userRepository.createUser(newClient);
+              print('Document added successfully');
+            } on FirebaseAuthException catch (e) {
+              print("Error adding document: $e");
+            }
+          } else {
+            print("Some error happend");
+          }
+        } on FirebaseAuthException catch (e) {
+          if (e.code == "weak-password") {
+            print('The password provided is too weak');
+            // afficher une erreur dans le UI
+          } else if (e.code == "email-already-in-use") {
+            print('The account already exists for that email');
+            // afficher une erreur dans le UI
+          }
+        } catch (e) {
+          print(e.toString());
+        }
+      }
 
-      setState(() => _loading=false);
-
+      _signUp();
+      setState(() => _loading = false);
     }
   }
 
@@ -81,7 +127,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                 child: Column(
                   children: [
                     Image.asset(
-                      'lib/Front/assets/logo.png',
+                      'assets/logo.png',
                       width: 85,
                       height: 90,
                     ),
@@ -104,20 +150,18 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                   children: [
                     const SizedBox(height: 85),
                     Form(
-                      key: _formKey, // Add this line to associate the Form with _formKey
+                      key:
+                          _formKey, // Add this line to associate the Form with _formKey
                       child: Column(
                         children: [
                           TextFormField(
-
-                            controller : _nameController,
+                            controller: _nameController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Veuillez saisir votre Nom';
                               }
                               return null;
                             },
-
-
                             decoration: InputDecoration(
                               labelText: 'Nom',
                               labelStyle: TextStyle(
@@ -125,10 +169,8 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               ),
                               border: const UnderlineInputBorder(),
                             ),
-
                           ),
                           const SizedBox(height: 10),
-
                           TextFormField(
                             controller: _adresseController,
                             validator: (value) {
@@ -137,7 +179,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               }
                               return null;
                             },
-
                             decoration: InputDecoration(
                               labelText: 'Adresse',
                               labelStyle: TextStyle(
@@ -146,14 +187,15 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               border: const UnderlineInputBorder(),
                               suffixIcon: const Icon(Icons.location_pin),
                             ),
-
                           ),
                           const SizedBox(height: 10),
                           TextFormField(
                             controller: _numController,
                             validator: (value) {
-                              if (value == '+213' || value == null || value.isEmpty) {
-                                return 'Numero obligatoir';
+                              if (value == '+213' ||
+                                  value == null ||
+                                  value.isEmpty) {
+                                return 'Numero obligatoire';
                               }
                               return null;
                             },
@@ -161,24 +203,20 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                             decoration: InputDecoration(
                               border: const UnderlineInputBorder(),
                               labelText: '+213',
-
                               suffixIcon: const Icon(Icons.phone),
-                              prefixIcon:
-                              Image.asset(
-                                'lib/Front/assets/Algeria.png',
+                              prefixIcon: Image.asset(
+                                'assets/Algeria.png',
                                 width: 14,
                                 height: 14,
                               ),
                             ),
 
                             style: const TextStyle(
-                              fontWeight :FontWeight.bold,
+                              fontWeight: FontWeight.bold,
                             ),
                             keyboardType: TextInputType.phone,
-                           // initialValue:  '+213',
-
+                            // initialValue:  '+213',
                           ),
-
                           const SizedBox(height: 10),
                           TextFormField(
                             controller: _emailController,
@@ -200,7 +238,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               border: const UnderlineInputBorder(),
                               suffixIcon: const Icon(Icons.alternate_email),
                             ),
-
                           ),
                           const SizedBox(height: 10),
                           TextFormField(
@@ -211,7 +248,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               }
                               return null;
                             },
-
                             decoration: InputDecoration(
                               labelText: 'Créer mot de passe',
                               labelStyle: TextStyle(
@@ -220,7 +256,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               border: const UnderlineInputBorder(),
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _showPassword ? Icons.visibility : Icons.visibility_off,
+                                  _showPassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -230,7 +268,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               ),
                             ),
                             obscureText: !_showPassword,
-
                           ),
                           const SizedBox(height: 6),
                           TextFormField(
@@ -238,8 +275,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Veuillez confirmer votre mot de passe';
-                              }
-                              else {
+                              } else {
                                 // Check if it matches the value in the "Créer mot de passe" field
                                 if (value != _passwordController.value.text) {
                                   return 'Les mots de passe ne correspondent pas';
@@ -247,7 +283,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               }
                               return null;
                             },
-
                             decoration: InputDecoration(
                               labelText: 'Confirmer mot de passe',
                               labelStyle: TextStyle(
@@ -256,7 +291,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               border: const UnderlineInputBorder(),
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _showPassword ? Icons.visibility : Icons.visibility_off,
+                                  _showPassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -266,9 +303,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               ),
                             ),
                             obscureText: !_showPassword,
-
                           ),
-
                         ],
                       ),
                     ),
@@ -277,8 +312,10 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                     ElevatedButton(
                       onPressed: () => handleSubmit(),
                       style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all<Size>(Size(350, 47)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        minimumSize:
+                            MaterialStateProperty.all<Size>(const Size(350, 47)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(13.13),
                           ),
@@ -287,33 +324,34 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                           const Color(0xFF3E69FE),
                         ),
                       ),
-
-                      child: _loading?
-                          const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.black,
+                      child: _loading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
                                 strokeWidth: 2,
-                            ),
-                          )
+                              ),
+                            )
                           : const Text(
-                      "S'inscrire",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
+                              "S'inscrire",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
                     ),
                     const SizedBox(height: 10),
                     Center(
                       child: Text(
                         'En vous inscrivant, vous acceptez nos\n'
-                            'conditons et notre politique de confidentialité',
+                        'conditons et notre politique de confidentialité',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: isDark? Colors.white:Colors.black.withOpacity(0.35),
+                          color: isDark
+                              ? Colors.white
+                              : Colors.black.withOpacity(0.35),
                           fontWeight: FontWeight.normal,
                           fontSize: 11,
                         ),
@@ -328,22 +366,25 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                         Text(
                           'Vous avez déjà un compte?',
                           style: TextStyle(
-                            color: isDark? Colors.white:Colors.black.withOpacity(0.5),
+                            color: isDark
+                                ? Colors.white
+                                : Colors.black.withOpacity(0.5),
                           ),
                         ),
                         TextButton(
                           onPressed: () {
                             // Action when "Se connecter" is pressed
                             // go to the LogIn page
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()),
                             );
                           },
                           child: Text(
                             "Se connecter",
                             style: TextStyle(
-                              color: isDark?Colors.white:Colors.black,
+                              color: isDark ? Colors.white : Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

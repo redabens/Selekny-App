@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:reda/Pages/Authentification/connexion.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/Commentaires/Afficher_commentaire_page.dart';
 import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 import 'package:reda/Pages/Home/home.dart';
 import 'package:reda/Pages/Chat/chat_page.dart';
+import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/prestation_page.dart';
 import 'package:reda/Pages/pub_demande_page.dart';
 import 'firebase_options.dart';
@@ -65,7 +65,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
+      home: WelcomePage(),
+      //const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
       //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
       //const PubDemandePage(),
       //const LoginScreen(),

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:reda/Front/profile/profile_screen.dart';
+import 'package:reda/Pages/Home/home.dart';
+import 'package:reda/Pages/profile/profile_screen.dart';
 import 'authentification/inscription.dart';
 import 'authentification/connexion.dart';
 
 class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Welcome Page',
       theme: ThemeData.light(), // Use light theme by default
       darkTheme: ThemeData.dark(), // Define dark theme
-      home: Scaffold(
+      home: const Scaffold(
         body: WelcomeScreen(),
       ),
     );
@@ -18,6 +22,8 @@ class WelcomePage extends StatelessWidget {
 }
 
 class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,9 +33,9 @@ class WelcomeScreen extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  SizedBox(height: 60),
+                  const SizedBox(height: 60),
                   Image.asset(
-                    'lib/Front/assets/workersimg.png', // Replace with your image path
+                    'assets/workersimg.png', // Replace with your image path
                     width: 336,
                     height: 300,
                   ),
@@ -40,7 +46,7 @@ class WelcomeScreen extends StatelessWidget {
                       fontSize: 22,
                       shadows: [
                         Shadow(
-                          offset: Offset(3.0, 3.0),
+                          offset: const Offset(3.0, 3.0),
                           blurRadius: 8.0,
                           color: Colors.grey.withOpacity(0.7),
                         ),
@@ -48,24 +54,17 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 70.0),
+                  const SizedBox(height: 70.0),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
                       );
                     },
-                    child: Text(
-                      'Se connecter',
-                      style: TextStyle(
-                        color: Color(0xFF3E69FE),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
                     style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
+                      minimumSize:
+                          MaterialStateProperty.all<Size>(const Size(330, 52)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(13.13),
@@ -75,18 +74,43 @@ class WelcomeScreen extends StatelessWidget {
                         Colors.white,
                       ),
                       elevation: MaterialStateProperty.all<double>(5),
-                      shadowColor: MaterialStateProperty.all<Color>(Color(0xFF3E69FE)),
+                      shadowColor:
+                          MaterialStateProperty.all<Color>(const Color(0xFF3E69FE)),
+                    ),
+                    child: const Text(
+                      'Se connecter',
+                      style: TextStyle(
+                        color: Color(0xFF3E69FE),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => InscriptionPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const InscriptionPage()),
                       );
                     },
-                    child: Text(
+                    style: ButtonStyle(
+                      minimumSize:
+                          MaterialStateProperty.all<Size>(const Size(330, 52)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.12),
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFF3E69FE),
+                      ),
+                      elevation: MaterialStateProperty.all<double>(7),
+                      shadowColor:
+                          MaterialStateProperty.all<Color>(Colors.black),
+                    ),
+                    child: const Text(
                       "S'inscrire",
                       style: TextStyle(
                         color: Colors.white,
@@ -94,21 +118,8 @@ class WelcomeScreen extends StatelessWidget {
                         fontSize: 20,
                       ),
                     ),
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.12),
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        Color(0xFF3E69FE),
-                      ),
-                      elevation: MaterialStateProperty.all<double>(7),
-                      shadowColor: MaterialStateProperty.all<Color>(Colors.black),
-                    ),
                   ),
-                  SizedBox(height: 170),
+                  const SizedBox(height: 170),
                 ],
               ),
             ),
@@ -117,9 +128,11 @@ class WelcomeScreen extends StatelessWidget {
               bottom: 0.0,
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()), //to home page not login
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const HomePage()), //to home page not login
                   );
                 },
                 child: Row(
@@ -127,18 +140,19 @@ class WelcomeScreen extends StatelessWidget {
                     Text(
                       'Ignorer ',
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.bold,
                         fontSize: 19,
                         shadows: [
                           Shadow(
-                            offset: Offset(3.0, 3.0),
+                            offset: const Offset(3.0, 3.0),
                             blurRadius: 8.0,
                             color: Colors.grey.withOpacity(0.5),
                           ),
                         ],
                       ),
                     ),
-                    Icon(Icons.arrow_forward, color: Theme.of(context).iconTheme.color, size: 19),
+                    Icon(Icons.arrow_forward,
+                        color: Theme.of(context).iconTheme.color, size: 19),
                   ],
                 ),
               ),

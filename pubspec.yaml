@@ -68,6 +68,9 @@ dependencies:
   get: ^4.6.6
   theme_mode_handler: ^3.0.0
   rxdart: ^0.27.2
+  google_sign_in: ^6.2.1
+  flutter_facebook_auth: ^6.1.1
+  flutter_social_button: ^1.1.4
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +115,11 @@ flutter:
     - assets/messages.png
     - assets/accueil.png
     - assets/demandes.png
+    - assets/Algeria.png
+    - assets/logo.png
+    - assets/logo1.png
+    - assets/workersimg.png
+    - assets/profile.JPG
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware
