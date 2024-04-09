@@ -50,7 +50,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? currentUser = auth.currentUser;
     String? email = currentUser?.email;
-    //String email = "taouacherayane7@gmailcom";
 
     if (email != null) {
       try {
