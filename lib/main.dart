@@ -9,6 +9,8 @@ import 'package:reda/Pages/Home/home.dart';
 import 'package:reda/Pages/Chat/chat_page.dart';
 import 'package:reda/Pages/PubDemande/detailsDemande.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
+import 'package:reda/Pages/authentification/connexion.dart';
+import 'package:reda/Pages/help.dart';
 import 'package:reda/Pages/prestation_page.dart';
 import 'package:reda/Pages/pub_demande_page.dart';
 import 'firebase_options.dart';
@@ -56,9 +58,59 @@ void main() async {
   runApp(const MyApp());
 }*/
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  var isLogin = false;
+  var auth = FirebaseAuth.instance;
+  late String role ;
+  Future<String> getUserRole(String email) async {
+
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        Map<String, dynamic> userData = querySnapshot.docs.first.data();
+        return userData['role'] ?? '';
+      } else {
+        print('No user found for email: $email');
+        return ''; // Réinitialiser le rôle si aucun utilisateur n'est trouvé
+      }
+    } catch (e) {
+      print('Error retrieving user role: $e');
+      return''; // Réinitialiser le rôle en cas d'erreur
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    checkIfLogin(); // Appel de la méthode pour vérifier l'état de connexion
+  }
+
+  checkIfLogin() async {
+    auth.authStateChanges().listen((User? user) async {
+      final useremail = auth.currentUser?.email;
+      role = await getUserRole(useremail!) ;
+      print(useremail);
+      if (user != null && mounted) {
+        setState(() {
+          isLogin = true;
+        });
+      }
+    });
+  }
+
+// si user est deja connecte on le redirige directement vers la page d acceuil
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -66,25 +118,10 @@ class MyApp extends StatelessWidget {
       //title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const WelcomePage(),
+      home: !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const HelpPage(),
       //const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
       //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
       //const PubDemandePage(),
