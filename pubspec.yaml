@@ -71,6 +71,8 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.1.1
   flutter_social_button: ^1.1.4
+  custom_switch_widget: ^0.0.1
+  flutter_map: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -120,6 +122,15 @@ flutter:
     - assets/logo1.png
     - assets/workersimg.png
     - assets/profile.JPG
+    - icons/prix.png
+    - icons/date.png
+    - icons/fuite.jpg
+    - icons/heure.png
+    - icons/lavabo.jpg
+    - icons/machine.jpg
+    - icons/robinet.jpg
+    - icons/urgent.png
+    - icons/materiel.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

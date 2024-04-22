@@ -57,7 +57,9 @@ class _PrestationPageState extends State<PrestationPage> {
 
         return Prestation(
           nomprestation: doc.data()['nom_prestation'],
-          imageUrl: url ?? "placeholder_image.png", // Use downloaded URL or a placeholder
+          imageUrl: url ?? "placeholder_image.png",// Use downloaded URL or a placeholder
+          domaineID: '',
+          prestationID: doc.id,
         );
       });
 
@@ -121,6 +123,8 @@ class _PrestationPageState extends State<PrestationPage> {
                       Prestation(
                         nomprestation: prestations[index].nomprestation,
                         imageUrl: prestations[index].imageUrl,
+                        domaineID: widget.domaineID,
+                        prestationID: prestations[index].prestationID,
                       ),
                       const SizedBox(height: 20), // Add spacing between containers
                     ],

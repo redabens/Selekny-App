@@ -7,30 +7,49 @@ import 'package:reda/Pages/Commentaires/Afficher_commentaire_page.dart';
 import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 import 'package:reda/Pages/Home/home.dart';
 import 'package:reda/Pages/Chat/chat_page.dart';
+import 'package:reda/Pages/PubDemande/detailsDemande.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/prestation_page.dart';
 import 'package:reda/Pages/pub_demande_page.dart';
 import 'firebase_options.dart';
 import 'package:reda/Services/ConvertAdr.dart';
 import 'dart:convert';
+import 'dart:math';
 import 'package:http/http.dart' as http;
+double radians(double degrees) => degrees * pi / 180;
+double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
+  const earthRadius = 6371.01; // Rayon de la Terre en km
+
+  double dLat = radians(lat2 - lat1);
+  double dLon = radians(lon2 - lon1);
+
+  double a = sin(dLat / 2) * sin(dLat / 2) +
+      cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon / 2) * sin(dLon / 2);
+  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+  return earthRadius * c; // Distance en km
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   /*try {
-    final results1 = await geocode('National Museum of the Bardo, Algiers, Algeria');
+    final results1 = await geocode('Bab Ezzouar, Hay Moussalaha, Alger, Algérie');
     final double latitude1 = results1['latitude'];
     final double longitude1 = results1['longitude'];
     print('Latitude: $latitude1, Longitude: $longitude1');
-    final results2 = await geocode('Great Mosque of Constantine, Constantine, Algeria');
+    final results2 = await geocode('Musee El Bardo, Alger, Algérie');
     final double latitude2 = results2['latitude'];
     final double longitude2 = results2['longitude'];
     print('Latitude: $latitude2, Longitude: $longitude2');
+    print("Calculer distance :");
+    final double distance = haversineDistance(latitude1,longitude1,latitude2,longitude2);
+    print('la distance est : $distance km');
   } on Exception catch (e) {
     print('Une erreur est survenue : $e');
   }*/
+  // el bardo : Latitude: 36.7199646, Longitude: 3.1991359;
   runApp(const MyApp());
 }
 /*void main() {
@@ -65,7 +84,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: WelcomePage(),
+      home: const WelcomePage(),
       //const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
       //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
       //const PubDemandePage(),

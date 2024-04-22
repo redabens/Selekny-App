@@ -1,16 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Pages/Home/datails.dart';
 import 'package:reda/Pages/Home/home.dart';
+import 'package:reda/Pages/PubDemande/detailsDemande.dart';
+import 'package:reda/Pages/pub_demande_page.dart';
 
 class Prestation extends StatelessWidget {
   final String nomprestation;
   final String imageUrl;
-
+  final String domaineID;
+  final String prestationID;
   const Prestation({
     super.key,
     required this.nomprestation,
     required this.imageUrl,
+    required this.domaineID,
+    required this.prestationID,
   });
 
   @override
@@ -61,6 +67,11 @@ class Prestation extends StatelessWidget {
               size: 20,
             ),
             onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => DetailsDemande(domaineID: domaineID,
+                    prestationID: prestationID, nomprestation: nomprestation)),
+              );
             },
           ),
           const SizedBox(width: 5), // Add spacing before the container's edge

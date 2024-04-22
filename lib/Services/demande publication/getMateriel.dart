@@ -99,7 +99,34 @@ Future<String> getPrestationId(String domaine, String prestation) async {
     return ''; // Retourne une chaîne vide en cas d'erreur
   }
 }
-Future<List<Prestation>> getPrestation(String domaineId) async{
+//GETTERS BY ID
+
+Future<String> getMaterielById(String domainId, String prestationId) async {
+
+  final domainsCollection = FirebaseFirestore.instance.collection('Domaine');
+  final domainDocument = domainsCollection.doc(domainId);
+  final prestationsCollection = domainDocument.collection('Prestations');
+
+  final prestationDocument = prestationsCollection.doc(prestationId);
+
+  final materiel = await prestationDocument.get().then((snapshot) => snapshot.data()?['materiel']);
+
+  return materiel ?? '';
+}
+
+Future<String> getPrixById(String domainId, String prestationId) async {
+
+  final domainsCollection = FirebaseFirestore.instance.collection('Domaine');
+  final domainDocument = domainsCollection.doc(domainId);
+  final prestationsCollection = domainDocument.collection('Prestations');
+
+  final prestationDocument = prestationsCollection.doc(prestationId);
+
+  final prix = await prestationDocument.get().then((snapshot) => snapshot.data()?['materiel']);
+
+  return prix ?? '';
+}
+/*Future<List<Prestation>> getPrestation(String domaineId) async{
   try {
     List<Prestation> listeprestations = [];
     final prestationsSnapshot = await FirebaseFirestore.instance
@@ -118,7 +145,7 @@ Future<List<Prestation>> getPrestation(String domaineId) async{
       print("Erreur lors de la recherche de Prestations : $e");
       return []; // Retourne une liste vide en cas d'erreur de connexion
   }
-}
+}*/
 
 Future<String> getuserNameByid(String userID) async{
   try {
