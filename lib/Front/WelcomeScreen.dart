@@ -17,8 +17,17 @@ class WelcomePage extends StatelessWidget {
   }
 }
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   @override
+  _WelcomeScreenState createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(

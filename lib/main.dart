@@ -1,15 +1,71 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:reda/Front/authentification/connexion.dart';
-import 'package:reda/Front/profile/profile_screen.dart';
+import 'package:reda/Front/WelcomeScreen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:reda/Back/services/notifications.dart';
+import 'package:reda/message.dart';
 
+// function to listen to background changes
+
+final navigatorkey = GlobalKey<NavigatorState>();
+Future _firebaseBackgroundMessage(RemoteMessage message) async {
+  if (message.notification != null) {
+    print("Some notification received in background");
+  }
+}
+
+NotificationServices notificationServices = NotificationServices();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  notificationServices.requestNotificationPermission();
+  //notificationServices.isTokenRefresh();
+  notificationServices.getDeviceToken().then((value) {
+    print("device token : ${value}");
+  });
+  // init firebase messaging
+  await NotificationServices.initLocalNotifications();
+
+  // listen to background notifications
+  FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    if (message.notification != null) {
+      print("Background Notification Tapped");
+      navigatorkey.currentState!
+          .push(MaterialPageRoute(builder: (context) => const MessagePage()));
+    }
+  });
+
+  // to handle foreground notifications
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    String payloadData = jsonEncode(message.data);
+    print("Got a message in foreground");
+    if (message.notification != null) {
+      NotificationServices.showSimpleNotification(
+          title: message.notification!.title!,
+          body: message.notification!.body!,
+          payload: payloadData);
+    }
+  });
+
+  // to handle in terminated state
+
+  final RemoteMessage? message =
+      await FirebaseMessaging.instance.getInitialMessage();
+  if (message != null) {
+    print("Launched from terminated state");
+    Future.delayed(Duration(seconds: 1), () {
+      navigatorkey.currentState!.pushNamed("/message", arguments: message);
+    });
+  }
 
   runApp(const MyApp());
 }
@@ -46,6 +102,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorkey,
       theme: ThemeData(
         // Define your light theme here
         brightness: Brightness.light,
@@ -56,7 +113,9 @@ class MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
         // Add other dark theme configurations
       ),
-      home: isLogin ? ProfilePage() : LoginPage(),
+      //home: isLogin ? ProfilePage() : WelcomePage(),
+      home: WelcomePage(),
+      routes: {"/message": (context) => MessagePage()},
     );
   }
 }

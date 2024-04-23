@@ -122,7 +122,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         email: newEmail == '' ? email1 : newEmail,
         role: userModel.role,
         motDePasse: newPassword == '' ? password : newPassword,
-        pathImage: userModel.pathImage);
+        pathImage: userModel.pathImage,
+        latitude: userModel.latitude,
+        longitude: userModel.longitude);
 
     await userRepository.updateUser(updatedUser);
 

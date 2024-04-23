@@ -53,7 +53,10 @@ dependencies:
   cloud_firestore: ^4.15.10
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.1.1
-  firebase_messaging: ^14.8.0
+  firebase_messaging: ^14.8.2
+  app_settings: ^5.1.1
+  permission_handler: ^11.3.1
+  flutter_local_notifications: ^17.1.0
 
 dev_dependencies:
   flutter_test:

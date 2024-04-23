@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  static User? user = FirebaseAuth.instance.currentUser;
 
   Future<User?> signUpwithEmailAndPassword(
       String email, String password) async {
@@ -74,6 +76,20 @@ class FirebaseAuthService {
     } on FirebaseAuthException catch (e) {
       print("Erreur dans la verification du mail$e");
       //afficher une erreur a l utilisateur
+    }
+  }
+
+  static Future saveUserToken(String token) async {
+    Map<String, dynamic> data = {"email": user!.email, "token": token};
+    try {
+      await FirebaseFirestore.instance
+          .collection("userToken")
+          .doc(user!.email)
+          .set(data);
+      print("Token added");
+    } catch (e) {
+      print("There is an error in saving user's token");
+      print(e.toString());
     }
   }
 }

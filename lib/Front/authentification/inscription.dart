@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reda/Back/respositories/user_repository.dart';
 import 'package:reda/Back/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Back/services/ConvertAdr.dart';
 
 class InscriptionPage extends StatelessWidget {
   @override
@@ -54,6 +55,8 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
       final number = _numController.value.text;
       final name = _nameController.value.text;
 
+      final Map position = await geocode(adresse);
+
       setState(() => _loading = true);
 
       void _signUp() async {
@@ -67,7 +70,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
               adresse: adresse,
               email: email,
               motDePasse: password,
-              pathImage: '');
+              pathImage: '',
+              latitude: position['latitude'],
+              longitude: position['longitude']);
           // ajouter l utilisateur a la base de donnees firestore
           CollectionReference users =
               FirebaseFirestore.instance.collection('users');
