@@ -8,10 +8,9 @@ class ForgotPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const Scaffold(
+      home: Scaffold(
         body: ForgotPasswordScreen(),
       ),
     );
@@ -19,10 +18,8 @@ class ForgotPasswordPage extends StatelessWidget {
 }
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
-
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
@@ -41,7 +38,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content:
-              Text('Erreur lors de l\'envoi de l\'email de réinitialisation.'),
+          Text('Erreur lors de l\'envoi de l\'email de réinitialisation.'),
         ),
       );
     }
@@ -51,7 +48,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final bool _loading = false;
 
   final TextEditingController _emailController = TextEditingController();
-  TextEditingController _codeController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +65,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: Column(
                   children: [
                     Image.asset(
-                      'assets/logo.png',
+                      'lib/Front/assets/logo.png',
                       width: 85,
                       height: 90,
                     ),
-                    const SizedBox(height: 5),
-                    const Text(
+                    SizedBox(height: 5),
+                    Text(
                       "Mot de passe oublié",
                       style: TextStyle(
                         fontSize: 20,
@@ -88,7 +85,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 60),
+                    SizedBox(height: 60),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -108,8 +105,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           labelStyle: TextStyle(
                             color: textColor,
                           ),
-                          border: const UnderlineInputBorder(),
-                          suffixIcon: const Icon(Icons.alternate_email),
+                          border: UnderlineInputBorder(),
+                          suffixIcon: Icon(Icons.alternate_email),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -119,42 +116,42 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    SizedBox(height: 5),
                     ElevatedButton(
                       onPressed: () {},
+                      child: _loading
+                          ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                          strokeWidth: 2,
+                        ),
+                      )
+                          : Text(
+                        'Envoyer',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       style: ButtonStyle(
                         // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.10),
                           ),
                         ),
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFF3E69FE),
+                          Color(0xFF3E69FE),
                         ),
                         elevation: MaterialStateProperty.all<double>(7),
                         shadowColor:
-                            MaterialStateProperty.all<Color>(Colors.black),
+                        MaterialStateProperty.all<Color>(Colors.black),
                       ),
-                      child: _loading
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.black,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Text(
-                              'Envoyer',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -165,13 +162,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(width: 9),
+                        SizedBox(width: 9),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const InscriptionPage()),
+                                  builder: (context) => InscriptionPage()),
                             );
                           },
                           child: Text(

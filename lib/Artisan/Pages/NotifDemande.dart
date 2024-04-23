@@ -32,7 +32,7 @@ class NotifDemandeState extends State<NotifDemande> {
     User? user = FirebaseAuth.instance.currentUser;
     String email = user?.email ?? "";
     final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('User')
+        .collection('users')
         .where('email', isEqualTo: email)
         .limit(1)
         .get();
@@ -303,23 +303,14 @@ class UrgentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 175,
-      height: 70,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const NotifUrgente()),
-          );
-          // Action à effectuer lors du clic sur le bouton
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
+      height: 55,
+      child: GestureDetector(
+        onTap: () =>   Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NotifUrgente()),
         ),
-        child: Ink(
+
+        child: Container(
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.zero, // Pas de coin arrondi
             border: Border(
@@ -334,7 +325,7 @@ class UrgentButton extends StatelessWidget {
             child: Text(
               'Urgentes',
               style: GoogleFonts.poppins(
-                color: const Color(0xFFC4C4C4),
+                color: Color(0xFFC4C4C4),
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
 
@@ -343,6 +334,7 @@ class UrgentButton extends StatelessWidget {
           ),
         ),
       ),
+
     );
   }
 
@@ -351,53 +343,43 @@ class UrgentButton extends StatelessWidget {
 class demandeButton extends StatelessWidget {
   const demandeButton({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 175,
-      height: 70,
-      child: ElevatedButton(
-        onPressed: ()
-        {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const NotifDemande()),
-          );
-          // Action à effectuer lors du clic sur le bouton
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-        ),
-        child: Ink(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.zero, // Pas de coin arrondi
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0xFFF5A529),
-                width: 2,
-              ),
+@override
+Widget build(BuildContext context) {
+  return Container(
+    width: 175,
+    height: 55,
+    child: GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const NotifDemande()),
+      ),
+
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.zero, // Pas de coin arrondi
+          border: Border(
+            bottom: BorderSide(
+              color: Color(0xFFF5A529),
+              width: 2,
             ),
           ),
-          child: Container(
-            alignment: Alignment.center,
-            child: Text(
-              'Demandes',
-              style: GoogleFonts.poppins(
-                color: Color(0xFFF5A529),
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+        ),
+        child: Container(
+          alignment: Alignment.center,
+          child: Text(
+            'Demandes',
+            style: GoogleFonts.poppins(
+              color: const Color(0xFFF5A529),
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
 
-              ),
             ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
 
 

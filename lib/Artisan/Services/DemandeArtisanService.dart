@@ -31,9 +31,9 @@ class DemandeArtisanService extends ChangeNotifier{
         longitude: longitude,
         timestamp: timestamp);
     await _firestore
-        .collection('User')
+        .collection('users')
         .doc(recieverId)
-        .collection('Commentaires')
+        .collection('DemandeArtisan')
         .add(newDemandeArtisan.toMap());
 
     return Future.value(null);
@@ -43,7 +43,7 @@ class DemandeArtisanService extends ChangeNotifier{
   Stream<QuerySnapshot> getDemandeArtisan(String artisanId){
 
     return _firestore
-        .collection('User')
+        .collection('users')
         .doc(artisanId).collection('DemandeArtisan')
         .orderBy('timestamp',descending: true)
         .snapshots();

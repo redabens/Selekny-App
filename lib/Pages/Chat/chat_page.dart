@@ -36,9 +36,9 @@ class _ChatPageState extends State<ChatPage> {
 
   Future<String> getUserNameById(String userId) async {
 
-    final userCollection = FirebaseFirestore.instance.collection('User');
+    final userCollection = FirebaseFirestore.instance.collection('users');
     final userDocument = userCollection.doc(userId);
-    final name = await userDocument.get().then((snapshot) => snapshot.data()?['name']);
+    final name = await userDocument.get().then((snapshot) => snapshot.data()?['nom']);
     print(name);
     return name;
   }
@@ -62,9 +62,9 @@ class _ChatPageState extends State<ChatPage> {
 
   Future<void> _loadImageUrl(String userId) async {
     try {
-      final userCollection = FirebaseFirestore.instance.collection('User');
+      final userCollection = FirebaseFirestore.instance.collection('users');
       final userDocument = userCollection.doc(userId);
-      final imgPath = await userDocument.get().then((snapshot) => snapshot.data()?['PathImage']);
+      final imgPath = await userDocument.get().then((snapshot) => snapshot.data()?['pathImage']);
       String url = await getImageUrl(imgPath);
       setState(() {
         _imageUrl = url;

@@ -1,7 +1,8 @@
 
 class Demande {
+  late String adresse;
   late String id_Client;
-  late String id_Artisan;
+  late String id_Domaine;
   late String id_Prestation;
   late bool urgence;
   late String date_debut;
@@ -9,8 +10,9 @@ class Demande {
   late String heure_debut;
   late String heure_fin;
   Demande({
+    required this.adresse,
     required this.id_Client,
-    required this.id_Artisan,
+    required this.id_Domaine,
     required this.id_Prestation,
     required this.urgence,
     required this.date_debut,
@@ -21,8 +23,9 @@ class Demande {
 
 Map<String, dynamic> toMap(){
   return{
+    'adresse':adresse,
     'id_Client': id_Client,
-    'id_Artisan': id_Artisan,
+    'id_Domaine':id_Domaine,
     'id_Prestation': id_Prestation,
     'urgence': urgence,
     'date_debut': date_debut,
@@ -31,11 +34,14 @@ Map<String, dynamic> toMap(){
     'heure_fin': heure_fin,
   };
 }
+  void setAdresse(String adresse){
+    this.adresse =adresse;
+  }
   void setIdClient(String idClient){
     id_Client = idClient;
   }
-  void setIdArtisan(String idArtisan){
-    id_Artisan = idArtisan;
+  void setIdDomaine(String idDomaine){
+    id_Domaine = idDomaine;
   }
   void setIdPrestation(String idPrestation){
     id_Prestation = idPrestation;

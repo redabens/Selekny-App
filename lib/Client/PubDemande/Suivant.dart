@@ -7,6 +7,7 @@ import 'package:reda/Client/Services/demande%20publication/publierDemandeinit.da
 
 class Suivant extends StatelessWidget {
   final String prestationID;
+  final String domaineId;
   final Demande demande;
   final Date datedebut;
   final Date datefin;
@@ -16,6 +17,7 @@ class Suivant extends StatelessWidget {
     required this.demande,
     required this.datedebut,
     required this.datefin,
+    required this.domaineId,
   });
 
  // final VoidCallback onPressed;
@@ -32,7 +34,7 @@ class Suivant extends StatelessWidget {
       onPressed:() {
         demande.setDateDebut(datedebut.toString());
         demande.setDateFin(datefin.toString());
-        publierDemandeinit(prestationID,
+        publierDemandeinit(domaineId,prestationID,
             demande.urgence,
             demande.date_debut.toString(),
             demande.date_fin.toString(),
@@ -40,7 +42,7 @@ class Suivant extends StatelessWidget {
             demande.heure_fin);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const DemandeEnvoye()),
+          MaterialPageRoute(builder: (context) => DemandeEnvoye(prestationID: prestationID, domaineId: domaineId, demande: demande,)),
         );
       },
       style: ButtonStyle(

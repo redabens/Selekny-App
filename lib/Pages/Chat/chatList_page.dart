@@ -87,17 +87,17 @@ class _ChatListPageState extends State<ChatListPage> {
   }
 
   Future<String> getUserName(String userId) async {
-    final userCollection = FirebaseFirestore.instance.collection('User');
+    final userCollection = FirebaseFirestore.instance.collection('users');
     final userDocument = userCollection.doc(userId);
     final name = await userDocument.get().then((snapshot) =>
-    snapshot.data()?['name']);
+    snapshot.data()?['nom']);
     return name;
   }
   Future<void> getcurrentUserID() async {
     User? user = FirebaseAuth.instance.currentUser;
     String email = user?.email ?? "";
     final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('User')
+        .collection('users')
         .where('email', isEqualTo: email)
         .limit(1)
         .get();

@@ -1,14 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileMenuWidget extends StatelessWidget {
-  ProfileMenuWidget({
-    Key? key,
+  const ProfileMenuWidget({
+    super.key,
     required this.title,
     required this.icon,
     required this.onPress,
     this.endIcon = true,
     this.textColor,
-  }) : super(key: key);
+  });
 
   final String title;
   final IconData icon;

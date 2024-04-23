@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
+import 'package:reda/Services/ConvertAdr.dart';
 import '../WelcomeScreen.dart';
 import 'connexion.dart';
 import 'package:http/http.dart' as http;
@@ -9,18 +11,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class InscriptionPage extends StatelessWidget {
-  const InscriptionPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Inscription Page',
 
       theme: ThemeData.light(), // Use light theme by default
       darkTheme: ThemeData.dark(),
 
-      home: const Scaffold(
+      home: Scaffold(
         body: InscriptionScreen(),
       ),
     );
@@ -28,10 +27,8 @@ class InscriptionPage extends StatelessWidget {
 }
 
 class InscriptionScreen extends StatefulWidget {
-  const InscriptionScreen({super.key});
-
   @override
-  State<InscriptionScreen> createState() => _InscriptionScreenState();
+  _InscriptionScreenState createState() => _InscriptionScreenState();
 }
 
 class _InscriptionScreenState extends State<InscriptionScreen> {
@@ -42,7 +39,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
   bool _loading = false;
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _adresseController = TextEditingController();
@@ -58,9 +55,11 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
       final number = _numController.value.text;
       final name = _nameController.value.text;
 
+      final Map position = await geocode(adresse);
+
       setState(() => _loading = true);
 
-      void _signUp() async {
+      void signUp() async {
         try {
           User? user = await _auth.signUpwithEmailAndPassword(email, password);
           String id = user != null ? user.uid : '';
@@ -71,16 +70,18 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
               adresse: adresse,
               email: email,
               motDePasse: password,
-              pathImage: '');
+              pathImage: '',
+              latitude: position['latitude'],
+              longitude: position['longitude']);
           // ajouter l utilisateur a la base de donnees firestore
           CollectionReference users =
-              FirebaseFirestore.instance.collection('users');
+          FirebaseFirestore.instance.collection('users');
           if (user != null) {
             print("User successfully created");
             UserRepository userRepository = UserRepository();
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => WelcomePage()),
+              MaterialPageRoute(builder: (context) => const WelcomePage()),
             );
             try {
               await userRepository.createUser(newClient);
@@ -104,7 +105,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
         }
       }
 
-      _signUp();
+      signUp();
       setState(() => _loading = false);
     }
   }
@@ -151,7 +152,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                     const SizedBox(height: 85),
                     Form(
                       key:
-                          _formKey, // Add this line to associate the Form with _formKey
+                      _formKey, // Add this line to associate the Form with _formKey
                       child: Column(
                         children: [
                           TextFormField(
@@ -313,9 +314,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                       onPressed: () => handleSubmit(),
                       style: ButtonStyle(
                         minimumSize:
-                            MaterialStateProperty.all<Size>(const Size(350, 47)),
+                        MaterialStateProperty.all<Size>(const Size(350, 47)),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(13.13),
                           ),
@@ -326,27 +327,27 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                       ),
                       child: _loading
                           ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.black,
-                                strokeWidth: 2,
-                              ),
-                            )
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                          strokeWidth: 2,
+                        ),
+                      )
                           : const Text(
-                              "S'inscrire",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                              ),
-                            ),
+                        "S'inscrire",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 10),
                     Center(
                       child: Text(
                         'En vous inscrivant, vous acceptez nos\n'
-                        'conditons et notre politique de confidentialité',
+                            'conditons et notre politique de confidentialité',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: isDark
@@ -375,10 +376,10 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                           onPressed: () {
                             // Action when "Se connecter" is pressed
                             // go to the LogIn page
-                            Navigator.pushReplacement(
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const LoginPage()),
+                                  builder: (context) => LoginPage()),
                             );
                           },
                           child: Text(

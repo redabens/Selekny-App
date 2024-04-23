@@ -12,7 +12,7 @@ class ChatService extends ChangeNotifier {
     User? user = _firebaseAuth.currentUser;
     String currentUserEmail = user?.email ?? "";
     final querySnapshot1 = await _firestore
-        .collection('User')
+        .collection('users')
         .where('email', isEqualTo: currentUserEmail)
         .limit(1)
         .get();

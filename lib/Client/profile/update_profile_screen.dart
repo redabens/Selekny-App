@@ -10,7 +10,7 @@ class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
 
   @override
-  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+  _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
@@ -35,6 +35,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   String newEmail = '';
   String newAdress = '';
   String newPhoneNumber = '';
+  double latitude = 0;
+  double longitude = 0;
+
   bool isLoading = true;
 
   // Colors
@@ -47,7 +50,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   String password = '';
   String confirmPassword = '';
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late UserRepository userRepository;
   late UserModel userModel;
@@ -99,6 +102,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           numtel = userModel.numTel;
           adresse = userModel.adresse;
           oldPassword = userModel.motDePasse;
+          latitude = userModel.latitude;
+          longitude = userModel.longitude;
           isLoading = false;
           print("User data fetched inside setState");
         });
@@ -121,7 +126,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         email: newEmail == '' ? email1 : newEmail,
         role: userModel.role,
         motDePasse: newPassword == '' ? password : newPassword,
-        pathImage: userModel.pathImage);
+        pathImage: userModel.pathImage,
+        latitude: userModel.latitude,
+        longitude: userModel.longitude);
 
     await userRepository.updateUser(updatedUser);
 
@@ -182,7 +189,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         borderRadius: BorderRadius.circular(100),
                         child: const Image(
                             image: AssetImage(
-                                'assets/profile.JPG'))),
+                                'lib/Front/assets/profile.JPG'))),
                   ),
                   Positioned(
                     //edit small icon
@@ -224,7 +231,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           labelStyle: TextStyle(
                             color: Colors.grey.shade400,
                           ),
-                          border: const UnderlineInputBorder(),
+                          border: UnderlineInputBorder(),
                         ),
                         onChanged: (value) {
                           newName = value;
@@ -307,7 +314,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       // Confirm Password TextFormField
                       TextFormField(
                         obscureText: true,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Confirmer le nouveau mot de passe',
                         ),
                         validator: (value) {
@@ -341,7 +348,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        child: const Text('OK'),
+                                        child: Text('OK'),
                                       ),
                                     ],
                                   );
@@ -374,9 +381,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: const Text(
+                                    title: Text(
                                         'Erreur de réauthentification'),
-                                    content: const Text(
+                                    content: Text(
                                         'Votre ancien mot de passe est incorrect. Veuillez réessayer.'),
                                     actions: [
                                       TextButton(

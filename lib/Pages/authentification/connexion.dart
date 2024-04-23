@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:flutter/cupertino.dart';
 import 'forgotpassword.dart';
 import 'inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,12 +12,9 @@ enum Role { client, artisan }
 String errorMessage = '';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Welcome Page',
       theme: ThemeData.light(), // Use light theme by default
       darkTheme: ThemeData.dark(), // Define dark theme
@@ -31,7 +29,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -71,14 +69,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String role = ''; // Variable globale pour stocker le rôle de l'utilisateur
 
-  void getUserRole(String email) async {
+  Future<void> getUserRole(String email) async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await FirebaseFirestore.instance
-              .collection('users')
-              .where('email', isEqualTo: email)
-              .limit(1)
-              .get();
+      await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         Map<String, dynamic> userData = querySnapshot.docs.first.data();
@@ -101,10 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => _loading = true);
 
       //  Authentification's functions
-      void _signin() async {
+      void signin() async {
         try {
           User? user = await _auth.signInwithEmailAndPassword(email, password);
-          getUserRole(email);
+          await getUserRole(email);
           print("Role : " + role);
           if (role == selectedRole) {
             print("User connection success");
@@ -124,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
 
-      _signin();
+      signin();
 
       setState(() => _loading = false);
     }
@@ -244,7 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: isDark
                                       ? Colors.white
                                       : Colors
-                                          .black, // Adjust the color as needed
+                                      .black, // Adjust the color as needed
                                 ),
                               ),
                             ],
@@ -262,7 +260,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ? Colors.grey.shade300
                                 : Colors.black.withOpacity(0.15),
                             inactiveFgColor:
-                                isDark ? Colors.black : Colors.black,
+                            isDark ? Colors.black : Colors.black,
                             labels: const ['Client', 'Prestataire'],
                             onToggle: (index) {
 // Here we can handle the toggle change
@@ -270,7 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               setState(() {
                                 selectedindex = index ?? -1;
                                 selectedRole =
-                                    index == 0 ? 'client' : 'prestataire';
+                                index == 0 ? 'client' : 'prestataire';
                               });
                             },
                           ),
@@ -280,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () => handleSubmit(),
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(
-                                  const Size(216, 37)),
+                                  Size(216, 37)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -288,25 +286,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                const Color(0xFF3E69FE),
+                                Color(0xFF3E69FE),
                               ),
                             ),
                             child: _loading
                                 ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.black,
-                                      strokeWidth: 2,
-                                    ),
-                                  )
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                                strokeWidth: 2,
+                              ),
+                            )
                                 : const Text(
-                                    'Se connecter',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                              'Se connecter',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
 
                           const SizedBox(height: 20),
@@ -365,7 +363,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushReplacement(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
@@ -386,11 +384,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               const SizedBox(width: 42),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushReplacement(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const InscriptionPage()),
+                                            InscriptionPage()),
                                   );
                                 },
                                 child: Text(

@@ -40,11 +40,11 @@ class DetailsDemande extends StatefulWidget {
 }
 
 class DetailsDemandeState extends State<DetailsDemande> {
-  late String currentUserID;
+  late String? currentUserID;
   int _currentIndex = 0;
   String? materiel; // Declare materiel as nullable String
   String? prix;
-  late Demande demandeinit = Demande(id_Client: "", id_Artisan: "", id_Prestation: "", urgence: false, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "");
+  late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: false, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
   late Date datedebut = Date(0, "", 0);
   late Date datefin = Date(0, "", 0);
   @override
@@ -58,7 +58,7 @@ class DetailsDemandeState extends State<DetailsDemande> {
     User? user = FirebaseAuth.instance.currentUser;
     String email = user?.email ?? "";
     final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('User')
+        .collection('users')
         .where('email', isEqualTo: email)
         .limit(1)
         .get();
@@ -93,7 +93,7 @@ class DetailsDemandeState extends State<DetailsDemande> {
               const SizedBox(width: 50, height: 25,),
               Heure(demande: demandeinit,),
               const SizedBox(width: 50, height: 25,),
-              Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datefin,),
+              Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datefin, domaineId: widget.domaineID,),
             ],
           ),
 
@@ -164,7 +164,7 @@ class DetailsDemandeState extends State<DetailsDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID),),
+                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID!),),
                 );
 
               },

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
@@ -60,20 +62,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           print(tProfile);
           print(tProfileHeading);
           print("User data fetched inside setState");
-        /*QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await FirebaseFirestore.instance
-            .collection('User')
-            .where('email', isEqualTo: email)
-            .limit(1)
-            .get();
-
-        if (querySnapshot.docs.isNotEmpty) {
-          Map<String, dynamic> userData = querySnapshot.docs.first.data();
-          tProfileHeading= userData['name'] ?? '';
-          tProfileSubHeading = email;
-        }*/
-        print("User data fetched");
         });
+        print("User data fetched");
       } catch (e) {
         print("Error occured in fetchdata : ${e.toString()}");
       }
@@ -94,11 +84,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: const Color(0xFFF1F3FC),
+              color: Color(0xFFF1F3FC),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(9),
             ),
-            child: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+            child: Icon(Icons.arrow_back_ios_new, color: Colors.black),
           ),
         ),
         title: Center(
@@ -175,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           : Colors.black.withOpacity(0.6),
                       spreadRadius: 1,
                       blurRadius: 10,
-                      offset: Offset(0, -20),
+                      offset: const Offset(0, -20),
                     ),
                   ],
                 ),
@@ -189,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => UpdateProfileScreen()),
+                                builder: (context) => const UpdateProfileScreen()),
                           );
                         },
                       ),
@@ -231,7 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                      Color(0xFF3E69FE),
+                                      const Color(0xFF3E69FE),
                                     ),
                                     elevation:
                                     MaterialStateProperty.all<double>(7),
@@ -239,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     MaterialStateProperty.all<Color>(
                                         Colors.black),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     "NON",
                                     style: TextStyle(
                                       color: Colors.white,
@@ -258,13 +248,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               LoginPage()), //to home page not login
                                     );
                                   },
-                                  child: Text(
-                                    "OUI",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
                                   style: ButtonStyle(
                                     // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
                                     shape: MaterialStateProperty.all<
@@ -283,6 +266,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     shadowColor:
                                     MaterialStateProperty.all<Color>(
                                         Colors.black),
+                                  ),
+                                  child: const Text(
+                                    "OUI",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],

@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     User? user = FirebaseAuth.instance.currentUser;
     String email = user?.email ?? "";
     final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('User')
+        .collection('users')
         .where('email', isEqualTo: email)
         .limit(1)
         .get();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Artisan/Pages/NotifUrgente.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/Commentaires/Afficher_commentaire_page.dart';
@@ -120,7 +121,7 @@ class MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const HelpPage(),
+      home: !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const NotifUrgente(),
       //const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
       //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
       //const PubDemandePage(),

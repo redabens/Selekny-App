@@ -40,13 +40,13 @@ class DetailsDemandeUrgente extends StatefulWidget {
 }
 
 class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
-  late String currentUserID;
+  late String? currentUserID;
   int _currentIndex = 0;
   String? materiel; // Declare materiel as nullable String
   String? prix;
   late Date datedebut = Date(0, "", 0);
   late Date datefin = Date(0, "", 0);
-  late Demande demandeinit = Demande(id_Client: "", id_Artisan: "", id_Prestation: "", urgence: true, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "");
+  late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: true, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
   @override
   void initState() {
     super.initState();
@@ -58,7 +58,7 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
     User? user = FirebaseAuth.instance.currentUser;
     String email = user?.email ?? "";
     final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('User')
+        .collection('users')
         .where('email', isEqualTo: email)
         .limit(1)
         .get();
@@ -89,7 +89,7 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
             const SizedBox(width: 50, height: 25,),
             Urgence(domaineID: widget.domaineID,prestationID: widget.prestationID,nomprestation: widget.nomprestation,demande: demandeinit,),
             const SizedBox(width: 50, height: 25,),
-            Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datedebut,),
+            Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datedebut, domaineId: widget.domaineID,),
           ],
         ),
 
@@ -160,7 +160,7 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
                 });
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatListPage(currentUserID: 'hskvyxfATXnpgG8vsZlc'),),
+                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID!),),
                 );
 
               },

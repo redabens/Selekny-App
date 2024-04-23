@@ -2,7 +2,11 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reda/Artisan/Pages/NotifDemande.dart';
+import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
+import 'package:reda/Client/Services/demande%20publication/publierDemandeinit.dart';
+import 'package:reda/Client/components/Demande.dart';
 
 double radians(double degrees) => degrees * pi / 180;
 double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
@@ -18,48 +22,85 @@ double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
   return earthRadius * c; // Distance en km
 }
 class DemandeEnvoye extends StatefulWidget {
-  const DemandeEnvoye({super.key});
+  final String prestationID;
+  final String domaineId;
+  final Demande demande;
+  const DemandeEnvoye({
+    super.key,
+    required this.prestationID,
+    required this.domaineId,
+    required this.demande,
+  });
 
   @override
   DemandeEnvoyeState createState() => DemandeEnvoyeState();
 }
-  class DemandeEnvoyeState extends State<DemandeEnvoye>{
-    final db = FirebaseFirestore.instance;
-    @override
-    void initState(){
-      super.initState();
-      _checkArtisansForLatestDemande();
-    }
-    Future<DocumentSnapshot> getLatestDemande() async {
-      final demandeRef = db.collection('Demandes');
-      final QuerySnapshot snapshot = await demandeRef.get();
+class DemandeEnvoyeState extends State<DemandeEnvoye> {
+  final db = FirebaseFirestore.instance;
+  late DocumentSnapshot? latestDemande;
+  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
+  late bool empty=false;
 
-      return snapshot.docs.first; // Dernière demande
-    }
-    Future<void> _checkArtisansForLatestDemande() async {
-      final latestDemandeDoc = await getLatestDemande();
-      final demandeData = latestDemandeDoc.data() as Map<String, dynamic>;
-      final demandeLat = demandeData['latitude'];
-      final demandeLong = demandeData['longitude'];
+  @override
+  void initState() {
+    super.initState();
+    _listenForDemandes(); // Start listening for new demands
+  }
 
-      // Filtrer les artisans à proximité
-      final artisansInRange = <DocumentSnapshot>[];
-      final artisansRef = db.collection('User').where('role',isEqualTo: 'artisan');
-
-      await artisansRef.get().then((QuerySnapshot artisansSnapshot) {
-        for (var artisanDoc in artisansSnapshot.docs) {
-          final artisanData = artisanDoc.data() as Map<String, dynamic>;
-          final artisanLat = artisanData['latitude'];
-          final artisanLong = artisanData['longitude'];
-
-          final distance = haversineDistance(demandeLat, demandeLong, artisanLat, artisanLong);
-          if (distance <= 30.0) {
-            print(artisanDoc.id);
-            artisansInRange.add(artisanDoc);
-          }
+  void _listenForDemandes() {
+    final demandeRef = db.collection('Demandes');
+    demandeRef.snapshots().listen((querySnapshot) {
+      if (querySnapshot.docChanges.isNotEmpty) {
+        final addedDoc = querySnapshot.docChanges.firstWhere((change) => change.type == DocumentChangeType.added);
+        if (addedDoc != null) {
+          latestDemande = addedDoc.doc;
+          _checkArtisansForLatestDemande();
         }
-      });
+      }
+    }, onError: (error) {
+      // Handle errors appropriately, e.g., show a snackbar or log the error
+      print("Error listening to demandes: $error");
+    });
+  }
+
+  Future<void> _checkArtisansForLatestDemande() async {
+    if (latestDemande == null) {
+      return; // No latest demande yet, so skip processing
     }
+
+    final demandeData = latestDemande!.data() as Map<String, dynamic>;
+    final demandeLat = demandeData['latitude'];
+    final demandeLong = demandeData['longitude'];
+
+    // Filtrer les artisans à proximité
+    final artisansInRange = <DocumentSnapshot>[];
+    final artisansRef = db.collection('users').where('role',isEqualTo: 'artisan');
+
+    await artisansRef.get().then((QuerySnapshot artisansSnapshot) {
+      for (var artisanDoc in artisansSnapshot.docs) {
+        final artisanData = artisanDoc.data() as Map<String, dynamic>;
+        final artisanLat = artisanData['latitude'];
+        final artisanLong = artisanData['longitude'];
+
+        final distance = haversineDistance(demandeLat, demandeLong, artisanLat, artisanLong);
+        if (distance <= 30.0) {
+          print(artisanDoc.id);
+          artisansInRange.add(artisanDoc);
+        }
+      }
+    });
+    if (artisansInRange.isNotEmpty){
+      for(var artisanDoc in artisansInRange){
+        _demandeArtisanService.sendDemandeArtisan(demandeData['date_debut'], demandeData['heure_debut'],
+            demandeData['adresse'], demandeData['id_Domaine'], demandeData['id_Prestation'],
+            demandeData['id_Client'], demandeData['urgence'], demandeData['latitude'],
+            demandeData['longitude'], artisanDoc.id);
+      }
+    }
+    else{
+      empty=true;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
