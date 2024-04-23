@@ -3,6 +3,7 @@ import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/NotificationsPage.dart';
 import 'package:reda/Client/Pages/ProfilePage.dart';
 import 'package:reda/Client/components/chatList_container.dart';
+import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Services/Chat/chat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';

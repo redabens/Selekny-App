@@ -1,170 +1,92 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:reda/Client/Pages/Home/home.dart';
-import 'package:reda/Client/Pages/NotificationsPage.dart';
-import 'package:reda/Pages/Chat/chatList_page.dart';
-import 'package:reda/Pages/WelcomeScreen.dart';
+import 'package:reda/Pages/authentification/connexion.dart';
+import 'package:reda/Pages/user_repository.dart';
+import 'package:reda/Pages/usermodel.dart';
 import 'profile_menu.dart';
 import 'update_profile_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
 
-class _ProfilePageState extends State<ProfilePage> {
-  int _currentIndex = 3;
-  late String currentUserID;
-  @override
-  void initState() {
-    super.initState();
-    getcurrentUserID();
-  }
-  Future<void> getcurrentUserID() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    String email = user?.email ?? "";
-    final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('User')
-        .where('email', isEqualTo: email)
-        .limit(1)
-        .get();
-    currentUserID = querySnapshot1.docs[0].id;
-  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Profile Page',
       theme: ThemeData.light(), // Use light theme by default
       darkTheme: ThemeData.dark(), // Define dark theme
-      home: Scaffold(
+      home: const Scaffold(
         body: ProfileScreen(),
-        bottomNavigationBar: BottomNavigationBar(
-
-          backgroundColor: const Color(0xFFF8F8F8),
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
-          iconSize: 30,
-          items: [
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 0;
-                  });
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage(),),
-                  );
-
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/accueil.png',
-                    color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
-                ),
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 1;
-                  });
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NotificationsPage(),),
-                  );
-
-
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/demandes.png',
-                    color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
-                ),
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 2;
-                  });
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID),),
-                  );
-
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/messages.png',
-                    color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
-                ),
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 3;
-                  });
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ProfilePage(),),
-                  );
-
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/profile.png',
-                    color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
-                ),
-              ),
-              label: '',
-            ),
-          ],
-        ),
       ),
     );
   }
 }
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
-  String tProfile = 'Profile       ';
-  String tProfileHeading = 'Bachir Rachad';
-  String tProfileSubHeading = 'mr_bachir@esi.dz';
-  String tEditProfile = 'Editer le Profile';
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
-  Color tPrimaryColor =
-      const Color(0xFF3E69FE); // Use the appropriate color code or define your color
-  Color tDarkColor = Colors.black
-      .withOpacity(0.8); // Use the appropriate dark color or define your color
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String tProfile = 'Profile';
+  String tProfileHeading = '';
+  String tProfileSubHeading = '';
+
+  late UserRepository userRepository;
+
+  @override
+  void initState() {
+    super.initState();
+    userRepository = UserRepository();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? currentUser = auth.currentUser;
+    String? email = currentUser?.email;
+
+    if (email != null) {
+      try {
+        UserModel? userModel = await userRepository.getUserDetails(email);
+        print("User data retrieved successfully");
+        setState(() {
+          tProfileHeading = userModel.nom;
+          tProfileSubHeading = email;
+          print(tProfile);
+          print(tProfileHeading);
+          print("User data fetched inside setState");
+        /*QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance
+            .collection('User')
+            .where('email', isEqualTo: email)
+            .limit(1)
+            .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          Map<String, dynamic> userData = querySnapshot.docs.first.data();
+          tProfileHeading= userData['name'] ?? '';
+          tProfileSubHeading = email;
+        }*/
+        print("User data fetched");
+        });
+      } catch (e) {
+        print("Error occured in fetchdata : ${e.toString()}");
+      }
+    } else {
+      print("Email doesn't exist ");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        /*leading: IconButton(
+        leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
@@ -178,7 +100,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             child: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           ),
-        ),*/
+        ),
         title: Center(
           child: Text(
             tProfile,
@@ -191,7 +113,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          decoration: const BoxDecoration(),
+          decoration: BoxDecoration(),
           child: Column(
             children: [
               /// -- IMAGE
@@ -253,7 +175,7 @@ class ProfileScreen extends StatelessWidget {
                           : Colors.black.withOpacity(0.6),
                       spreadRadius: 1,
                       blurRadius: 10,
-                      offset: const Offset(0, -20),
+                      offset: Offset(0, -20),
                     ),
                   ],
                 ),
@@ -304,20 +226,20 @@ class ProfileScreen extends StatelessWidget {
                                         RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.10),
+                                        BorderRadius.circular(10.10),
                                       ),
                                     ),
                                     backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                      const Color(0xFF3E69FE),
+                                    MaterialStateProperty.all<Color>(
+                                      Color(0xFF3E69FE),
                                     ),
                                     elevation:
-                                        MaterialStateProperty.all<double>(7),
+                                    MaterialStateProperty.all<double>(7),
                                     shadowColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.black),
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.black),
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     "NON",
                                     style: TextStyle(
                                       color: Colors.white,
@@ -326,39 +248,41 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                                 ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    // Deconnexion de l utilisateur
+                                    await FirebaseAuth.instance.signOut();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const WelcomePage()), //to home page not login
+                                              LoginPage()), //to home page not login
                                     );
                                   },
+                                  child: Text(
+                                    "OUI",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   style: ButtonStyle(
                                     // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
                                     shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10.10),
+                                        BorderRadius.circular(10.10),
                                       ),
                                     ),
                                     backgroundColor:
-                                        MaterialStateProperty.all<Color>(
+                                    MaterialStateProperty.all<Color>(
                                       Colors.grey.shade400,
                                     ),
                                     elevation:
-                                        MaterialStateProperty.all<double>(7),
+                                    MaterialStateProperty.all<double>(7),
                                     shadowColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.black),
-                                  ),
-                                  child: const Text(
-                                    "OUI",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.black),
                                   ),
                                 ),
                               ],
@@ -377,3 +301,4 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+//'assets/profile.JPG'

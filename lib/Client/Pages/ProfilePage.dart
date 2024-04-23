@@ -3,20 +3,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
+import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/pages/Chat/chatList_page.dart';
 
 import 'NotificationsPage.dart';
 
 
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfilePages extends StatefulWidget {
+  const ProfilePages({super.key});
 
   @override
-  ProfilePageState createState() => ProfilePageState();
+  ProfilePagesState createState() => ProfilePagesState();
 }
 
-class ProfilePageState extends State<ProfilePage> {
+class ProfilePagesState extends State<ProfilePages> {
   int _currentIndex =3;
   late String currentUserID;
   @override

@@ -8,6 +8,7 @@ import 'package:reda/Client/Pages/ProfilePage.dart';
 import 'package:reda/Client/Services/demande%20publication/getMateriel.dart';
 import 'package:reda/Client/components/Date.dart';
 import 'package:reda/Client/components/Demande.dart';
+import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/prestation_page.dart';
 import './Materiel.dart';
@@ -102,7 +103,7 @@ class DetailsDemandeState extends State<DetailsDemande> {
           ),
 
 
-          bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,

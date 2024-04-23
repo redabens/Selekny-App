@@ -1,9 +1,19 @@
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:reda/Pages/user_repository.dart';
+import 'package:reda/Pages/usermodel.dart';
 
-class UpdateProfileScreen extends StatelessWidget {
-  UpdateProfileScreen({super.key});
+class UpdateProfileScreen extends StatefulWidget {
+  const UpdateProfileScreen({super.key});
+
+  @override
+  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+}
+
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   // Strings
   String tFullName = 'Rachad Bachir';
   String tEditProfile = 'Editer le Profile       ';
@@ -14,6 +24,18 @@ class UpdateProfileScreen extends StatelessWidget {
   String tPhoneNo = 'numero';
   String tPassword = 'Ancien mot de passe';
   String tadress = 'Adresse';
+  String Id = '';
+  String name = '';
+  String email1 = '';
+  String numtel = '';
+  String adresse = '';
+  String oldPassword = '';
+  String newPassword = '';
+  String newName = '';
+  String newEmail = '';
+  String newAdress = '';
+  String newPhoneNumber = '';
+  bool isLoading = true;
 
   // Colors
   Color tPrimaryColor = Colors.white;
@@ -26,6 +48,85 @@ class UpdateProfileScreen extends StatelessWidget {
   String confirmPassword = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  late UserRepository userRepository;
+  late UserModel userModel;
+
+  @override
+  void initState() {
+    super.initState();
+    userRepository = UserRepository();
+    fetchUserData();
+  }
+
+  Future<String?> getUserIdFromFirestore(String email) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Si un document correspondant est trouvé, retournez son ID
+        return querySnapshot.docs.first.id;
+      } else {
+        print('Aucun utilisateur trouvé pour l\'adresse e-mail : $email');
+        return null;
+      }
+    } catch (e) {
+      print(
+          'Erreur lors de la recherche de l\'utilisateur dans Firestore : $e');
+      return null;
+    }
+  }
+
+  Future<void> fetchUserData() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? currentUser = auth.currentUser;
+    String? email = currentUser?.email;
+    String? id = await getUserIdFromFirestore(email ?? '');
+
+    if (email != null) {
+      try {
+        userModel = await userRepository.getUserDetails(email);
+        print("User data retrieved successfully");
+        setState(() {
+          Id = id ?? '';
+          name = userModel.nom;
+          email1 = email;
+          numtel = userModel.numTel;
+          adresse = userModel.adresse;
+          oldPassword = userModel.motDePasse;
+          isLoading = false;
+          print("User data fetched inside setState");
+        });
+        print("User data fetched");
+        print("le id : $Id");
+      } catch (e) {
+        print("Error occured in fetchdata : ${e.toString()}");
+      }
+    } else {
+      print("Email doesn't exist ");
+    }
+  }
+
+  Future<void> saveChanges() async {
+    UserModel updatedUser = UserModel(
+        id: Id,
+        nom: newName == '' ? name : newName,
+        numTel: newPhoneNumber == '' ? numtel : newPhoneNumber,
+        adresse: newAdress == '' ? adresse : newAdress,
+        email: newEmail == '' ? email1 : newEmail,
+        role: userModel.role,
+        motDePasse: newPassword == '' ? password : newPassword,
+        pathImage: userModel.pathImage);
+
+    await userRepository.updateUser(updatedUser);
+
+    print(updatedUser);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +148,7 @@ class UpdateProfileScreen extends StatelessWidget {
               color: Colors.grey.shade100,
               shape: BoxShape.rectangle,
               borderRadius:
-                  BorderRadius.circular(9), // Adjust border radius as needed
+              BorderRadius.circular(9), // Adjust border radius as needed
             ),
             child: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           ),
@@ -63,7 +164,11 @@ class UpdateProfileScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: isLoading
+            ? const Center(
+            child:
+            CircularProgressIndicator()) // Affichage de l'indicateur de chargement
+            : Container(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
@@ -76,7 +181,8 @@ class UpdateProfileScreen extends StatelessWidget {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: const Image(
-                            image: AssetImage('assets/profile.JPG'))),
+                            image: AssetImage(
+                                'assets/profile.JPG'))),
                   ),
                   Positioned(
                     //edit small icon
@@ -120,9 +226,13 @@ class UpdateProfileScreen extends StatelessWidget {
                           ),
                           border: const UnderlineInputBorder(),
                         ),
+                        onChanged: (value) {
+                          newName = value;
+                        },
                         initialValue:
-                            'Rachad Bachir', // Set the initial value here
+                        name, // importer depuis firestore !!!!!!!!!!!!!!!!!!!!!!!!!!
                       ),
+
                       SizedBox(height: tFormHeight - 20),
                       TextFormField(
                         decoration: InputDecoration(
@@ -132,8 +242,11 @@ class UpdateProfileScreen extends StatelessWidget {
                           ),
                           border: const UnderlineInputBorder(),
                         ),
+                        onChanged: (value) {
+                          newEmail = value;
+                        },
                         initialValue:
-                            'mr_bachir@esi.dz', // Set the initial value here
+                        email1, // importer depuis firestore !!!!!!!!!!!!!!!!!!!!!!!!!!
                       ),
                       SizedBox(height: tFormHeight - 20),
                       TextFormField(
@@ -144,8 +257,11 @@ class UpdateProfileScreen extends StatelessWidget {
                           ),
                           border: const UnderlineInputBorder(),
                         ),
+                        onChanged: (value) {
+                          newPhoneNumber = value;
+                        },
                         initialValue:
-                            '+213658557616', // Set the initial value here
+                        numtel, // importer depuis firestore !!!!!!!!!!!!!!!!!!!!!!!!!!
                       ),
                       SizedBox(height: tFormHeight - 20),
                       TextFormField(
@@ -156,11 +272,15 @@ class UpdateProfileScreen extends StatelessWidget {
                           ),
                           border: const UnderlineInputBorder(),
                         ),
+                        onChanged: (value) {
+                          newAdress = value;
+                        },
                         initialValue:
-                            'Bab ezzouare ,Alger Algerie', // Set the initial value here
+                        adresse, // importer depuis firestore !!!!!!!!!!!!!!!!!!!!!!!!!!
                       ),
+
                       SizedBox(height: tFormHeight),
-                      // Password TextFormField
+                      // Old Password TextFormField
                       TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
@@ -169,17 +289,30 @@ class UpdateProfileScreen extends StatelessWidget {
                         onChanged: (value) {
                           password = value;
                         },
+                        // verifier si password == oldpassword          ************************************************************
                       ),
-                      SizedBox(height: tFormHeight - 20),
-// Confirm Password TextFormField
+                      SizedBox(height: tFormHeight),
+                      // Password TextFormField
                       TextFormField(
                         obscureText: true,
                         decoration: const InputDecoration(
-                          labelText: 'Confirmer le mot de passe',
+                          labelText: 'Nouveau mot de passe',
+                        ),
+                        onChanged: (value) {
+                          // Store the new password value if needed
+                          newPassword = value;
+                        },
+                      ),
+                      SizedBox(height: tFormHeight - 20),
+                      // Confirm Password TextFormField
+                      TextFormField(
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: 'Confirmer le nouveau mot de passe',
                         ),
                         validator: (value) {
-                          if (value != password) {
-                            return 'Verifier votre mot de passe';
+                          if (value != newPassword) {
+                            return 'Les mots de passe ne correspondent pas';
                           }
                           return null;
                         },
@@ -192,29 +325,88 @@ class UpdateProfileScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              // Form is valid, perform action
-                              // Passwords match, proceed with further actions
-                            } else {
-                              // Form is not valid due to password mismatch
-                              // You can display an error message or perform any other action
-                              print('Passwords do not match');
+                          onPressed: () async {
+                            if (password.isEmpty) {
+                              // Display an error message if old password is not provided
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                        'Ancien mot de passe manquant'),
+                                    content: const Text(
+                                        'Veuillez entrer votre ancien mot de passe pour sauvegarder les modifications.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return; // Exit onPressed function
+                            }
+
+                            // Form is valid, perform action
+                            // Check if the old password matches the current password
+
+                            try {
+                              // Re-authenticate the user to verify the old password
+                              AuthCredential credential =
+                              EmailAuthProvider.credential(
+                                  email: email1,
+                                  password: oldPassword);
+                              await FirebaseAuth.instance.currentUser
+                                  ?.reauthenticateWithCredential(
+                                  credential);
+                              print("avant updater");
+
+                              // Old password matches, proceed with further actions
+                              await saveChanges(); // Call the function to update user data
+                              print("Donnes mis a jour avec success");
+                            } catch (e) {
+                              // Handle re-authentication error
+                              print('Erreur de réauthentification : $e');
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                        'Erreur de réauthentification'),
+                                    content: const Text(
+                                        'Votre ancien mot de passe est incorrect. Veuillez réessayer.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             }
                           },
                           style: ButtonStyle(
-                            minimumSize:
-                                MaterialStateProperty.all<Size>(const Size(330, 52)),
+                            minimumSize: MaterialStateProperty.all<Size>(
+                                const Size(330, 52)),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(13.13),
+                                borderRadius:
+                                BorderRadius.circular(13.13),
                               ),
                             ),
-                            backgroundColor: MaterialStateProperty.all<Color>(
+                            backgroundColor:
+                            MaterialStateProperty.all<Color>(
                               const Color(0xFF3E69FE),
                             ),
-                            elevation: MaterialStateProperty.all<double>(5),
+                            elevation:
+                            MaterialStateProperty.all<double>(5),
                             shadowColor: MaterialStateProperty.all<Color>(
                                 const Color(0xFF3E69FE)),
                           ),

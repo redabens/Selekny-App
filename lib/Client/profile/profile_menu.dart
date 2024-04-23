@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ProfileMenuWidget extends StatelessWidget {
-  const ProfileMenuWidget({
-    super.key,
+  ProfileMenuWidget({
+    Key? key,
     required this.title,
     required this.icon,
     required this.onPress,
     this.endIcon = true,
     this.textColor,
-  });
+  }) : super(key: key);
 
   final String title;
   final IconData icon;
@@ -39,14 +39,14 @@ class ProfileMenuWidget extends StatelessWidget {
       ),
       trailing: endIcon
           ? Container(
-              width: 10,
-              height: 10,
-              child: Icon(
-                Icons.arrow_forward_ios_outlined,
-                size: 25.0,
-                color: Theme.of(context).iconTheme.color,
-              ),
-            )
+        width: 10,
+        height: 10,
+        child: Icon(
+          Icons.arrow_forward_ios_outlined,
+          size: 25.0,
+          color: Theme.of(context).iconTheme.color,
+        ),
+      )
           : null,
       tileColor: backgroundColor,
     );

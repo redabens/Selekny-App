@@ -131,6 +131,14 @@ flutter:
     - icons/robinet.jpg
     - icons/urgent.png
     - icons/materiel.png
+    - assets/done.png
+    - assets/close.png
+    - assets/lieu.png
+    - assets/date.png
+    - assets/heure.png
+    - assets/cle.png
+    - assets/pdp.png
+    - assets/Ademandes.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

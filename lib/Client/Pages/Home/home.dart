@@ -6,6 +6,7 @@ import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Client/Pages/Home/body.dart';
 import 'package:reda/Client/Pages/NotificationsPage.dart';
 import 'package:reda/Client/Pages/ProfilePage.dart';
+import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart'; // Importation de la classe Searchbar
 
 class HomePage extends StatefulWidget {
