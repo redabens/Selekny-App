@@ -7,7 +7,6 @@ import 'chatListElement.dart';
 import 'dart:async';
 
 class ChatListService extends ChangeNotifier {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   /*Stream<QuerySnapshot> getConversations(String currentUserId) {

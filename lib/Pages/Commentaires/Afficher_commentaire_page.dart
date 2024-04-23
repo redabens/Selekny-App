@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Client/components/Commentaire_container.dart';
 import 'package:reda/Services/Commentaires/commentaires_service.dart';
-import 'package:reda/components/Commentaire_container.dart';
-import 'package:reda/components/my_text_filed.dart';
 
 class AfficherCommentairePage extends StatefulWidget {
   const AfficherCommentairePage({
@@ -31,7 +30,7 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
   }
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc = await _firestore.collection('User').doc(userID).get();
 
     // Vérifier si le document existe
     if (userDoc.exists) {
@@ -48,7 +47,7 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
   }
   Future<String> getUserName(String userID) async {
     // Récupérer le document utilisateur
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc = await _firestore.collection('User').doc(userID).get();
 
     // Vérifier si le document existe
     if (userDoc.exists) {

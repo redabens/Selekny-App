@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:reda/Pages/Home/home.dart';
-import 'package:reda/Pages/NotificationsPage.dart';
-import 'package:reda/Pages/ProfilePage.dart';
+import 'package:reda/Client/Pages/Home/home.dart';
+import 'package:reda/Client/Pages/NotificationsPage.dart';
+import 'package:reda/Client/Pages/ProfilePage.dart';
+import 'package:reda/Client/components/chatList_container.dart';
 import 'package:reda/Services/Chat/chat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:reda/Services/chat/chatList_service.dart';
-import 'package:reda/components/chatList_container.dart';
 import 'package:intl/intl.dart';
 import 'package:reda/pages/Chat/chat_page.dart';
 
@@ -26,18 +26,15 @@ class ChatListPage extends StatefulWidget{
 }
 
 class _ChatListPageState extends State<ChatListPage> {
+  late String currentUserID;
+  @override
+  void initState() {
+    super.initState();
+    getcurrentUserID();
+  }
   int _currentIndex = 2;
-  final List<Widget> _pages = [
-    //les 4 pages de la navbar
-    const HomePage(),
-    const NotificationsPage(),
-    const ChatListPage(currentUserID: 'hskvyxfATXnpgG8vsZlc'),
-    const ProfilePage(),
-  ];
 
   final ChatListService _ChatListService = ChatListService();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> getUserImgPathById(String userId) async {
 
@@ -95,7 +92,16 @@ class _ChatListPageState extends State<ChatListPage> {
     snapshot.data()?['name']);
     return name;
   }
-
+  Future<void> getcurrentUserID() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    String email = user?.email ?? "";
+    final querySnapshot1 = await FirebaseFirestore.instance
+        .collection('User')
+        .where('email', isEqualTo: email)
+        .limit(1)
+        .get();
+    currentUserID= querySnapshot1.docs[0].id;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,7 +193,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const HomePage(),),
                 );
 
               },
@@ -209,7 +215,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const NotificationsPage(),),
                 );
 
 
@@ -232,7 +238,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID),),
                 );
 
               },
@@ -254,7 +260,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
                 );
 
               },
@@ -299,7 +305,8 @@ class _ChatListPageState extends State<ChatListPage> {
                   return Text('Error loading chat: ${snapshot.error}');
                 }
                 if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
+                  return  Center(child: CircularProgressIndicator(color: Colors.grey[350],// Replace with your desired color
+                  ));
                 }
                 return snapshot.data!;
               },
@@ -309,39 +316,6 @@ class _ChatListPageState extends State<ChatListPage> {
       },
     );
   }
-  /*Widget _buildChatList(){
-    return StreamBuilder(
-      stream: _ChatListService.getConversations(widget.currentUserID), //_firebaseAuth.currentUser!.uid
-      builder: (context, snapshot){
-        if (snapshot.hasError){
-          return Text('Error${snapshot.error}');
-        }
-        if(snapshot.connectionState == ConnectionState.waiting){
-          return const Text('Loading..');
-        }
-        final documents = snapshot.data!.docs;
-        if (documents.isEmpty) {
-          return const Center(child: Text('No conversations found'));
-        }
-        for (var doc in documents) {
-          print("Document Dataaaaaaaaa: ${doc.data()}");
-        }
-        return FutureBuilder<List<Widget>>(
-            future: Future.wait(snapshot.data!.docs.map((document) => _buildChatListItem(document,widget.currentUserID))),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(child: Text('Error loading chats ${snapshot.error}'));
-              }
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return ListView(children: snapshot.data!);
-            });
-      },
-    );
-  }*/
-
-
   Future<Widget> _buildChatListItem(DocumentSnapshot doc,String currentUserID) async {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     String profileImage = "assets/images/placeholder.png"; // Default image
@@ -386,10 +360,10 @@ class _ChatListPageState extends State<ChatListPage> {
           InkWell(
             onTap: () {
               // Navigate to ChatPage with receiver's user ID
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(    //otherUserId
-                  builder: (context) => ChatPage(receiverUserID: otherUserId ,  // Pass receiver user ID
+                  builder: (context) => ChatPage(receiverUserID: otherUserId , currentUserId: widget.currentUserID
                   ),
                 ),
               );

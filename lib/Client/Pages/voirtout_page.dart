@@ -2,74 +2,71 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
-import 'package:reda/Client/Pages/voirtout_page.dart';
-import 'package:reda/Client/components/Prestation_container.dart';
+import 'package:reda/Client/components/Domaine_container.dart';
+import 'package:reda/Pages/homedefault.dart';
 
-class PrestationPage extends StatefulWidget {
-  final int indexe;
-  final String domaineID;
+class VoirtoutPage extends StatefulWidget {
   final int type;
-  const PrestationPage({
-    super.key,
-    required this.domaineID,
-    required this.indexe, required this.type,
+  const VoirtoutPage({
+    super.key, required this.type,
   });
 
   @override
-  State<PrestationPage> createState() => _PrestationPageState();
+  State<VoirtoutPage> createState() => _VoirtoutPageState();
 }
 
-class _PrestationPageState extends State<PrestationPage> {
-  List<Prestation> prestations = [];
+class _VoirtoutPageState extends State<VoirtoutPage> {
+  List<Domaine> domaines = [];
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _getPrestations(); // Call the function to fetch prestations on initialization
+    _getDomaines(); // Call the function to fetch prestations on initialization
   }
 
-  Future<void> _getPrestations() async {
+  Future<void> _getDomaines() async {
     setState(() {
       _isLoading = true; // Set loading state to true
     });
     try {
       // Récupérer les prestations de Firestore
-      final prestationsSnapshot = await FirebaseFirestore.instance
+      final domainesSnapshot = await FirebaseFirestore.instance
           .collection('Domaine')
-          .doc(widget.domaineID)
-          .collection('Prestations')
           .get();
 
       // Mapper chaque document de prestation à un objet Prestation
-      final futures = prestationsSnapshot.docs.map((doc) async {
+      final futures = domainesSnapshot.docs.map((doc) async {
+        final String domaineID= doc.id;
         // Obtenir la référence de l'image dans Firebase Storage
-        final reference = FirebaseStorage.instance.ref().child(doc.data()['image']);
+        final reference = FirebaseStorage.instance.ref().child(doc.data()['Image']);
 
         // Télécharger l'URL de l'image (handle potential errors)
         String? url;
         try {
           url = await reference.getDownloadURL();
-          print(url);
         } catch (e) {
           print("Error downloading image URL: $e");
           // Handle the error here (e.g., display a placeholder image)
         }
 
-        return Prestation(
-          nomprestation: doc.data()['nom_prestation'],
-          imageUrl: url ?? "placeholder_image.png",// Use downloaded URL or a placeholder
-          domaineID: '',
-          prestationID: doc.id, type: 0,
+        return Domaine(
+          domaineID: domaineID,
+          nomdomaine: doc.data()['Nom'],
+          imageUrl: url ?? "placeholder_image.png", type: 0, // Use downloaded URL or a placeholder
         );
       });
 
       // Attendre que toutes les images soient téléchargées
-      final prestations = await Future.wait(futures);
+      final domaines = await Future.wait(futures);
 
       // Mettre à jour l'interface utilisateur après la récupération des données
       setState(() {
-        this.prestations = prestations; // Update state with fetched data
+        this.domaines = domaines;
+        Domaine domaine;
+        for(domaine in domaines){
+          print("${domaine.domaineID} et ${domaine.nomdomaine} et ${domaine.imageUrl}");
+        }// Update state with fetched data
         _isLoading = false; // Set loading state to false
       });
     } catch (e) {
@@ -88,22 +85,22 @@ class _PrestationPageState extends State<PrestationPage> {
           backgroundColor: Colors.white,
           leading: IconButton(
             onPressed: () {
-              if(widget.indexe == 1){
+              if(widget.type==1){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VoirtoutPage(type: widget.type,)),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+              }else{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeDefaultPage()),
                 );
               }
-              else if(widget.indexe == 2){
-                Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-              );}
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
           title: const Text(
-            'Prestations',
+            'Domaines',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -117,16 +114,14 @@ class _PrestationPageState extends State<PrestationPage> {
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: prestations.length,
+                itemCount: domaines.length,
                 itemBuilder: (context, index) {
                   return Column( // Wrap in a Column for vertical spacing
                     children: [
-                      Prestation(
-                        nomprestation: prestations[index].nomprestation,
-                        imageUrl: prestations[index].imageUrl,
-                        domaineID: widget.domaineID,
-                        prestationID: prestations[index].prestationID,
-                        type: widget.type,
+                      Domaine(
+                        domaineID: domaines[index].domaineID,
+                        nomdomaine: domaines[index].nomdomaine,
+                        imageUrl: domaines[index].imageUrl, type: widget.type,
                       ),
                       const SizedBox(height: 20), // Add spacing between containers
                     ],
@@ -140,6 +135,3 @@ class _PrestationPageState extends State<PrestationPage> {
     );
   }
 }
-
-
-

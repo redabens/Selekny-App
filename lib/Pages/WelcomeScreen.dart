@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reda/Pages/Home/home.dart';
-import 'package:reda/Pages/profile/profile_screen.dart';
+import 'package:reda/Client/Pages/Home/home.dart';
+import 'package:reda/Pages/homedefault.dart';
 import 'authentification/inscription.dart';
 import 'authentification/connexion.dart';
 
@@ -132,7 +132,7 @@ class WelcomeScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const HomePage()), //to home page not login
+                            const HomeDefaultPage()), //to home page not login
                   );
                 },
                 child: Row(

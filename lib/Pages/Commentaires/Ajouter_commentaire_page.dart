@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reda/Pages/Home/home.dart';
+import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Services/Commentaires/commentaires_service.dart';
 
 class AjouterCommentairePage extends StatefulWidget {

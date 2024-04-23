@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:reda/Client/components/chat_bubble.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Services/Chat/chat_service.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:reda/components/chat_bubble.dart';
-import 'package:reda/components/my_text_filed.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:reda/Services/image_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,13 +10,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 const Color myBlueColor = Color(0xFF3E69FE);
 
 class ChatPage extends StatefulWidget{
+  final String receiverUserID;
+  final String currentUserId;
   const ChatPage({
     super.key,
-    // required this.receiverUserEmail,
     required this.receiverUserID,
+    required this.currentUserId,
   });
-  // final  receiverUserEmail;
-  final String receiverUserID;
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -43,16 +42,6 @@ class _ChatPageState extends State<ChatPage> {
     print(name);
     return name;
   }
-
-  final currentUserId ='hskvyxfATXnpgG8vsZlc';
-  final String currentUserEmail = 'mm_bensemane@esi.dz';
-  /*
-void geturl() async {
-  final String imageUrl = await getImageUrl('Prestations/1vyrPcSqF0LTRZpaYUVy.png');
-  print('hadaaaa url : '+imageUrl);
-}
-*/
-//'https://firebasestorage.googleapis.com/v0/b/selekny-app.appspot.com/o/Prestations%2F1vyrPcSqF0LTRZpaYUVy.png?alt=media&token=078326f3-518a-44a8-9609-9d538343b362';
   Future<String> getImageUrl(String imagePath) async {
     try {
       final reference = FirebaseStorage.instance.ref().child(imagePath);
@@ -84,7 +73,6 @@ void geturl() async {
       print("Error: $error");
     }
   }
-
   Future<Widget> _buildAppBar(String otherUserId) async {
 
     String otherUserName = '';
@@ -99,8 +87,8 @@ void geturl() async {
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
-        onPressed: () => Navigator.pop(context),
-      ),
+        onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: widget.currentUserId),),
+      )),
       title: Row(
         children: [
           Padding(
@@ -193,7 +181,7 @@ void geturl() async {
   // build message list
   Widget _buildMessageList(){
     return StreamBuilder(
-      stream: _chatService.getMessages(widget.receiverUserID, currentUserId),
+      stream: _chatService.getMessages(widget.receiverUserID, widget.currentUserId),
       builder: (context, snapshot){
         if (snapshot.hasError){
           print('(snapshot.hasError)');
@@ -215,14 +203,14 @@ void geturl() async {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
     // align the messages to the right sender is the current user , otherwise the left
-    var alignment = (data['senderId'] == currentUserId)
+    var alignment = (data['senderId'] == widget.currentUserId)
         ? Alignment.centerRight
         : Alignment.centerLeft;
-    var bubbleColor = (data['senderId'] == currentUserId)
+    var bubbleColor = (data['senderId'] == widget.currentUserId)
         ? const Color(0xFF3E69FE)
         : const Color(0xFFE6E6E6);
 
-    var textColor = (data['senderId'] == currentUserId)
+    var textColor = (data['senderId'] == widget.currentUserId)
         ? Colors.white
         : Colors.black;
 
@@ -231,10 +219,10 @@ void geturl() async {
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Column(
-          crossAxisAlignment: (data['senderId'] == currentUserId)
+          crossAxisAlignment: (data['senderId'] == widget.currentUserId)
               ?CrossAxisAlignment.end
               :CrossAxisAlignment.start,
-          mainAxisAlignment: (data['senderId'] == currentUserId)
+          mainAxisAlignment: (data['senderId'] == widget.currentUserId)
               ? MainAxisAlignment.end
               : MainAxisAlignment.start,
           children: [

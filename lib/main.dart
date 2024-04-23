@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/Commentaires/Afficher_commentaire_page.dart';
 import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
-import 'package:reda/Pages/Home/home.dart';
 import 'package:reda/Pages/Chat/chat_page.dart';
-import 'package:reda/Pages/PubDemande/detailsDemande.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/help.dart';
 import 'package:reda/Pages/prestation_page.dart';
-import 'package:reda/Pages/pub_demande_page.dart';
 import 'firebase_options.dart';
 import 'package:reda/Services/ConvertAdr.dart';
 import 'dart:convert';
@@ -102,6 +100,7 @@ class MyAppState extends State<MyApp> {
       final useremail = auth.currentUser?.email;
       role = await getUserRole(useremail!) ;
       print(useremail);
+      print(role);
       if (user != null && mounted) {
         setState(() {
           isLogin = true;
