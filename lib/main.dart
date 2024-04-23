@@ -9,7 +9,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:reda/Back/services/notifications.dart';
 import 'package:reda/message.dart';
-
+import 'package:reda/Front/profile/profile_menu.dart';
+import 'package:reda/Front/profile/profile_screen.dart';
+import 'package:reda/Front/profile/update_profile_screen.dart';
 // function to listen to background changes
 
 final navigatorkey = GlobalKey<NavigatorState>();
@@ -63,6 +65,7 @@ void main() async {
   if (message != null) {
     print("Launched from terminated state");
     Future.delayed(Duration(seconds: 1), () {
+      // delay time for app initialization
       navigatorkey.currentState!.pushNamed("/message", arguments: message);
     });
   }
@@ -113,8 +116,8 @@ class MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
         // Add other dark theme configurations
       ),
-      //home: isLogin ? ProfilePage() : WelcomePage(),
-      home: WelcomePage(),
+      home: isLogin ? ProfilePage() : WelcomePage(),
+      //home: ProfilePage(),
       routes: {"/message": (context) => MessagePage()},
     );
   }

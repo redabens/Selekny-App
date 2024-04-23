@@ -36,6 +36,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   String newEmail = '';
   String newAdress = '';
   String newPhoneNumber = '';
+  double latitude = 0;
+  double longitude = 0;
+
   bool isLoading = true;
 
   // Colors
@@ -100,6 +103,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           numtel = userModel.numTel;
           adresse = userModel.adresse;
           oldPassword = userModel.motDePasse;
+          latitude = userModel.latitude;
+          longitude = userModel.longitude;
           isLoading = false;
           print("User data fetched inside setState");
         });
