@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,8 +37,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   String newEmail = '';
   String newAdress = '';
   String newPhoneNumber = '';
+  String oldImgUrl = '';
   double latitude = 0;
   double longitude = 0;
+  String newUrlImg = '';
+  String fileName = '';
 
   bool isLoading = true;
 
@@ -105,6 +109,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           oldPassword = userModel.motDePasse;
           latitude = userModel.latitude;
           longitude = userModel.longitude;
+          oldImgUrl = userModel.pathImage;
           isLoading = false;
           print("User data fetched inside setState");
         });
@@ -127,13 +132,43 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         email: newEmail == '' ? email1 : newEmail,
         role: userModel.role,
         motDePasse: newPassword == '' ? password : newPassword,
-        pathImage: userModel.pathImage,
+        pathImage: fileName,
         latitude: userModel.latitude,
         longitude: userModel.longitude);
 
-    await userRepository.updateUser(updatedUser);
+    try {
+      await userRepository.updateUser(updatedUser);
+      //  afficher a l utilisateur le succes de la sauvegarde
+    } catch (e) {
+      print("Error in saving profile edit : ${e.toString()}");
+    }
 
     print(updatedUser);
+  }
+
+  Future<void> uploadUserProfilPicture() async {
+    try {
+      final image = await ImagePicker().pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 70,
+          maxHeight: 512,
+          maxWidth: 512);
+      if (image != null) {
+        final imageUrl =
+            await userRepository.uploadImage("Users/Images/Profile/", image);
+        // update user image record
+        final uri = Uri.parse(imageUrl);
+        fileName = uri.pathSegments.last;
+        print("FILE NAME : ${fileName}");
+        setState(() {
+          newUrlImg = imageUrl.toString();
+          print("Url img : ${newUrlImg}");
+        });
+      }
+    } catch (e) {
+      print("There is an error in uploading image in profile");
+      // afficher l erreur dans le front
+    }
   }
 
   @override
@@ -147,7 +182,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            UserModel updatedUser = UserModel(
+                id: Id,
+                nom: newName == '' ? name : newName,
+                numTel: newPhoneNumber == '' ? numtel : newPhoneNumber,
+                adresse: newAdress == '' ? adresse : newAdress,
+                email: newEmail == '' ? email1 : newEmail,
+                role: userModel.role,
+                motDePasse: newPassword == '' ? password : newPassword,
+                pathImage: newUrlImg,
+                latitude: userModel.latitude,
+                longitude: userModel.longitude);
+            Navigator.pop(context, updatedUser);
           },
           icon: Container(
             width: 36,
@@ -181,25 +227,37 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 child: Column(
                   children: [
                     // -- IMAGE with ICON
+
                     Stack(
                       children: [
                         SizedBox(
                           width: 120,
                           height: 120,
                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: const Image(
-                                  image: AssetImage(
-                                      'lib/Front/assets/profile.JPG'))),
+                            borderRadius: BorderRadius.circular(60),
+                            child: oldImgUrl.isEmpty && newUrlImg.isEmpty
+                                ? Icon(
+                                    Icons.account_circle,
+                                    size: 120,
+                                    color: Colors.grey[400],
+                                  ) // Placeholder si aucune image n'est disponible
+                                : Image.network(
+                                    newUrlImg.isNotEmpty
+                                        ? newUrlImg
+                                        : oldImgUrl,
+                                    fit: BoxFit.cover,
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                          ),
                         ),
                         Positioned(
-                          //edit small icon
                           bottom: 0,
                           right: 0,
                           child: GestureDetector(
                             onTap: () {
-                              // Add your onTap logic here
-                              print('Edit button tapped');
+                              // Appeler la fonction pour télécharger une nouvelle image depuis la galerie
+                              uploadUserProfilPicture();
                             },
                             child: Container(
                               width: 35,

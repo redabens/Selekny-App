@@ -123,16 +123,6 @@ class NotificationServices {
     });
   }
 
-  void handleMessage(BuildContext context, RemoteMessage message) {
-    if (message.data['type'] == 'msg') {
-      // Redirigez vers la page du chat
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ProfileScreen()),
-      );
-    }
-  }
-
   static Future showSimpleNotification({
     required String title,
     required String body,

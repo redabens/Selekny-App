@@ -261,14 +261,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 : Colors.black.withOpacity(0.15),
                             inactiveFgColor:
                                 isDark ? Colors.black : Colors.black,
-                            labels: ['Client', 'Prestataire'],
+                            labels: ['Client', 'Artisan'],
                             onToggle: (index) {
 // Here we can handle the toggle change
 
                               setState(() {
                                 selectedindex = index != null ? index : -1;
                                 selectedRole =
-                                    index == 0 ? 'client' : 'prestataire';
+                                    index == 0 ? 'client' : 'artisan';
                               });
                             },
                           ),

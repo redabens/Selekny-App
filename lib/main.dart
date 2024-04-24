@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Front/WelcomeScreen.dart';
+import 'package:reda/Front/authentification/connexion.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,6 +13,7 @@ import 'package:reda/message.dart';
 import 'package:reda/Front/profile/profile_menu.dart';
 import 'package:reda/Front/profile/profile_screen.dart';
 import 'package:reda/Front/profile/update_profile_screen.dart';
+import 'package:reda/Front/authentification/creationArtisan.dart';
 // function to listen to background changes
 
 final navigatorkey = GlobalKey<NavigatorState>();
@@ -117,7 +119,6 @@ class MyAppState extends State<MyApp> {
         // Add other dark theme configurations
       ),
       home: isLogin ? ProfilePage() : WelcomePage(),
-      //home: ProfilePage(),
       routes: {"/message": (context) => MessagePage()},
     );
   }

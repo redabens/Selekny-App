@@ -74,8 +74,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
               latitude: position['latitude'],
               longitude: position['longitude']);
           // ajouter l utilisateur a la base de donnees firestore
-          CollectionReference users =
-              FirebaseFirestore.instance.collection('users');
+          // CollectionReference users =
+          //FirebaseFirestore.instance.collection('users');
+
           if (user != null) {
             print("User successfully created");
             UserRepository userRepository = UserRepository();
@@ -85,7 +86,13 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
             );
             try {
               await userRepository.createUser(newClient);
+              await FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(id)
+                  .set(newClient.toJson());
+
               print('Document added successfully');
+              print("ID auth : ${id}");
             } on FirebaseAuthException catch (e) {
               print("Error adding document: $e");
             }
