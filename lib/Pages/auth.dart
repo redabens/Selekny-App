@@ -18,7 +18,7 @@ class FirebaseAuthService {
       if (user != null && !user.emailVerified) {
         try {
           await user.sendEmailVerification();
-          print("Email sent successfully to : $email");
+          print("Email sent successfully to : " + email);
         } catch (e) {
           print("Some error occured in sending email verification");
         }

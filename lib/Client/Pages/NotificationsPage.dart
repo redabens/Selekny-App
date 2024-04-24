@@ -124,7 +124,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => ProfilePage(),),
                 );
 
               },

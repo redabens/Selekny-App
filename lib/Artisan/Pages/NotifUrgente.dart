@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Services/DemandeArtisan.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Pages/retourAuth.dart';
 import 'NotifDemande.dart';
 
 class NotifUrgente extends StatefulWidget {
@@ -21,31 +22,47 @@ class NotifUrgente extends StatefulWidget {
 
 class NotifUrgenteState extends State<NotifUrgente> {
   int _currentIndex = 1;
-
-  final List<Widget> _pages = [
-    //les 4 pages de la navbar
-    // HomePage(),
-    const NotifUrgente(),
-    // ChatPage(),
-    // ProfilePage(),
-  ];
   late String currentUserID;
-  Future<void> getcurrentUserID() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    String email = user?.email ?? "";
-    final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .limit(1)
-        .get();
-    currentUserID = querySnapshot1.docs[0].id;
-  }
   final DemandeArtisanService _demandeArtisanService =DemandeArtisanService();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getcurrentUserID();
+    setState(() {
+      fetchUserData();
+    });
+    print(currentUserID);
+  }
+  Future<String?> getUserIdFromFirestore(String email) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Si un document correspondant est trouvé, retournez son ID
+        return querySnapshot.docs.first.id;
+      } else {
+        print('Aucun utilisateur trouvé pour l\'adresse e-mail : $email');
+        return null;
+      }
+    } catch (e) {
+      print(
+          'Erreur lors de la recherche de l\'utilisateur dans Firestore : $e');
+      return null;
+    }
+  }
+  Future<void> fetchUserData() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? currentUser = auth.currentUser;
+    String? email = currentUser?.email;
+    String? id = await getUserIdFromFirestore(email ?? '');
+    if(email != null){
+      currentUserID = id ?? '';
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -81,7 +98,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const RetourAuth()),
                 );
 
               },
@@ -103,7 +120,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const RetourAuth()),
                 );
 
 
@@ -126,7 +143,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const RetourAuth()),
                 );
 
               },
@@ -148,7 +165,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const RetourAuth()),
                 );
 
               },

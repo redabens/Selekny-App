@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
@@ -11,8 +9,6 @@ import 'update_profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,6 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String tProfile = 'Profile';
   String tProfileHeading = '';
   String tProfileSubHeading = '';
+  String imageUrl = '';
 
   late UserRepository userRepository;
 
@@ -55,6 +52,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (email != null) {
       try {
         UserModel? userModel = await userRepository.getUserDetails(email);
+        imageUrl = await userRepository.getImgUrl(email);
+        print("img url : " + imageUrl);
         print("User data retrieved successfully");
         setState(() {
           tProfileHeading = userModel.nom;
@@ -63,6 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           print(tProfileHeading);
           print("User data fetched inside setState");
         });
+
         print("User data fetched");
       } catch (e) {
         print("Error occured in fetchdata : ${e.toString()}");
@@ -75,220 +75,177 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: Color(0xFFF1F3FC),
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(9),
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF1F3FC),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(9),
+              ),
+              child: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
             ),
-            child: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+          ),
+          title: Center(
+            child: Text(
+              tProfile,
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
         ),
-        title: Center(
-          child: Text(
-            tProfile,
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
-        ),
-        //actions: [
-        //  IconButton(onPressed: () {}, icon: Icon(isDark ? Icons.sunny : Icons.mode_night_outlined),)
-        //],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(),
-          child: Column(
-            children: [
-              /// -- IMAGE
-              Stack(
-                children: [
-                  SizedBox(
-                    width: 110,
-                    height: 110,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.asset('assets/profile.JPG'),
-                    ),
-                  ),
-                  Positioned(
-                    //edit small icon
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        print('Edit button tapped');
-                      },
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.grey.shade300,
-                        ),
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Text(tProfileHeading,
-                  style: Theme.of(context).textTheme.bodyMedium),
-              Text(tProfileSubHeading,
-                  style: Theme.of(context).textTheme.bodyMedium),
-              const SizedBox(height: 50),
-
-              /// -- MENU
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                  color: Theme.of(context).colorScheme.surface,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.grey.shade300
-                          : Colors.black.withOpacity(0.6),
-                      spreadRadius: 1,
-                      blurRadius: 10,
-                      offset: const Offset(0, -20),
-                    ),
-                  ],
-                ),
-                child: Expanded(
-                  child: Column(
+        body: SingleChildScrollView(
+            child: Container(
+                padding: const EdgeInsets.all(20), // Ajout de padding
+                child: Column(
+                    crossAxisAlignment:
+                    CrossAxisAlignment.center, // Centrage des enfants
                     children: [
-                      ProfileMenuWidget(
-                        title: "Editer le profile",
-                        icon: Icons.person_outline_outlined,
-                        onPress: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const UpdateProfileScreen()),
-                          );
-                        },
+                      const SizedBox(height: 10),
+                      // Image de profil
+                      imageUrl.isNotEmpty
+                          ? ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            50), // Ajout du BorderRadius
+                        child: Image.network(
+                          imageUrl,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                          : Icon(
+                        Icons.account_circle,
+                        size: 150,
+                        color: Colors.grey[400],
                       ),
-                      ProfileMenuWidget(
-                          title: "Mode sombre",
-                          icon: Icons.mode_night_outlined,
-                          onPress: () {}),
-                      ProfileMenuWidget(
-                        title: "Devenir prestataire",
-                        icon: Icons.work_outline_outlined,
-                        onPress: () {},
-                      ),
-                      ProfileMenuWidget(
-                        title: "Se deconnecter",
-                        icon: Icons.logout_outlined,
-                        endIcon: false,
-                        onPress: () {
-                          // Show AlertDialog
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text("SE DECONNECTER"),
-                              content: const Text(
-                                  "etes-vous sur de vouloir vous déconnecter ?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    // Close the dialog
-                                    Navigator.pop(context);
-                                  },
-                                  style: ButtonStyle(
-                                    // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(10.10),
-                                      ),
-                                    ),
-                                    backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                      const Color(0xFF3E69FE),
-                                    ),
-                                    elevation:
-                                    MaterialStateProperty.all<double>(7),
-                                    shadowColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.black),
-                                  ),
-                                  child: const Text(
-                                    "NON",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    // Deconnexion de l utilisateur
-                                    await FirebaseAuth.instance.signOut();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              LoginPage()), //to home page not login
-                                    );
-                                  },
-                                  style: ButtonStyle(
-                                    // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(10.10),
-                                      ),
-                                    ),
-                                    backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                      Colors.grey.shade400,
-                                    ),
-                                    elevation:
-                                    MaterialStateProperty.all<double>(7),
-                                    shadowColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.black),
-                                  ),
-                                  child: const Text(
-                                    "OUI",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                      Text(tProfileHeading,
+                          style: Theme.of(context).textTheme.bodyMedium),
+                      Text(tProfileSubHeading,
+                          style: Theme.of(context).textTheme.bodyMedium),
+                      const SizedBox(height: 50),
+
+                      /// -- MENU
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
+                          color: Theme.of(context).colorScheme.surface,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context).brightness ==
+                                  Brightness.light
+                                  ? Colors.grey.shade300
+                                  : Colors.black.withOpacity(0.6),
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              offset: const Offset(0, -20),
                             ),
-                          );
-                        },
+                          ],
+                        ),
+                        child: Expanded(
+                          child: Column(
+                            children: [
+                              ProfileMenuWidget(
+                                title: "Editer le profile",
+                                icon: Icons.person_outline_outlined,
+                                onPress: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const UpdateProfileScreen(),
+                                    ),
+                                  ).then((updatedUserData) {
+                                    // Handle the updated user data here
+                                    if (updatedUserData != null) {
+                                      // Update the profile page with the updated user data
+                                      setState(() {
+                                        tProfileHeading = updatedUserData.nom;
+                                        tProfileSubHeading =
+                                            updatedUserData.email;
+                                        imageUrl = updatedUserData.pathImage;
+                                      });
+                                    }
+                                  });
+                                  ;
+                                },
+                              ),
+                              ProfileMenuWidget(
+                                title: "Mode sombre",
+                                icon: Icons.mode_night_outlined,
+                                onPress: () {},
+                              ),
+                              ProfileMenuWidget(
+                                title: "Devenir prestataire",
+                                icon: Icons.work_outline_outlined,
+                                onPress: () {},
+                              ),
+                              ProfileMenuWidget(
+                                title: "Se déconnecter",
+                                icon: Icons.logout_outlined,
+                                endIcon: false,
+                                onPress: () {
+                                  // Show AlertDialog
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text("SE DECONNECTER"),
+                                      content: const Text(
+                                        "Êtes-vous sûr de vouloir vous déconnecter ?",
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            // Fermer le dialogue
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            "NON",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            // Déconnexion de l'utilisateur
+                                            await FirebaseAuth.instance
+                                                .signOut();
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LoginPage(),
+                                              ),
+                                            );
+                                          },
+                                          child: const Text(
+                                            "OUI",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+                    ]))));
   }
 }
 //'assets/profile.JPG'

@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:reda/Pages/usermodel.dart';
 
 class UserRepository extends GetxController {
@@ -51,5 +55,36 @@ class UserRepository extends GetxController {
     print(user.toJson());
     print("user id : ${user.id}");
     await db.collection("users").doc(user.id).update(user.toJson());
+  }
+
+  Future<String> uploadImage(String path, XFile image) async {
+    late String url = '';
+    try {
+      final ref = FirebaseStorage.instance.ref(path).child(image.name);
+      await ref.putFile(File(image.path));
+      url = await ref.getDownloadURL();
+    } catch (e) {
+      print("Something went wrong in upload image : ${e.toString()}");
+    }
+
+    return url;
+  }
+
+  Future<String> getImgUrl(String email) async {
+    late String imgUrl = '';
+    Map<String, dynamic> userData = {};
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await db
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .limit(1)
+        .get();
+    if (querySnapshot.docs.isNotEmpty) {
+      userData = querySnapshot.docs.first.data();
+    } else {
+      print('No user found for email: $email');
+    }
+
+    imgUrl = userData['pathImage'] ?? '';
+    return imgUrl;
   }
 }

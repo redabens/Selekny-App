@@ -128,7 +128,7 @@ class ProfilePagesState extends State<ProfilePages> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => ProfilePage(),),
                 );
 
               },

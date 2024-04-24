@@ -101,7 +101,7 @@ class _ChatListPageState extends State<ChatListPage> {
         .where('email', isEqualTo: email)
         .limit(1)
         .get();
-    currentUserID= querySnapshot1.docs[0].id;
+    currentUserID= querySnapshot1.docs.first.id;
   }
   @override
   Widget build(BuildContext context) {
@@ -261,7 +261,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => ProfilePage(),),
                 );
 
               },

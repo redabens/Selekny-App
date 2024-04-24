@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'inscription.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
@@ -10,7 +11,7 @@ class ForgotPasswordPage extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: Scaffold(
+      home: const Scaffold(
         body: ForgotPasswordScreen(),
       ),
     );
@@ -18,6 +19,8 @@ class ForgotPasswordPage extends StatelessWidget {
 }
 
 class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
+
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
@@ -65,12 +68,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: Column(
                   children: [
                     Image.asset(
-                      'lib/Front/assets/logo.png',
+                      'assets/logo.png',
                       width: 85,
                       height: 90,
                     ),
-                    SizedBox(height: 5),
-                    Text(
+                    const SizedBox(height: 5),
+                    const Text(
                       "Mot de passe oublié",
                       style: TextStyle(
                         fontSize: 20,
@@ -85,7 +88,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 60),
+                    const SizedBox(height: 60),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -105,8 +108,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           labelStyle: TextStyle(
                             color: textColor,
                           ),
-                          border: UnderlineInputBorder(),
-                          suffixIcon: Icon(Icons.alternate_email),
+                          border: const UnderlineInputBorder(),
+                          suffixIcon: const Icon(Icons.alternate_email),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -116,25 +119,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         },
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     ElevatedButton(
                       onPressed: () {},
-                      child: _loading
-                          ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.black,
-                          strokeWidth: 2,
-                        ),
-                      )
-                          : Text(
-                        'Envoyer',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       style: ButtonStyle(
                         // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
                         shape:
@@ -144,14 +131,30 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                         ),
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xFF3E69FE),
+                          const Color(0xFF3E69FE),
                         ),
                         elevation: MaterialStateProperty.all<double>(7),
                         shadowColor:
                         MaterialStateProperty.all<Color>(Colors.black),
                       ),
+                      child: _loading
+                          ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                          strokeWidth: 2,
+                        ),
+                      )
+                          : const Text(
+                        'Envoyer',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -162,13 +165,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 9),
+                        const SizedBox(width: 9),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => InscriptionPage()),
+                                  builder: (context) => const InscriptionPage()),
                             );
                           },
                           child: Text(

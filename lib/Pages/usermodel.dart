@@ -132,7 +132,7 @@ class ArtisanModel extends UserModel {
   final bool statut;
   final double note;
   final List<String> commentaires;
-  final double job;
+  final String job;
 
   ArtisanModel(
       {required super.id,

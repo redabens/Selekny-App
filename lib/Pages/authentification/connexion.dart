@@ -261,14 +261,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 : Colors.black.withOpacity(0.15),
                             inactiveFgColor:
                             isDark ? Colors.black : Colors.black,
-                            labels: const ['Client', 'Prestataire'],
+                            labels: const ['Client', 'Artisan'],
                             onToggle: (index) {
 // Here we can handle the toggle change
 
                               setState(() {
                                 selectedindex = index ?? -1;
                                 selectedRole =
-                                index == 0 ? 'client' : 'prestataire';
+                                index == 0 ? 'client' : 'artisan';
                               });
                             },
                           ),
@@ -278,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () => handleSubmit(),
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(
-                                  Size(216, 37)),
+                                  const Size(216, 37)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -286,7 +286,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xFF3E69FE),
+                                const Color(0xFF3E69FE),
                               ),
                             ),
                             child: _loading

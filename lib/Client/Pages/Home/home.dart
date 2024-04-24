@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         .where('email', isEqualTo: email)
         .limit(1)
         .get();
-    currentUserID = querySnapshot1.docs[0].id;
+    currentUserID = querySnapshot1.docs.first.id;
   }
   @override
   Widget build(BuildContext context) {
@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => ProfilePage(),),
                 );
 
               },

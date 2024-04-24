@@ -9,8 +9,9 @@ import 'connexion.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 class InscriptionPage extends StatelessWidget {
+  const InscriptionPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,7 +20,7 @@ class InscriptionPage extends StatelessWidget {
       theme: ThemeData.light(), // Use light theme by default
       darkTheme: ThemeData.dark(),
 
-      home: Scaffold(
+      home: const Scaffold(
         body: InscriptionScreen(),
       ),
     );
@@ -27,6 +28,8 @@ class InscriptionPage extends StatelessWidget {
 }
 
 class InscriptionScreen extends StatefulWidget {
+  const InscriptionScreen({super.key});
+
   @override
   _InscriptionScreenState createState() => _InscriptionScreenState();
 }
@@ -74,18 +77,25 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
               latitude: position['latitude'],
               longitude: position['longitude']);
           // ajouter l utilisateur a la base de donnees firestore
-          CollectionReference users =
-          FirebaseFirestore.instance.collection('users');
+          // CollectionReference users =
+          //FirebaseFirestore.instance.collection('users');
+
           if (user != null) {
             print("User successfully created");
             UserRepository userRepository = UserRepository();
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const WelcomePage()),
             );
             try {
               await userRepository.createUser(newClient);
+              await FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(id)
+                  .set(newClient.toJson());
+
               print('Document added successfully');
+              print("ID auth : ${id}");
             } on FirebaseAuthException catch (e) {
               print("Error adding document: $e");
             }
