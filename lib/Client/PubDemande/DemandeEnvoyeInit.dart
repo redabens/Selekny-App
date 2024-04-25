@@ -44,10 +44,38 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
   @override
   void initState() {
     super.initState();
-    _listenForDemandes(); // Start listening for new demands
+    _checkArtisansForLatestDemande();
   }
+  Future<void> _checkArtisansForLatestDemande() async {
+    final demandecol = FirebaseFirestore.instance.collection('Demandes');
+    final demandeDoc = await demandecol.orderBy('timestamp', descending: true).limit(1).get();
+    final demandeData = demandeDoc.docs.first;
+    final demandeLat = demandeData['latitude'];
+    final demandeLong = demandeData['longitude'];
 
-  void _listenForDemandes() async {
+    // Filtrer les artisans à proximité
+    final artisansInRange = <DocumentSnapshot>[];
+    final artisansRef = db.collection('users').where('role',isEqualTo: 'artisan');
+
+    await artisansRef.get().then((QuerySnapshot artisansSnapshot) {
+      for (int i=0;i< artisansSnapshot.docs.length;i++) {
+        final artisanData = artisansSnapshot.docs[i].data() as Map<String, dynamic>;
+        final artisanLat = artisanData['latitude'];
+        final artisanLong = artisanData['longitude'];
+
+        final distance = haversineDistance(demandeLat, demandeLong, artisanLat, artisanLong);
+        if (distance <= 30.0) {
+          print(artisansSnapshot.docs[i].id);
+          _demandeArtisanService.sendDemandeArtisan(demandeData['date_debut'], demandeData['heure_debut'],
+              demandeData['adresse'], demandeData['id_Domaine'], demandeData['id_Prestation'],
+              demandeData['id_Client'], demandeData['urgence'], demandeData['latitude'],
+              demandeData['longitude'], artisansSnapshot.docs[i].id);
+        }
+      }
+    });
+    print('success');
+  }
+/*  void _listenForDemandes() async {
     // Stream subscription for more efficient handling
     final demandeStream = db.collection('Demandes').snapshots();
     print('voila');
@@ -105,7 +133,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
     }
     });
     print('success');
-  }
+  }*/
   /*Future<void> _checkArtisansForLatestDemande() async {
     if (latestDemande == null) {
       return; // No latest demande yet, so skip processing

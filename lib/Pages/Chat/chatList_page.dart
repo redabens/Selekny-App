@@ -27,11 +27,9 @@ class ChatListPage extends StatefulWidget{
 }
 
 class _ChatListPageState extends State<ChatListPage> {
-  late String currentUserID;
   @override
   void initState() {
     super.initState();
-    getcurrentUserID();
   }
   int _currentIndex = 2;
 
@@ -92,16 +90,6 @@ class _ChatListPageState extends State<ChatListPage> {
     final name = await userDocument.get().then((snapshot) =>
     snapshot.data()?['nom']);
     return name;
-  }
-  Future<void> getcurrentUserID() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    String email = user?.email ?? "";
-    final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .limit(1)
-        .get();
-    currentUserID= querySnapshot1.docs.first.id;
   }
   @override
   Widget build(BuildContext context) {
@@ -239,7 +227,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID),),
+                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: FirebaseAuth.instance.currentUser!.uid),),
                 );
 
               },
