@@ -73,6 +73,8 @@ dependencies:
   flutter_social_button: ^1.1.4
   custom_switch_widget: ^0.0.1
   flutter_map: ^6.1.0
+  flutter_bloc: ^8.0.0  # Adjust version as needed
+  bloc_test: ^9.0.0
 
 dev_dependencies:
   flutter_test:

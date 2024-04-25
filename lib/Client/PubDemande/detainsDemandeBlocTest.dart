@@ -4,27 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/NotificationsPage.dart';
+import 'package:reda/Client/Pages/ProfilePage.dart';
 import 'package:reda/Client/Services/demande%20publication/getMateriel.dart';
 import 'package:reda/Client/components/Date.dart';
 import 'package:reda/Client/components/Demande.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/prestation_page.dart';
-import 'Materiel.dart';
-import 'Prix.dart';
-import 'NomPrestation.dart';
-import 'Urgence.dart';
-import 'Suivant.dart';
+import './Materiel.dart';
+import './Prix.dart';
+import './NomPrestation.dart';
+import './Urgence.dart';
+import './date.dart';
+import './heure.dart';
+import './Suivant.dart';
 
 
 
 
 
-class DetailsDemandeUrgente extends StatefulWidget {
+class DetailsDemande extends StatefulWidget {
   final String domaineID;
   final String prestationID;
   final String nomprestation;
-  const DetailsDemandeUrgente({
+  const DetailsDemande({
     super.key,
     required this.domaineID,
     required this.prestationID,
@@ -32,44 +35,16 @@ class DetailsDemandeUrgente extends StatefulWidget {
   });
 
   @override
-  DetailsDemandeUrgenteState createState() => DetailsDemandeUrgenteState();
+  State<DetailsDemande> createState() => DetailsDemandeState();
 
 }
 
-class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
-  late String? currentUserID;
+class DetailsDemandeState extends State<DetailsDemande> {
+  var auth = FirebaseAuth.instance;
   int _currentIndex = 0;
-  String? materiel; // Declare materiel as nullable String
-  String? prix;
+  late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: false, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
   late Date datedebut = Date(0, "", 0);
   late Date datefin = Date(0, "", 0);
-  late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: true, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
-  @override
-  void initState() {
-    super.initState();
-    // Fetch material on widget initialization
-    _fetchMaterial(widget.domaineID, widget.prestationID);
-    getcurrentUserID();
-  }
-  Future<void> getcurrentUserID() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    String email = user?.email ?? "";
-    final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .limit(1)
-        .get();
-    currentUserID= querySnapshot1.docs[0].id;
-  }
-  Future<void> _fetchMaterial(String domaineID, String prestationID) async {
-    try {
-      materiel = await getMaterielById(domaineID, prestationID);
-      prix = await getPrixById(domaineID, prestationID);
-      setState(() {}); // Update UI with fetched material
-    } catch (e) {
-      print("Erreur lors de la recherche de matériel : $e");
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,13 +55,17 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
           children: [
             NomPrestation(nomprestation: widget.nomprestation,),
             const SizedBox(width: 50, height: 25,),
-            Materiel(materiel: materiel ?? 'rien',),
+            const Materiel(materiel:'rien',),
             const SizedBox(width: 50, height: 25,),
-            Prix(prix: prix ?? 'prix',),
+            const Prix(prix: 'prix',),
             const SizedBox(width: 50, height: 25,),
             Urgence(domaineID: widget.domaineID,prestationID: widget.prestationID,nomprestation: widget.nomprestation,demande: demandeinit,),
             const SizedBox(width: 50, height: 25,),
-            Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datedebut, domaineId: widget.domaineID,),
+            Dates(datedebut: datedebut,datefin: datefin,),
+            const SizedBox(width: 50, height: 25,),
+            Heure(demande: demandeinit,),
+            const SizedBox(width: 50, height: 25,),
+            Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datefin, domaineId: widget.domaineID,),
           ],
         ),
 
@@ -110,7 +89,7 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage(),),
                 );
@@ -132,7 +111,7 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const NotificationsPage(),),
                 );
@@ -155,9 +134,9 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID!),),
+                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: auth.currentUser!.uid),),
                 );
 
               },
@@ -177,7 +156,7 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProfilePage(),),
                 );
@@ -205,6 +184,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
     super.key, required this.domaineID
   });
+
   @override
   Size get preferredSize => const Size.fromHeight(70);
 
