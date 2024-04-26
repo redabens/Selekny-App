@@ -12,17 +12,18 @@ class UserModel {
   final double latitude;
   final double longitude;
 
-  UserModel(
-      {required this.id,
-      required this.nom,
-      required this.numTel,
-      required this.adresse,
-      required this.email,
-      required this.motDePasse,
-      required this.role,
-      required this.pathImage,
-      required this.latitude,
-      required this.longitude});
+  UserModel({
+    required this.id,
+    required this.nom,
+    required this.numTel,
+    required this.adresse,
+    required this.email,
+    required this.motDePasse,
+    required this.role,
+    required this.pathImage,
+    required this.latitude,
+    required this.longitude,
+  });
 
   UserModel.empty()
       : id = '',
@@ -59,7 +60,7 @@ class UserModel {
       'role': role,
       'pathImage': pathImage,
       'latitude': latitude,
-      'longitude': longitude
+      'longitude': longitude,
     };
   }
 
@@ -130,9 +131,7 @@ class ClientModel extends UserModel {
 
 class ArtisanModel extends UserModel {
   final bool statut;
-  final double note;
-  final List<String> commentaires;
-  final String job;
+  final String domaine;
 
   ArtisanModel(
       {required super.id,
@@ -143,12 +142,33 @@ class ArtisanModel extends UserModel {
       required super.motDePasse,
       required super.pathImage,
       required this.statut,
-      required this.note,
-      required this.commentaires,
       required super.latitude,
       required super.longitude,
-      required this.job})
+      required this.domaine})
       : super(
           role: 'artisan',
         );
+
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = super.toJson();
+    data['statut'] = statut;
+    data['domaine'] = domaine;
+    return data;
+  }
+
+  static ArtisanModel fromJson(Map<String, dynamic> json) {
+    return ArtisanModel(
+        id: json['id'] ?? '',
+        nom: json['nom'] ?? '',
+        numTel: json['numTel'] ?? '',
+        adresse: json['adresse'] ?? '',
+        email: json['email'] ?? '',
+        motDePasse: json['motDePasse'] ?? '',
+        pathImage: json['pathImage'] ?? '',
+        latitude: json['latitude'],
+        longitude: json['longitude'],
+        statut: json['statut'],
+        domaine: json['domaine']);
+  }
 }

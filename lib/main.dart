@@ -124,7 +124,8 @@ class MyAppState extends State<MyApp> {
         // Add other dark theme configurations
       ),
       //home: isLogin ? ProfilePage() : WelcomePage(),
-      home: HomeScreen(),
+      //home: HomeScreen(),
+      home: CreationArtisanPage(),
       routes: {"/message": (context) => MessagePage()},
     );
   }
