@@ -52,9 +52,24 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
     final demandeData = demandeDoc.docs.first;
     final demandeLat = demandeData['latitude'];
     final demandeLong = demandeData['longitude'];
-
+    String domainenom = '';
     // Filtrer les artisans à proximité
     final artisansInRange = <DocumentSnapshot>[];
+    try {
+      final documentSnapshot = await FirebaseFirestore.instance
+          .collection('Domaine')
+          .doc(widget.domaineId)
+          .get();
+      if (documentSnapshot.exists) {
+        domainenom = documentSnapshot.data()?['Nom'];
+      } else {
+        print('Aucun document trouvé dans la collection');
+        domainenom = '';
+        // Aucun document trouvé dans la collection 'Prestations' pour le domaine spécifié
+      }
+    } catch (e) {
+      print("Erreur lors de la recherche de nom domaine : $e"); // Retourne une chaîne vide en cas d'erreur
+    }
     final artisansRef = db.collection('users').where('role',isEqualTo: 'artisan');
 
     await artisansRef.get().then((QuerySnapshot artisansSnapshot) {
@@ -62,14 +77,16 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
         final artisanData = artisansSnapshot.docs[i].data() as Map<String, dynamic>;
         final artisanLat = artisanData['latitude'];
         final artisanLong = artisanData['longitude'];
-
-        final distance = haversineDistance(demandeLat, demandeLong, artisanLat, artisanLong);
-        if (distance <= 30.0) {
-          print(artisansSnapshot.docs[i].id);
-          _demandeArtisanService.sendDemandeArtisan(demandeData['date_debut'], demandeData['heure_debut'],
-              demandeData['adresse'], demandeData['id_Domaine'], demandeData['id_Prestation'],
-              demandeData['id_Client'], demandeData['urgence'], demandeData['latitude'],
-              demandeData['longitude'], artisansSnapshot.docs[i].id);
+        final String artisanDomaine = artisanData['domaine'];
+        if( artisanDomaine == domainenom){
+          final distance = haversineDistance(demandeLat, demandeLong, artisanLat, artisanLong);
+          if (distance <= 30.0) {
+            print(artisansSnapshot.docs[i].id);
+            _demandeArtisanService.sendDemandeArtisan(demandeData['date_debut'], demandeData['heure_debut'],
+                demandeData['adresse'], demandeData['id_Domaine'], demandeData['id_Prestation'],
+                demandeData['id_Client'], demandeData['urgence'], demandeData['latitude'],
+                demandeData['longitude'], artisansSnapshot.docs[i].id);
+          }
         }
       }
     });

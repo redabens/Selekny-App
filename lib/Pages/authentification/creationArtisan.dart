@@ -68,19 +68,18 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
           User? user = await _auth.signUpwithEmailAndPassword(email, password);
           String id = user != null ? user.uid : '';
           ArtisanModel newArtisan = ArtisanModel(
-              id: id,
-              nom: name,
-              numTel: number,
-              adresse: adresse,
-              email: email,
-              motDePasse: password,
-              pathImage: '',
-              latitude: position['latitude'],
-              longitude: position['longitude'],
-              statut: true,
-              note: 0,
-              job: job,
-              commentaires: []);
+            id: id,
+            nom: name,
+            numTel: number,
+            adresse: adresse,
+            email: email,
+            motDePasse: password,
+            pathImage: '',
+            latitude: position['latitude'],
+            longitude: position['longitude'],
+            statut: true,
+            domaine: job,
+          );
           // ajouter l utilisateur a la base de donnees firestore
           // CollectionReference users =
           //FirebaseFirestore.instance.collection('users');
