@@ -1,12 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/intl.dart';
+
 class Date {
   late int _jour;
   late String _mois;
   late int _annee;
 
-  Date(int jour, String mois, int annee) {
-    _jour = jour;
-    _mois = mois;
-    _annee = annee;
+  Date(){
+    DateTime now = DateTime.now();
+
+// Extract the day of the month (integer)
+    int day = now.day;
+
+    _jour = day;
+    final formatter = DateFormat('MMMM'); // Change 'MMMM' to 'MMM' for abbreviation
+    String monthString = formatter.format(now);
+
+    _mois = monthString;
+    int year = now.year;
+
+    _annee = year;
   }
 
   // Getters
@@ -29,7 +43,30 @@ class Date {
   void setannee(int annee) {
     _annee = annee;
   }
+  void setjournow(){
+    DateTime now = DateTime.now();
 
+// Extract the day of the month (integer)
+    int day = now.day;
+
+    _jour = day;
+  }
+  void setmoisnow(){
+    DateTime now = DateTime.now();
+
+    // Format the month as a string (full month name)
+    final formatter = DateFormat('MMMM'); // Change 'MMMM' to 'MMM' for abbreviation
+    String monthString = formatter.format(now);
+
+    _mois = monthString;
+  }
+  void setanneenow(){
+    DateTime now = DateTime.now();
+
+    int year = now.year;
+
+    _annee = year;
+  }
   // Méthodes
   @override
   String toString() {

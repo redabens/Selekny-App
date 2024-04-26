@@ -20,21 +20,6 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   late String currentUserID;
   @override
-  void initState() {
-    super.initState();
-    getcurrentUserID();
-  }
-  Future<void> getcurrentUserID() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    String email = user?.email ?? "";
-    final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .limit(1)
-        .get();
-    currentUserID = querySnapshot1.docs.first.id;
-  }
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -117,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID),),
+                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: FirebaseAuth.instance.currentUser!.uid),),
                 );
 
               },

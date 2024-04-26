@@ -30,7 +30,7 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
   }
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
-    DocumentSnapshot userDoc = await _firestore.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
 
     // Vérifier si le document existe
     if (userDoc.exists) {

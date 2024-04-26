@@ -84,13 +84,13 @@ class MyAppState extends State<MyApp> {
       return''; // Réinitialiser le rôle en cas d'erreur
     }
   }
-  /*@override
+  @override
   void initState() {
     super.initState();
     checkIfLogin(); // Appel de la méthode pour vérifier l'état de connexion
-  }*/
+  }
 
-  checkIfLogin() async {
+  void checkIfLogin() async {
     auth.authStateChanges().listen((User? user) async {
       final useremail = auth.currentUser?.email;
       role = await getUserRole(useremail!) ;
@@ -115,8 +115,8 @@ class MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const CreationArtisanPage(),
-      //!isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const NotifUrgente(),
+      home: !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const NotifUrgente(),
+      // const CreationArtisanPage(),
       //const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
       //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
       //const PubDemandePage(),

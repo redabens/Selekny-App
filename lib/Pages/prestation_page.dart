@@ -88,7 +88,8 @@ class _PrestationPageState extends State<PrestationPage> {
           backgroundColor: Colors.white,
           leading: IconButton(
             onPressed: () {
-              if(widget.indexe == 1){
+              Navigator.pop(context);
+              /*if(widget.indexe == 1){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => VoirtoutPage(type: widget.type,)),
@@ -98,7 +99,7 @@ class _PrestationPageState extends State<PrestationPage> {
                 Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage()),
-              );}
+              );}*/
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),

@@ -68,14 +68,14 @@ class Prestation extends StatelessWidget {
             ),
             onPressed: () {
               if(type == 1){
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => DetailsDemande(domaineID: domaineID,
                       prestationID: prestationID, nomprestation: nomprestation)
                   ),
                 );
                }else{
-                Navigator.pushReplacement(
+                Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const RetourAuth(),
                   )

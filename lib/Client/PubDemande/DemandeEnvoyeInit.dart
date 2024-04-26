@@ -49,7 +49,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
   Future<void> _checkArtisansForLatestDemande() async {
     final demandecol = FirebaseFirestore.instance.collection('Demandes');
     final demandeDoc = await demandecol.orderBy('timestamp', descending: true).limit(1).get();
-    final demandeData = demandeDoc.docs.first;
+    final demandeData = demandeDoc.docs[0];
     final demandeLat = demandeData['latitude'];
     final demandeLong = demandeData['longitude'];
     String domainenom = '';
@@ -58,7 +58,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
     try {
       final documentSnapshot = await FirebaseFirestore.instance
           .collection('Domaine')
-          .doc(widget.domaineId)
+          .doc(demandeData['id_Domaine'])
           .get();
       if (documentSnapshot.exists) {
         domainenom = documentSnapshot.data()?['Nom'];
@@ -77,7 +77,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
         final artisanData = artisansSnapshot.docs[i].data() as Map<String, dynamic>;
         final artisanLat = artisanData['latitude'];
         final artisanLong = artisanData['longitude'];
-        final String artisanDomaine = artisanData['domaine'];
+        final artisanDomaine = artisanData['domaine'];
         if( artisanDomaine == domainenom){
           final distance = haversineDistance(demandeLat, demandeLong, artisanLat, artisanLong);
           if (distance <= 30.0) {

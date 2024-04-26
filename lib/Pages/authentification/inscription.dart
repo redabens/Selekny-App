@@ -389,7 +389,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginPage()),
+                                  builder: (context) => const LoginPage()),
                             );
                           },
                           child: Text(

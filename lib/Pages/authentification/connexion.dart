@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,8 @@ enum Role { client, artisan }
 String errorMessage = '';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -106,6 +109,14 @@ class _LoginScreenState extends State<LoginScreen> {
           print("Role : " + role);
           if (role == selectedRole) {
             print("User connection success");
+            if(role == 'client'){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                    const HomePage()),
+              );
+            }
             //rediriger vers la page d acceuil
           } else {
             print("User don t match , user's email not found with that email");
@@ -388,7 +399,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            InscriptionPage()),
+                                            const InscriptionPage()),
                                   );
                                 },
                                 child: Text(

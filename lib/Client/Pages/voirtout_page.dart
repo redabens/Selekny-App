@@ -85,7 +85,8 @@ class _VoirtoutPageState extends State<VoirtoutPage> {
           backgroundColor: Colors.white,
           leading: IconButton(
             onPressed: () {
-              if(widget.type==1){
+              Navigator.pop(context);
+              /*if(widget.type==1){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage()),
@@ -95,7 +96,7 @@ class _VoirtoutPageState extends State<VoirtoutPage> {
                   context,
                   MaterialPageRoute(builder: (context) => const HomeDefaultPage()),
                 );
-              }
+              }*/
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
