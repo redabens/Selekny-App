@@ -8,14 +8,14 @@ import 'package:reda/Back/respositories/user_repository.dart';
 import 'package:reda/Back/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Back/services/ConvertAdr.dart';
-import 'package:country_icons/country_icons.dart';
+import 'package:country_code_picker/country_code_picker.dart'; // Importer le package country_code_picker
 
 class CreationArtisanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Inscription Page',
-      theme: ThemeData.light(), // Use light theme by default
+      theme: ThemeData.light(), // Utiliser le thème clair par défaut
       darkTheme: ThemeData.dark(),
       home: Scaffold(
         body: CreationArtisanScreen(),
@@ -30,7 +30,7 @@ class CreationArtisanScreen extends StatefulWidget {
 }
 
 class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
-  final _formKey = GlobalKey<FormState>(); // Define _formKey here
+  final _formKey = GlobalKey<FormState>(); // Définir _formKey ici
 
   bool _showPassword = false;
   bool _loading = false;
@@ -46,7 +46,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   late ValueNotifier<String> selectedDomaine;
-  late List<String> domaines;
+  late List<String> domaines = [];
 
   @override
   void initState() {
@@ -159,261 +159,272 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
     var isDark = Theme.of(context).brightness == Brightness.dark;
     var textColor = isDark ? Colors.white : Colors.black.withOpacity(0.4);
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  Image.asset(
-                    'lib/Front/assets/logo.png',
-                    width: 85,
-                    height: 90,
-                  ),
-                  SizedBox(height: 3),
-                  Text(
-                    'Creation compte Artisan',
-                    style: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold,
+    if (domaines == null) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'lib/Front/assets/logo.png',
+                      width: 85,
+                      height: 90,
                     ),
-                  ),
-                ],
+                    SizedBox(height: 3),
+                    Text(
+                      'Creation compte Artisan',
+                      style: TextStyle(
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // Login fields
-            Padding(
-              padding: const EdgeInsets.only(left: 0, top: 60),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 85),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _nameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez saisir le nom';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Nom',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: UnderlineInputBorder(),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: _adresseController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Veuillez saisir l'adresse";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Adresse',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: UnderlineInputBorder(),
-                            suffixIcon: Icon(Icons.location_pin),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: _numController,
-                          validator: (value) {
-                            if (value == '+213' ||
-                                value == null ||
-                                value.isEmpty) {
-                              return 'Numero obligatoire';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: '+213',
-                            suffixIcon: Icon(Icons.phone),
-                            prefixIcon: Image.asset(
-                              'lib/Front/assets/Algeria.png',
-                              width: 14,
-                              height: 14,
-                            ),
-                          ),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          keyboardType: TextInputType.phone,
-                        ),
-                        SizedBox(height: 10),
-                        DropdownButtonFormField<String>(
-                          value: selectedDomaine.value,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 24,
-                          elevation: 16,
-                          decoration: InputDecoration(
-                            labelText: 'Domaine',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: UnderlineInputBorder(),
-                          ),
-                          onChanged: (String? newValue) {
-                            selectedDomaine.value = newValue!;
-                          },
-                          items: domaines.map<DropdownMenuItem<String>>(
-                            (String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            },
-                          ).toList(),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Veuillez sélectionner un domaine";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Veuillez saisir l'email";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: UnderlineInputBorder(),
-                            suffixIcon: Icon(Icons.alternate_email),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: _passwordController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez saisir le mot de passe';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Créer mot de passe',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: UnderlineInputBorder(),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _showPassword
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _showPassword = !_showPassword;
-                                });
-                              },
-                            ),
-                          ),
-                          obscureText: !_showPassword,
-                        ),
-                        SizedBox(height: 6),
-                        TextFormField(
-                          controller: _confirmPasswordController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez confirmer le mot de passe';
-                            } else {
-                              // Check if it matches the value in the "Créer mot de passe" field
-                              if (value != _passwordController.value.text) {
-                                return 'Les mots de passe ne correspondent pas';
+              // Login fields
+              Padding(
+                padding: const EdgeInsets.only(left: 0, top: 60),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 85),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _nameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez saisir le nom';
                               }
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Confirmer mot de passe',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: UnderlineInputBorder(),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _showPassword
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Nom',
+                              labelStyle: TextStyle(
+                                color: textColor,
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  _showPassword = !_showPassword;
-                                });
-                              },
+                              border: UnderlineInputBorder(),
                             ),
                           ),
-                          obscureText: !_showPassword,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 25),
-                  ElevatedButton(
-                    onPressed: () => handleSubmit(),
-                    child: _loading
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.black,
-                              strokeWidth: 2,
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _adresseController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Veuillez saisir l'adresse";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Adresse',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: UnderlineInputBorder(),
+                              suffixIcon: Icon(Icons.location_pin),
                             ),
-                          )
-                        : Text(
-                            "Créer compte artisan",
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _numController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Numero obligatoire';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              border: UnderlineInputBorder(),
+                              suffixIcon: Icon(Icons.phone),
+                              prefixIcon: CountryCodePicker(
+                                // Utiliser CountryCodePicker pour afficher une liste déroulante de pays
+                                onChanged: (CountryCode? code) {
+                                  print(code);
+                                },
+                                initialSelection:
+                                    'DZ', // Sélectionner l'Algérie comme pays par défaut
+                                favorite: ['DZ'], // Définir les pays favoris
+                                showCountryOnly: true,
+                                showOnlyCountryWhenClosed: true,
+                                alignLeft: false,
+                              ),
+                            ),
                             style: TextStyle(
-                              color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 17,
+                            ),
+                            keyboardType: TextInputType.phone,
+                          ),
+                          SizedBox(height: 10),
+                          DropdownButtonFormField<String>(
+                            value: selectedDomaine.value,
+                            icon: const Icon(Icons.arrow_drop_down),
+                            iconSize: 24,
+                            elevation: 16,
+                            decoration: InputDecoration(
+                              labelText: 'Domaine',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: UnderlineInputBorder(),
+                            ),
+                            onChanged: (String? newValue) {
+                              selectedDomaine.value = newValue!;
+                            },
+                            items: domaines.map<DropdownMenuItem<String>>(
+                              (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              },
+                            ).toList(),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Veuillez sélectionner un domaine";
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Veuillez saisir l'email";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: UnderlineInputBorder(),
+                              suffixIcon: Icon(Icons.alternate_email),
                             ),
                           ),
-                    style: ButtonStyle(
-                      minimumSize:
-                          MaterialStateProperty.all<Size>(Size(350, 47)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13.13),
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        Color(0xFF3E69FE),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: _passwordController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez saisir le mot de passe';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Créer mot de passe',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: UnderlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _showPassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showPassword = !_showPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            obscureText: !_showPassword,
+                          ),
+                          SizedBox(height: 6),
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez confirmer le mot de passe';
+                              } else {
+                                // Vérifier si cela correspond à la valeur dans le champ "Créer mot de passe"
+                                if (value != _passwordController.value.text) {
+                                  return 'Les mots de passe ne correspondent pas';
+                                }
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Confirmer mot de passe',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: UnderlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _showPassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showPassword = !_showPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            obscureText: !_showPassword,
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                ],
+                    SizedBox(height: 25),
+                    ElevatedButton(
+                      onPressed: () => handleSubmit(),
+                      child: _loading
+                          ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Text(
+                              "Créer compte artisan",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                      style: ButtonStyle(
+                        minimumSize:
+                            MaterialStateProperty.all<Size>(Size(350, 47)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13.13),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Color(0xFF3E69FE),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

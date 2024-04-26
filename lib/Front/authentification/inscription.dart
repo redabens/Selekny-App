@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../WelcomeScreen.dart';
@@ -199,9 +200,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                           TextFormField(
                             controller: _numController,
                             validator: (value) {
-                              if (value == '+213' ||
-                                  value == null ||
-                                  value.isEmpty) {
+                              if (value == null || value.isEmpty) {
                                 return 'Numero obligatoire';
                               }
                               return null;
@@ -209,12 +208,18 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(),
-                              labelText: '+213',
                               suffixIcon: Icon(Icons.phone),
-                              prefixIcon: Image.asset(
-                                'lib/Front/assets/Algeria.png',
-                                width: 14,
-                                height: 14,
+                              prefixIcon: CountryCodePicker(
+                                // Utiliser CountryCodePicker pour afficher une liste déroulante de pays
+                                onChanged: (CountryCode? code) {
+                                  print(code);
+                                },
+                                initialSelection:
+                                    'DZ', // Sélectionner l'Algérie comme pays par défaut
+                                favorite: ['DZ'], // Définir les pays favoris
+                                showCountryOnly: true,
+                                showOnlyCountryWhenClosed: true,
+                                alignLeft: false,
                               ),
                             ),
 
