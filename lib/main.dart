@@ -2,8 +2,12 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:reda/Front/WelcomeScreen.dart';
 import 'package:reda/Front/authentification/connexion.dart';
+import 'package:reda/NoInternetConnection.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,9 +18,11 @@ import 'package:reda/Front/profile/profile_menu.dart';
 import 'package:reda/Front/profile/profile_screen.dart';
 import 'package:reda/Front/profile/update_profile_screen.dart';
 import 'package:reda/Front/authentification/creationArtisan.dart';
+
 // function to listen to background changes
 
 final navigatorkey = GlobalKey<NavigatorState>();
+var isLogin = false;
 Future _firebaseBackgroundMessage(RemoteMessage message) async {
   if (message.notification != null) {
     print("Some notification received in background");
@@ -83,7 +89,6 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  var isLogin = false;
   var auth = FirebaseAuth.instance;
 
   @override
@@ -118,8 +123,86 @@ class MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
         // Add other dark theme configurations
       ),
-      home: isLogin ? ProfilePage() : WelcomePage(),
+      //home: isLogin ? ProfilePage() : WelcomePage(),
+      home: HomeScreen(),
       routes: {"/message": (context) => MessagePage()},
+    );
+  }
+}
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
+class OfflineWidget extends StatelessWidget {
+  const OfflineWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 80,
+              color: Colors.red,
+            ),
+            SizedBox(height: 20),
+            Text(
+              "Erreur de connexion",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            Text(
+              "Vérifiez votre connexion Internet et réessayez.",
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Vous pouvez ajouter une logique pour réessayer la connexion ici
+              },
+              child: Text("Réessayer"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return OfflineBuilder(
+      child: const LoadingWidget(),
+      connectivityBuilder: (BuildContext context,
+          ConnectivityResult connectivity, Widget child) {
+        final bool isConnected = connectivity != ConnectivityResult.none;
+        if (isConnected) {
+          return isLogin ? ProfilePage() : LoginPage();
+        } else {
+          return const OfflineWidget();
+        }
+      },
     );
   }
 }

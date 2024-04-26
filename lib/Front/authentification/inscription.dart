@@ -85,7 +85,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
               MaterialPageRoute(builder: (context) => WelcomePage()),
             );
             try {
-              await userRepository.createUser(newClient);
               await FirebaseFirestore.instance
                   .collection("users")
                   .doc(id)

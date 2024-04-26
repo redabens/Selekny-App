@@ -90,7 +90,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
               MaterialPageRoute(builder: (context) => WelcomePage()),
             );
             try {
-              await userRepository.createUser(newArtisan);
               await FirebaseFirestore.instance
                   .collection("users")
                   .doc(id)
