@@ -9,6 +9,7 @@ import 'connexion.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 class InscriptionPage extends StatelessWidget {
   const InscriptionPage({super.key});
 
@@ -88,7 +89,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
               MaterialPageRoute(builder: (context) => const WelcomePage()),
             );
             try {
-              await userRepository.createUser(newClient);
               await FirebaseFirestore.instance
                   .collection("users")
                   .doc(id)

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> geocode(String address) async {
   // 1. Construire l'URL de la requête
-  const apiKey = 'AIzaSyAqfX5dUIIq6rPwNa9J7_yAUPeyf_-xjEQ'; // Remplacez par votre clé API google map0
+  const apiKey = 'AIzaSyAqfX5dUIIq6rPwNa9J7_yAUPeyf_-xjEQ'; // Remplacez par votre clé API google map
 
   const baseUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
   final url = Uri.parse(baseUrl + Uri.encodeQueryComponent(address) + '&key=$apiKey');

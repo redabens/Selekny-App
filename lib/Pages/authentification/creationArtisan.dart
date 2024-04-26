@@ -41,8 +41,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   // String _email = '';
   bool _loading = false;
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _adresseController = TextEditingController();
@@ -89,19 +88,22 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
           if (user != null) {
             print("User successfully created");
             UserRepository userRepository = UserRepository();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const WelcomePage()),
-            );
+            _nameController.clear();
+            _adresseController.clear();
+            _confirmPasswordController.clear();
+            _emailController.clear();
+            _jobController.clear();
+            _numController.clear();
+            _passwordController.clear();
+            _showPassword=false;
             try {
-              await userRepository.createUser(newArtisan);
               await FirebaseFirestore.instance
                   .collection("users")
                   .doc(id)
                   .set(newArtisan.toJson());
 
               print('Document added successfully');
-              print("ID auth : ${id}");
+              print("ID auth : $id");
             } on FirebaseAuthException catch (e) {
               print("Error adding document: $e");
             }
@@ -143,7 +145,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
               child: Column(
                 children: [
                   Image.asset(
-                    'lib/Front/assets/logo.png',
+                    'assets/logo.png',
                     width: 85,
                     height: 90,
                   ),
@@ -168,7 +170,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                   const SizedBox(height: 85),
                   Form(
                     key:
-                        _formKey, // Add this line to associate the Form with _formKey
+                    _formKey, // Add this line to associate the Form with _formKey
                     child: Column(
                       children: [
                         TextFormField(
@@ -222,7 +224,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             labelText: '+213',
                             suffixIcon: const Icon(Icons.phone),
                             prefixIcon: Image.asset(
-                              'lib/Front/assets/Algeria.png',
+                              'assets/Algeria.png',
                               width: 14,
                               height: 14,
                             ),
@@ -351,7 +353,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                     onPressed: () => handleSubmit(),
                     style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all<Size>(const Size(350, 47)),
+                      MaterialStateProperty.all<Size>(const Size(350, 47)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(13.13),
@@ -363,21 +365,21 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                     ),
                     child: _loading
                         ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.black,
-                              strokeWidth: 2,
-                            ),
-                          )
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                        strokeWidth: 2,
+                      ),
+                    )
                         : const Text(
-                            "Créer compte artisan",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            ),
-                          ),
+                      "Créer compte artisan",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
 
