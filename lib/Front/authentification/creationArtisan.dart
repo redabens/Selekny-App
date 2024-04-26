@@ -8,16 +8,15 @@ import 'package:reda/Back/respositories/user_repository.dart';
 import 'package:reda/Back/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Back/services/ConvertAdr.dart';
+import 'package:country_icons/country_icons.dart';
 
 class CreationArtisanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Inscription Page',
-
       theme: ThemeData.light(), // Use light theme by default
       darkTheme: ThemeData.dark(),
-
       home: Scaffold(
         body: CreationArtisanScreen(),
       ),
@@ -34,7 +33,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   final _formKey = GlobalKey<FormState>(); // Define _formKey here
 
   bool _showPassword = false;
-  // String _email = '';
   bool _loading = false;
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -46,6 +44,46 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   final TextEditingController _jobController = TextEditingController();
 
   final FirebaseAuthService _auth = FirebaseAuthService();
+
+  late ValueNotifier<String> selectedDomaine;
+  late List<String> domaines;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDomaine = ValueNotifier<String>('');
+    fetchDomaines().then((domainesList) {
+      setState(() {
+        domaines = domainesList;
+        selectedDomaine.value = domaines.isNotEmpty ? domaines.first ?? '' : '';
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    selectedDomaine.dispose(); // Libérer les ressources de selectedDomaine
+    super.dispose();
+  }
+
+  Future<List<String>> fetchDomaines() async {
+    List<String> domaines = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('Domaine').get();
+
+      // Parcours de tous les documents de la collection "Domaine"
+      querySnapshot.docs.forEach((doc) {
+        // Ajout du champ "Nom" à la liste des domaines
+        domaines.add(doc['Nom']);
+      });
+    } catch (e) {
+      print("Erreur lors de la récupération des domaines: $e");
+    }
+
+    return domaines;
+  }
 
   void handleSubmit() async {
     if (_formKey.currentState!.validate()) {
@@ -75,11 +113,9 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
             latitude: position['latitude'],
             longitude: position['longitude'],
             statut: true,
-            domaine: job,
+            domaine:
+                selectedDomaine.value, // Utilisez le domaine sélectionné ici
           );
-          // ajouter l utilisateur a la base de donnees firestore
-          // CollectionReference users =
-          //FirebaseFirestore.instance.collection('users');
 
           if (user != null) {
             print("User successfully created");
@@ -105,10 +141,8 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
         } on FirebaseAuthException catch (e) {
           if (e.code == "weak-password") {
             print('The password provided is too weak');
-            // afficher une erreur dans le UI
           } else if (e.code == "email-already-in-use") {
             print('The account already exists for that email');
-            // afficher une erreur dans le UI
           }
         } catch (e) {
           print(e.toString());
@@ -147,7 +181,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                     style: TextStyle(
                       fontSize: 27,
                       fontWeight: FontWeight.bold,
-                      //fontFamily: 'Nunito Sans',
                     ),
                   ),
                 ],
@@ -161,8 +194,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 children: [
                   SizedBox(height: 85),
                   Form(
-                    key:
-                        _formKey, // Add this line to associate the Form with _formKey
+                    key: _formKey,
                     child: Column(
                       children: [
                         TextFormField(
@@ -210,7 +242,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             }
                             return null;
                           },
-
                           decoration: InputDecoration(
                             border: UnderlineInputBorder(),
                             labelText: '+213',
@@ -221,26 +252,17 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                               height: 14,
                             ),
                           ),
-
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                           keyboardType: TextInputType.phone,
-                          // initialValue:  '+213',
                         ),
                         SizedBox(height: 10),
-                        TextFormField(
-                          controller: _jobController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Veuillez saisir le domaine de l'artisan ";
-                            }
-                            return null;
-                          },
-                          // onSaved: (value) {
-                          //   _email = value ?? '';
-                          // },
-                          //
+                        DropdownButtonFormField<String>(
+                          value: selectedDomaine.value,
+                          icon: const Icon(Icons.arrow_drop_down),
+                          iconSize: 24,
+                          elevation: 16,
                           decoration: InputDecoration(
                             labelText: 'Domaine',
                             labelStyle: TextStyle(
@@ -248,6 +270,23 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             ),
                             border: UnderlineInputBorder(),
                           ),
+                          onChanged: (String? newValue) {
+                            selectedDomaine.value = newValue!;
+                          },
+                          items: domaines.map<DropdownMenuItem<String>>(
+                            (String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            },
+                          ).toList(),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Veuillez sélectionner un domaine";
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: 10),
                         TextFormField(
@@ -258,10 +297,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             }
                             return null;
                           },
-                          // onSaved: (value) {
-                          //   _email = value ?? '';
-                          // },
-                          //
                           decoration: InputDecoration(
                             labelText: 'Email',
                             labelStyle: TextStyle(
@@ -340,7 +375,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                     ),
                   ),
                   SizedBox(height: 25),
-                  // signUp button
                   ElevatedButton(
                     onPressed: () => handleSubmit(),
                     child: _loading
@@ -374,9 +408,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
-
-                  SizedBox(height: 12),
-                  // Row for additional text widgets
                 ],
               ),
             ),

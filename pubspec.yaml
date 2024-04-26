@@ -63,6 +63,7 @@ dependencies:
   flutter_bloc: ^8.1.5
   connectivity_plus: ^5.0.2
   flutter_offline: ^3.0.1
+  country_icons: ^3.0.0
 
 dev_dependencies:
   flutter_test:
