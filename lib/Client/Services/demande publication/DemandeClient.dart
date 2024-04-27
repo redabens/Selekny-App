@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-class DemandeArtisan{
+class DemandeClient{
   final String datedebut;
   final String datefin;
   final String heuredebut;
@@ -13,19 +13,19 @@ class DemandeArtisan{
   final double longitude;
   final Timestamp timestamp;
 
-  DemandeArtisan({
-  required this.datedebut,
-  required this.datefin,
-  required this.heuredebut,
-  required this.heurefin,
-  required this.adresse,
-  required this.iddomaine,
-  required this.idprestation,
-  required this.idclient,
-  required this.urgence,
-  required this.latitude,
-  required this.longitude,
-  required this.timestamp,
+  DemandeClient({
+    required this.datedebut,
+    required this.datefin,
+    required this.heuredebut,
+    required this.heurefin,
+    required this.adresse,
+    required this.iddomaine,
+    required this.idprestation,
+    required this.idclient,
+    required this.urgence,
+    required this.latitude,
+    required this.longitude,
+    required this.timestamp,
   });
 
   Map<String, dynamic> toMap() {

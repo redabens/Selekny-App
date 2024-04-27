@@ -1,30 +1,33 @@
 import 'dart:core';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 
-class buttonrefuser extends StatefulWidget {
-  const buttonrefuser({super.key});
+class Buttonrefuser extends StatefulWidget {
+  final Timestamp timestamp;
+  const Buttonrefuser({super.key, required this.timestamp});
 
   @override
-  buttonrefuserState createState() => buttonrefuserState();
+  ButtonrefuserState createState() => ButtonrefuserState();
 }
 
-class buttonrefuserState extends State<buttonrefuser> {
-
-
+class ButtonrefuserState extends State<Buttonrefuser> {
+  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 90,
       height: 30,
       decoration: BoxDecoration(
-        color: Color(0xFFF6F6F6),
+        color: const Color(0xFFF6F6F6),
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
         onPressed:() {
-
+          _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
         },// hna lazm quand on annule la classe Box Demande troh completement
 
         child: Row(

@@ -8,7 +8,7 @@ class Lieu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 240,
+      width: 280,
       height: 20,
       color: Colors.white,
       child: Row(

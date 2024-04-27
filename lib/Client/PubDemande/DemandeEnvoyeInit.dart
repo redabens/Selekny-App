@@ -37,7 +37,6 @@ class DemandeEnvoye extends StatefulWidget {
 }
 class DemandeEnvoyeState extends State<DemandeEnvoye> {
   final db = FirebaseFirestore.instance;
-  late DocumentSnapshot? latestDemande;
   final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
   bool empty = false; // Consider using a Stream to handle emptiness dynamically
 
@@ -82,9 +81,11 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
           final distance = haversineDistance(demandeLat, demandeLong, artisanLat, artisanLong);
           if (distance <= 30.0) {
             print(artisansSnapshot.docs[i].id);
-            _demandeArtisanService.sendDemandeArtisan(demandeData['date_debut'], demandeData['heure_debut'],
-                demandeData['adresse'], demandeData['id_Domaine'], demandeData['id_Prestation'],
-                demandeData['id_Client'], demandeData['urgence'], demandeData['latitude'],
+            _demandeArtisanService.sendDemandeArtisan(demandeData['date_debut'], demandeData['date_fin'],
+                demandeData['heure_debut'], demandeData['heure_fin'],
+                demandeData['adresse'], demandeData['id_Domaine'],
+                demandeData['id_Prestation'], demandeData['id_Client'],
+                demandeData['urgence'], demandeData['latitude'],
                 demandeData['longitude'], artisansSnapshot.docs[i].id);
           }
         }

@@ -1,8 +1,10 @@
 import 'dart:core';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 class Envoyerilya extends StatelessWidget {
-  const Envoyerilya({super.key});
+  final Timestamp timestamp;
+  const Envoyerilya({super.key, required this.timestamp});
 
   @override
   Widget build(BuildContext context) {

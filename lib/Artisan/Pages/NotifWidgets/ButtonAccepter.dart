@@ -1,18 +1,41 @@
 import 'dart:core';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-class buttonaccepter extends StatefulWidget {
-  const buttonaccepter({super.key});
+import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/Services/demande%20publication/DemandeClientService.dart';
+class Buttonaccepter extends StatefulWidget {
+  final String datedebut;
+  final String datefin;
+  final String heuredebut;
+  final String heurefin;
+  final String adresse;
+  final String iddomaine;
+  final String idprestation;
+  final String idclient;
+  final bool urgence;
+  final double latitude;
+  final double longitude;
+  final Timestamp timestamp;
+  const Buttonaccepter({super.key, required this.datedebut,
+    required this.datefin, required this.heuredebut,
+    required this.heurefin, required this.adresse,
+    required this.iddomaine, required this.idprestation,
+    required this.idclient, required this.urgence,
+    required this.latitude, required this.longitude,
+    required this.timestamp});
 
   @override
-  buttonaccepterState createState() => buttonaccepterState();
+  ButtonaccepterState createState() => ButtonaccepterState();
 }
 
-class buttonaccepterState extends State<buttonaccepter> {
+class ButtonaccepterState extends State<Buttonaccepter> {
   Color _buttonColor = const Color(0xFF49F77A);
   Color _textColor = Colors.black;
-
+  final DemandeClientService _demandeClientService = DemandeClientService();
+  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
   void _changeColor() {
     setState(() {
       _buttonColor = const Color(0xFFF6F6F6);
@@ -30,7 +53,19 @@ class buttonaccepterState extends State<buttonaccepter> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
-        onPressed: _changeColor,
+        onPressed: (){
+        _demandeClientService.sendDemandeClient(widget.datedebut, widget.datefin,
+            widget.heuredebut, widget.heurefin,
+            widget.adresse, widget.iddomaine,
+            widget.idprestation, widget.idclient,
+            widget.urgence, widget.latitude, widget.longitude,);
+        _demandeArtisanService.sendRendezVous(widget.datedebut, widget.datefin,
+            widget.heuredebut, widget.heurefin,
+            widget.adresse, widget.iddomaine,
+            widget.idprestation, widget.idclient,
+            widget.urgence, widget.latitude, widget.longitude, FirebaseAuth.instance.currentUser!.uid);
+        _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

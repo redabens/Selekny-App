@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Pages/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/NotifDemande.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/retourAuth.dart';
 import 'package:reda/Artisan/Pages/NotifDemande.dart';
 
@@ -168,7 +169,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
               },
               child: Container(
@@ -257,8 +258,10 @@ class NotifUrgenteState extends State<NotifUrgente> {
             urgence: data['urgence'],
             timestamp: data['timestamp'],
             nomprestation: nomprestation,
-            imageUrl: image,),
-
+            imageUrl: image, datefin: data['datefin'],
+            heurefin: data['heurefin'], latitude: data['latitude'],
+            longitude: data['longitude'],),
+          const SizedBox(height: 10,),
         ],
       ),
     );
@@ -330,7 +333,7 @@ class UrgentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 175,
+      width: 205,
       height: 55,
       child: GestureDetector(
         onTap: () => Navigator.push(
@@ -373,7 +376,7 @@ class demandeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 175,
+      width: 205,
       height: 55,
       child: GestureDetector(
         onTap: () => Navigator.push(

@@ -11,25 +11,32 @@ import 'package:reda/Artisan/Pages/NotifWidgets/Lieu.dart';
 import 'package:reda/Artisan/Pages/NotifWidgets/NomPrestation.dart';
 class BoxDemande extends StatelessWidget {
   final String datedebut;
+  final String datefin;
   final String heuredebut;
+  final String heurefin;
   final String adresse;
   final String iddomaine;
   final String idprestation;
   final String idclient;
   final bool urgence;
+  final double latitude;
+  final double longitude;
   final Timestamp timestamp;
   final String nomprestation;
   final String imageUrl;
 
   const BoxDemande({
-    super.key, required this.datedebut, required this.heuredebut,
-    required this.adresse, required this.iddomaine, required this.idprestation,
-    required this.idclient, required this.urgence, required this.timestamp,
+    super.key, required this.datedebut,required this.datefin,
+    required this.heuredebut, required this.heurefin,
+    required this.adresse, required this.iddomaine,
+    required this.idprestation, required this.idclient,
+    required this.urgence, required this.latitude,
+    required this.longitude, required this.timestamp,
     required this.nomprestation, required this.imageUrl,});
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 325,
+      width: 390,
       height: 140,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
@@ -44,7 +51,12 @@ class BoxDemande extends StatelessWidget {
             Pdpanddetails(nomprestation: nomprestation, idClient: idclient,
               datedebut: datedebut,heuredebut: heuredebut,
               adresse: adresse, imageUrl: imageUrl,),
-            const Detailsbottom(),
+            Detailsbottom(datedebut: datedebut, datefin: datefin,
+              heuredebut: heuredebut, heurefin: heurefin,
+              adresse: adresse, iddomaine: iddomaine,
+              idprestation: idprestation, idclient: idclient,
+              urgence: urgence, latitude: latitude, longitude: longitude,
+              timestamp: timestamp,),
           ]
 
 
@@ -73,6 +85,7 @@ class Pdpanddetails extends StatelessWidget {
       child: Row(
           children:
           [
+            const SizedBox(width: 4,),
             Pdp(imageUrl: imageUrl,),
             Details(nomprestation: nomprestation, adresse: adresse,
               datedebut: datedebut, heuredebut: heuredebut,),
@@ -96,7 +109,7 @@ class Pdp extends StatelessWidget {
       height: 60,
       //color: Colors.yellow,
       child: ClipRRect(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(10.0),
           child: CachedNetworkImage(
             imageUrl: imageUrl,
             placeholder: (context, url) => const CircularProgressIndicator(),
@@ -122,7 +135,7 @@ class Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 240,
+        width: 280,
         height: 95,
         //color: Colors.red,
         child: Column(

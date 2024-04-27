@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Pages/BoxDemande.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/profile/profile_screen.dart';
 import './NotifUrgente.dart';
 
 class NotifDemande extends StatefulWidget {
@@ -165,7 +166,7 @@ class NotifDemandeState extends State<NotifDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
 
               },
@@ -238,12 +239,20 @@ class NotifDemandeState extends State<NotifDemande> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BoxDemande(datedebut: data['datedebut'], heuredebut: data['heuredebut'],
-            adresse: data['adresse'], iddomaine: data['iddomaine'],
-            idprestation: data['idprestation'], idclient: data['idclient'],
-            urgence: data['urgence'], timestamp: data['timestamp'],
-            nomprestation: nomprestation, imageUrl: image,),
-
+          BoxDemande(
+            datedebut: data['datedebut'],
+            heuredebut: data['heuredebut'],
+            adresse: data['adresse'],
+            iddomaine: data['iddomaine'],
+            idprestation: data['idprestation'],
+            idclient: data['idclient'],
+            urgence: data['urgence'],
+            timestamp: data['timestamp'],
+            nomprestation: nomprestation,
+            imageUrl: image, datefin: data['datefin'],
+            heurefin: data['heurefin'], latitude: data['latitude'],
+            longitude: data['longitude'],),
+          const SizedBox(height: 10,),
         ],
       ),
     );
@@ -316,7 +325,7 @@ class UrgentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 175,
+      width: 205,
       height: 55,
       child: GestureDetector(
         onTap: () =>   Navigator.push(
@@ -360,7 +369,7 @@ class demandeButton extends StatelessWidget {
 @override
 Widget build(BuildContext context) {
   return SizedBox(
-    width: 175,
+    width: 205,
     height: 55,
     child: GestureDetector(
       onTap: () => Navigator.push(
