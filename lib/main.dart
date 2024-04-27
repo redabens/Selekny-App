@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Artisan/Pages/NotifUrgente.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
+import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'firebase_options.dart';
@@ -115,7 +116,8 @@ class MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const NotifUrgente(),
+      home: // const ProfilePage(),
+      !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const NotifUrgente(),
       // const CreationArtisanPage(),
       //const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
       //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),

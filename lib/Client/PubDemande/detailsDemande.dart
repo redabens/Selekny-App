@@ -32,17 +32,21 @@ class DetailsDemande extends StatefulWidget {
 }
 
 class DetailsDemandeState extends State<DetailsDemande> {
-  late String? currentUserID;
-  int _currentIndex = 0;
   String? materiel; // Declare materiel as nullable String
   String? prix;
   late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: false, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
-  late Date datedebut;
-  late Date datefin ;
+   Date datedebut = Date();
+   Date datefin =Date();
   @override
   void initState() {
     super.initState();
     // Fetch material on widget initialization
+    datedebut.setjour(1);
+    datedebut.setmois("");
+    datedebut.setannee(0);
+    datefin.setjour(1);
+    datefin.setannee(0);
+    datefin.setmois("");
     _fetchMaterial(widget.domaineID, widget.prestationID);
   }
   Future<void> _fetchMaterial(String domaineID, String prestationID) async {
