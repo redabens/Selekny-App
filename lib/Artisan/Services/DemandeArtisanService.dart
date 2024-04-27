@@ -23,7 +23,9 @@ class DemandeArtisanService extends ChangeNotifier{
 
     DemandeArtisan newDemandeArtisan = DemandeArtisan(
         datedebut: datedebut,
+        datefin: datefin,
         heuredebut: heuredebut,
+        heurefin: heurefin,
         adresse: adresse,
         iddomaine : iddomaine,
         idprestation: idprestation,
@@ -32,8 +34,7 @@ class DemandeArtisanService extends ChangeNotifier{
         latitude: latitude,
         longitude: longitude,
         timestamp: timestamp,
-        datefin: datefin,
-        heurefin: heurefin);
+        );
     await _firestore
         .collection('users')
         .doc(recieverId)
@@ -58,7 +59,9 @@ class DemandeArtisanService extends ChangeNotifier{
 
     DemandeArtisan newDemandeArtisan = DemandeArtisan(
         datedebut: datedebut,
+        datefin: datefin,
         heuredebut: heuredebut,
+        heurefin: heurefin,
         adresse: adresse,
         iddomaine : iddomaine,
         idprestation: idprestation,
@@ -66,9 +69,7 @@ class DemandeArtisanService extends ChangeNotifier{
         urgence: urgence,
         latitude: latitude,
         longitude: longitude,
-        timestamp: timestamp,
-        datefin: datefin,
-        heurefin: heurefin);
+        timestamp: timestamp,);
     await _firestore
         .collection('users')
         .doc(recieverId)
