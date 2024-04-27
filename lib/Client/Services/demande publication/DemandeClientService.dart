@@ -16,6 +16,7 @@ class DemandeClientService extends ChangeNotifier{
       String iddomaine,
       String idprestation,
       String idclient,
+      String idartisan,
       bool urgence,
       double latitude,
       double longitude)async{
@@ -28,12 +29,13 @@ class DemandeClientService extends ChangeNotifier{
         iddomaine : iddomaine,
         idprestation: idprestation,
         idclient: idclient,
+        idartisan: idartisan,
         urgence: urgence,
         latitude: latitude,
         longitude: longitude,
         timestamp: timestamp,
         datefin: datefin,
-        heurefin: heurefin);
+        heurefin: heurefin,);
     await _firestore
         .collection('users')
         .doc(idclient)

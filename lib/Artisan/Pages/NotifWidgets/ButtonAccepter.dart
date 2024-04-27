@@ -57,7 +57,7 @@ class ButtonaccepterState extends State<Buttonaccepter> {
         _demandeClientService.sendDemandeClient(widget.datedebut, widget.datefin,
             widget.heuredebut, widget.heurefin,
             widget.adresse, widget.iddomaine,
-            widget.idprestation, widget.idclient,
+            widget.idprestation, widget.idclient, FirebaseAuth.instance.currentUser!.uid,
             widget.urgence, widget.latitude, widget.longitude,);
         _demandeArtisanService.sendRendezVous(widget.datedebut, widget.datefin,
             widget.heuredebut, widget.heurefin,

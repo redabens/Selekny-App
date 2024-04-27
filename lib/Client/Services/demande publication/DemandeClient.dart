@@ -8,6 +8,7 @@ class DemandeClient{
   final String iddomaine;
   final String idprestation;
   final String idclient;
+  final String idartisan;
   final bool urgence;
   final double latitude;
   final double longitude;
@@ -22,6 +23,7 @@ class DemandeClient{
     required this.iddomaine,
     required this.idprestation,
     required this.idclient,
+    required this.idartisan,
     required this.urgence,
     required this.latitude,
     required this.longitude,
