@@ -40,6 +40,7 @@ class DemandeClient{
       'iddomaine':iddomaine,
       'idprestation': idprestation,
       'idclient': idclient,
+      'idartisan': idartisan,
       'urgence': urgence,
       'latitude': latitude,
       'longitude': longitude,
