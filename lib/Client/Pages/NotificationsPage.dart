@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
-import 'package:reda/pages/Chat/chatList_page.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'ProfilePage.dart';
 
 
@@ -17,22 +16,6 @@ class NotificationsPage extends StatefulWidget {
 
 class NotificationsPageState extends State<NotificationsPage> {
   int _currentIndex =1;
-  late String currentUserID;
-  @override
-  void initState() {
-    super.initState();
-    getcurrentUserID();
-  }
-  Future<void> getcurrentUserID() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    String email = user?.email ?? "";
-    final querySnapshot1 = await FirebaseFirestore.instance
-        .collection('User')
-        .where('email', isEqualTo: email)
-        .limit(1)
-        .get();
-    currentUserID = querySnapshot1.docs[0].id;
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,8 +84,9 @@ class NotificationsPageState extends State<NotificationsPage> {
                   _currentIndex = 2;
                 });
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID),),
+                    context,
+                    MaterialPageRoute(builder: (context) => const ChatListPage(type: 1),
+                  ),
                 );
 
               },
@@ -124,7 +108,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
                 );
 
               },

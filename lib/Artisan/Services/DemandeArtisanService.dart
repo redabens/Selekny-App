@@ -117,4 +117,26 @@ class DemandeArtisanService extends ChangeNotifier{
         .orderBy('timestamp',descending: true)
         .snapshots();
   }
+  Future<void> deleteRendezVous(Timestamp timestamp,String recieverId)async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Get the subcollection reference
+    CollectionReference<Map<String, dynamic>> subcollectionRef =
+    firestore.collection('users').doc(recieverId).collection('RendezVous');
+
+    // Construct the timestamp query
+    Query<Map<String, dynamic>> timestampQuery =
+    subcollectionRef.where('timestamp', isEqualTo: timestamp);
+
+    // Perform the delete operation
+    timestampQuery.get().then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((documentSnapshot) {
+          print('${documentSnapshot.data()}');
+          documentSnapshot.reference.delete();
+        });
+      }
+    });
+    return Future.value(null);
+  }
 }

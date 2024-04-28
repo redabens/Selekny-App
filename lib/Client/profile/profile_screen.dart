@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/NotificationsPage.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
+import 'package:reda/Services/image_service.dart';
 import 'profile_menu.dart';
 import 'update_profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,7 +53,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
     userRepository = UserRepository();
     fetchUserData();
   }
+  Future<String> getUserPathImage(String userID) async {
+    // Récupérer le document utilisateur
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
+        'users').doc(userID).get();
 
+    // Vérifier si le document existe
+    if (userDoc.exists) {
+      // Extraire le PathImage
+      print('here');
+      String pathImage = userDoc['pathImage'];
+      print(pathImage);
+      // Retourner le PathImage
+      final reference = FirebaseStorage.instance.ref().child(pathImage);
+      try {
+        // Get the download URL for the user image
+        final downloadUrl = await reference.getDownloadURL();
+        return downloadUrl;
+      } catch (error) {
+        print("Error fetching user image URL: $error");
+        return 'assets/images/placeholder.png'; // Default image on error
+      }
+    } else {
+      // Retourner une valeur par défaut si l'utilisateur n'existe pas
+      return 'assets/images/placeholder.png';
+    }
+  }
   Future<void> fetchUserData() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? currentUser = auth.currentUser;
@@ -59,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (email != null) {
       try {
         UserModel? userModel = await userRepository.getUserDetails(email);
-        imageUrl = await userRepository.getImgUrl(email);
+        imageUrl = await getUserPathImage(currentUser!.uid);
         print("img url : " + imageUrl);
         print("User data retrieved successfully");
         setState(() {
@@ -143,6 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ],
                         ),
                         child: Expanded(
+                          flex: 1, // Set the flex ratio if needed
                           child: Column(
                             children: [
                               ProfileMenuWidget(
@@ -279,7 +308,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NotificationsPage(),),
+                  MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
                 );
 
 
@@ -302,7 +331,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: FirebaseAuth.instance.currentUser!.uid),),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 1,),),
                 );
 
               },

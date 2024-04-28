@@ -176,9 +176,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
     //final controller = Get.put(ProfileController());
     return Scaffold(
-      backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
+      backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.white,
       appBar: AppBar(
-        backgroundColor: isDarkMode ? Color(0xFF121212) : Colors.white,
+        backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.white,
         leading: IconButton(
           onPressed: () {
             UserModel updatedUser = UserModel(

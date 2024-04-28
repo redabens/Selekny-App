@@ -24,7 +24,8 @@ class BoxDemande extends StatelessWidget {
   final Timestamp timestamp;
   final String nomprestation;
   final String imageUrl;
-  final int type;
+  final int type1;
+  final int type2;
 
   const BoxDemande({
     super.key, required this.datedebut,required this.datefin,
@@ -33,8 +34,7 @@ class BoxDemande extends StatelessWidget {
     required this.idprestation, required this.idclient,
     required this.urgence, required this.latitude,
     required this.longitude, required this.timestamp,
-    required this.nomprestation, required this.imageUrl,
-    required this.type,});
+    required this.nomprestation, required this.imageUrl, required this.type1, required this.type2,});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,13 +52,13 @@ class BoxDemande extends StatelessWidget {
           [
             Pdpanddetails(nomprestation: nomprestation, idClient: idclient,
               datedebut: datedebut,heuredebut: heuredebut,
-              adresse: adresse, imageUrl: imageUrl, type: type, urgence: urgence,),
+              adresse: adresse, imageUrl: imageUrl, type: type1, urgence: urgence,),
             Detailsbottom(datedebut: datedebut, datefin: datefin,
               heuredebut: heuredebut, heurefin: heurefin,
               adresse: adresse, iddomaine: iddomaine,
               idprestation: idprestation, idclient: idclient,
               urgence: urgence, latitude: latitude, longitude: longitude,
-              timestamp: timestamp, type: type,),
+              timestamp: timestamp, type1: type1, type2: type2,),
           ]
 
 

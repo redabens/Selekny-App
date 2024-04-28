@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
-import 'package:reda/pages/Chat/chatList_page.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 
 import 'NotificationsPage.dart';
 
@@ -106,7 +106,7 @@ class ProfilePagesState extends State<ProfilePages> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: currentUserID),),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 1,),),
                 );
 
               },

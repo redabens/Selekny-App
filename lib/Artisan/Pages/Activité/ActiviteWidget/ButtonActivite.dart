@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/Services/demande%20publication/DemandeClientService.dart';
 class Buttontraiterannuler extends StatelessWidget {
-  const Buttontraiterannuler({super.key});
+  final String idclient;
+  final Timestamp timestamp;
+  const Buttontraiterannuler({super.key, required this.idclient, required this.timestamp});
 
   @override
   Widget build(BuildContext context) {
@@ -9,12 +15,12 @@ class Buttontraiterannuler extends StatelessWidget {
         width: 200,
         height: 30,
         //color: Colors.black,
-        child:const Row(
+        child: Row(
           children: [
-            SizedBox(width: 18,),
-            ButtonTraiter(),
-            SizedBox(width: 2,),
-            ButtonAnnuler(),
+            const SizedBox(width: 18,),
+            const ButtonTraiter(),
+            const SizedBox(width: 2,),
+            ButtonAnnuler(timestamp: timestamp, idclient: idclient,),
           ],
         )
     );
@@ -51,7 +57,11 @@ class ButtonTraiterState extends State<ButtonTraiter> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
-        onPressed: _changeColor,
+        onPressed:() async {
+          _changeColor;
+
+          await Future.delayed(const Duration(milliseconds: 100));
+          },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -80,15 +90,17 @@ class ButtonTraiterState extends State<ButtonTraiter> {
 }
 
 class ButtonAnnuler extends StatefulWidget {
-  const ButtonAnnuler({super.key});
+  final Timestamp timestamp;
+  final String idclient;
+  const ButtonAnnuler({super.key, required this.timestamp, required this.idclient});
 
   @override
   ButtonAnnulerState createState() => ButtonAnnulerState();
 }
 
 class ButtonAnnulerState extends State<ButtonAnnuler> {
-
-
+  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
+  final DemandeClientService _demandeClientService = DemandeClientService();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -99,8 +111,10 @@ class ButtonAnnulerState extends State<ButtonAnnuler> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
-        onPressed: () {
-
+        onPressed: () async {
+          _demandeArtisanService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+          _demandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
+          await Future.delayed(const Duration(milliseconds: 100));
         }, // hna lazm quand on annule la classe Box Demande troh completement
 
         child: Row(

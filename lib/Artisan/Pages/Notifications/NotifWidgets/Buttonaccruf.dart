@@ -16,13 +16,14 @@ class Buttonaccruf extends StatelessWidget {
   final double latitude;
   final double longitude;
   final Timestamp timestamp;
+  final int type;
   const Buttonaccruf({super.key, required this.datedebut,
     required this.datefin, required this.heuredebut,
     required this.heurefin, required this.adresse,
     required this.iddomaine, required this.idprestation,
     required this.idclient, required this.urgence,
     required this.latitude, required this.longitude,
-    required this.timestamp});
+    required this.timestamp, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class Buttonaccruf extends StatelessWidget {
               urgence: urgence, latitude: latitude,
               longitude: longitude, timestamp: timestamp,),
             const SizedBox(width: 2,),
-            Buttonrefuser( timestamp: timestamp,),
+            Buttonrefuser( timestamp: timestamp, type: type, idclient: idclient,),
           ],
         )
     );

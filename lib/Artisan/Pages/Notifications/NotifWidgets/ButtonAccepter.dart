@@ -52,19 +52,15 @@ class ButtonaccepterState extends State<Buttonaccepter> {
         color: _buttonColor,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: TextButton(
-        onPressed: (){
+      child:  TextButton(
+        onPressed: () async {
         _demandeClientService.sendDemandeClient(widget.datedebut, widget.datefin,
             widget.heuredebut, widget.heurefin,
             widget.adresse, widget.iddomaine,
             widget.idprestation, widget.idclient, FirebaseAuth.instance.currentUser!.uid,
             widget.urgence, widget.latitude, widget.longitude,);
-        _demandeArtisanService.sendRendezVous(widget.datedebut, widget.datefin,
-            widget.heuredebut, widget.heurefin,
-            widget.adresse, widget.iddomaine,
-            widget.idprestation, widget.idclient,
-            widget.urgence, widget.latitude, widget.longitude, FirebaseAuth.instance.currentUser!.uid);
         _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+        await Future.delayed(const Duration(milliseconds: 100));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

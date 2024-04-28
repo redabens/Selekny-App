@@ -13,53 +13,20 @@ import 'package:reda/Services/ConvertAdr.dart';
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
-double radians(double degrees) => degrees * pi / 180;
-double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
-  const earthRadius = 6371.01; // Rayon de la Terre en km
-
-  double dLat = radians(lat2 - lat1);
-  double dLon = radians(lon2 - lon1);
-
-  double a = sin(dLat / 2) * sin(dLat / 2) +
-      cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon / 2) * sin(dLon / 2);
-  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-
-  return earthRadius * c; // Distance en km
-}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  /*try {
-    final results1 = await geocode('Bab Ezzouar, Hay Moussalaha, Alger, Algérie');
-    final double latitude1 = results1['latitude'];
-    final double longitude1 = results1['longitude'];
-    print('Latitude: $latitude1, Longitude: $longitude1');
-    final results2 = await geocode('Musee El Bardo, Alger, Algérie');
-    final double latitude2 = results2['latitude'];
-    final double longitude2 = results2['longitude'];
-    print('Latitude: $latitude2, Longitude: $longitude2');
-    print("Calculer distance :");
-    final double distance = haversineDistance(latitude1,longitude1,latitude2,longitude2);
-    print('la distance est : $distance km');
-  } on Exception catch (e) {
-    print('Une erreur est survenue : $e');
-  }*/
   // el bardo : Latitude: 36.7199646, Longitude: 3.1991359;
   runApp(const MyApp());
 }
-/*void main() {
-  runApp(const MyApp());
-}*/
-
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
   State<MyApp> createState() => MyAppState();
 }
-
 class MyAppState extends State<MyApp> {
   var isLogin = false;
   var auth = FirebaseAuth.instance;
@@ -127,7 +94,6 @@ class MyAppState extends State<MyApp> {
       //const HomePage(),
       //const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
       //const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
-      //const ChatPage(receiverUserEmail:"ms_iratni@esi.dz", receiverUserID: "eOILQzRtIQlxwCGKhFMy"),
     );
   }
 }

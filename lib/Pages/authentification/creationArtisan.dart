@@ -3,9 +3,6 @@ import 'package:reda/Pages/auth.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
 import 'package:reda/Services/ConvertAdr.dart';
-import '../WelcomeScreen.dart';
-import 'connexion.dart';
-import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

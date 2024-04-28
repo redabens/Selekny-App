@@ -12,10 +12,12 @@ const Color myBlueColor = Color(0xFF3E69FE);
 class ChatPage extends StatefulWidget{
   final String receiverUserID;
   final String currentUserId;
+  final int type;
   const ChatPage({
     super.key,
     required this.receiverUserID,
     required this.currentUserId,
+    required this.type,
   });
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -87,7 +89,7 @@ class _ChatPageState extends State<ChatPage> {
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
-        onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: widget.currentUserId),),
+        onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ChatListPage(type: widget.type,),),
       )),
       title: Row(
         children: [

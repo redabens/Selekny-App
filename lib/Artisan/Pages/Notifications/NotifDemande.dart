@@ -3,10 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/retourAuth.dart';
 
 class NotifDemande extends StatefulWidget {
@@ -92,7 +94,7 @@ class NotifDemandeState extends State<NotifDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
                 );
 
               },
@@ -137,7 +139,7 @@ class NotifDemandeState extends State<NotifDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
 
               },
@@ -244,7 +246,7 @@ class NotifDemandeState extends State<NotifDemande> {
             nomprestation: nomprestation,
             imageUrl: image, datefin: data['datefin'],
             heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type: 1,),
+            longitude: data['longitude'], type1: 1, type2: 1,),
           const SizedBox(height: 10,),
         ],
       ),

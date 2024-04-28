@@ -7,8 +7,10 @@ import 'package:intl/intl.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/ActiviteWidget/JobsAndComments.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
-import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/profile/profile_screen.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/retourAuth.dart';
 
 class ActiviteAvenir extends StatefulWidget {
@@ -101,7 +103,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
                 );
 
               },
@@ -123,7 +125,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const NotifUrgente()),
                 );
 
 
@@ -146,7 +148,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
 
               },
@@ -168,7 +170,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
 
               },
@@ -257,7 +259,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
             nomprestation: nomprestation,
             imageUrl: image, datefin: data['datefin'],
             heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type: 2,),
+            longitude: data['longitude'], type1: 2, type2: 2,),
           const SizedBox(height: 10,),
         ],
       ),

@@ -121,7 +121,7 @@ Future<String> getPrixById(String domainId, String prestationId) async {
 
   final prestationDocument = prestationsCollection.doc(prestationId);
 
-  final prix = await prestationDocument.get().then((snapshot) => snapshot.data()?['materiel']);
+  final prix = await prestationDocument.get().then((snapshot) => snapshot.data()?['prix']);
 
   return prix ?? '';
 }

@@ -9,7 +9,10 @@ import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/ActiviteWidget/ButtonActivite.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/ActiviteWidget/JobsAndComments.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/profile/profile_screen.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/retourAuth.dart';
 
 class ActiviteToday extends StatefulWidget {
@@ -102,7 +105,7 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
                 );
 
               },
@@ -124,7 +127,7 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const NotifUrgente()),
                 );
 
 
@@ -147,7 +150,7 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
 
               },
@@ -169,7 +172,7 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
 
               },
@@ -258,7 +261,7 @@ class ActiviteTodayState extends State<ActiviteToday> {
             nomprestation: nomprestation,
             imageUrl: image, datefin: data['datefin'],
             heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type: 2,),
+            longitude: data['longitude'], type1: 2, type2: 1, ),
           const SizedBox(height: 10,),
         ],
       ),
@@ -434,131 +437,8 @@ class AvenirButton extends StatelessWidget {
   }
 
 }
-/*class BoxDemandeUrgente extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 325,
-      height: 145,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: const Color(0xFFC4C4C4),
-          width: 2.0,
-        ),
-      ),
-      child:Column(
-          children:
-          [
-            const SizedBox(height: 8,),
-            pdpanddetailsUrgente(),
-            detailsbottom(),
-          ]
 
-
-      ),
-    );
-  }
-}
-
-class pdpanddetailsUrgente extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 325,
-      height: 95,
-      // color: Colors.green,
-
-      child: Row(
-          children:
-          [
-
-            detailsUrgent(),
-            Pdp(),
-          ]
-      ),
-
-
-    );
-  }
-
-}
-
-
-
-class detailsUrgent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: 235,
-        height: 95,
-        //color: Colors.red,
-        child: Column(
-            children:
-            [
-              NomPrestation(),
-
-              HeureUrgent(),
-              Lieu(),
-            ]
-
-        )
-
-
-    );
-
-  }
-
-}
-class HeureUrgent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 240,
-      height: 30,
-      color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align items to the start
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-
-          children: [
-          const SizedBox(width: 7),
-          Container(
-            height: 17,
-            width: 17,
-            child: Image.asset(
-
-              'icons/heure.png',
-              // Assurez-vous de fournir le chemin correct vers votre image
-            ),
-          ),
-          SizedBox(width: 7),
-          Text(
-            '14h-14h30',
-            style: GoogleFonts.poppins(
-              color: Colors.black,
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-
-          ],
-          ),
-
-          ButtonUrgent(),
-        ],
-      ),
-
-
-      // Ajoutez plus de widgets Text ici pour les éléments supplémentaires
-
-
-    );
-  }
-}
-
+/*
 class Salut extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

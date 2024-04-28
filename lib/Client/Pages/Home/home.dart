@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/Pages/Home/header.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Client/Pages/Home/body.dart';
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NotificationsPage(),),
+                  MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
                 );
 
 
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: FirebaseAuth.instance.currentUser!.uid),),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 1,),),
                 );
 
               },
@@ -124,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
                 );
 
               },

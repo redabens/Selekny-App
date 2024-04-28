@@ -4,11 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
-import 'package:reda/Pages/retourAuth.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 
 class NotifUrgente extends StatefulWidget {
   const NotifUrgente({super.key});
@@ -102,7 +103,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
                 );
               },
               child: Container(
@@ -124,7 +125,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const NotifUrgente()),
                 );
               },
               child: Container(
@@ -146,7 +147,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
               },
               child: Container(
@@ -259,7 +260,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
             nomprestation: nomprestation,
             imageUrl: image, datefin: data['datefin'],
             heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type: 1,),
+            longitude: data['longitude'], type1: 1, type2: 1, ),
           const SizedBox(height: 10,),
         ],
       ),

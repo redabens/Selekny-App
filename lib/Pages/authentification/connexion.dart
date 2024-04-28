@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:flutter/cupertino.dart';
 import 'forgotpassword.dart';
 import 'inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -115,6 +115,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 MaterialPageRoute(
                     builder: (context) =>
                     const HomePage()),
+              );
+            }
+            else if(role == 'artisan'){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                    const ActiviteAvenir()),
               );
             }
             //rediriger vers la page d acceuil

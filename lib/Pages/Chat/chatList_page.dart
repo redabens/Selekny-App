@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
+import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/NotificationsPage.dart';
 import 'package:reda/Client/Pages/ProfilePage.dart';
@@ -11,35 +14,28 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:reda/Services/chat/chatList_service.dart';
 import 'package:intl/intl.dart';
-import 'package:reda/pages/Chat/chat_page.dart';
+import 'package:reda/Pages/Chat/chat_page.dart';
 
 const Color myBlueColor = Color(0xFF3E69FE);
 
 class ChatListPage extends StatefulWidget{
+  final int type;
   const ChatListPage({
-    super.key,
-    required this.currentUserID,
+    super.key, required this.type,
   });
-  final String currentUserID;
 
   @override
   State<ChatListPage> createState() => _ChatListPageState();
 }
 
 class _ChatListPageState extends State<ChatListPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
   int _currentIndex = 2;
-
   final ChatListService _ChatListService = ChatListService();
-
   Future<String> getUserImgPathById(String userId) async {
 
-    final userCollection = FirebaseFirestore.instance.collection('User');
+    final userCollection = FirebaseFirestore.instance.collection('users');
     final userDocument = userCollection.doc(userId);
-    final imgPath = await userDocument.get().then((snapshot) => snapshot.data()?['PathImage']);
+    final imgPath = await userDocument.get().then((snapshot) => snapshot.data()?['pathImage']);
     print(imgPath);
     return imgPath;
   }
@@ -165,7 +161,7 @@ class _ChatListPageState extends State<ChatListPage> {
           const SizedBox(height: 10), // espace between les chat box
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: widget.type == 1 ? BottomNavigationBar(
 
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
@@ -204,7 +200,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NotificationsPage(),),
+                  MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
                 );
 
 
@@ -227,7 +223,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatListPage(currentUserID: FirebaseAuth.instance.currentUser!.uid),),
+                  MaterialPageRoute(builder: (context) => const ChatListPage( type: 1,),),
                 );
 
               },
@@ -249,7 +245,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
                 );
 
               },
@@ -264,14 +260,113 @@ class _ChatListPageState extends State<ChatListPage> {
             label: '',
           ),
         ],
-      ),
+      ) : BottomNavigationBar(
+
+        backgroundColor: const Color(0xFFF8F8F8),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        iconSize: 30,
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ActiviteAvenir(),),
+                );
+
+              },
+              child: SizedBox(
+                height: 40,
+                child: Image.asset(
+                  'assets/accueil.png',
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NotifUrgente(),),
+                );
+
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'assets/Ademandes.png',
+                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,),),
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'assets/messages.png',
+                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'assets/profile.png',
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+        ],
+      )
 
     );
 
   }
   Widget _buildChatList() {
     return StreamBuilder<List<QueryDocumentSnapshot>>(
-      stream: _ChatListService.getConversations(widget.currentUserID),
+      stream: _ChatListService.getConversations(FirebaseAuth.instance.currentUser!.uid),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -288,7 +383,7 @@ class _ChatListPageState extends State<ChatListPage> {
           itemBuilder: (context, index) {
             final document = documents[index];
             return FutureBuilder<Widget>(
-              future: _buildChatListItem(document, widget.currentUserID),
+              future: _buildChatListItem(document),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Text('Error loading chat: ${snapshot.error}');
@@ -305,7 +400,7 @@ class _ChatListPageState extends State<ChatListPage> {
       },
     );
   }
-  Future<Widget> _buildChatListItem(DocumentSnapshot doc,String currentUserID) async {
+  Future<Widget> _buildChatListItem(DocumentSnapshot doc) async {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     String profileImage = "assets/images/placeholder.png"; // Default image
     String userName = "";
@@ -313,7 +408,7 @@ class _ChatListPageState extends State<ChatListPage> {
 
     //Teest to get the other user in the coversation
     try {
-      if (data['user1'] == currentUserID) {
+      if (data['user1'] == FirebaseAuth.instance.currentUser!.uid) {
         otherUserId = data['user2'];
         profileImage = await getUserPathImage(data['user2']); // get user2 si currentuser est user1
         userName = await getUserName(data['user2']);
@@ -352,7 +447,7 @@ class _ChatListPageState extends State<ChatListPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(    //otherUserId
-                  builder: (context) => ChatPage(receiverUserID: otherUserId , currentUserId: widget.currentUserID
+                  builder: (context) => ChatPage(receiverUserID: otherUserId , currentUserId: FirebaseAuth.instance.currentUser!.uid, type: widget.type,
                   ),
                 ),
               );
