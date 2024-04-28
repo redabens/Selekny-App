@@ -1,10 +1,9 @@
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Artisan/Pages/NotifWidgets/Buttonaccruf.dart';
-import 'package:reda/Artisan/Pages/NotifWidgets/EnvoyerILya.dart';
-class Detailsbottom extends StatelessWidget {
+import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/ButtonAccepter.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/ButtonRefuser.dart';
+class Buttonaccruf extends StatelessWidget {
   final String datedebut;
   final String datefin;
   final String heuredebut;
@@ -17,7 +16,7 @@ class Detailsbottom extends StatelessWidget {
   final double latitude;
   final double longitude;
   final Timestamp timestamp;
-  const Detailsbottom({super.key, required this.datedebut,
+  const Buttonaccruf({super.key, required this.datedebut,
     required this.datefin, required this.heuredebut,
     required this.heurefin, required this.adresse,
     required this.iddomaine, required this.idprestation,
@@ -28,20 +27,20 @@ class Detailsbottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 390,
-        height: 35,
+        width: 200,
+        height: 30,
         //color: Colors.black,
-        child: Row(
+        child:Row(
           children: [
-            Envoyerilya(timestamp: timestamp,),
-            const Spacer(),
-            Buttonaccruf(datedebut: datedebut, datefin: datefin,
+            const SizedBox(width: 18,),
+            Buttonaccepter(datedebut: datedebut, datefin: datefin,
               heuredebut: heuredebut, heurefin: heurefin,
               adresse: adresse, iddomaine: iddomaine,
               idprestation: idprestation, idclient: idclient,
               urgence: urgence, latitude: latitude,
-              longitude: longitude, timestamp: timestamp,),//hado bouton accepter refuser
-            const SizedBox(width: 8,),
+              longitude: longitude, timestamp: timestamp,),
+            const SizedBox(width: 2,),
+            Buttonrefuser( timestamp: timestamp,),
           ],
         )
     );

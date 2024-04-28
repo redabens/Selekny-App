@@ -141,6 +141,11 @@ flutter:
     - assets/cle.png
     - assets/pdp.png
     - assets/Ademandes.png
+    - assets/forward.png
+    - assets/task.png
+    - assets/comments.png
+    - assets/auj.png
+    - assets/venir.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

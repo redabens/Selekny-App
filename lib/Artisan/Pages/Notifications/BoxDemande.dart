@@ -4,11 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Artisan/Pages/NotifWidgets/Date.dart';
-import 'package:reda/Artisan/Pages/NotifWidgets/DetaislBottom.dart';
-import 'package:reda/Artisan/Pages/NotifWidgets/Heure.dart';
-import 'package:reda/Artisan/Pages/NotifWidgets/Lieu.dart';
-import 'package:reda/Artisan/Pages/NotifWidgets/NomPrestation.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/Date.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/DetaislBottom.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/Heure.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/Lieu.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/NomPrestation.dart';
 class BoxDemande extends StatelessWidget {
   final String datedebut;
   final String datefin;
@@ -24,6 +24,7 @@ class BoxDemande extends StatelessWidget {
   final Timestamp timestamp;
   final String nomprestation;
   final String imageUrl;
+  final int type;
 
   const BoxDemande({
     super.key, required this.datedebut,required this.datefin,
@@ -32,7 +33,8 @@ class BoxDemande extends StatelessWidget {
     required this.idprestation, required this.idclient,
     required this.urgence, required this.latitude,
     required this.longitude, required this.timestamp,
-    required this.nomprestation, required this.imageUrl,});
+    required this.nomprestation, required this.imageUrl,
+    required this.type,});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,13 +52,13 @@ class BoxDemande extends StatelessWidget {
           [
             Pdpanddetails(nomprestation: nomprestation, idClient: idclient,
               datedebut: datedebut,heuredebut: heuredebut,
-              adresse: adresse, imageUrl: imageUrl,),
+              adresse: adresse, imageUrl: imageUrl, type: type, urgence: urgence,),
             Detailsbottom(datedebut: datedebut, datefin: datefin,
               heuredebut: heuredebut, heurefin: heurefin,
               adresse: adresse, iddomaine: iddomaine,
               idprestation: idprestation, idclient: idclient,
               urgence: urgence, latitude: latitude, longitude: longitude,
-              timestamp: timestamp,),
+              timestamp: timestamp, type: type,),
           ]
 
 
@@ -71,9 +73,11 @@ class Pdpanddetails extends StatelessWidget {
   final String datedebut;
   final String heuredebut;
   final String adresse;
+  final int type;
+  final bool urgence;
   const Pdpanddetails({super.key, required this.nomprestation, required this.idClient,
     required this.datedebut, required this.heuredebut, required this.adresse,
-    required this.imageUrl,});
+    required this.imageUrl, required this.type, required this.urgence,});
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +92,7 @@ class Pdpanddetails extends StatelessWidget {
             const SizedBox(width: 4,),
             Pdp(imageUrl: imageUrl,),
             Details(nomprestation: nomprestation, adresse: adresse,
-              datedebut: datedebut, heuredebut: heuredebut,),
+              datedebut: datedebut, heuredebut: heuredebut,type: type, urgence: urgence,),
           ]
       ),
 
@@ -131,7 +135,12 @@ class Details extends StatelessWidget {
   final String adresse;
   final String datedebut;
   final String heuredebut;
-  const Details({super.key, required this.nomprestation, required this.adresse, required this.datedebut, required this.heuredebut});
+  final int type;
+  final bool urgence;
+  const Details({super.key, required this.nomprestation,
+    required this.adresse, required this.datedebut,
+    required this.heuredebut, required this.type,
+    required this.urgence});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -143,8 +152,8 @@ class Details extends StatelessWidget {
             [
               NomPrestation(nomprestation: nomprestation,),
               Lieu(adresse: adresse,),
-              Date(datedebut: datedebut,),
-              Heure(heuredebut: heuredebut,),
+              Date(datedebut: datedebut, type: type, urgence: urgence,),
+              Heure(heuredebut: heuredebut, type: type, urgence: urgence,),
             ]
         )
     );

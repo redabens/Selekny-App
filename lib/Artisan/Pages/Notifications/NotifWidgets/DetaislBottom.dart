@@ -1,9 +1,11 @@
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:reda/Artisan/Pages/NotifWidgets/ButtonAccepter.dart';
-import 'package:reda/Artisan/Pages/NotifWidgets/ButtonRefuser.dart';
-class Buttonaccruf extends StatelessWidget {
+import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/ActiviteWidget/ButtonActivite.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/Buttonaccruf.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/EnvoyerILya.dart';
+class Detailsbottom extends StatelessWidget {
   final String datedebut;
   final String datefin;
   final String heuredebut;
@@ -16,33 +18,40 @@ class Buttonaccruf extends StatelessWidget {
   final double latitude;
   final double longitude;
   final Timestamp timestamp;
-  const Buttonaccruf({super.key, required this.datedebut,
+  final int type;
+  const Detailsbottom({super.key, required this.datedebut,
     required this.datefin, required this.heuredebut,
     required this.heurefin, required this.adresse,
     required this.iddomaine, required this.idprestation,
     required this.idclient, required this.urgence,
     required this.latitude, required this.longitude,
-    required this.timestamp});
+    required this.timestamp, required this.type});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 200,
-        height: 30,
+        width: 390,
+        height: 35,
         //color: Colors.black,
-        child:Row(
+        child: type == 1 ? Row(
           children: [
-            const SizedBox(width: 18,),
-            Buttonaccepter(datedebut: datedebut, datefin: datefin,
+            Envoyerilya(timestamp: timestamp,),
+            const Spacer(),
+            Buttonaccruf(datedebut: datedebut, datefin: datefin,
               heuredebut: heuredebut, heurefin: heurefin,
               adresse: adresse, iddomaine: iddomaine,
               idprestation: idprestation, idclient: idclient,
               urgence: urgence, latitude: latitude,
-              longitude: longitude, timestamp: timestamp,),
-            const SizedBox(width: 2,),
-            Buttonrefuser( timestamp: timestamp,),
+              longitude: longitude, timestamp: timestamp,), //hado bouton accepter refuser
+            const SizedBox(width: 8,),
           ],
         )
+            : const Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Buttontraiterannuler(),
+              SizedBox(width: 8,),
+            ])
     );
   }
 

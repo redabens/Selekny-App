@@ -1,37 +1,38 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-class Heure extends StatelessWidget {
-  final String heuredebut;
-  const Heure({super.key, required this.heuredebut});
+class NomPrestation extends StatelessWidget {
+  final String nomprestation;
+  const NomPrestation({
+    super.key,
+    required this.nomprestation
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 240,
-      height: 20,
+      height: 30,
       color: Colors.white,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.start, // Align items to the start
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(width: 7),
           Container(
-            height: 17,
-            width: 17,
+            height: 20,
+            width: 20,
             child: Image.asset(
-
-              'assets/heure.png',
+              'assets/cle.png',
               // Assurez-vous de fournir le chemin correct vers votre image
             ),
           ),
           const SizedBox(width: 7),
           Text(
-            heuredebut,
+            nomprestation,
             style: GoogleFonts.poppins(
-              color: const Color(0xFF757575),
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
+              color: Colors.black,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],

@@ -109,4 +109,12 @@ class DemandeArtisanService extends ChangeNotifier{
         .orderBy('timestamp',descending: true)
         .snapshots();
   }
+  Stream<QuerySnapshot> getRendezVous(String artisanId){
+
+    return _firestore
+        .collection('users')
+        .doc(artisanId).collection('RendezVous')
+        .orderBy('timestamp',descending: true)
+        .snapshots();
+  }
 }

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:reda/Artisan/Pages/NotifDemande.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Services/demande%20publication/publierDemandeinit.dart';
@@ -48,7 +47,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
   Future<void> _checkArtisansForLatestDemande() async {
     final demandecol = FirebaseFirestore.instance.collection('Demandes');
     final demandeDoc = await demandecol.orderBy('timestamp', descending: true).limit(1).get();
-    final demandeData = demandeDoc.docs[0];
+    final demandeData = demandeDoc.docs.first;
     final demandeLat = demandeData['latitude'];
     final demandeLong = demandeData['longitude'];
     String domainenom = '';
