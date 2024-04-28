@@ -102,6 +102,7 @@ class DemandeClientService extends ChangeNotifier{
         });
       }
     });
+    print('delete avec success cli');
     return Future.value(null);
   }
   Stream<QuerySnapshot> getDemandeClient(String clientId){
@@ -140,6 +141,7 @@ class DemandeClientService extends ChangeNotifier{
         });
       }
     });
+    print('delete avec success cli');
     return Future.value(null);
   }
 }

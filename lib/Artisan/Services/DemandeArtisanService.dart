@@ -99,6 +99,7 @@ class DemandeArtisanService extends ChangeNotifier{
         });
       }
     });
+    print('delete avec success art');
     return Future.value(null);
   }
   Stream<QuerySnapshot> getDemandeArtisan(String artisanId){
@@ -137,6 +138,7 @@ class DemandeArtisanService extends ChangeNotifier{
         });
       }
     });
+    print('delete avec success art');
     return Future.value(null);
   }
 }

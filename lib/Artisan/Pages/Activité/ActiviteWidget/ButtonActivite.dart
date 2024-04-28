@@ -18,7 +18,7 @@ class Buttontraiterannuler extends StatelessWidget {
         child: Row(
           children: [
             const SizedBox(width: 18,),
-            const ButtonTraiter(),
+            ButtonTraiter(timestamp: timestamp, idclient: idclient,),
             const SizedBox(width: 2,),
             ButtonAnnuler(timestamp: timestamp, idclient: idclient,),
           ],
@@ -30,7 +30,9 @@ class Buttontraiterannuler extends StatelessWidget {
 
 
 class ButtonTraiter extends StatefulWidget {
-  const ButtonTraiter({super.key});
+  final Timestamp timestamp;
+  final String idclient;
+  const ButtonTraiter({super.key, required this.timestamp, required this.idclient});
 
   @override
   ButtonTraiterState createState() => ButtonTraiterState();
@@ -39,7 +41,8 @@ class ButtonTraiter extends StatefulWidget {
 class ButtonTraiterState extends State<ButtonTraiter> {
   Color _buttonColor = const Color(0xFF49F77A);
   Color _textColor = Colors.black;
-
+  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
+  final DemandeClientService _demandeClientService = DemandeClientService();
   void _changeColor() {
     setState(() {
       _buttonColor = const Color(0xFFF6F6F6);
@@ -59,7 +62,9 @@ class ButtonTraiterState extends State<ButtonTraiter> {
       child: TextButton(
         onPressed:() async {
           _changeColor;
-
+          _demandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
+          _demandeArtisanService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+          print('Traite avec success');
           await Future.delayed(const Duration(milliseconds: 100));
           },
         child: Row(
@@ -114,6 +119,7 @@ class ButtonAnnulerState extends State<ButtonAnnuler> {
         onPressed: () async {
           _demandeArtisanService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
           _demandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
+          print('annuler avec success');
           await Future.delayed(const Duration(milliseconds: 100));
         }, // hna lazm quand on annule la classe Box Demande troh completement
 
