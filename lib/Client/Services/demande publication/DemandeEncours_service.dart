@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class DemandeEncoursService extends ChangeNotifier{
@@ -15,5 +14,31 @@ class DemandeEncoursService extends ChangeNotifier{
         .orderBy('timestamp', descending: true)
         .where('id_Client', isEqualTo: currentUserId)
         .snapshots();
+  }
+  Future<void> deleteDemande(Timestamp timestamp)async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Get the subcollection reference
+    CollectionReference<Map<String, dynamic>> subcollectionRef =
+    firestore.collection('Demandes');
+
+    // Construct the timestamp query
+    Query<Map<String, dynamic>> timestampQuery =
+    subcollectionRef.where('timestamp', isEqualTo: timestamp);
+
+    // Perform the delete operation
+    timestampQuery.get().then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((documentSnapshot) {
+          print('${documentSnapshot.data()}');
+          documentSnapshot.reference.delete();
+        });
+      }
+      else{
+        print('deja suprimmer ou bien n''existe pas');
+      }
+    });
+    print('delete avec success Demande');
+    return Future.value(null);
   }
 }

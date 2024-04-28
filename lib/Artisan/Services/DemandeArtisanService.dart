@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Services/DemandeArtisan.dart';
 
@@ -33,7 +32,7 @@ class DemandeArtisanService extends ChangeNotifier{
         urgence: urgence,
         latitude: latitude,
         longitude: longitude,
-        timestamp: timestamp,
+        timestamp: timestamp, idartisan: recieverId,
         );
     await _firestore
         .collection('users')
@@ -66,6 +65,7 @@ class DemandeArtisanService extends ChangeNotifier{
         iddomaine : iddomaine,
         idprestation: idprestation,
         idclient: idclient,
+        idartisan: recieverId,
         urgence: urgence,
         latitude: latitude,
         longitude: longitude,

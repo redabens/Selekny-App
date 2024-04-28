@@ -1,5 +1,4 @@
 //this is a model for one element in the list of conversations
-import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatListElement{
   final String user1;
   final String user2;

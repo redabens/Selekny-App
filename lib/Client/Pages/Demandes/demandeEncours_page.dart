@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeEncours_service.dart';
-import 'dart:ui';
 import 'package:reda/Client/components/demandeEncours_container.dart';
 import '../Home/home.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -160,6 +158,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
 
   //--------------------------------------------------------------------------------------
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -171,10 +170,6 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
             elevation: 0.0,
             // Remove default shadow
             backgroundColor: Colors.white,
-            leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.arrow_back_ios_new),
-            ),
             title: Text(
               'Demandes',
               style: GoogleFonts.poppins(

@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 
-class DetDemandeAcceptee extends StatefulWidget {
+class RendezVousClient extends StatefulWidget {
   final String domaine;
   final String location;
   final String date;
@@ -30,7 +31,7 @@ class DetDemandeAcceptee extends StatefulWidget {
   final String idartisan;
   final Timestamp timestamp;
 
-  const DetDemandeAcceptee({
+  const RendezVousClient({
     super.key,
     required this.domaine,
     required this.location,
@@ -57,10 +58,10 @@ class DetDemandeAcceptee extends StatefulWidget {
     required this.timestamp
   });
   @override
-  State<DetDemandeAcceptee> createState() => _DetDemandeAccepteeState();
+  State<RendezVousClient> createState() => _RendezVousClientState();
 }
 
-class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
+class _RendezVousClientState extends State<RendezVousClient> {
   final DemandeClientService _DemandeClientService = DemandeClientService();
   final DemandeArtisanService _DemandeArtisanService = DemandeArtisanService();
   @override
@@ -252,36 +253,10 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ElevatedButton(
-                      onPressed: ()  async {
-                        _DemandeClientService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient,widget.idartisan, widget.urgence, widget.latitude, widget.longitude);
-                        _DemandeArtisanService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan) ;
-                        _DemandeClientService.deleteDemandeClient(widget.timestamp, widget.idclient);
-                        await Future.delayed(const Duration(milliseconds: 100));
-                      },
-                      style: ButtonStyle(
-
-                        backgroundColor: MaterialStateProperty.all(const Color(0xFF3E69FE)),
-                        minimumSize: MaterialStateProperty.all(const Size(22, 6)),
-                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 8, vertical: 8)), // Ajoutez du padding si nécessaire
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        'Confirmer',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
                     OutlinedButton(
                       onPressed: () async{
-                        _DemandeClientService.deleteDemandeClient(widget.timestamp, widget.idclient);
+                        _DemandeClientService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+                        _DemandeArtisanService.deleteRendezVous(widget.timestamp, widget.idartisan);
                         await Future.delayed(const Duration(milliseconds: 100));
                       },
                       style: ButtonStyle(

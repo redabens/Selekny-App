@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:reda/Pages/help.dart';
+import 'package:reda/Client/Pages/Demandes/Rendezvous_Page.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key? key});
+  const Header({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +33,11 @@ class Header extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const HelpPage()),
+                MaterialPageRoute(builder: (context) => const RendezVousPage()),
               );
             },
             icon: Image.asset(
-              'assets/Question.png', // Remplacez 'votre_image.png' par le chemin de votre image dans le dossier assets
+              'assets/Ademandes.png', // Remplacez 'votre_image.png' par le chemin de votre image dans le dossier assets
               width: 30, // Largeur de l'image
               height: 30, // Hauteur de l'image
             ),

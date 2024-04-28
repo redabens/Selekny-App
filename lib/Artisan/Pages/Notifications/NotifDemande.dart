@@ -9,7 +9,6 @@ import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
-import 'package:reda/Pages/retourAuth.dart';
 
 class NotifDemande extends StatefulWidget {
   const NotifDemande({super.key});

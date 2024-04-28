@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -16,6 +15,7 @@ Future <void> publierDemandeinit(String domaineId,String prestationId,bool urgen
   final double longitude = querySnapshot1.docs[0].data()['longitude'];
   final double latitude = querySnapshot1.docs[0].data()['latitude'];
   final String adresse = querySnapshot1.docs[0].data()['adresse'];
+  final bool checked = false;
   final Timestamp timestamp = Timestamp.now();
   await demande.add({
     'adresse':adresse,
@@ -29,6 +29,7 @@ Future <void> publierDemandeinit(String domaineId,String prestationId,bool urgen
     'heure_fin':heuredefin,
     'longitude': longitude,
     'latitude': latitude,
+    'checked': checked,
     'timestamp':timestamp,
   });
 

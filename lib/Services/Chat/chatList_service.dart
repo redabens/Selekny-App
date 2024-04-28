@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'message.dart';
 import 'package:rxdart/rxdart.dart';
-import 'chatListElement.dart';
 import 'dart:async';
 
 class ChatListService extends ChangeNotifier {

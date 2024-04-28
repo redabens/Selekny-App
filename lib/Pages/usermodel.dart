@@ -75,7 +75,7 @@ class UserModel {
         double? latitude,
         double? longitude}) {
     return UserModel(
-        id: id ?? this.id,
+        id: id ?? id,
         nom: nom ?? this.nom,
         numTel: numTel ?? this.numTel,
         adresse: adresse ?? this.adresse,
@@ -106,27 +106,17 @@ class UserModel {
 
 class ClientModel extends UserModel {
   ClientModel(
-      {required String id,
-        required String nom,
-        required String numTel,
-        required String adresse,
-        required String email,
-        required String motDePasse,
-        required String pathImage,
-        required double longitude,
-        required double latitude})
+      {required super.id,
+        required super.nom,
+        required super.numTel,
+        required super.adresse,
+        required super.email,
+        required super.motDePasse,
+        required super.pathImage,
+        required super.longitude,
+        required super.latitude})
       : super(
-      id: id,
-      nom: nom,
-      numTel: numTel,
-      adresse: adresse,
-      email: email,
-      motDePasse: motDePasse,
-      role: 'client',
-      pathImage:
-      pathImage, // Passer pathImage au constructeur de la classe mère,
-      latitude: latitude,
-      longitude: longitude);
+      role: 'client');
 }
 
 class ArtisanModel extends UserModel {

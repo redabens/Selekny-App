@@ -1,11 +1,11 @@
 import 'dart:core';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeClientService.dart';
+import 'package:reda/Client/Services/demande%20publication/DemandeEncours_service.dart';
 class Buttonaccepter extends StatefulWidget {
   final String datedebut;
   final String datefin;
@@ -36,6 +36,7 @@ class ButtonaccepterState extends State<Buttonaccepter> {
   Color _textColor = Colors.black;
   final DemandeClientService _demandeClientService = DemandeClientService();
   final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
+  final DemandeEncoursService _demandeEncoursService = DemandeEncoursService();
   void _changeColor() {
     setState(() {
       _buttonColor = const Color(0xFFF6F6F6);
@@ -60,6 +61,7 @@ class ButtonaccepterState extends State<Buttonaccepter> {
             widget.idprestation, widget.idclient, FirebaseAuth.instance.currentUser!.uid,
             widget.urgence, widget.latitude, widget.longitude,);
         _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+        _demandeEncoursService.deleteDemande(widget.timestamp);
         await Future.delayed(const Duration(milliseconds: 100));
         },
         child: Row(

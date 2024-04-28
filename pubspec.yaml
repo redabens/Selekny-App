@@ -75,6 +75,11 @@ dependencies:
   flutter_map: ^6.1.0
   flutter_bloc: ^8.0.0  # Adjust version as needed
   bloc_test: ^9.0.0
+  country_code_picker: ^3.0.0
+  connectivity: ^3.0.6
+  provider: ^6.1.2
+  app_settings: ^5.1.1
+  flutter_local_notifications: ^17.1.0
 
 dev_dependencies:
   flutter_test:

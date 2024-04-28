@@ -37,6 +37,7 @@ class DetailsDemandeState extends State<DetailsDemande> {
   late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: false, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
    Date datedebut = Date();
    Date datefin =Date();
+  bool urgence = false;
   @override
   void initState() {
     super.initState();
@@ -72,7 +73,7 @@ class DetailsDemandeState extends State<DetailsDemande> {
               const SizedBox(width: 50, height: 25,),
               Prix(prix: prix ?? 'prix',),
               const SizedBox(width: 50, height: 25,),
-              Urgence(domaineID: widget.domaineID,prestationID: widget.prestationID,nomprestation: widget.nomprestation,demande: demandeinit,),
+              Urgence(domaineID: widget.domaineID,prestationID: widget.prestationID,nomprestation: widget.nomprestation,demande: demandeinit, urgence: urgence,),
               const SizedBox(width: 50, height: 25,),
               Dates(datedebut: datedebut,datefin: datefin,),
               const SizedBox(width: 50, height: 25,),

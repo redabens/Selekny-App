@@ -3,16 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
-import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
-import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
-import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'firebase_options.dart';
-import 'package:reda/Services/ConvertAdr.dart';
-import 'dart:convert';
-import 'dart:math';
-import 'package:http/http.dart' as http;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

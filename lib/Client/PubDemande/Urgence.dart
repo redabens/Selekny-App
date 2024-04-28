@@ -4,19 +4,20 @@ import 'package:reda/Client/PubDemande/detailsDemande.dart';
 import 'package:reda/Client/components/Demande.dart';
 import 'detailsDemandeUrgente.dart';
 
-import 'package:custom_switch_widget/custom_switch_widget.dart';
 
 class Urgence extends StatelessWidget {
   final String domaineID;
   final String prestationID;
   final String nomprestation;
   final Demande demande;
+  final bool urgence;
   const Urgence({
     super.key,
     required this.domaineID,
     required this.prestationID,
     required this.nomprestation,
     required this.demande,
+    required this.urgence,
   });
   @override
 
@@ -58,7 +59,7 @@ class Urgence extends StatelessWidget {
               ),
               const SizedBox(width: 80,),
 
-              EmergencySwitch(domaineID: domaineID, prestationID: prestationID, nomprestation: nomprestation, demande: demande,),
+              EmergencySwitch(domaineID: domaineID, prestationID: prestationID, nomprestation: nomprestation, demande: demande, urgence: urgence,),
 
 
             ],
@@ -93,12 +94,14 @@ class EmergencySwitch extends StatefulWidget {
   final String prestationID;
   final String nomprestation;
   final Demande demande;
+  final bool urgence;
   const EmergencySwitch({
     super.key,
     required this.domaineID,
     required this.prestationID,
     required this.nomprestation,
     required this.demande,
+    required this.urgence,
 });
 
   @override
@@ -106,13 +109,13 @@ class EmergencySwitch extends StatefulWidget {
 }
 
 class _EmergencySwitchState extends State<EmergencySwitch> {
-  static bool _emergencyActivated = false;
+  bool _emergencyActivated =false;
   @override
   void initState() {
     super.initState();
     // Fetch material on widget initialization
-    _emergencyActivated =widget.demande.urgence;
     setState(() {
+      _emergencyActivated =widget.urgence;
     });
   }
   @override

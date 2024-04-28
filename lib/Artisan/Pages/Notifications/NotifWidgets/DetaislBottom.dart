@@ -1,7 +1,6 @@
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/ActiviteWidget/ButtonActivite.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/ButtonRefuser.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/Buttonaccruf.dart';

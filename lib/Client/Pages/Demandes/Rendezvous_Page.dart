@@ -2,32 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
-import 'package:reda/Client/components/demandeAcceptee_container.dart';
+import 'package:reda/Client/components/RendezVous_container.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Home/home.dart';
-import 'package:reda/Client/profile/profile_screen.dart';
-import 'package:reda/Pages/Chat/chatList_page.dart';
 
-class DemandeAccepteePage extends StatefulWidget {
-  const DemandeAccepteePage({
+class RendezVousPage extends StatefulWidget {
+  const RendezVousPage({
     super.key,
   });
   @override
-  State<DemandeAccepteePage> createState() => _DemandeAccepteePageState();
+  State<RendezVousPage> createState() => _RendezVousPageState();
 }
-class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
-  int _currentIndex = 1;
-
-  void _onItemTap(bool isEnCours) {
-    setState(() {
-      isEnCoursSelected = isEnCours;
-    });
-  }
-
-  bool isEnCoursSelected = false;
-
+class _RendezVousPageState extends State<RendezVousPage> {
   //---------------LES FONCTION GETTERS---------------------------------------------------
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -83,13 +69,13 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
       return 'Erreur: $e';
     }
   }
-  //get le nom de lartisan  
+  //get le nom de lartisan
   Future<String> getNameUser(String userID) async {
     final userDoc = await _firestore.collection('users').doc(userID).get();
     if (!userDoc.exists) {
-      return 'Utilisateur introuvable'; 
+      return 'Utilisateur introuvable';
     }
-    final String userName = userDoc.data()!['nom'] as String;  
+    final String userName = userDoc.data()!['nom'] as String;
     return userName;
   }
 //get phone number de l'artisan
@@ -130,8 +116,14 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
             elevation: 0.0,
             // Remove default shadow
             backgroundColor: Colors.white,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios_new),
+            ),
             title: Text(
-              'Demandes',
+              'Rendez-Vous',
               style: GoogleFonts.poppins(
                 fontSize: 24,
                 fontWeight: FontWeight.w900,
@@ -142,119 +134,19 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
           const SizedBox(height: 18),
           _buildTitleAndDescription(), // le petit texte du début
           const SizedBox(height: 10),
-          _buildSelectionRow(),
           const SizedBox(height: 2),
           Expanded(
-            child: _buildDemandeAccepteeList(),
+            child: _buildRendezVousList(),
           ),
           const SizedBox(height: 10),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-
-        backgroundColor: const Color(0xFFF8F8F8),
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
-        iconSize: 30,
-        items: [
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _currentIndex = 0;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage(),),
-                );
-              },
-              child: Container(
-                height: 40,
-                child: Image.asset(
-                  'assets/accueil.png',
-                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
-                ),
-              ),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _currentIndex = 1;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
-                );
-
-
-              },
-              child: Container(
-                height: 40,
-                child: Image.asset(
-                  'assets/demandes.png',
-                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
-                ),
-              ),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _currentIndex = 2;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 1,),),
-                );
-
-              },
-              child: Container(
-                height: 40,
-                child: Image.asset(
-                  'assets/messages.png',
-                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
-                ),
-              ),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _currentIndex = 3;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
-                );
-
-              },
-              child: Container(
-                height: 40,
-                child: Image.asset(
-                  'assets/profile.png',
-                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
-                ),
-              ),
-            ),
-            label: '',
-          ),
-        ],
-      ),
-    );
+      );
   }
 
-  Widget _buildDemandeAccepteeList(){
+  Widget _buildRendezVousList(){
     return StreamBuilder(
-      stream: _DemandeAccepteeService.getDemandeClient(_firebaseAuth.currentUser!.uid), //_firebaseAuth.currentUser!.uid
+      stream: _DemandeAccepteeService.getRendezVous(_firebaseAuth.currentUser!.uid), //_firebaseAuth.currentUser!.uid
       builder: (context, snapshot){
         if (snapshot.hasError){
           return Text('Error${snapshot.error}');
@@ -269,7 +161,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
           print("Document Data: ${doc.data()}");
         }
         return FutureBuilder<List<Widget>>(
-            future: Future.wait(snapshot.data!.docs.map((document) => _buildDemandeAccepteeItem(document))),
+            future: Future.wait(snapshot.data!.docs.map((document) => _buildRendezVousItem(document))),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(child: Text('Error loading demandes encours:  ${snapshot.error}'));
@@ -283,7 +175,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
     );
   }
 
-  Future<Widget> _buildDemandeAccepteeItem(DocumentSnapshot document) async {
+  Future<Widget> _buildRendezVousItem(DocumentSnapshot document) async {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     String demandeID = document.id;
     String userID = _firebaseAuth.currentUser!.uid;//'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3';
@@ -306,7 +198,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
     String datefin = data['datefin'];
     String heureDebut = data['heuredebut'];
     String heureFin = data['heurefin'];
-   double latitude = data['latitude'];
+    double latitude = data['latitude'];
     double longitude = data['longitude'];
     Timestamp timestamp = data['timestamp'];
 
@@ -315,7 +207,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DetDemandeAcceptee(domaine: domaine,
+          RendezVousClient(domaine: domaine,
             location: location,
             date: date,
             heure: heure,
@@ -337,68 +229,10 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
             longitude: longitude,
             idartisan: artisanID,
             timestamp: timestamp,
-         ),
+          ),
           const SizedBox(height: 10),
         ],
       ),
-    );
-  }
-
-//---------------------------------------------------------------------------------------------------
- Widget _buildSelectionRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () =>
-                Navigator.push(
-                    context, MaterialPageRoute(
-                    builder: (context) => const DemandeEncoursPage())),
-            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
-              children: [
-                Text(
-                  'En-cours',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                    color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 12), // Espace entre le texte et la ligne
-                Container(
-                  height: isEnCoursSelected ? 4 : 1, // Épaisseur de la ligne
-                  color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
-                ),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          child: GestureDetector(
-            onTap: () => _onItemTap(false),
-            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
-              children: [
-                Text(
-                  'Acceptées',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                    color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 10), // Espace entre le texte et la ligne
-                Container(
-                  height: isEnCoursSelected ? 1 : 4, // Épaisseur de la ligne
-                  color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -421,7 +255,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 ),
                 const TextSpan(
                   text:
-                  ' Vous pouvez ici consulter vos demandes en cours, en attente, et celles qui sont confirmées pour la date du rendez-vous.',
+                  ' Vous pouvez ici consulter vos Rendez-Vous.',
                 ),
               ],
             ),

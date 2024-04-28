@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
-import 'package:reda/Client/Services/demande%20publication/publierDemandeinit.dart';
 import 'package:reda/Client/components/Demande.dart';
 
 double radians(double degrees) => degrees * pi / 180;
@@ -46,7 +45,12 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
   }
   Future<void> _checkArtisansForLatestDemande() async {
     final demandecol = FirebaseFirestore.instance.collection('Demandes');
-    final demandeDoc = await demandecol.orderBy('timestamp', descending: true).limit(1).get();
+    final demandeDoc = await demandecol.where('checked',isEqualTo: false).orderBy('timestamp', descending: false).get();
+    if (demandeDoc.docs.isEmpty) {
+      // Handle empty list scenario (optional: show a message to the user)
+      print('Aucune demande en attente');
+      return;
+    }
     final demandeData = demandeDoc.docs.first;
     final demandeLat = demandeData['latitude'];
     final demandeLong = demandeData['longitude'];
@@ -90,7 +94,10 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
         }
       }
     });
+    // Update the 'checked' value for the latest request after processing artisans
+    await demandecol.doc(demandeData.id).update({'checked': true});
     print('success');
+    await Future.value(null);
   }
 /*  void _listenForDemandes() async {
     // Stream subscription for more efficient handling

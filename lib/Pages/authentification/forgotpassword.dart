@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'inscription.dart';
-import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ForgotPasswordPage extends StatelessWidget {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/homedefault.dart';
 import 'authentification/inscription.dart';
 import 'authentification/connexion.dart';

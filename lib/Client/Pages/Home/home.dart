@@ -1,12 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/Pages/Home/header.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Client/Pages/Home/body.dart';
-import 'package:reda/Client/Pages/NotificationsPage.dart';
-import 'package:reda/Client/Pages/ProfilePage.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart'; // Importation de la classe Searchbar
 

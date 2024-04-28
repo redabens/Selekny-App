@@ -1,8 +1,5 @@
-import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/authentification/connexion.dart';
 class RetourAuth extends StatefulWidget {
   const RetourAuth({super.key});

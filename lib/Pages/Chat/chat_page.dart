@@ -4,7 +4,6 @@ import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Services/Chat/chat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:reda/Services/image_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 const Color myBlueColor = Color(0xFF3E69FE);
