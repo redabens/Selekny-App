@@ -15,7 +15,7 @@ Future <void> publierDemandeinit(String domaineId,String prestationId,bool urgen
   final double longitude = querySnapshot1.docs[0].data()['longitude'];
   final double latitude = querySnapshot1.docs[0].data()['latitude'];
   final String adresse = querySnapshot1.docs[0].data()['adresse'];
-  final bool checked = false;
+  const bool checked = false;
   final Timestamp timestamp = Timestamp.now();
   await demande.add({
     'adresse':adresse,
@@ -32,5 +32,6 @@ Future <void> publierDemandeinit(String domaineId,String prestationId,bool urgen
     'checked': checked,
     'timestamp':timestamp,
   });
-
+  await Future.delayed(const Duration(milliseconds: 300));
+  await Future.value(null);
 }
