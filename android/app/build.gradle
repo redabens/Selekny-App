@@ -1,0 +1,91 @@
+buildscript {
+    ext.kotlin_version = '1.9.23'
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // Mettez à jour la version de Kotlin ici
+        classpath 'com.google.gms:google-services:4.4.1' // Ajout de la dépendance Google Services
+    }
+}
+
+
+
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+
+}
+android {
+    compileSdkVersion 34 // Mettez à jour la version de compilation SDK ici
+    buildToolsVersion "34.0.0" // Mettez à jour la version des outils de build ici
+    ndkVersion "25.1.8937393"
+
+    defaultConfig {
+        applicationId "com.example.reda"
+
+        minSdkVersion 21 // Mettez à jour la version minimale de SDK ici
+        targetSdkVersion flutter.targetSdkVersion // Mettez à jour la version de SDK cible ici
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true // Activer le support multidex
+    }
+    namespace 'com.example.reda'
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug // Note: Cela utilise la configuration de signature de débogage, vous devrez la remplacer pour les versions de production
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.23" // Mettez à jour la version de Kotlin ici
+    implementation "com.android.support:multidex:2.0.1" // Ajouter la dépendance multidex
+    implementation platform("com.google.firebase:firebase-bom:32.8.0")
+    implementation "com.google.firebase:firebase-auth"
+    implementation "com.google.android.gms:play-services-auth:21.0.0"
+    //implementation 'com.facebook.android:facebook-login:latest.release'
+
+}
+
+apply plugin: 'com.google.gms.google-services' // Appliquer le plugin Google Services
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'mapDebugSourceSetPaths') {
+        task.dependsOn ':app:processDebugGoogleServices'
+    }
+}
