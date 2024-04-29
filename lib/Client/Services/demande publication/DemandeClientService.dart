@@ -119,6 +119,7 @@ class DemandeClientService extends ChangeNotifier{
         .doc(clientId).collection('RendezVous')
         .orderBy('timestamp',descending: true)
         .snapshots();
+
   }
   Future<void> deleteRendezVous(Timestamp timestamp,String recieverId)async {
     final firestore = FirebaseFirestore.instance;

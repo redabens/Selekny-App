@@ -44,8 +44,9 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
     _checkArtisansForLatestDemande();
   }
   Future<void> _checkArtisansForLatestDemande() async {
+    await Future.delayed(const Duration(milliseconds: 300));
     final demandecol = FirebaseFirestore.instance.collection('Demandes');
-    final demandeDoc = await demandecol.where('checked',isEqualTo: false).orderBy('timestamp', descending: false).get();
+    final demandeDoc = await demandecol.where('checked',isEqualTo: false).orderBy('timestamp', descending: true).get();
     if (demandeDoc.docs.isEmpty) {
       // Handle empty list scenario (optional: show a message to the user)
       print('Aucune demande en attente');
