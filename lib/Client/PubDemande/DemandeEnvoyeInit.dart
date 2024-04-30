@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
-import 'package:reda/Client/Services/demande%20publication/getMateriel.dart';
 import 'package:reda/Client/components/Demande.dart';
 import 'package:reda/Services/notifications.dart';
 import 'package:reda/Pages/user_repository.dart';
@@ -144,14 +143,14 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
             String token = await UserRepository.instance
                 .getTokenById(artisansSnapshot.docs[i].id);
 
-            print("Token de l'artisan ${i} : ${token}");
+            print("Token de l'artisan $i : $token");
 
             await getNomPrestationById(
                 demandeData['id_Domaine'], demandeData['id_Prestation']);
 
-            print("Voici le service publie : ${nomPrestation}");
+            print("Voici le service publie : $nomPrestation");
             NotificationServices.sendPushNotification(
-                token, "Offre d'un service ${typeService}", nomPrestation);
+                token, "Offre d'un service $typeService", nomPrestation);
           }
         }
       }

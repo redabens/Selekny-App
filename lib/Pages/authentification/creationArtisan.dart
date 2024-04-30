@@ -126,7 +126,8 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
               statut: true,
               domaine:
                   selectedDomaine.value, // Utilisez le domaine sélectionné ici
-              token: '');
+              token: '',
+              nbRating: 1);
 
           if (user != null) {
             print("User successfully created");

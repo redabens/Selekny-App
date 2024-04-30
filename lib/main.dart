@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_notification_channel/flutter_notification_channel.dart';
-import 'package:flutter_notification_channel/notification_importance.dart';
-import 'package:flutter_notification_channel/notification_visibility.dart';
+
 import 'package:get/get.dart';
-import 'package:get/get_instance/src/bindings_interface.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
@@ -21,7 +18,6 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 
 class ConnectivityProvider extends ChangeNotifier {
   ConnectivityResult _connectivityResult = ConnectivityResult.none;
@@ -123,13 +119,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  var result = await FlutterNotificationChannel().registerNotificationChannel(
+  /* var result = await FlutterNotificationChannel().registerNotificationChannel(
     description: 'Your channel description',
     id: 'selekny',
     importance: NotificationImportance.IMPORTANCE_HIGH,
     name: 'Selekny',
   );
-  print("/nNotificationChannelResult : ${result}");
+  print("/nNotificationChannelResult : ${result}");*/
 
   /*try {
     final results1 = await geocode('Bab Ezzouar, Hay Moussalaha, Alger, Algérie');
@@ -244,7 +240,7 @@ class MyAppState extends State<MyApp> {
     }
   }
 
-  String _token = '';
+  final String _token = '';
 
   static Future<void> saveUserToken(String token) async {
     // Assume user is logged in for this example

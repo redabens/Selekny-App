@@ -98,7 +98,7 @@ class UserRepository extends GetxController {
       if (documentSnapshot.exists) {
         userData = documentSnapshot.data()!;
         token = userData['token'];
-        print("Get token by id : ${token}");
+        print("Get token by id : $token");
       }
       if (token != null) {
         return token;
@@ -106,7 +106,7 @@ class UserRepository extends GetxController {
         return '';
       }
     } catch (e) {
-      print("Erreur lors de la recuperation du token du user : ${e}");
+      print("Erreur lors de la recuperation du token du user : $e");
     }
 
     return '';
