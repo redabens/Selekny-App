@@ -144,4 +144,15 @@ class DemandeClientService extends ChangeNotifier{
     print('delete avec success cli');
     return Future.value(null);
   }
+
+  Future<void> deleteDemandeEncours(String demandeID) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    try {
+      await firestore.collection('Demandes').doc(demandeID).delete();
+      print('demande $demandeID supprimé avec succes');
+    } catch (e) {
+      print('Erreur lors de la suppression la demande encours $e');
+    }
+    return Future.value(null);
+  }
 }

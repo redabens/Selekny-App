@@ -17,7 +17,8 @@ class DemandeArtisanService extends ChangeNotifier{
   String idclient,
   bool urgence,
   double latitude,
-  double longitude,String recieverId)async{
+  double longitude,String recieverId)async{// String demandeInitId
+
     final Timestamp timestamp = Timestamp.now();
 
     DemandeArtisan newDemandeArtisan = DemandeArtisan(

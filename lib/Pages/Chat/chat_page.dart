@@ -5,6 +5,7 @@ import 'package:reda/Services/Chat/chat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const Color myBlueColor = Color(0xFF3E69FE);
 
@@ -120,9 +121,8 @@ class _ChatPageState extends State<ChatPage> {
                 children: [
                   TextSpan(
                     text: otherUserName,
-                    style: const TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Color(0xFF333333),
-                      fontFamily: 'Poppins',
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),

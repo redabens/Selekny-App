@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
+import 'package:reda/Pages/Chat/chat_page.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
+import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'firebase_options.dart';
 void main() async {
@@ -70,6 +73,8 @@ class MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    /*final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    final currentUserId =_firebaseAuth.currentUser!.uid;*/
     return MaterialApp(
       //title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -77,10 +82,12 @@ class MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const ActiviteAvenir(),
+      home: //const ChatPage(receiverUserID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2', currentUserId: 'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3', type: 1)
+      //const AjouterCommentairePage(nomPrestataire: 'mohamed benabed', artisanID: 'poGC2ByeJPekcaN0NiSdAWDW7Oz2'),
+      !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const ActiviteAvenir(),
       //const ProfilePage(),
       //const CreationArtisanPage(),
-      //const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
+      //const ChatListPage(type: 1,),
       //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
       //const PubDemandePage(),
       //const LoginScreen(),

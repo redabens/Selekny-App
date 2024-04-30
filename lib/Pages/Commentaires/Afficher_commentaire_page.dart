@@ -29,34 +29,24 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
     }
   }
   Future<String> getUserPathImage(String userID) async {
-    // Récupérer le document utilisateur
     DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
 
-    // Vérifier si le document existe
     if (userDoc.exists) {
-      // Extraire le PathImage
       String pathImage = userDoc['PathImage'];
-      // Retourner le PathImage
       final reference = FirebaseStorage.instance.ref().child(pathImage);
       final url = await reference.getDownloadURL();
       return url;
     } else {
-      // Retourner une valeur par défaut si l'utilisateur n'existe pas
       return 'default_image_url';
     }
   }
   Future<String> getUserName(String userID) async {
-    // Récupérer le document utilisateur
     DocumentSnapshot userDoc = await _firestore.collection('User').doc(userID).get();
 
-    // Vérifier si le document existe
     if (userDoc.exists) {
-      // Extraire le PathImage
       String userName = userDoc['name'];
-      // Retourner le PathImage
       return userName;
     } else {
-      // Retourner une valeur par défaut si l'utilisateur n'existe pas
       return 'default_name';
     }
   }

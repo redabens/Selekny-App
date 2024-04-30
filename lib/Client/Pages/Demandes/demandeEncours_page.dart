@@ -183,11 +183,11 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
           _buildTitleAndDescription(), // le petit texte du début
           SizedBox(height: 10),
           _buildSelectionRow(),
-          const SizedBox(height: 2),
+          const SizedBox(),
           Expanded(
             child: _buildDemandeEncoursList(),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 6),
         ],
       ),
       //-------------------------------------------NAVIGATION BAAAAAR--------------------
@@ -313,10 +313,22 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
             future: Future.wait(snapshot.data!.docs.map((document) => _buildDemandeEncoursItem(document))),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Center(child: Text('Error loading demandes encours:  ${snapshot.error}'));
+                return Center(child: Text('Error loading demandes encours: ${snapshot.error}'));
               }
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.data!.isEmpty) {
+                return Center(
+                  child: Text(
+                    'Vous n\'avez aucun demande encours',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                );
               }
               return ListView(children: snapshot.data!);
             });
@@ -354,7 +366,8 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
               heure: heure,
               prix: prix,
               sync: sync,
-          urgence: urgence,),
+          urgence: urgence,
+          demandeID: demandeID,),
         ],
       ),
     );

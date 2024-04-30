@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:reda/Services/chat/chatList_service.dart';
 import 'package:intl/intl.dart';
 import 'package:reda/Pages/Chat/chat_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const Color myBlueColor = Color(0xFF3E69FE);
 
@@ -91,12 +92,11 @@ class _ChatListPageState extends State<ChatListPage> {
           onPressed: () {},
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
-        title: const Text(
+        title:  Text(
           'Messagerie',
-          style: TextStyle(
-            fontSize: 22,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.bold,
+          style: GoogleFonts.poppins(
+            fontSize: 24,
+            fontWeight:  FontWeight.w900,
           ),
         ),
         centerTitle: true,
@@ -137,7 +137,7 @@ class _ChatListPageState extends State<ChatListPage> {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Recherche',
-                          hintStyle: TextStyle(
+                          hintStyle: GoogleFonts.poppins(
                             color: Colors.grey[400],
                             fontWeight: FontWeight.w500, // Semi-bold
                           ),

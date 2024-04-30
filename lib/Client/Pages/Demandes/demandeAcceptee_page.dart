@@ -134,13 +134,13 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
               'Demandes',
               style: GoogleFonts.poppins(
                 fontSize: 24,
-                fontWeight: FontWeight.w900,
+                fontWeight: FontWeight.w800,
               ),
             ),
             centerTitle: true,
           ),
           const SizedBox(height: 18),
-          _buildTitleAndDescription(), // le petit texte du début
+          _buildTitleAndDescription(),
           const SizedBox(height: 10),
           _buildSelectionRow(),
           const SizedBox(height: 2),
@@ -272,13 +272,27 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
             future: Future.wait(snapshot.data!.docs.map((document) => _buildDemandeAccepteeItem(document))),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Center(child: Text('Error loading demandes encours:  ${snapshot.error}'));
+                return Center(child: Text('Error loading demandes acceptées: ${snapshot.error}'));
               }
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
+              // Ajout de la vérification pour les données vides
+              if (snapshot.data!.isEmpty) {
+                return Center(
+                    child: Text(
+                        'Vous n\'avez aucune demande acceptée',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                        )
+                    )
+                );
+              }
               return ListView(children: snapshot.data!);
-            });
+            }
+        );
       },
     );
   }
