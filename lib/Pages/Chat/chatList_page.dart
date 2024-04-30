@@ -87,10 +87,6 @@ class _ChatListPageState extends State<ChatListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
         title: const Text(
           'Messagerie',
           style: TextStyle(

@@ -11,6 +11,7 @@ class UserModel {
   final String pathImage;
   final double latitude;
   final double longitude;
+  final String token;
 
   UserModel({
     required this.id,
@@ -23,6 +24,7 @@ class UserModel {
     required this.pathImage,
     required this.latitude,
     required this.longitude,
+    required this.token,
   });
 
   UserModel.empty()
@@ -35,7 +37,8 @@ class UserModel {
         role = '',
         pathImage = '',
         latitude = 0,
-        longitude = 0;
+        longitude = 0,
+        token = '';
   static UserModel fromJson(Map<String, dynamic> json) {
     return UserModel(
         id: json['id'] ?? '',
@@ -47,7 +50,8 @@ class UserModel {
         role: json['role'] ?? '',
         pathImage: json['pathImage'] ?? '',
         latitude: json['latitude'],
-        longitude: json['longitude']);
+        longitude: json['longitude'],
+        token: json['token']);
   }
 
   Map<String, dynamic> toJson() {
@@ -61,6 +65,7 @@ class UserModel {
       'pathImage': pathImage,
       'latitude': latitude,
       'longitude': longitude,
+      'token': token
     };
   }
 
@@ -73,7 +78,8 @@ class UserModel {
         String? role,
         String? pathImage,
         double? latitude,
-        double? longitude}) {
+        double? longitude,
+        String? token}) {
     return UserModel(
         id: id ?? id,
         nom: nom ?? this.nom,
@@ -84,7 +90,8 @@ class UserModel {
         role: role ?? this.role,
         pathImage: pathImage ?? this.pathImage,
         latitude: latitude ?? this.latitude,
-        longitude: longitude ?? this.longitude);
+        longitude: longitude ?? this.longitude,
+        token: token ?? this.token);
   }
 
   factory UserModel.fromSnapshot(
@@ -100,7 +107,8 @@ class UserModel {
         role: data['role'],
         pathImage: data['pathImage'],
         latitude: data['latitude'],
-        longitude: data['longitude']);
+        longitude: data['longitude'],
+        token: data['token']);
   }
 }
 
@@ -114,14 +122,15 @@ class ClientModel extends UserModel {
         required super.motDePasse,
         required super.pathImage,
         required super.longitude,
-        required super.latitude})
-      : super(
-      role: 'client');
+        required super.latitude,
+        required super.token})
+      : super(role: 'client');
 }
 
 class ArtisanModel extends UserModel {
   final bool statut;
   final String domaine;
+  int nbRating = 1;
 
   ArtisanModel(
       {required super.id,
@@ -134,7 +143,9 @@ class ArtisanModel extends UserModel {
         required this.statut,
         required super.latitude,
         required super.longitude,
-        required this.domaine})
+        required this.domaine,
+        required super.token,
+        required this.nbRating})
       : super(
     role: 'artisan',
   );
@@ -144,6 +155,7 @@ class ArtisanModel extends UserModel {
     final Map<String, dynamic> data = super.toJson();
     data['statut'] = statut;
     data['domaine'] = domaine;
+    data['nbRating'] = nbRating;
     return data;
   }
 
@@ -159,6 +171,8 @@ class ArtisanModel extends UserModel {
         latitude: json['latitude'],
         longitude: json['longitude'],
         statut: json['statut'],
-        domaine: json['domaine']);
+        domaine: json['domaine'],
+        nbRating: json['nbRating'],
+        token: json['token']);
   }
 }

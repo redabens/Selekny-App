@@ -39,16 +39,39 @@ class NotifDemandeState extends State<NotifDemande> {
       // Extraire le PathImage
       print('here');
       String pathImage = userDoc['pathImage'];
-      print('pathImage');
+      print(pathImage);
       // Retourner le PathImage
       final reference = FirebaseStorage.instance.ref().child(pathImage);
-      final url = await reference.getDownloadURL();
-      print(url);
-      return url;
+      try {
+        // Get the download URL for the user image
+        final downloadUrl = await reference.getDownloadURL();
+        return downloadUrl;
+      } catch (error) {
+        print("Error fetching user image URL: $error");
+        return ''; // Default image on error
+      }
     } else {
       // Retourner une valeur par défaut si l'utilisateur n'existe pas
-      return 'assets/images/placeholder.png';
+      return '';
     }
+  }
+  Future<String> getNameUser(String userID) async {
+    final userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    if (!userDoc.exists) {
+      return 'Utilisateur introuvable';
+    }
+    final String userName = userDoc.data()!['nom'] as String;
+    return userName;
+  }
+//get phone number de l'artisan
+  Future<String> getPhoneUser(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      return 'Utilisateur introuvable';
+    }
+    final String phone = userDoc.data()!['numTel'] as String;
+    return phone;
   }
   Future<String> getNomPrestation(String idPrestation, String idDomaine) async {
     try {
@@ -228,6 +251,8 @@ class NotifDemandeState extends State<NotifDemande> {
       print("l'url:$image");
     String nomprestation = await getNomPrestation(data['idprestation'], data['iddomaine']);
       print(nomprestation);
+    String nomClient = await getNameUser(data['idclient']);
+    String phone = await getPhoneUser(data['idclient']);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -245,7 +270,8 @@ class NotifDemandeState extends State<NotifDemande> {
             nomprestation: nomprestation,
             imageUrl: image, datefin: data['datefin'],
             heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type1: 1, type2: 1,),
+            longitude: data['longitude'], type1: 1, type2: 1,
+            nomclient: nomClient, phone: phone,),
           const SizedBox(height: 10,),
         ],
       ),

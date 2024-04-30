@@ -75,7 +75,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
             latitude: position['latitude'],
             longitude: position['longitude'],
             statut: true,
-            domaine: job,
+            domaine: job, token: '', nbRating: 1,
           );
           // ajouter l utilisateur a la base de donnees firestore
           // CollectionReference users =

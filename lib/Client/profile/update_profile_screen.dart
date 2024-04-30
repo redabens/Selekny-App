@@ -131,7 +131,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         motDePasse: newPassword == '' ? password : newPassword,
         pathImage: fileName,
         latitude: userModel.latitude,
-        longitude: userModel.longitude);
+        longitude: userModel.longitude, token: userModel.token);
 
     try {
       await userRepository.updateUser(updatedUser);
@@ -189,7 +189,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 motDePasse: newPassword == '' ? password : newPassword,
                 pathImage: newUrlImg,
                 latitude: userModel.latitude,
-                longitude: userModel.longitude);
+                longitude: userModel.longitude, token: userModel.token);
             Navigator.pop(context, updatedUser);
           },
           icon: Container(

@@ -122,26 +122,6 @@ Future<String> getPrixById(String domainId, String prestationId) async {
 
   return prix ?? '';
 }
-/*Future<List<Prestation>> getPrestation(String domaineId) async{
-  try {
-    List<Prestation> listeprestations = [];
-    final prestationsSnapshot = await FirebaseFirestore.instance
-        .collection('Domaine')
-        .doc(domaineId)
-        .collection('Prestations')
-        .get();
-    listeprestations = prestationsSnapshot.docs.map((doc) {
-      return Prestation(
-        nomprestation: doc.data()['nom_prestation'],
-        imageUrl: doc.data()['image'],
-      );
-    }).toList();
-    return listeprestations;
-  } catch (e) {
-      print("Erreur lors de la recherche de Prestations : $e");
-      return []; // Retourne une liste vide en cas d'erreur de connexion
-  }
-}*/
 
 Future<String> getuserNameByid(String userID) async{
   try {

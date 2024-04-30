@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Client/ProfilArtisan/profil.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 
@@ -191,21 +192,40 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
                             ),
                           ),
-                          Container(
-                            width: 54, // Adjust as needed
-                            height: 54, // Adjust as needed
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                width: 1.0,
+                          GestureDetector(
+                            onTap: () async {
+                              // Your code to handle tap actions here (e.g., navigate to profile page)
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
+                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine,), // Navigation to ContactPage
+                                ),
+                              );
+                              await Future.delayed(const Duration(milliseconds: 800));// Example navigation
+                            },
+                            child: Container(
+                              width: 54, // Adjust as needed
+                              height: 54, // Adjust as needed
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 1.0,
+                                ),
                               ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50.0),
-                              child: CachedNetworkImage(
-                                imageUrl: widget.imageUrl,
-                                placeholder: (context, url) => const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                              child: widget.imageUrl != ''
+                                  ? ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    50), // Ajout du BorderRadius
+                                    child: Image.network(
+                                      widget.imageUrl,
+                                      width: 54,
+                                      height: 54,
+                                      fit: BoxFit.cover,
+                                  ),
+                              )
+                                  : Icon(
+                                Icons.account_circle,
+                                size: 54,
+                                color: Colors.grey[400],
                               ),
                             ),
                           ),

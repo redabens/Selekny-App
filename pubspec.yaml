@@ -153,6 +153,12 @@ flutter:
     - assets/venir.png
     - icons/calendrier.png
     - icons/calendrierann.png
+    - assets/Car.png
+    - assets/commentaire.png
+    - assets/jobsnbr.png
+    - assets/prestation.png
+    - assets/tel.png
+    - assets/localisation.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

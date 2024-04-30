@@ -105,14 +105,29 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
   //get image user
   Future<String> getUserPathImage(String userID) async {
-    DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
+    // Récupérer le document utilisateur
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
+        'users').doc(userID).get();
+
+    // Vérifier si le document existe
     if (userDoc.exists) {
+      // Extraire le PathImage
+      print('here');
       String pathImage = userDoc['pathImage'];
+      print(pathImage);
+      // Retourner le PathImage
       final reference = FirebaseStorage.instance.ref().child(pathImage);
-      final url = await reference.getDownloadURL();
-      return url;
+      try {
+        // Get the download URL for the user image
+        final downloadUrl = await reference.getDownloadURL();
+        return downloadUrl;
+      } catch (error) {
+        print("Error fetching user image URL: $error");
+        return ''; // Default image on error
+      }
     } else {
-      return 'default_image_url';
+      // Retourner une valeur par défaut si l'utilisateur n'existe pas
+      return '';
     }
   }
 

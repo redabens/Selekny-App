@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Demandes/Rendezvous_Page.dart';
+import 'package:reda/Client/Pages/Home/search.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
@@ -29,6 +30,18 @@ class Header extends StatelessWidget {
             ],
           ),
           const Spacer(), // Pour ajouter un espace flexible entre les éléments
+          IconButton(
+            onPressed: () {
+              showSearch(context: context, delegate: CustomSearch());
+              print('Barre de recherche appuyée');
+            },
+            icon: Image.asset(
+              'assets/Search_alt.png', // Remplacez 'votre_image.png' par le chemin de votre image de recherche
+              width: 30, // Largeur de l'image
+              height: 30, // Hauteur de l'image
+            ),
+          ),
+          const SizedBox(width: 5,),
           IconButton(
             onPressed: () {
               Navigator.push(
