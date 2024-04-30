@@ -130,21 +130,23 @@ class ClientModel extends UserModel {
 class ArtisanModel extends UserModel {
   final bool statut;
   final String domaine;
+  int nbRating = 1;
 
-  ArtisanModel({
-    required super.id,
-    required super.nom,
-    required super.numTel,
-    required super.adresse,
-    required super.email,
-    required super.motDePasse,
-    required super.pathImage,
-    required this.statut,
-    required super.latitude,
-    required super.longitude,
-    required this.domaine,
-    required super.token,
-  }) : super(
+  ArtisanModel(
+      {required super.id,
+      required super.nom,
+      required super.numTel,
+      required super.adresse,
+      required super.email,
+      required super.motDePasse,
+      required super.pathImage,
+      required this.statut,
+      required super.latitude,
+      required super.longitude,
+      required this.domaine,
+      required super.token,
+      required this.nbRating})
+      : super(
           role: 'artisan',
         );
 
@@ -153,6 +155,7 @@ class ArtisanModel extends UserModel {
     final Map<String, dynamic> data = super.toJson();
     data['statut'] = statut;
     data['domaine'] = domaine;
+    data['nbRating'] = nbRating;
     return data;
   }
 
@@ -169,6 +172,7 @@ class ArtisanModel extends UserModel {
         longitude: json['longitude'],
         statut: json['statut'],
         domaine: json['domaine'],
+        nbRating: json['nbRating'],
         token: json['token']);
   }
 }
