@@ -15,24 +15,22 @@ class NotifDemande extends StatefulWidget {
 
   @override
   NotifDemandeState createState() => NotifDemandeState();
-
 }
 
 class NotifDemandeState extends State<NotifDemande> {
   int _currentIndex = 1;
-  final DemandeArtisanService _demandeArtisanService =DemandeArtisanService();
+  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    setState(() {
-
-    });
+    setState(() {});
   }
+
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
-        'users').doc(userID).get();
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     // Vérifier si le document existe
     if (userDoc.exists) {
@@ -50,13 +48,27 @@ class NotifDemandeState extends State<NotifDemande> {
       return 'assets/images/placeholder.png';
     }
   }
+
+  Future<String> getNameUser(String userID) async {
+    final userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    if (!userDoc.exists) {
+      return 'Utilisateur introuvable';
+    }
+    final String userName = userDoc.data()!['nom'] as String;
+    return userName;
+  }
+
   Future<String> getNomPrestation(String idPrestation, String idDomaine) async {
     try {
-      final domainsCollection = FirebaseFirestore.instance.collection('Domaine');
+      final domainsCollection =
+          FirebaseFirestore.instance.collection('Domaine');
       final domainDocument = domainsCollection.doc(idDomaine);
       final prestationsCollection = domainDocument.collection('Prestations');
       final prestationDocument = prestationsCollection.doc(idPrestation);
-      final nomPrestation = await prestationDocument.get().then((snapshot) => snapshot.data()?['nom_prestation']);
+      final nomPrestation = await prestationDocument
+          .get()
+          .then((snapshot) => snapshot.data()?['nom_prestation']);
       print(nomPrestation);
       return nomPrestation ?? ''; // Return empty string if not found
     } catch (error) {
@@ -64,25 +76,27 @@ class NotifDemandeState extends State<NotifDemande> {
       return ''; // Return empty string on error
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(),
       body: Column(
-          children: [
-            const Buttons(),
-            const SizedBox(width: 20, height: 20),
-            Expanded(
-              child: _buildDemandeArtisanList(),
-            ),
-          ],
-        ),
+        children: [
+          const Buttons(),
+          const SizedBox(width: 20, height: 20),
+          Expanded(
+            child: _buildDemandeArtisanList(),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        currentIndex:
+            _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
         iconSize: 30,
         items: [
           BottomNavigationBarItem(
@@ -93,15 +107,17 @@ class NotifDemandeState extends State<NotifDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
+                  MaterialPageRoute(
+                      builder: (context) => const ActiviteAvenir()),
                 );
-
               },
               child: SizedBox(
                 height: 40,
                 child: Image.asset(
                   'assets/accueil.png',
-                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 0
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -115,16 +131,18 @@ class NotifDemandeState extends State<NotifDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NotifUrgente(),),
+                  MaterialPageRoute(
+                    builder: (context) => const NotifUrgente(),
+                  ),
                 );
-
-
               },
               child: SizedBox(
                 height: 40,
                 child: Image.asset(
                   'assets/Ademandes.png',
-                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 1
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -138,15 +156,19 @@ class NotifDemandeState extends State<NotifDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
+                  MaterialPageRoute(
+                      builder: (context) => const ChatListPage(
+                            type: 2,
+                          )),
                 );
-
               },
               child: SizedBox(
                 height: 40,
                 child: Image.asset(
                   'assets/messages.png',
-                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 2
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -162,13 +184,14 @@ class NotifDemandeState extends State<NotifDemande> {
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
-
               },
               child: SizedBox(
                 height: 40,
                 child: Image.asset(
                   'assets/profile.png',
-                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 3
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -178,9 +201,11 @@ class NotifDemandeState extends State<NotifDemande> {
       ),
     );
   }
+
   Widget _buildDemandeArtisanList() {
     return StreamBuilder(
-      stream: _demandeArtisanService.getDemandeArtisan(FirebaseAuth.instance.currentUser!.uid), //_firebaseAuth.currentUser!.uid
+      stream: _demandeArtisanService.getDemandeArtisan(FirebaseAuth
+          .instance.currentUser!.uid), //_firebaseAuth.currentUser!.uid
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -194,7 +219,7 @@ class NotifDemandeState extends State<NotifDemande> {
         // Filter documents based on urgency (urgence == false)
         final nonUrgentDocuments = documents.where((doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            return !data['urgence'];
+          return !data['urgence'];
         });
 
         // Print details of each non-urgent document (optional)
@@ -204,7 +229,8 @@ class NotifDemandeState extends State<NotifDemande> {
 
         return FutureBuilder<List<Widget>>(
           future: Future.wait(
-            nonUrgentDocuments.map((document) => _buildCommentaireItem(document)),
+            nonUrgentDocuments
+                .map((document) => _buildCommentaireItem(document)),
           ),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
@@ -221,13 +247,18 @@ class NotifDemandeState extends State<NotifDemande> {
       },
     );
   }
+
   // build message item
   Future<Widget> _buildCommentaireItem(DocumentSnapshot document) async {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     String image = await getUserPathImage(data['idclient']);
-      print("l'url:$image");
-    String nomprestation = await getNomPrestation(data['idprestation'], data['iddomaine']);
-      print(nomprestation);
+    print("l'url:$image");
+    String nomprestation =
+        await getNomPrestation(data['idprestation'], data['iddomaine']);
+    print(nomprestation);
+
+    String nomArtisan =
+        await getNameUser(FirebaseAuth.instance.currentUser!.uid);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -243,16 +274,23 @@ class NotifDemandeState extends State<NotifDemande> {
             urgence: data['urgence'],
             timestamp: data['timestamp'],
             nomprestation: nomprestation,
-            imageUrl: image, datefin: data['datefin'],
-            heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type1: 1, type2: 1,),
-          const SizedBox(height: 10,),
+            imageUrl: image,
+            datefin: data['datefin'],
+            heurefin: data['heurefin'],
+            latitude: data['latitude'],
+            longitude: data['longitude'],
+            type1: 1,
+            type2: 1,
+            nomArtisan: nomArtisan,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );
   }
 }
-
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({super.key});
@@ -265,19 +303,20 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Stack(
       children: [
         AppBar(
-          automaticallyImplyLeading: false, // Désactiver la flèche de retour en arrière
+          automaticallyImplyLeading:
+              false, // Désactiver la flèche de retour en arrière
           //backgroundColor: Colors.blue,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Center( // Centrer le texte horizontalement
+              Center(
+                // Centrer le texte horizontalement
                 child: Text(
                   'Mes Notifications',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-
                   ),
                 ),
               ),
@@ -293,25 +332,21 @@ class Buttons extends StatelessWidget {
   const Buttons({super.key});
 
   @override
-
   Widget build(BuildContext context) {
     return Container(
       height: 70,
       color: Colors.white,
       child: const Row(
-        crossAxisAlignment: CrossAxisAlignment.start, // Align children to the start
+        crossAxisAlignment:
+            CrossAxisAlignment.start, // Align children to the start
         children: [
           UrgentButton(),
           demandeButton(),
         ],
       ),
-
     );
-
   }
 }
-
-
 
 class UrgentButton extends StatelessWidget {
   const UrgentButton({super.key});
@@ -322,11 +357,10 @@ class UrgentButton extends StatelessWidget {
       width: 205,
       height: 55,
       child: GestureDetector(
-        onTap: () =>   Navigator.push(
+        onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const NotifUrgente()),
         ),
-
         child: Container(
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.zero, // Pas de coin arrondi
@@ -345,64 +379,51 @@ class UrgentButton extends StatelessWidget {
                 color: const Color(0xFFC4C4C4),
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
-
               ),
             ),
           ),
         ),
       ),
-
     );
   }
-
 }
 
 class demandeButton extends StatelessWidget {
   const demandeButton({super.key});
 
-@override
-Widget build(BuildContext context) {
-  return SizedBox(
-    width: 205,
-    height: 55,
-    child: GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const NotifDemande()),
-      ),
-
-      child: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.zero, // Pas de coin arrondi
-          border: Border(
-            bottom: BorderSide(
-              color: Color(0xFFF5A529),
-              width: 2,
-            ),
-          ),
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 205,
+      height: 55,
+      child: GestureDetector(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NotifDemande()),
         ),
         child: Container(
-          alignment: Alignment.center,
-          child: Text(
-            'Demandes',
-            style: GoogleFonts.poppins(
-              color: const Color(0xFFF5A529),
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.zero, // Pas de coin arrondi
+            border: Border(
+              bottom: BorderSide(
+                color: Color(0xFFF5A529),
+                width: 2,
+              ),
+            ),
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            child: Text(
+              'Demandes',
+              style: GoogleFonts.poppins(
+                color: const Color(0xFFF5A529),
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
-}
-
-
-
-
-
-
-
-

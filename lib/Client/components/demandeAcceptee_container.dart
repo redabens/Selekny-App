@@ -2,8 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Client/PubDemande/DemandeEnvoyeInit.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Pages/user_repository.dart';
+import 'package:reda/Services/notifications.dart';
 
 class DetDemandeAcceptee extends StatefulWidget {
   final String domaine;
@@ -30,32 +33,31 @@ class DetDemandeAcceptee extends StatefulWidget {
   final String idartisan;
   final Timestamp timestamp;
 
-  const DetDemandeAcceptee({
-    super.key,
-    required this.domaine,
-    required this.location,
-    required this.date,
-    required this.heure,
-    required this.prix,
-    required this.prestation,
-    required this.imageUrl,
-    required this.nomArtisan,
-    required this.rating,
-    required this.phone,
-    required this.urgence,
-    //----------------------------
-    required this.latitude,
-    required this.longitude,
-    required this.iddomaine,
-    required this.idprestation,
-    required this.idclient,
-    required this.datedebut,
-    required this.datefin,
-    required this.heuredebut,
-    required this.heurefin,
-    required this.idartisan,
-    required this.timestamp
-  });
+  const DetDemandeAcceptee(
+      {super.key,
+      required this.domaine,
+      required this.location,
+      required this.date,
+      required this.heure,
+      required this.prix,
+      required this.prestation,
+      required this.imageUrl,
+      required this.nomArtisan,
+      required this.rating,
+      required this.phone,
+      required this.urgence,
+      //----------------------------
+      required this.latitude,
+      required this.longitude,
+      required this.iddomaine,
+      required this.idprestation,
+      required this.idclient,
+      required this.datedebut,
+      required this.datefin,
+      required this.heuredebut,
+      required this.heurefin,
+      required this.idartisan,
+      required this.timestamp});
   @override
   State<DetDemandeAcceptee> createState() => _DetDemandeAccepteeState();
 }
@@ -76,7 +78,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color:Colors.white,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
@@ -115,7 +117,8 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               Flexible(
                                 child: ConstrainedBox(
                                   constraints: BoxConstraints(
-                                    maxWidth: screenWidth * 0.6, // Define a maximum width for the text
+                                    maxWidth: screenWidth *
+                                        0.6, // Define a maximum width for the text
                                   ),
                                   child: Text(
                                     widget.location,
@@ -138,10 +141,10 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               fontSize: 14,
                             ),
                           ),
-
                           Row(
                             children: [
-                              Image.asset('icons/calendrier.png',
+                              Image.asset(
+                                'icons/calendrier.png',
                                 width: 20,
                                 height: 20,
                                 fit: BoxFit.cover,
@@ -188,7 +191,8 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
+                              color: Colors.black.withOpacity(
+                                  0.6), // Adjust opacity here (0.0 to 1.0)
                             ),
                           ),
                           Container(
@@ -204,8 +208,10 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               borderRadius: BorderRadius.circular(50.0),
                               child: CachedNetworkImage(
                                 imageUrl: widget.imageUrl,
-                                placeholder: (context, url) => const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                               ),
                             ),
                           ),
@@ -218,7 +224,8 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                           const SizedBox(height: 10),
                           Row(
                             children: [
-                              const Icon(Icons.star, color: Colors.yellow, size: 20),
+                              const Icon(Icons.star,
+                                  color: Colors.yellow, size: 20),
                               Text(
                                 widget.rating,
                                 style: GoogleFonts.poppins(
@@ -246,24 +253,66 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                     ),
                   ],
                 ),
-                const SizedBox() ,
+                const SizedBox(),
 
                 // !confirmed && cancelled ?
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: ()  async {
-                        _DemandeClientService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient,widget.idartisan, widget.urgence, widget.latitude, widget.longitude);
-                        _DemandeArtisanService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan) ;
-                        _DemandeClientService.deleteDemandeClient(widget.timestamp, widget.idclient);
+                      onPressed: () async {
+                        String token = await UserRepository.instance
+                            .getTokenById(widget.idartisan);
+
+                        await getNomPrestationById(
+                            widget.iddomaine, widget.idprestation);
+
+                        NotificationServices.sendPushNotification(
+                            token,
+                            "Votre demande a été confirmé",
+                            "Service demandé : ${nomPrestation}",
+                            "ConfirmeParClient");
+
+                        _DemandeClientService.sendRendezVous(
+                            widget.datedebut,
+                            widget.datefin,
+                            widget.heuredebut,
+                            widget.heurefin,
+                            widget.location,
+                            widget.iddomaine,
+                            widget.idprestation,
+                            widget.idclient,
+                            widget.idartisan,
+                            widget.urgence,
+                            widget.latitude,
+                            widget.longitude);
+                        _DemandeArtisanService.sendRendezVous(
+                            widget.datedebut,
+                            widget.datefin,
+                            widget.heuredebut,
+                            widget.heurefin,
+                            widget.location,
+                            widget.iddomaine,
+                            widget.idprestation,
+                            widget.idclient,
+                            widget.urgence,
+                            widget.latitude,
+                            widget.longitude,
+                            widget.idartisan);
+                        _DemandeClientService.deleteDemandeClient(
+                            widget.timestamp, widget.idclient);
                         await Future.delayed(const Duration(milliseconds: 100));
                       },
                       style: ButtonStyle(
-
-                        backgroundColor: MaterialStateProperty.all(const Color(0xFF3E69FE)),
-                        minimumSize: MaterialStateProperty.all(const Size(22, 6)),
-                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 8, vertical: 8)), // Ajoutez du padding si nécessaire
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFF3E69FE)),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(22, 6)),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical:
+                                    8)), // Ajoutez du padding si nécessaire
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -280,8 +329,9 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                     ),
                     const SizedBox(width: 8),
                     OutlinedButton(
-                      onPressed: () async{
-                        _DemandeClientService.deleteDemandeClient(widget.timestamp, widget.idclient);
+                      onPressed: () async {
+                        _DemandeClientService.deleteDemandeClient(
+                            widget.timestamp, widget.idclient);
                         await Future.delayed(const Duration(milliseconds: 100));
                       },
                       style: ButtonStyle(
@@ -291,10 +341,13 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                             width: 1,
                           ),
                         ),
-                        minimumSize: MaterialStateProperty.all(const Size(22, 6)), // Updated dimensions to match the ElevatedButton
-                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12, vertical: 7)), // Optional, adjust as necessary
+                        minimumSize: MaterialStateProperty.all(const Size(22,
+                            6)), // Updated dimensions to match the ElevatedButton
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 7)), // Optional, adjust as necessary
                         shape: MaterialStateProperty.all(
-
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),

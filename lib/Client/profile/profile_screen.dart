@@ -10,6 +10,7 @@ import 'package:reda/Pages/usermodel.dart';
 import 'profile_menu.dart';
 import 'update_profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -19,8 +20,16 @@ class ProfilePage extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Profile Page',
-      theme: ThemeData.light(), // Use light theme by default
-      darkTheme: ThemeData.dark(), // Define dark theme
+      theme: ThemeData.light().copyWith(
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
+      darkTheme: ThemeData.dark().copyWith(
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
       home: const Scaffold(
         body: ProfileScreen(),
       ),
@@ -142,10 +151,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             size: 150,
                             color: Colors.grey[400],
                           ),
-                    Text(tProfileHeading,
-                        style: Theme.of(context).textTheme.bodyMedium),
-                    Text(tProfileSubHeading,
-                        style: Theme.of(context).textTheme.bodyMedium),
+                    Text(
+                      tProfileHeading,
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        textStyle: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                    Text(
+                      tProfileSubHeading,
+                      style: GoogleFonts.poppins(
+                        color: Colors.black.withOpacity(0.6),
+                        textStyle: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+
                     const SizedBox(height: 50),
 
                     /// -- MENU

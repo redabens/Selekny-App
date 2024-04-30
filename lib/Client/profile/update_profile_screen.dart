@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -211,7 +212,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           children: [
             Text(
               tEditProfile,
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: GoogleFonts.poppins(
+                  textStyle: Theme.of(context).textTheme.headlineMedium),
             ),
           ],
         ),

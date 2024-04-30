@@ -7,6 +7,7 @@ import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/DetaislBottom.dart
 import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/Heure.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/Lieu.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifWidgets/NomPrestation.dart';
+
 class BoxDemande extends StatelessWidget {
   final String datedebut;
   final String datefin;
@@ -22,17 +23,30 @@ class BoxDemande extends StatelessWidget {
   final Timestamp timestamp;
   final String nomprestation;
   final String imageUrl;
+  final String nomArtisan;
   final int type1;
   final int type2;
 
   const BoxDemande({
-    super.key, required this.datedebut,required this.datefin,
-    required this.heuredebut, required this.heurefin,
-    required this.adresse, required this.iddomaine,
-    required this.idprestation, required this.idclient,
-    required this.urgence, required this.latitude,
-    required this.longitude, required this.timestamp,
-    required this.nomprestation, required this.imageUrl, required this.type1, required this.type2,});
+    super.key,
+    required this.datedebut,
+    required this.datefin,
+    required this.heuredebut,
+    required this.heurefin,
+    required this.adresse,
+    required this.iddomaine,
+    required this.idprestation,
+    required this.idclient,
+    required this.urgence,
+    required this.latitude,
+    required this.longitude,
+    required this.timestamp,
+    required this.nomprestation,
+    required this.imageUrl,
+    required this.type1,
+    required this.type2,
+    required this.nomArtisan,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,25 +59,39 @@ class BoxDemande extends StatelessWidget {
           width: 2.0,
         ),
       ),
-      child:Column(
-          children:
-          [
-            Pdpanddetails(nomprestation: nomprestation, idClient: idclient,
-              datedebut: datedebut,heuredebut: heuredebut,
-              adresse: adresse, imageUrl: imageUrl, type: type1, urgence: urgence,),
-            Detailsbottom(datedebut: datedebut, datefin: datefin,
-              heuredebut: heuredebut, heurefin: heurefin,
-              adresse: adresse, iddomaine: iddomaine,
-              idprestation: idprestation, idclient: idclient,
-              urgence: urgence, latitude: latitude, longitude: longitude,
-              timestamp: timestamp, type1: type1, type2: type2,),
-          ]
-
-
-      ),
+      child: Column(children: [
+        Pdpanddetails(
+          nomprestation: nomprestation,
+          idClient: idclient,
+          datedebut: datedebut,
+          heuredebut: heuredebut,
+          adresse: adresse,
+          imageUrl: imageUrl,
+          type: type1,
+          urgence: urgence,
+        ),
+        Detailsbottom(
+          datedebut: datedebut,
+          datefin: datefin,
+          heuredebut: heuredebut,
+          heurefin: heurefin,
+          adresse: adresse,
+          iddomaine: iddomaine,
+          idprestation: idprestation,
+          idclient: idclient,
+          urgence: urgence,
+          latitude: latitude,
+          longitude: longitude,
+          timestamp: timestamp,
+          type1: type1,
+          type2: type2,
+          nomArtisan: nomArtisan,
+        ),
+      ]),
     );
   }
 }
+
 class Pdpanddetails extends StatelessWidget {
   final String imageUrl;
   final String idClient;
@@ -73,9 +101,17 @@ class Pdpanddetails extends StatelessWidget {
   final String adresse;
   final int type;
   final bool urgence;
-  const Pdpanddetails({super.key, required this.nomprestation, required this.idClient,
-    required this.datedebut, required this.heuredebut, required this.adresse,
-    required this.imageUrl, required this.type, required this.urgence,});
+  const Pdpanddetails({
+    super.key,
+    required this.nomprestation,
+    required this.idClient,
+    required this.datedebut,
+    required this.heuredebut,
+    required this.adresse,
+    required this.imageUrl,
+    required this.type,
+    required this.urgence,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -84,26 +120,32 @@ class Pdpanddetails extends StatelessWidget {
       height: 95,
       // color: Colors.green,
 
-      child: Row(
-          children:
-          [
-            const SizedBox(width: 4,),
-            Pdp(imageUrl: imageUrl,),
-            Details(nomprestation: nomprestation, adresse: adresse,
-              datedebut: datedebut, heuredebut: heuredebut,type: type, urgence: urgence,),
-          ]
-      ),
-
-
+      child: Row(children: [
+        const SizedBox(
+          width: 4,
+        ),
+        Pdp(
+          imageUrl: imageUrl,
+        ),
+        Details(
+          nomprestation: nomprestation,
+          adresse: adresse,
+          datedebut: datedebut,
+          heuredebut: heuredebut,
+          type: type,
+          urgence: urgence,
+        ),
+      ]),
     );
   }
-
 }
-
 
 class Pdp extends StatelessWidget {
   final String imageUrl;
-  const Pdp({super.key, required this.imageUrl,});
+  const Pdp({
+    super.key,
+    required this.imageUrl,
+  });
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -116,18 +158,13 @@ class Pdp extends StatelessWidget {
             imageUrl: imageUrl,
             placeholder: (context, url) => const CircularProgressIndicator(),
             errorWidget: (context, url, error) => const Icon(Icons.error),
-          )
-
-      ),
-
-
+          )),
 
       //inserer la photode profil hna ki tjibha m bdd
-
     );
   }
-
 }
+
 class Details extends StatelessWidget {
   final String nomprestation;
   final String adresse;
@@ -135,25 +172,37 @@ class Details extends StatelessWidget {
   final String heuredebut;
   final int type;
   final bool urgence;
-  const Details({super.key, required this.nomprestation,
-    required this.adresse, required this.datedebut,
-    required this.heuredebut, required this.type,
-    required this.urgence});
+  const Details(
+      {super.key,
+      required this.nomprestation,
+      required this.adresse,
+      required this.datedebut,
+      required this.heuredebut,
+      required this.type,
+      required this.urgence});
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         width: 280,
         height: 95,
         //color: Colors.red,
-        child: Column(
-            children:
-            [
-              NomPrestation(nomprestation: nomprestation,),
-              Lieu(adresse: adresse,),
-              Date(datedebut: datedebut, type: type, urgence: urgence,),
-              Heure(heuredebut: heuredebut, type: type, urgence: urgence,),
-            ]
-        )
-    );
+        child: Column(children: [
+          NomPrestation(
+            nomprestation: nomprestation,
+          ),
+          Lieu(
+            adresse: adresse,
+          ),
+          Date(
+            datedebut: datedebut,
+            type: type,
+            urgence: urgence,
+          ),
+          Heure(
+            heuredebut: heuredebut,
+            type: type,
+            urgence: urgence,
+          ),
+        ]));
   }
 }

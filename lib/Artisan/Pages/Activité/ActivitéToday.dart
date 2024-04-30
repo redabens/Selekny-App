@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,7 +17,6 @@ class ActiviteToday extends StatefulWidget {
 
   @override
   ActiviteTodayState createState() => ActiviteTodayState();
-
 }
 
 class ActiviteTodayState extends State<ActiviteToday> {
@@ -29,15 +27,13 @@ class ActiviteTodayState extends State<ActiviteToday> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
-        'users').doc(userID).get();
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
 
     // Vérifier si le document existe
     if (userDoc.exists) {
@@ -61,13 +57,26 @@ class ActiviteTodayState extends State<ActiviteToday> {
     }
   }
 
+  Future<String> getNameUser(String userID) async {
+    final userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    if (!userDoc.exists) {
+      return 'Utilisateur introuvable';
+    }
+    final String userName = userDoc.data()!['nom'] as String;
+    return userName;
+  }
+
   Future<String> getNomPrestation(String idPrestation, String idDomaine) async {
     try {
-      final domainsCollection = FirebaseFirestore.instance.collection('Domaine');
+      final domainsCollection =
+          FirebaseFirestore.instance.collection('Domaine');
       final domainDocument = domainsCollection.doc(idDomaine);
       final prestationsCollection = domainDocument.collection('Prestations');
       final prestationDocument = prestationsCollection.doc(idPrestation);
-      final nomPrestation = await prestationDocument.get().then((snapshot) => snapshot.data()?['nom_prestation']);
+      final nomPrestation = await prestationDocument
+          .get()
+          .then((snapshot) => snapshot.data()?['nom_prestation']);
       print(nomPrestation);
       return nomPrestation ?? ''; // Return empty string if not found
     } catch (error) {
@@ -75,24 +84,28 @@ class ActiviteTodayState extends State<ActiviteToday> {
       return ''; // Return empty string on error
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(),
       body: Column(
-          children: [
-            const Jobsandcomments(),
-            const SizedBox(width: 20, height: 20),
-            const Buttons(),
-            Expanded(child: _buildRendezVousList(),)
-          ],
-        ),
+        children: [
+          const Jobsandcomments(),
+          const SizedBox(width: 20, height: 20),
+          const Buttons(),
+          Expanded(
+            child: _buildRendezVousList(),
+          )
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        currentIndex:
+            _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
         iconSize: 30,
         items: [
           BottomNavigationBarItem(
@@ -103,15 +116,17 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
+                  MaterialPageRoute(
+                      builder: (context) => const ActiviteAvenir()),
                 );
-
               },
               child: SizedBox(
                 height: 40,
                 child: Image.asset(
                   'assets/accueil.png',
-                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 0
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -127,14 +142,14 @@ class ActiviteTodayState extends State<ActiviteToday> {
                   context,
                   MaterialPageRoute(builder: (context) => const NotifUrgente()),
                 );
-
-
               },
               child: SizedBox(
                 height: 40,
                 child: Image.asset(
                   'assets/Ademandes.png',
-                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 1
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -148,15 +163,19 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
+                  MaterialPageRoute(
+                      builder: (context) => const ChatListPage(
+                            type: 2,
+                          )),
                 );
-
               },
               child: SizedBox(
                 height: 40,
                 child: Image.asset(
                   'assets/messages.png',
-                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 2
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -172,13 +191,14 @@ class ActiviteTodayState extends State<ActiviteToday> {
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
-
               },
               child: SizedBox(
                 height: 40,
                 child: Image.asset(
                   'assets/profile.png',
-                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 3
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -188,10 +208,11 @@ class ActiviteTodayState extends State<ActiviteToday> {
       ),
     );
   }
+
   Widget _buildRendezVousList() {
     return StreamBuilder(
-      stream: _demandeArtisanService.getRendezVous(
-          FirebaseAuth.instance.currentUser!.uid),
+      stream: _demandeArtisanService
+          .getRendezVous(FirebaseAuth.instance.currentUser!.uid),
       //_firebaseAuth.currentUser!.uid
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -216,7 +237,8 @@ class ActiviteTodayState extends State<ActiviteToday> {
 
         return FutureBuilder<List<Widget>>(
           future: Future.wait(
-            nonUrgentDocuments.map((document) => _buildRendezVousItem(document)),
+            nonUrgentDocuments
+                .map((document) => _buildRendezVousItem(document)),
           ),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
@@ -233,15 +255,20 @@ class ActiviteTodayState extends State<ActiviteToday> {
       },
     );
   }
+
   // build message item
   Future<Widget> _buildRendezVousItem(DocumentSnapshot document) async {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    print('${data['idclient']} et ${data['idprestation']} et ${data['iddomaine']}');
+    print(
+        '${data['idclient']} et ${data['idprestation']} et ${data['iddomaine']}');
     String image = await getUserPathImage(data['idclient']);
     print("l'url:$image");
-    String nomprestation = await getNomPrestation(
-        data['idprestation'], data['iddomaine']);
+    String nomprestation =
+        await getNomPrestation(data['idprestation'], data['iddomaine']);
     print(nomprestation);
+
+    String nomArtisan =
+        await getNameUser(FirebaseAuth.instance.currentUser!.uid);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -257,16 +284,23 @@ class ActiviteTodayState extends State<ActiviteToday> {
             urgence: data['urgence'],
             timestamp: data['timestamp'],
             nomprestation: nomprestation,
-            imageUrl: image, datefin: data['datefin'],
-            heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type1: 2, type2: 1, ),
-          const SizedBox(height: 10,),
+            imageUrl: image,
+            datefin: data['datefin'],
+            heurefin: data['heurefin'],
+            latitude: data['latitude'],
+            longitude: data['longitude'],
+            type1: 2,
+            type2: 1,
+            nomArtisan: nomArtisan,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );
   }
 }
-
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({super.key});
@@ -279,20 +313,23 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Stack(
       children: [
         AppBar(
-          automaticallyImplyLeading: false, // Désactiver la flèche de retour en arrière
+          automaticallyImplyLeading:
+              false, // Désactiver la flèche de retour en arrière
           //backgroundColor: Colors.blue,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              const SizedBox(height: 30,),
-              Center( // Centrer le texte horizontalement
+              const SizedBox(
+                height: 30,
+              ),
+              Center(
+                // Centrer le texte horizontalement
                 child: Text(
                   'Activité',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 25,
                     fontWeight: FontWeight.w600,
-
                   ),
                 ),
               ),
@@ -304,30 +341,27 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-
 class Buttons extends StatelessWidget {
   const Buttons({super.key});
 
   @override
-
   Widget build(BuildContext context) {
     return Container(
       height: 60,
       color: Colors.white,
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,// Align children to the start
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,// Align children to the start
         children: [
           SizedBox(width: 10),
           TodayButton(),
           AvenirButton(),
         ],
       ),
-
     );
-
   }
 }
+
 class TodayButton extends StatelessWidget {
   const TodayButton({super.key});
 
@@ -337,8 +371,6 @@ class TodayButton extends StatelessWidget {
       width: 170,
       height: 40,
       child: GestureDetector(
-
-
         child: Container(
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.zero, // Pas de coin arrondi
@@ -350,37 +382,34 @@ class TodayButton extends StatelessWidget {
             ),
           ),
           child: Row(
-            children:
-            [
-              const SizedBox(width: 30,),
-
-            const SizedBox(
-            height: 20,
-            width:20,
-            child: ImageIcon(
-              AssetImage('assets/auj.png'),
-                 color: Color(0xFFF5C443),
-            ),),
-
-
-              Text(
-            'Aujourd\'hui',
-              style: GoogleFonts.poppins(
-                color: const Color(0xFFF5A529),
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-
+            children: [
+              const SizedBox(
+                width: 30,
               ),
-            ),
-
-          ],
+              const SizedBox(
+                height: 20,
+                width: 20,
+                child: ImageIcon(
+                  AssetImage('assets/auj.png'),
+                  color: Color(0xFFF5C443),
+                ),
+              ),
+              Text(
+                'Aujourd\'hui',
+                style: GoogleFonts.poppins(
+                  color: const Color(0xFFF5A529),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-
 }
+
 class AvenirButton extends StatelessWidget {
   const AvenirButton({super.key});
 
@@ -394,7 +423,6 @@ class AvenirButton extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
         ),
-
         child: Container(
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.zero, // Pas de coin arrondi
@@ -406,17 +434,16 @@ class AvenirButton extends StatelessWidget {
             ),
           ),
           child: Row(
-            children:
-            [
+            children: [
               const SizedBox(width: 40),
               const SizedBox(
                 height: 15,
-                width:15,
+                width: 15,
                 child: ImageIcon(
                   AssetImage('assets/heure.png'),
                   color: Color(0xFFC4C4C4),
-                ),),
-
+                ),
+              ),
               const SizedBox(width: 5),
               Text(
                 'À venir',
@@ -424,7 +451,6 @@ class AvenirButton extends StatelessWidget {
                   color: const Color(0xFFC4C4C4),
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-
                 ),
               ),
             ],
@@ -433,7 +459,6 @@ class AvenirButton extends StatelessWidget {
       ),
     );
   }
-
 }
 
 /*

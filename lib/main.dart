@@ -5,8 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:get/get.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
+import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
+import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
@@ -322,11 +325,11 @@ class MyAppState extends State<MyApp> {
               ),
             ),
           ),
-
-          /*  routes: {
-          "/message": (context) =>
-              ChatListPage(currentUserID: currentUser?.uid ?? ""),
-        },*/
+          routes: {
+            "/PublierDemandePage": (context) => NotifDemande(),
+            "/AccepteParArtisan": (context) => DemandeAccepteePage(),
+            "/ConfirmeParClient": (context) => ActiviteToday(),
+          },
         ),
       ),
     );

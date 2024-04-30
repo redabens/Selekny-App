@@ -4,10 +4,13 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:firebase_messaging/firebase_messaging.dart";
 import 'package:app_settings/app_settings.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:reda/main.dart';
 import 'package:http/http.dart';
+
+final navigatorkey = GlobalKey<NavigatorState>();
 
 class NotificationServices {
   static final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -58,8 +61,28 @@ class NotificationServices {
   }
 
   static void onNotificationTap(NotificationResponse notificationResponse) {
-    navigatorkey.currentState!
-        .pushNamed("/message", arguments: notificationResponse);
+    final notificationType = notificationResponse.notificationResponseType;
+
+    // Exemple de logique de redirection en fonction du type de notification
+
+    switch (notificationType) {
+      case 'PublieDemande':
+        navigatorkey.currentState!
+            .pushNamed("/PublierDemandePage", arguments: notificationResponse);
+        break;
+      case 'AccepteParArtisan':
+        navigatorkey.currentState!
+            .pushNamed("/AccepteParArtisan", arguments: notificationResponse);
+        break;
+      // Ajoutez d'autres cas pour d'autres types de notifications si nécessaire
+      case 'ConfirmeParClient':
+        // Par défaut, redirigez l'utilisateur vers une page générique
+        navigatorkey.currentState!
+            .pushNamed("/ConfirmeParClient", arguments: notificationResponse);
+        break;
+      default:
+        break;
+    }
   }
 
   /*void firebaseInit(BuildContext context) {
@@ -142,12 +165,16 @@ class NotificationServices {
         .show(0, title, body, notificationDetails, payload: payload);
   }
 
-  static Future<void> sendPushNotification(
-      String token, String title, String content) async {
+  static Future<void> sendPushNotification(String token, String title,
+      String content, String notificationType) async {
     try {
       final body = {
         "to": token,
-        "notification": {"title": title, "body": content}
+        "notification": {
+          "title": title,
+          "body": content,
+          "type": notificationType
+        }
       };
 
       var response =
