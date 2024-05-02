@@ -158,13 +158,7 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
       backgroundColor: Colors.white,
-      bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(9.0),
-        child: Divider(
-          color: Colors.black26,
-          height: 1, // epaisseur du trait
-        ),
-      ),
+
     );
   }
 
