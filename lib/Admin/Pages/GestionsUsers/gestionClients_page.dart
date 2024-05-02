@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
-<<<<<<< HEAD
-=======
 import 'package:reda/Pages/authentification/creationArtisan.dart';
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 import '../../../Pages/retourAuth.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,19 +20,11 @@ class GestionClientsPage extends StatefulWidget {
 
 class _GestionClientsPageState extends State<GestionClientsPage> {
   int _currentIndex = 1;
-<<<<<<< HEAD
- void _onItemTap(bool isEnCours) {
-   setState(() {
-     isEnCoursSelected = isEnCours;
-   });
- }
-=======
   void _onItemTap(bool isEnCours) {
     setState(() {
       isEnCoursSelected = isEnCours;
     });
   }
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
   bool isEnCoursSelected = false;
   //pour la recherche de clients------------------------------
   @override
@@ -84,6 +73,10 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
           AppBar(
             elevation: 0.0, // Remove default shadow
             backgroundColor: Colors.white,
+            leading: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.arrow_back_ios_new),
+            ),
             title: Text(
               'Gestion des utilisateurs',
               style:GoogleFonts.poppins (
@@ -160,11 +153,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/signalement.png',
-<<<<<<< HEAD
-                  color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
-=======
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -178,11 +167,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 });
                 Navigator.push(
                   context,
-<<<<<<< HEAD
-                  MaterialPageRoute(builder: (context) => GestionArtisansPage(),),
-=======
                   MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
 
@@ -205,11 +190,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 });
                 Navigator.push(
                   context,
-<<<<<<< HEAD
-                  MaterialPageRoute(builder: (context) => const RetourAuth(),),
-=======
                   MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
               },

@@ -10,32 +10,18 @@ Widget buildUserProfileImage(String? profileImage) {
       imageUrl: profileImage,
       placeholder: (context, url) => const CircularProgressIndicator(),
       errorWidget: (context, url, error) =>  Icon(
-<<<<<<< HEAD
-      Icons.account_circle,
-      size: 50,
-      color: Colors.grey[400],
-    ),
-=======
         Icons.account_circle,
         size: 50,
         color: Colors.grey[400],
       ),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
     );
   } else {
     // if url nexiste pas ou null => assets
     return  Icon(
-<<<<<<< HEAD
-  Icons.account_circle,
-  size: 50,
-  color: Colors.grey[400],
-  );
-=======
       Icons.account_circle,
       size: 50,
       color: Colors.grey[400],
     );
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
   }
 }
 
@@ -140,11 +126,7 @@ class DetGestionUsers extends StatelessWidget {
               ],
             ),
           ),
-<<<<<<< HEAD
-         // const SizedBox(height: 84),
-=======
           // const SizedBox(height: 84),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
         ],
       ),
     );

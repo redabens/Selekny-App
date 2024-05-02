@@ -3,11 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
-<<<<<<< HEAD
-=======
 import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 
 const Color myBlueColor = Color(0xFF3E69FE);
 
@@ -59,11 +56,7 @@ class DetChatList extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-<<<<<<< HEAD
-                color: const Color(0xFFFD1D1D1).withOpacity(0.5),
-=======
                 color: const Color(0xFFD1D1D1).withOpacity(0.5),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 width: 1.2,
               ),
               /* boxShadow: [
@@ -94,7 +87,7 @@ class DetChatList extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(    //otherUserId
-                              builder: (context) => ProfilePage1(image: profileImage, nomClient: userName, phone: phone, adress: adresse, idclient: otheruserId,),
+                            builder: (context) => ProfilePage1(image: profileImage, nomClient: userName, phone: phone, adress: adresse, idclient: otheruserId,),
                           ),
                         );
                       } // Example action (replace with your desired functionality)
@@ -158,11 +151,7 @@ class DetChatList extends StatelessWidget {
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
                               fontSize: 13,
-<<<<<<< HEAD
-                              color: Color(0xFF7F7F7F),
-=======
                               color: const Color(0xFF7F7F7F),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                             ),
                           ),
                         ),
@@ -185,11 +174,7 @@ class DetChatList extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
-<<<<<<< HEAD
-                    color: Color(0xFF7F7F7F),
-=======
                     color: const Color(0xFF7F7F7F),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                   ),
                 ),
               ],

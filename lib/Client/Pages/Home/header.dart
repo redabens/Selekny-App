@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Demandes/Rendezvous_Page.dart';
 import 'package:google_fonts/google_fonts.dart';
-<<<<<<< HEAD
-=======
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Pages/retourAuth.dart';
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 
 class Header extends StatelessWidget {
   final int type;
@@ -22,23 +19,14 @@ class Header extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-<<<<<<< HEAD
-           Column(
-=======
           Column(
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Selekny',
                 style: GoogleFonts.poppins(
-<<<<<<< HEAD
-                  fontSize: 25,
-                  color: Colors.black,
-=======
                   fontSize: 24,
                   color: Colors.black87,
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -46,42 +34,42 @@ class Header extends StatelessWidget {
           ),
           const Spacer(),
           Row(// Pour ajouter un espace flexible entre les éléments
-          children:[
-            IconButton(
-              onPressed: () {
-                if(type == 1){
-                  showSearch(context: context, delegate: CustomSearch());
-                  print('Barre de recherche appuyée');
-                }
-              },
-              icon: Image.asset(
-                'assets/Search_alt.png', // Remplacez 'votre_image.png' par le chemin de votre image dans le dossier assets
-                width: 30, // Largeur de l'image
-                height: 30, // Hauteur de l'image
+            children:[
+              IconButton(
+                onPressed: () {
+                  if(type == 1){
+                    showSearch(context: context, delegate: CustomSearch());
+                    print('Barre de recherche appuyée');
+                  }
+                },
+                icon: Image.asset(
+                  'assets/Search_alt.png', // Remplacez 'votre_image.png' par le chemin de votre image dans le dossier assets
+                  width: 30, // Largeur de l'image
+                  height: 30, // Hauteur de l'image
+                ),
               ),
-            ),
-            const SizedBox(width: 5,),
-            IconButton(
-            onPressed: () {
-              if(type == 1){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RendezVousPage()),
-                );
-              }
-              else{
-                Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth()),
-                );
-              }
-            },
-            icon: Image.asset(
-              'assets/Ademandes.png', // Remplacez 'votre_image.png' par le chemin de votre image dans le dossier assets
-              width: 30, // Largeur de l'image
-              height: 30, // Hauteur de l'image
-            ),
-          ),
-          ],),
+              const SizedBox(width: 5,),
+              IconButton(
+                onPressed: () {
+                  if(type == 1){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const RendezVousPage()),
+                    );
+                  }
+                  else{
+                    Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const RetourAuth()),
+                    );
+                  }
+                },
+                icon: Image.asset(
+                  'assets/Ademandes.png', // Remplacez 'votre_image.png' par le chemin de votre image dans le dossier assets
+                  width: 30, // Largeur de l'image
+                  height: 30, // Hauteur de l'image
+                ),
+              ),
+            ],),
         ],
       ),
     );

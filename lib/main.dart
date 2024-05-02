@@ -3,19 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-<<<<<<< HEAD
-import 'package:reda/Admin/Services/signalement_service.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
-import 'package:reda/Client/Pages/Home/home.dart';
-import 'package:reda/Pages/Chat/chat_page.dart';
-import 'package:reda/Pages/Chat/chatList_page.dart';
-import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
-import 'package:reda/Pages/WelcomeScreen.dart';
-import 'Admin/Pages/Signalements/DetailsSignalement_page.dart';
-import 'Admin/Pages/Signalements/AllSignalements_page.dart';
-
-import 'firebase_options.dart';
-=======
 import 'package:get/get.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
@@ -119,7 +106,6 @@ User? currentUser = FirebaseAuth.instance.currentUser;
 
 final navigatorkey = GlobalKey<NavigatorState>();
 NotificationServices notificationServices = NotificationServices();
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -131,7 +117,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
- /* var result = await FlutterNotificationChannel.registerNotificationChannel(
+  /* var result = await FlutterNotificationChannel.registerNotificationChannel(
     description: 'Your channel description',
     id: 'selekny',
     importance: NotificationImportance.IMPORTANCE_HIGH,
@@ -286,36 +272,6 @@ class MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    SignalementsService _SignalementService = SignalementsService();
-    print('oooooooooooooooooofffff main main');
-    //_SignalementService.sendSignalement('poGC2ByeJPekcaN0NiSdAWDW7Oz2', 'il a également manqué de courtoisie pendant toute la durée de lintervention. Il semblait pressé et peu intéressé par mon problème. De plus, après avoir prétendument réparé la fuite, le problème est réapparu dès le lendemain. Je suis très insatisfait du service fourni par ce plombie');
-    /*final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-    final currentUserId =_firebaseAuth.currentUser!.uid;*/
-    return MaterialApp(
-      //title: 'Flutter Demo',
-
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home:
-      //DetailsSignalement(signaleurName: 'signaleurName', signalantName: 'signalantName', signaleurJob: 'signaleurJob', signalantJob: 'signalantJob', date: 'date', heure: 'heure', raison: 'raison')
-      //AllSignalementsPage(),
-      //const ChatPage(receiverUserID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2', currentUserId: 'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3', type: 1)
-     // const AjouterCommentairePage(nomPrestataire: 'mohamed benabed', artisanID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2'),
-      !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const ActiviteAvenir(),
-      //const ProfilePage(),
-      //const CreationArtisanPage(),
-      //const ChatListPage(type: 1,),
-      //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
-      //const PubDemandePage(),
-      //const LoginScreen(),
-      //const HomePage(),
-      //const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
-      //const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
-=======
     return GetMaterialApp(
       // Ajoute initialBinding ici pour initialiser le UserRepository
       initialBinding: BindingsBuilder(() {
@@ -392,7 +348,6 @@ class _HomeScreenState extends State<HomeScreen> {
           return const OfflineWidget();
         }
       },
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
     );
   }
 }

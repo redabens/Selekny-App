@@ -156,15 +156,6 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
-      appBar: AppBar(
-
-        title:  Text(
-          'Messagerie',
-          style: GoogleFonts.poppins(
-            fontSize: 24,
-            fontWeight:  FontWeight.w800,
-=======
         appBar: AppBar(
 
           title:  Text(
@@ -182,7 +173,6 @@ class _ChatListPageState extends State<ChatListPage> {
               color: Colors.white,
               height: 1, // epaisseur du trait
             ),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
           ),
         ),
         backgroundColor: Colors.white,
@@ -201,16 +191,6 @@ class _ChatListPageState extends State<ChatListPage> {
                       color: Colors.grey[300] ?? Colors.grey, // Set border color
                       width: 3.0, // Set border widthS
                     ),
-<<<<<<< HEAD
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Recherche',
-                          hintStyle: GoogleFonts.poppins(
-                            color: Colors.grey[400],
-                            fontWeight: FontWeight.w500, // Semi-bold
-=======
                   ),
                   child: Row(
                     children: [
@@ -228,7 +208,6 @@ class _ChatListPageState extends State<ChatListPage> {
                               fontWeight: FontWeight.w500, // Semi-bold
                             ),
                             border: InputBorder.none,
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                           ),
                         ),
                       ),

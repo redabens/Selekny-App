@@ -5,11 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
-<<<<<<< HEAD
-import '../../../Pages/retourAuth.dart';
-import 'gestionClients_page.dart';
-import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
-=======
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import '../../../Pages/retourAuth.dart';
 import 'gestionClients_page.dart';
@@ -17,7 +12,6 @@ import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
 
 
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 
 class GestionArtisansPage extends StatefulWidget {
   const GestionArtisansPage({
@@ -86,6 +80,10 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
           AppBar(
             elevation: 0.0, // Remove default shadow
             backgroundColor: Colors.white,
+            leading: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.arrow_back_ios_new),
+            ),
             title: Text(
               'Gestion des utilisateurs',
               style: GoogleFonts.poppins(
@@ -176,11 +174,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 });
                 Navigator.push(
                   context,
-<<<<<<< HEAD
-                  MaterialPageRoute(builder: (context) => GestionArtisansPage(),),
-=======
                   MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
 
@@ -189,11 +183,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/gestion.png',
-<<<<<<< HEAD
-                  color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
-=======
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -207,11 +197,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 });
                 Navigator.push(
                   context,
-<<<<<<< HEAD
-                  MaterialPageRoute(builder: (context) => const RetourAuth(),),
-=======
                   MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
               },

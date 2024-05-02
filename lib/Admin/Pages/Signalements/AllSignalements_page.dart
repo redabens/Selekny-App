@@ -3,13 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-<<<<<<< HEAD
-import '../../../Pages/retourAuth.dart';
-import 'DetailsSignalement_page.dart';
-=======
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'package:reda/Pages/retourAuth.dart';
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Admin/components/signalements_component.dart';
 import 'package:intl/intl.dart';
@@ -69,10 +64,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
   Future<String> getUserJob(String userId) async {
     try {
-<<<<<<< HEAD
-=======
       // Access the Firestore collection 'users' and get the document with userId
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
       DocumentSnapshot userDoc =
       await _firestore.collection('users').doc(userId).get();
 
@@ -91,16 +83,10 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
           return 'Client';
         }
       } else {
-<<<<<<< HEAD
-        return 'Client';
-      }
-    } catch (e) {
-=======
         return 'client';
       }
     } catch (e) {
 
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
       print('Error fetching user job: $e');
       return '';
     }
@@ -135,11 +121,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
       ),
 
       bottomNavigationBar: BottomNavigationBar(
-<<<<<<< HEAD
-        backgroundColor: Color(0xFFF8F8F8),
-=======
         backgroundColor: const Color(0xFFF8F8F8),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
@@ -161,11 +143,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/signalement.png',
-<<<<<<< HEAD
-                  color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
-=======
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -179,11 +157,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-<<<<<<< HEAD
-                  MaterialPageRoute(builder: (context) => GestionArtisansPage(),),
-=======
                   MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
 
@@ -192,11 +166,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/gestion.png',
-<<<<<<< HEAD
-                  color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
-=======
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -210,11 +180,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-<<<<<<< HEAD
-                  MaterialPageRoute(builder: (context) => const RetourAuth(),),
-=======
                   MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
               },
@@ -222,11 +188,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
-<<<<<<< HEAD
-                  color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
-=======
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -239,8 +201,8 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                   _currentIndex = 3;
                 });
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth(),)
+                    context,
+                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
                 );
 
               },
@@ -248,11 +210,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
-<<<<<<< HEAD
-                  color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
-=======
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -265,75 +223,75 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
   }
 
 
-Widget _buildSignalList() {
+  Widget _buildSignalList() {
 
-  return StreamBuilder(
-    stream: _SignalementsService.getAllSignalements(), //_firebaseAuth.currentUser!.uid
-    builder: (context, snapshot){
-      if (snapshot.hasError){
-        return Text('Error${snapshot.error}');
-      }
-      if(snapshot.connectionState == ConnectionState.waiting){
-        return const Text('Loading..');
-      }
-      final documents = snapshot.data!.docs;
+    return StreamBuilder(
+      stream: _SignalementsService.getAllSignalements(), //_firebaseAuth.currentUser!.uid
+      builder: (context, snapshot){
+        if (snapshot.hasError){
+          return Text('Error${snapshot.error}');
+        }
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return const Text('Loading..');
+        }
+        final documents = snapshot.data!.docs;
 
-      // Print details of each document
-      for (var doc in documents) {
-        print("Document Data: ${doc.data()}");
-      }
-      return FutureBuilder<List<Widget>>(
-          future: Future.wait(snapshot.data!.docs.map((document) => _buildSignalItem(document))),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Error loading signalements ${snapshot.error}'));
-            }
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            } if (snapshot.data!.isEmpty) {
-              return Center(
-                child: Text(
-                  'Vous n\'avez aucun signalement',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
+        // Print details of each document
+        for (var doc in documents) {
+          print("Document Data: ${doc.data()}");
+        }
+        return FutureBuilder<List<Widget>>(
+            future: Future.wait(snapshot.data!.docs.map((document) => _buildSignalItem(document))),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text('Error loading signalements ${snapshot.error}'));
+              }
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              } if (snapshot.data!.isEmpty) {
+                return Center(
+                  child: Text(
+                    'Vous n\'avez aucun signalement',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-              );
-            }
-            return ListView(children: snapshot.data!);
-          });
-    },
-  );
-}
+                );
+              }
+              return ListView(children: snapshot.data!);
+            });
+      },
+    );
+  }
 
-Future<Widget> _buildSignalItem(DocumentSnapshot document) async {
-  Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-  String signalementID = document.id;
-  String signaleurID = data['id_signaleur'];
-  String signalantID = data['id_signalant'];
-  String raison = data['raison'];
-  Timestamp timestamp = data['timestamp'];
+  Future<Widget> _buildSignalItem(DocumentSnapshot document) async {
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    String signalementID = document.id;
+    String signaleurID = data['id_signaleur'];
+    String signalantID = data['id_signalant'];
+    String raison = data['raison'];
+    Timestamp timestamp = data['timestamp'];
 
-final String signaleurUrl = await getUserPathImage(signaleurID);
-final String signalantUrl = await getUserPathImage(signalantID);
-  final String signaleurName = await getNameUser(signaleurID);
-  final String signalantName =  await getNameUser(signalantID);
-  final String date = await getFormattedDate(timestamp);
-  final String heure = await getFormattedTime(timestamp);
-  final String signalantJob = await getUserJob(signalantID);
-  final String signaleurJob = await getUserJob(signaleurID);
+    final String signaleurUrl = await getUserPathImage(signaleurID);
+    final String signalantUrl = await getUserPathImage(signalantID);
+    final String signaleurName = await getNameUser(signaleurID);
+    final String signalantName =  await getNameUser(signalantID);
+    final String date = await getFormattedDate(timestamp);
+    final String heure = await getFormattedTime(timestamp);
+    final String signalantJob = await getUserJob(signalantID);
+    final String signaleurJob = await getUserJob(signaleurID);
 
-  return Container(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-       DetSignalement(signalementID: signalementID ,signaleurId: signaleurID,signalantId: signalantID,signaleurName:signaleurName, signalantName: signalantName, leDate: date, aHeure: heure,signaleurJob: signaleurJob,signalantJob: signalantJob,raison: raison,signaleurUrl: signaleurUrl,signalantUrl: signalantUrl,),
-        const SizedBox(height: 16),
-      ],
-    ),
-  );
-}
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          DetSignalement(signalementID: signalementID ,signaleurId: signaleurID,signalantId: signalantID,signaleurName:signaleurName, signalantName: signalantName, leDate: date, aHeure: heure,signaleurJob: signaleurJob,signalantJob: signalantJob,raison: raison,signaleurUrl: signaleurUrl,signalantUrl: signalantUrl,),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
 }

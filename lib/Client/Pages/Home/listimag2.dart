@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:reda/Pages/prestation_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,10 +27,6 @@ class ImageList2 extends StatelessWidget {
     "KYsR4cj4mdVoDlrbyZbB",
     "s5Nry8HGyjjAgFsAxoum",
     "ynoP8TEQxtGUdTY0Ffld",
-<<<<<<< HEAD
-    "default",
-=======
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
   ];
   @override
   Widget build(BuildContext context) {

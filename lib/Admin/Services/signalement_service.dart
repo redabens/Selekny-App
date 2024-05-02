@@ -8,21 +8,11 @@ class SignalementsService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-<<<<<<< HEAD
-  Future<void> sendSignalement(String signlantId, String raison) async {
-    CollectionReference signalements = _firestore.collection(
-        'Signalements');
-    User? user = _firebaseAuth.currentUser;
-
-    if (user != null) {
-      final String userId = 'CRC4DVGi7HM73WwS8gdM9DC3lah1';//user.uid;
-=======
   Future<void> sendSignalement(String raison,String signlantId,String userId) async {
     CollectionReference signalements = _firestore.collection(
         'Signalements');
 
     if (userId != '') {
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
       final Timestamp timestamp = Timestamp.now();
       await signalements.add({
         'id_signaleur': userId,
@@ -30,25 +20,17 @@ class SignalementsService extends ChangeNotifier {
         'timestamp': timestamp,
         'raison': raison,
       });
-<<<<<<< HEAD
-      print('ffffffffff signalement effectue');
-=======
       print('signalement effectue');
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
     } else {
       print('User is not authenticated');
     }
-   await Future.value(null);
+    await Future.value(null);
   }
 
   Stream<QuerySnapshot> getAllSignalements() {
     return _firestore
         .collection('Signalements')
-<<<<<<< HEAD
-        .orderBy('timestamp')
-=======
         .orderBy('timestamp',descending: true)
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
         .snapshots();
   }
 
@@ -61,11 +43,7 @@ class SignalementsService extends ChangeNotifier {
         await signalementRef.delete();
         print('!!!!!!!!!!!!! Signalement avec ID $signalementID supprimé avec succès.');
       } else {
-<<<<<<< HEAD
-        print('!!!!!!!!! Le signalement avec ID $signalementID n\'existe pas.');
-=======
         print('!!!!!!!!!!!!!! Le signalement avec ID $signalementID n\'existe pas.');
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
       }
     } catch (e) {
       print('!!!!!!!!!! Erreur lors de la suppression du signalement $signalementID: $e');

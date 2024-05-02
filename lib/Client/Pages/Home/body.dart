@@ -31,11 +31,7 @@ class Body extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-<<<<<<< HEAD
-                   Text(
-=======
                   Text(
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                     'Service à domicile',
                     style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 20),
                   ),

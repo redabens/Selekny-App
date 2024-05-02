@@ -48,108 +48,26 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-<<<<<<< HEAD
-  Future<String> getUserNameById(String userId) async {
-
-    final userCollection = FirebaseFirestore.instance.collection('users');
-    final userDocument = userCollection.doc(userId);
-    final name = await userDocument.get().then((snapshot) => snapshot.data()?['nom']);
-    print(name);
-    return name;
-  }
-
-  Future<String> getUserImagePath(String userId) async {
-      final userCollection = FirebaseFirestore.instance.collection('users');
-      final userDocument = userCollection.doc(userId);
-      final imgPath = await userDocument.get().then((snapshot) => snapshot.data()?['pathImage']);
-      String url = await getImageUrl(imgPath);
-      return url;
-  }
-
-  Future<String> getImageUrl(String imagePath) async {
-    try {
-      final reference = FirebaseStorage.instance.ref().child(imagePath);
-      final url = await reference.getDownloadURL();
-      return url;
-    } catch (error) {
-      print('Error getting image URL: $error');
-      return ''; // Or return a default placeholder URL if desired
-    }
-  }
-  late String _imageUrl;
-
-=======
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
   @override
   void initState() {
     super.initState();
   }
   Future<Widget> _buildAppBar(String otherUserId) async {
-<<<<<<< HEAD
-
-    String otherUserName = '';
-    try {
-      final imagePath = await  getUserImagePath(otherUserId) ;
-      final url = await getImageUrl(imagePath);
-      otherUserName = await getUserNameById(otherUserId);
-    }catch (error) {
-      print("Error fetching other user name: $error");
-    }
-
-=======
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
     return AppBar(
       title: Row(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-<<<<<<< HEAD
-      children:
-          [
-      Container( // Enveloppez l'icône dans un Container pour créer un bouton carré
-      height: 40, // Définissez la hauteur et la largeur pour obtenir un bouton carré
-        width: 40,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
-          icon: Icon(
-            Icons.arrow_back_ios_new_outlined,
-            color: Color(0xFF33363F),
-            size: 22,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ChatListPage(type: 1)),
-            );
-
-          },
-        ),
-      ),
-          SizedBox(width:5),
-          Padding(
-            padding: const EdgeInsets.only(right: 30.0),
-            child: Container(
-              width: 40, // Taille container de l'image
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle, // container mdaweer
-                border: Border.all(
-                  color: Colors.blueGrey,
-                  width: 2.0, // Épaisseur de la bordure
-=======
             children:
             [
-              Container( // Enveloppez l'icône dans un Container pour créer un bouton carré
-                height: 40, // Définissez la hauteur et la largeur pour obtenir un bouton carré
+              Container(
+                height: 40,
                 width: 40,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
+                child: IconButton(
                   icon: const Icon(
                     Icons.arrow_back_ios_new_outlined,
                     color: Color(0xFF33363F),
@@ -157,14 +75,12 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-
                   },
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
-              const SizedBox(width:5),
+              const SizedBox(width:2),
               Padding(
-                padding: const EdgeInsets.only(right: 30.0),
+                padding: const EdgeInsets.only(right: 15.0),
                 child: GestureDetector(
                   onTap: () {
                     // Handle photo tap here (e.g., navigate to a new screen, show a dialog)
@@ -188,8 +104,8 @@ class _ChatPageState extends State<ChatPage> {
                     } // Example action (replace with your desired functionality)
                   },
                   child: Container(
-                    width: 45, // Adjust as needed
-                    height: 45, // Adjust as needed
+                    width: 36,
+                    height: 36,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
@@ -220,30 +136,17 @@ class _ChatPageState extends State<ChatPage> {
                 ),
 
               ),
-<<<<<<< HEAD
-            ),
-
-            ),
-  ],),
-=======
             ],),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 
           Expanded(
             child: RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
-<<<<<<< HEAD
-                    text: otherUserName,
-                    style: GoogleFonts.poppins(
-                      color: Color(0xFF333333),
-=======
                     text: widget.userName,
                     style: GoogleFonts.poppins(
                       color: const Color(0xFF333333),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -251,11 +154,7 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
           ),
-<<<<<<< HEAD
-          SizedBox(width: 8),
-=======
           const SizedBox(width: 8),
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
         ],
       ),
       backgroundColor: Colors.white,
@@ -282,7 +181,8 @@ class _ChatPageState extends State<ChatPage> {
               return snapshot.data!; // Use the built AppBar widget
             } else if (snapshot.hasError) {
               print(snapshot.error);
-              return AppBar(title: const Text('Error Loading AppBar')); // Handle errors
+              return AppBar(title: const Text('Loading the user ...',
+               )); // style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
             }
             return const LinearProgressIndicator(); // Show loading indicator
           },
@@ -325,87 +225,85 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildMessageItem(DocumentSnapshot doc){
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-    // align the messages to the right sender is the current user , otherwise the left
-    var alignment = (data['senderId'] == widget.currentUserId)
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
-    var bubbleColor = (data['senderId'] == widget.currentUserId)
-        ? const Color(0xFF3E69FE)
-        : const Color(0xFFE6E6E6);
-
-    var textColor = (data['senderId'] == widget.currentUserId)
-        ? Colors.white
-        : Colors.black;
+    var isCurrentUser = data['senderId'] == widget.currentUserId;
+    var alignment = isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
+    var bubbleColor = isCurrentUser ? myBlueColor : myGrayColor;
+    var textColor = isCurrentUser ? Colors.white : Colors.black;
+    var otherUserImage = isCurrentUser ? null : widget.profileImage;
 
     return Container(
       alignment: alignment,
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Column(
-          crossAxisAlignment: (data['senderId'] == widget.currentUserId)
-              ?CrossAxisAlignment.end
-              :CrossAxisAlignment.start,
-          mainAxisAlignment: (data['senderId'] == widget.currentUserId)
-              ? MainAxisAlignment.end
-              : MainAxisAlignment.start,
-          children: [
-            //Text(data['senderEmail']),
-            ChatBubble(
-              message: data['message'],
-              backgroundColor: bubbleColor,
-              textColor: textColor,
-            ),
-
-          ],
+        child: ChatBubble(
+          message: data['message'],
+          backgroundColor: bubbleColor,
+          textColor: textColor,
+          otherUserImage: otherUserImage,
         ),
       ),
     );
-    return Text(data["message"]);
   }
+
 
 
 
   // build message input
-  Widget _buildMessageInput(){
+  Widget _buildMessageInput() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
       child: Row(
-          children: [
-            Expanded(
-                child: TextFormField(
-                    controller: _messageController,
-                    style: const TextStyle(color: Colors.black),
-                    decoration: const InputDecoration(
-                      hintText: "Ecrire un message...",
-                      hintStyle: TextStyle(color: Colors.grey, fontSize: 16,fontFamily: 'poppins' ),
-                      border: InputBorder.none,
-                    )
-
-                )),
-            const SizedBox(
-              width: 12,
-            ),
-            GestureDetector(
-              onTap: () {
-                sendMessage();
-              },
-              child: Container(
-                height: 42,
-                width: 42,
-                decoration: BoxDecoration(
-                  color: myBlueColor,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Center(
-                    child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    )
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              decoration: BoxDecoration(
+                  color: myGrayColor,
+                borderRadius: BorderRadius.circular(30.0), // Rounded corners
+              ),
+              child: TextFormField(
+                controller: _messageController,
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 16),
+                decoration: InputDecoration(
+                  hintText: "  Écrire un message ...",
+                  hintStyle: GoogleFonts.poppins(color: Colors.black.withOpacity(0.5), fontSize: 14,fontWeight: FontWeight.w500),
+                  border: InputBorder.none, // No border
                 ),
               ),
             ),
-          ] //expanded
+          ),
+          const SizedBox(width: 10),
+          GestureDetector(
+            onTap: () {
+              sendMessage();
+            },
+            child: Container(
+              height: 44, // Increased size for better touch area
+              width: 44,
+              decoration: BoxDecoration(
+                color: myBlueColor.withOpacity(0.7), // Solid blue color for the send button
+                borderRadius: BorderRadius.circular(24), // Circle shape
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blueAccent.withOpacity(1),
+                    spreadRadius: 1,
+                    blurRadius: 8,
+                    offset: const Offset(0, 4), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.send,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
 }

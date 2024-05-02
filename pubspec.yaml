@@ -1,3 +1,4 @@
+
 name: reda
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
@@ -153,16 +154,12 @@ flutter:
     - assets/venir.png
     - icons/calendrier.png
     - icons/calendrierann.png
-<<<<<<< HEAD
-    - assets/anonyme.png
-=======
     - assets/Car.png
     - assets/commentaire.png
     - assets/jobsnbr.png
     - assets/prestation.png
     - assets/tel.png
     - assets/localisation.png
->>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
     - icons/ajoutartisan.png
     - icons/ajoutdomaine.png
     - icons/gestion.png
