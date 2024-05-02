@@ -127,7 +127,7 @@ Future<String> getuserNameByid(String userID) async{
   try {
     String? userName;
     final documentSnapshot = await FirebaseFirestore.instance
-        .collection('Users')
+        .collection('users')
         .doc(userID)
         .get();
 

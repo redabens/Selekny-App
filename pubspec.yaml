@@ -159,6 +159,10 @@ flutter:
     - assets/prestation.png
     - assets/tel.png
     - assets/localisation.png
+    - icons/ajoutartisan.png
+    - icons/ajoutdomaine.png
+    - icons/gestion.png
+    - icons/signalement.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

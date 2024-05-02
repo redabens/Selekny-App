@@ -4,10 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeClientService.dart';
+import 'package:reda/Client/Services/demande%20publication/HistoriqueServices.dart';
 class Buttontraiterannuler extends StatelessWidget {
   final String idclient;
   final Timestamp timestamp;
-  const Buttontraiterannuler({super.key, required this.idclient, required this.timestamp});
+  final String datefin;
+  final String datedebut;
+  final String location;
+  final String heuredebut;
+  final String heurefin;
+  final String iddomaine;
+  final String idprestation;
+  final String idartisan;
+  final bool urgence;
+  final double longitude;
+  final double latitude;
+  const Buttontraiterannuler({super.key, required this.idclient, required this.timestamp, required this.datefin, required this.datedebut, required this.location, required this.heuredebut, required this.heurefin, required this.iddomaine, required this.idprestation, required this.idartisan, required this.urgence, required this.longitude, required this.latitude});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +30,10 @@ class Buttontraiterannuler extends StatelessWidget {
         child: Row(
           children: [
             const SizedBox(width: 18,),
-            ButtonTraiter(timestamp: timestamp, idclient: idclient,),
+            ButtonTraiter(timestamp: timestamp, idclient: idclient, datefin: datefin,
+              datedebut: datedebut, location: location, heuredebut: heuredebut,
+              heurefin: heurefin, iddomaine: iddomaine, idprestation: idprestation,
+              idartisan: idartisan, urgence: urgence, longitude: longitude, latitude: latitude,),
             const SizedBox(width: 2,),
             ButtonAnnuler(timestamp: timestamp, idclient: idclient,),
           ],
@@ -32,7 +47,22 @@ class Buttontraiterannuler extends StatelessWidget {
 class ButtonTraiter extends StatefulWidget {
   final Timestamp timestamp;
   final String idclient;
-  const ButtonTraiter({super.key, required this.timestamp, required this.idclient});
+  final String datefin;
+  final String datedebut;
+  final String location;
+  final String heuredebut;
+  final String heurefin;
+  final String iddomaine;
+  final String idprestation;
+  final String idartisan;
+  final bool urgence;
+  final double longitude;
+  final double latitude;
+  const ButtonTraiter({super.key, required this.timestamp, required this.idclient,
+    required this.datefin, required this.datedebut, required this.location,
+    required this.heuredebut, required this.heurefin, required this.iddomaine,
+    required this.idprestation, required this.idartisan, required this.urgence,
+    required this.longitude, required this.latitude});
 
   @override
   ButtonTraiterState createState() => ButtonTraiterState();
@@ -43,6 +73,7 @@ class ButtonTraiterState extends State<ButtonTraiter> {
   Color _textColor = Colors.black;
   final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
   final DemandeClientService _demandeClientService = DemandeClientService();
+  final HistoriqueService _historiqueService = HistoriqueService();
   void _changeColor() {
     setState(() {
       _buttonColor = const Color(0xFFF6F6F6);
@@ -62,7 +93,10 @@ class ButtonTraiterState extends State<ButtonTraiter> {
       child: TextButton(
         onPressed:() async {
           _changeColor;
-          _demandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
+          _historiqueService.sendHistorique(widget.datedebut, widget.datefin, widget.heuredebut,
+              widget.heurefin, widget.location, widget.iddomaine,
+              widget.idprestation, widget.idclient, widget.idartisan,
+              widget.urgence, widget.latitude, widget.longitude);
           _demandeArtisanService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
           print('Traite avec success');
           await Future.delayed(const Duration(milliseconds: 100));

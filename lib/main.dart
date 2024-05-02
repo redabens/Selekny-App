@@ -4,7 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
@@ -292,7 +293,7 @@ class MyAppState extends State<MyApp> {
                     ? const WelcomePage()
                     : (role == 'client')
                     ? const HomePage()
-                    : const NotifUrgente(),
+                    : const ActiviteToday(),
               ),
             ),
           ),

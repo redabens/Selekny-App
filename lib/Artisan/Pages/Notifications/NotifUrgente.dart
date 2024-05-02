@@ -76,6 +76,20 @@ class NotifUrgenteState extends State<NotifUrgente> {
     final String phone = userDoc.data()!['numTel'] as String;
     return phone;
   }
+  Future<String> getSyncDemande(Timestamp timestamp) async {
+    final DateTime timeDemande = timestamp.toDate();
+    final DateTime now = DateTime.now();
+    Duration difference = now.difference(timeDemande);
+    if (difference.inDays > 0) {
+      return 'Envoyé il y''a ${difference.inDays} jr';
+    } else if (difference.inHours > 0) {
+      return 'Envoyé il y''a ${difference.inHours} h';
+    } else if (difference.inMinutes > 0) {
+      return 'Envoyé il y''a ${difference.inMinutes} min';
+    } else {
+      return 'Envoyé il y''a ${difference.inSeconds} second';
+    }
+  }
   Future<String> getNomPrestation(String idPrestation, String idDomaine) async {
     try {
       final domainsCollection = FirebaseFirestore.instance.collection('Domaine');
@@ -260,8 +274,11 @@ class NotifUrgenteState extends State<NotifUrgente> {
     String nomprestation = await getNomPrestation(
         data['idprestation'], data['iddomaine']);
     print(nomprestation);
+    String idartisan = data['idartisan'];
     String nomClient = await getNameUser(data['idclient']);
     String phone = await getPhoneUser(data['idclient']);
+    final String sync = await getSyncDemande(data['timestamp']);
+    String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -281,7 +298,8 @@ class NotifUrgenteState extends State<NotifUrgente> {
             heurefin: data['heurefin'], latitude: data['latitude'],
             longitude: data['longitude'],
             type1: 1, type2: 1,
-            nomclient: nomClient, phone: phone,),
+            nomclient: nomClient, phone: phone,
+            demandeid: document.id, sync: sync, nomArtisan: nomArtisan, idartisan: idartisan,),
           const SizedBox(height: 10,),
         ],
       ),

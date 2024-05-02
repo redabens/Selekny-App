@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Pages/prestation_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ImageList2 extends StatelessWidget {
   final int type;
@@ -11,20 +12,20 @@ class ImageList2 extends StatelessWidget {
     "assets/Plomberie.png",
     "assets/electricite.png",
     "assets/macon.png",
-    "assets/menuisier.png",
+    "assets/femme de menage.png",
   ];
 
   final List<String> texts = [
     "Plomberie",
     "Electricité",
     "Maçonnerie",
-    "Menuiserie",
+    "Ménage",
   ];
   final List<String> ID = [
     "ajEON4X1fduQVsdVoqFJ",
     "KYsR4cj4mdVoDlrbyZbB",
     "s5Nry8HGyjjAgFsAxoum",
-    "default",
+    "ynoP8TEQxtGUdTY0Ffld",
   ];
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,7 @@ class ImageList2 extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Text(
                       texts[index],
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],

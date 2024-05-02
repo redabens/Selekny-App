@@ -165,7 +165,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
       body: Column(
         children: [
           // espace fo9 titre de la page
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           AppBar(
             elevation: 0.0,
             // Remove default shadow
@@ -206,7 +206,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage(),),
                 );
@@ -227,7 +227,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
                 );
@@ -250,7 +250,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ChatListPage(type: 1,),),
                 );
@@ -272,7 +272,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilePage(),),
                 );

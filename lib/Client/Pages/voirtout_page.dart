@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/components/Domaine_container.dart';
+import 'package:reda/Pages/homedefault.dart';
 
 class VoirtoutPage extends StatefulWidget {
   final int type;
@@ -51,7 +53,7 @@ class _VoirtoutPageState extends State<VoirtoutPage> {
         return Domaine(
           domaineID: domaineID,
           nomdomaine: doc.data()['Nom'],
-          imageUrl: url ?? "placeholder_image.png", type: 0, // Use downloaded URL or a placeholder
+          imageUrl: url ?? "", type: 0, // Use downloaded URL or a placeholder
         );
       });
 

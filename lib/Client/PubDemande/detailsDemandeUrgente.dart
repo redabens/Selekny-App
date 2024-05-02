@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:reda/Client/Services/demande%20publication/getMateriel.dart';
 import 'package:reda/Client/components/Date.dart';
 import 'package:reda/Client/components/Demande.dart';
@@ -34,12 +35,27 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
   String? prix;
   Date datedebut = Date();
   bool urgence = true;
-  late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: true, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
+  late Demande demandeinit = Demande(
+      id_Client: "",
+      id_Prestation: "",
+      urgence: true,
+      date_debut: "",
+      date_fin: "",
+      heure_debut: _getCurrentTime(), // Set current time in initState
+      heure_fin: _getCurrentTime(),
+      adresse: '',
+      id_Domaine: '');
   @override
   void initState() {
     super.initState();
     // Fetch material on widget initialization
     _fetchMaterial(widget.domaineID, widget.prestationID);
+  }
+  String _getCurrentTime() {
+    // Get current time using DateTime
+    final now = DateTime.now();
+    // Format time as desired (e.g., "HH:mm")
+    return DateFormat('HH:mm').format(now);
   }
   Future<void> _fetchMaterial(String domaineID, String prestationID) async {
     try {

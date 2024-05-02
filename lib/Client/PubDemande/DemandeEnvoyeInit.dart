@@ -126,7 +126,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
             String token = await UserRepository.instance
                 .getTokenById(artisansSnapshot.docs[i].id);
 
-            print("Token de l'artisan ${i} : ${token}");
+            print("Token de l'artisan $i : $token");
 
             await getNomPrestationById(
             demandeData['id_Domaine'], demandeData['id_Prestation']);

@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
+import 'package:reda/Pages/authentification/creationArtisan.dart';
+import '../../../Pages/retourAuth.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
 class GestionClientsPage extends StatefulWidget {
   const GestionClientsPage({
@@ -16,26 +19,27 @@ class GestionClientsPage extends StatefulWidget {
 }
 
 class _GestionClientsPageState extends State<GestionClientsPage> {
- void _onItemTap(bool isEnCours) {
-   setState(() {
-     isEnCoursSelected = isEnCours;
-   });
- }
+  int _currentIndex = 1;
+  void _onItemTap(bool isEnCours) {
+    setState(() {
+      isEnCoursSelected = isEnCours;
+    });
+  }
   bool isEnCoursSelected = false;
- //pour la recherche de clients------------------------------
-@override
+  //pour la recherche de clients------------------------------
+  @override
   void initState(){
     super.initState();
     getClientStream();
     _searchController.addListener(_onSearchChanged);
-}
- void _onSearchChanged(){
-  print(_searchController.text);
- }
-final TextEditingController _searchController = TextEditingController();
+  }
+  void _onSearchChanged(){
+    print(_searchController.text);
+  }
+  final TextEditingController _searchController = TextEditingController();
   List allResults = [];
   getClientStream() async{
-    var data = await FirebaseFirestore.instance.collection('User').where('role', isEqualTo: "client").orderBy('name').get();
+    var data = await FirebaseFirestore.instance.collection('users').where('role', isEqualTo: "client").orderBy('nom').get();
 
     setState(() {
       allResults = data.docs;
@@ -47,9 +51,9 @@ final TextEditingController _searchController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> getUserPathImage(String userID) async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
     if (userDoc.exists) {
-      String pathImage = userDoc['PathImage'];
+      String pathImage = userDoc['pathImage'];
       final reference = FirebaseStorage.instance.ref().child(pathImage);
       final url = await reference.getDownloadURL();
       return url;
@@ -57,16 +61,6 @@ final TextEditingController _searchController = TextEditingController();
       return  '';
     }
   }
-  Future<String> getUserName(String userID) async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
-    if (userDoc.exists) {
-      String userName = userDoc['name'];
-      return userName;
-    } else {
-      return 'default_name';
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +129,105 @@ final TextEditingController _searchController = TextEditingController();
           const SizedBox(height: 10),
         ],
       ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFF8F8F8),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        iconSize: 30,
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AllSignalementsPage(),),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/signalement.png',
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
+                );
+
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/gestion.png',
+                  color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutartisan.png',
+                  color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutdomaine.png',
+                  color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+        ],
+      ),
     );
   }
 
@@ -161,7 +254,7 @@ final TextEditingController _searchController = TextEditingController();
                 return Text('Error loading users: ${snapshot.error}');
               }
               if (!snapshot.hasData) {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
               return ListView(children: snapshot.data!);
             }
@@ -177,14 +270,11 @@ final TextEditingController _searchController = TextEditingController();
     String userName = "??????";
     String job = "?????";
     try {
-      userName = await getUserName(userID);
-      print("nooooooooooooooooooom:$userName");
+      userName = data['nom'];
       job = 'Client';
       profileImage = await getUserPathImage(userID);
       print("l'url :$profileImage");
     } catch (error) {
-
-      print('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz');
       print("Error fetching user image: $error");
     }
     return Container(
@@ -193,7 +283,7 @@ final TextEditingController _searchController = TextEditingController();
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           DetGestionUsers(userName: userName, job: job,profileImage: profileImage),
-
+          const SizedBox(height: 14),
         ],
       ),
     );
@@ -212,56 +302,56 @@ final TextEditingController _searchController = TextEditingController();
 
   Widget _buildSelectionRow() {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-    Expanded(
-    child: GestureDetector(
-    onTap: () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => GestionArtisansPage())),
-    child: Column( // Utiliser une colonne pour séparer le texte de la ligne
-    children: [
-    Text(
-    'Mes Artisans',
-    textAlign: TextAlign.center,
-    style: TextStyle(
-    color: isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
-    fontSize: 18,
-    fontWeight: FontWeight.w800,
-    ),
-    ),
-    SizedBox(height: 12), // Espace entre le texte et la ligne
-    Container(
-    height: isEnCoursSelected ? 4 : 1, // Épaisseur de la ligne
-    color: isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
-    ),
-    ],
-    ),
-    ),
-    ),
-    Expanded(
-    child: GestureDetector(
-    onTap: () => _onItemTap(false),
-    child: Column( // Utiliser une colonne pour séparer le texte de la ligne
-    children: [
-    Text(
-    'Mes Clients',
-    textAlign: TextAlign.center,
-    style: TextStyle(
-    color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
-    fontSize: 18,
-    fontWeight: FontWeight.w700,
-    ),
-    ),
-    SizedBox(height: 10), // Espace entre le texte et la ligne
-    Container(
-    height: isEnCoursSelected ? 1 : 4, // Épaisseur de la ligne
-    color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
-    ),
-    ],
-    ),
-    ),
-    ),
-    ],
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => GestionArtisansPage())),
+            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
+              children: [
+                Text(
+                  'Mes Artisans',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 12), // Espace entre le texte et la ligne
+                Container(
+                  height: isEnCoursSelected ? 4 : 1, // Épaisseur de la ligne
+                  color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => _onItemTap(false),
+            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
+              children: [
+                Text(
+                  'Mes Clients',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(height: 10), // Espace entre le texte et la ligne
+                Container(
+                  height: isEnCoursSelected ? 1 : 4, // Épaisseur de la ligne
+                  color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 

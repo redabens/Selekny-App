@@ -36,7 +36,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = 3;
   String tProfile = 'Profile';
   String tProfileHeading = '';
   String tProfileSubHeading = '';

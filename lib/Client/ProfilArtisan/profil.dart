@@ -11,7 +11,8 @@ class ProfilePage2 extends StatefulWidget {
   final String nomartisan;
   final String phone;
   final String domaine;
-  const ProfilePage2({super.key, required this.idartisan, required this.imageurl, required this.nomartisan, required this.phone, required this.domaine});
+  final int rating;
+  const ProfilePage2({super.key, required this.idartisan, required this.imageurl, required this.nomartisan, required this.phone, required this.domaine, required this.rating});
   @override
   State<ProfilePage2> createState() => _ProfilePage2State();
 }
@@ -23,7 +24,14 @@ class _ProfilePage2State extends State<ProfilePage2> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        // ... (rest of AppBar code)
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: ProfileBody2(
@@ -31,7 +39,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
           name: widget.nomartisan,
           domaine:widget.domaine,
           phone: widget.phone,
-          //rating: data!['rating'].toString(),
+          rating: widget.rating.toString(),
           workCount:45,
           onContact: () {
             Navigator.push(
@@ -46,7 +54,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
               context,
               MaterialPageRoute(
                 builder: (context) => Signaler(idartisan: widget.idartisan, imageUrl: widget.imageurl,
-                  nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine,), // Navigation to ReportPage
+                  nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,), // Navigation to ReportPage
               ),
             );
           },

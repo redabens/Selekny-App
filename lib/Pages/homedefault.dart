@@ -18,7 +18,7 @@ class _HomeDefaultPageState extends State<HomeDefaultPage> {
       backgroundColor: Colors.white,
       body: const Column(
         children: [
-          Header(),
+          Header(type: 2,),
           SizedBox(height: 15), // Ajout d'un espace entre le header et le reste du contenu
           Expanded(
             child: SingleChildScrollView(

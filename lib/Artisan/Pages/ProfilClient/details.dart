@@ -10,7 +10,7 @@ class ProfileBody extends StatelessWidget {
   final VoidCallback onContact;
   final VoidCallback onReport;
 
-  const ProfileBody({super.key,
+  ProfileBody({
     required this.photoPath,
     required this.name,
     required this.phone,
@@ -22,8 +22,14 @@ class ProfileBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
-    double screenHeight = MediaQuery.of(context).size.height; // Hauteur de l'écran
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,133 +50,145 @@ class ProfileBody extends StatelessWidget {
           size: 65,
           color: Colors.grey[400],
         ),
-    SizedBox(height: screenHeight * 0.04), // Espacement proportionnel
-    Text(
-    name,
-    style: GoogleFonts.poppins(
-    fontSize: screenWidth * 0.05,
-    fontWeight: FontWeight.bold,
-    ),
-    ),
-    SizedBox(height: screenHeight * 0.1), // Espacement entre les éléments
-    Container(
-    width: screenWidth * 0.9, // Largeur proportionnelle
-    height: screenHeight * 0.06, // Hauteur proportionnelle
-    padding: EdgeInsets.all(screenWidth * 0.03),
-    decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(screenWidth * 0.05),
-    border: Border.all(color: Colors.blue),
-    ),
-    child: Row(
-    mainAxisAlignment: MainAxisAlignment.center, // Centrage horizontal
-    children: [
-    Image.asset('assets/tel.png', width: screenWidth * 0.07, height: screenWidth * 0.07),
-    SizedBox(width: screenWidth * 0.03),
-    Text(
-    phone,
-    style: GoogleFonts.poppins(
-    fontSize: screenWidth * 0.04,
-    fontWeight: FontWeight.w500,
-    ),
-    ),
-    ],
-    ),
-    ),
-    SizedBox(height: screenHeight * 0.04),
-    Container(
-    width: screenWidth * 0.9,
-    height: screenHeight * 0.06,
-    padding: EdgeInsets.all(screenWidth * 0.03),
-    decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(screenWidth * 0.05),
-    border: Border.all(color: Colors.blue),
-    ),
-    child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-    Image.asset('assets/localisation.png', width: screenWidth * 0.07, height: screenWidth * 0.07),
-    SizedBox(width: screenWidth * 0.03),
-    Text(
-    address,
-    style: GoogleFonts.poppins(
-    fontSize: screenWidth * 0.04,
-    fontWeight: FontWeight.w500,
-    ),
-    ),
-    ],
-    ),
-    ),
-    SizedBox(height: screenHeight * 0.04),
-    /*Container(
-    width: screenWidth * 0.9,
-    height: screenHeight * 0.06,
-    padding: EdgeInsets.all(screenWidth * 0.03),
-    decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(screenWidth * 0.05),
-    border: Border.all(color: Colors.blue),
-    color: isVehicled ? const Color(0xFF7CF6A5) : Colors.white,
-    ),
-    child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-    Image.asset(
-    'assets/Car.png', // Icône de voiture
-    width: screenWidth * 0.07,
-    height: screenWidth * 0.07,
-    ),
-    SizedBox(width: screenWidth * 0.03),
-    Text(
-    'Véhiculé',
-    style: GoogleFonts.poppins(
-    fontSize: screenWidth * 0.04,
-    fontWeight: FontWeight.w500,
-    ),
-    ),
-    ],
-    ),
-    ),*/
-    SizedBox(height: screenHeight * 0.1),
-    Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-    GestureDetector(
-    onTap: onContact,
-    child: Container(
-    decoration: BoxDecoration(
-    color: Color(0xFF3E69FE),
-    borderRadius: BorderRadius.circular(screenWidth * 0.05),
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-    child: Center(
-    child: Text(
-    'Contacter',
-    style: GoogleFonts.poppins(
-    color: Colors.white,
-    ),
-    ),
-    ),
-    ),
-    ),
-    SizedBox(width: screenWidth * 0.04), // Espacement entre les boutons
-    GestureDetector(
-    onTap: onReport,
-    child: Container(
-    decoration: BoxDecoration(
-    color: Colors.red.withOpacity(0.7),
-    borderRadius: BorderRadius.circular(screenWidth * 0.05),
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-    child: Text(
-    'Signaler',
-    style: GoogleFonts.poppins(
-    color: Colors.white,
-    ),
-    ),
-    ),
-    ),
-    ],
-    ),
-    ],
+        SizedBox(height: screenHeight * 0.04),
+        Text(
+          name,
+          style: GoogleFonts.poppins(
+            fontSize: screenWidth * 0.05,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: screenHeight * 0.1),
+        Container(
+          width: screenWidth * 0.9,
+          height: screenHeight * 0.055,
+          padding: EdgeInsets.all(screenWidth * 0.03),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(screenWidth * 0.05),
+            border: Border.all(color: Colors.blue),
+          ),
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/tel.png',
+                width: screenWidth * 0.07,
+                height: screenWidth * 0.07,
+              ),
+              SizedBox(width: screenWidth * 0.03),
+              Text(
+                phone,
+                style: GoogleFonts.poppins(
+                  fontSize: screenWidth * 0.04,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: screenHeight * 0.04),
+        Container(
+          width: screenWidth * 0.9,
+
+          padding: EdgeInsets.all(screenWidth * 0.03),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(screenWidth * 0.05),
+            border: Border.all(color: Colors.blue),
+          ),
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/localisation.png',
+                width: screenWidth * 0.07,
+                height: screenWidth * 0.07,
+              ),
+              SizedBox(width: screenWidth * 0.03),
+              Expanded(
+                child: Text(
+                  address,
+                  style: GoogleFonts.poppins(
+                    fontSize: screenWidth * 0.04,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
+                  maxLines: 3,
+                ),
+              ),
+            ],
+          ),
+        ),
+        /*SizedBox(height: screenHeight * 0.04),
+        Container(
+          width: screenWidth * 0.9,
+          height: screenHeight * 0.055,
+          padding: EdgeInsets.all(screenWidth * 0.03),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(screenWidth * 0.05),
+            border: Border.all(color: Colors.blue),
+            color: isVehicled ? const Color(0xFF7CF6A5) : Colors.white,
+          ),
+          child: Row(
+            children: [
+              Image.asset(
+                'asset/Car.png',
+                width: screenWidth * 0.07,
+                height: screenWidth * 0.07,
+              ),
+              SizedBox(width: screenWidth * 0.03),
+              Text(
+                'Vehiculé',
+                style: GoogleFonts.poppins(
+                  fontSize: screenWidth * 0.04,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),*/
+        SizedBox(height: screenHeight * 0.07),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: onContact,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3E69FE),
+                  borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 25, vertical:12),
+                child: Center(
+                  child: Text(
+                    'Contact',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: screenWidth * 0.05),
+            GestureDetector(
+              onTap: onReport,
+              child: Container(
+                decoration: BoxDecoration(
+                  color:  const Color(0xFFFF0000).withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                child: Text(
+                  'Signaler',
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

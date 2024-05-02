@@ -1,3 +1,4 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,13 +9,18 @@ Widget buildUserProfileImage(String? profileImage) {
     return CachedNetworkImage(
       imageUrl: profileImage,
       placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Image.asset('assets/anonyme.png'),
+      errorWidget: (context, url, error) =>  Icon(
+        Icons.account_circle,
+        size: 50,
+        color: Colors.grey[400],
+      ),
     );
   } else {
     // if url nexiste pas ou null => assets
-    return Image.asset(
-      'assets/anonyme.png',
-      fit: BoxFit.cover,
+    return  Icon(
+      Icons.account_circle,
+      size: 50,
+      color: Colors.grey[400],
     );
   }
 }
@@ -37,13 +43,13 @@ class DetGestionUsers extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 22,
-        right: 22,
+        left:   16,
+        right: 16,
       ),
       child: Stack(
         children: [
           Container(
-            height: 74,
+            height: 68,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
@@ -69,7 +75,7 @@ class DetGestionUsers extends StatelessWidget {
                           profileImage), // Using the function here
                     ),
                   ),
-                  const SizedBox(width: 30),
+                  const SizedBox(width: 20),
                   //espace entre container image et text
                   Expanded(
                     child: Column(
@@ -82,8 +88,8 @@ class DetGestionUsers extends StatelessWidget {
                               userName,
                               style: GoogleFonts.poppins(
                                 color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w900,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ],
@@ -97,8 +103,8 @@ class DetGestionUsers extends StatelessWidget {
                           child: Text(
                             job,
                             style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
                               color: const Color(0xFF7F7F7F),
                             ),
                           ),
@@ -120,7 +126,7 @@ class DetGestionUsers extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 84),
+          // const SizedBox(height: 84),
         ],
       ),
     );

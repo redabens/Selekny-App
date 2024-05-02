@@ -11,14 +11,14 @@ class Heure extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 240,
+      width: MediaQuery.of(context).size.width*0.7,
       height: 20,
-      color: Colors.white,
+     // color: Colors.yellow,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.start, // Align items to the start
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(width: 7),
+          const SizedBox(width: 5),
           Container(
             height: 17,
             width: 17,
@@ -33,7 +33,7 @@ class Heure extends StatelessWidget {
             heuredebut,
             style: GoogleFonts.poppins(
               color: const Color(0xFF757575),
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -42,7 +42,7 @@ class Heure extends StatelessWidget {
             children: [
               Container(
                 width: 80,
-                height: 30,
+                //height: 30,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF6B940),
                   borderRadius: BorderRadius.circular(10),

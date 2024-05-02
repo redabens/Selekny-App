@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Home/datails.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 class Servicepop extends StatelessWidget {
   const Servicepop({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(15, 5, 15, 0), // Ajouter un padding uniforme à gauche et à droite
+      padding: const EdgeInsets.fromLTRB(24, 5, 15, 0), // Ajouter un padding uniforme à gauche et à droite
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Services populaires',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            style: GoogleFonts.poppins(fontWeight: FontWeight.w600 , fontSize: 20),
           ),
           const SizedBox(height: 10), // Espace entre le texte et les images
           Row(
@@ -44,9 +46,9 @@ class Servicepop extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10), // Espace entre l'image et le texte
-                    const Text(
+                    Text(
                       'Installation de robinet',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
@@ -79,9 +81,9 @@ class Servicepop extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10), // Espace entre l'image et le texte
-                    const Text(
+                    Text(
                       'Installation chaudiere',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),

@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       body: const Column(
         children: [
-          Header(),
+          Header(type: 1,),
           SizedBox(height: 15), // Ajout d'un espace entre le header et le reste du contenu
           Expanded(
             child: SingleChildScrollView(
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage(),),
                 );
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
                 );
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ChatListPage(type: 1,),),
                 );
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilePage(),),
                 );
