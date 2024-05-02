@@ -255,6 +255,18 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 child: Text('Error loading comments: ${snapshot.error}'),
               );
             }
+            if (snapshot.data!.isEmpty) {
+              return Center(
+                  child: Text(
+                      'Vous n''avez aucune demande urgente.',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600],
+                      )
+                  )
+              );
+            }
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }

@@ -112,7 +112,16 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
     final String phone = userDoc.data()!['numTel'] as String;
     return phone;
   }
-
+  //get adresse de l'artisan
+  Future<String> getAdresseUser(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      return 'Utilisateur introuvable';
+    }
+    final String adresse = userDoc.data()!['adresse'] as String;
+    return adresse;
+  }
   //get image user
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
@@ -287,6 +296,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
         if(snapshot.connectionState == ConnectionState.waiting){
           return const Text('Loading..');
         }
+
         final documents = snapshot.data!.docs;
 
         // Print details of each document
@@ -298,6 +308,18 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(child: Text('Error loading demandes encours:  ${snapshot.error}'));
+              }
+              if (snapshot.data!.isEmpty) {
+                return Center(
+                    child: Text(
+                        'Vous n''avez aucune demande acceptée.',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                        )
+                    )
+                );
               }
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
@@ -323,6 +345,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
     String heure = '${data['heuredebut']} - ${data['heurefin']}';
     String prix = await getPrixDemande(domaineID, PrestationID);
     String location = data['adresse'];
+    String adresse = await getAdresseUser(artisanID);
     String imageUrl = await getUserPathImage(artisanID);//'https://firebasestorage.googleapis.com/v0/b/selekny-app.appspot.com/o/Prestations%2FLPsJnqkVdXQUf6iBcXn0.png?alt=media&token=44ac0673-f427-43cf-9308-4b1213e73277';
     String nomArtisan = await getNameUser(artisanID);
     int rating = await getRatingUser(artisanID);
@@ -362,6 +385,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
             longitude: longitude,
             idartisan: artisanID,
             timestamp: timestamp,
+            adresseartisan: adresse,
          ),
           const SizedBox(height: 10),
         ],

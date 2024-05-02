@@ -9,7 +9,8 @@ import 'commentaire.dart';
 
     Future<void> sendCommentaire(String recieverId,String comment, int starRating)async{
       final currentUserId=_firebaseAuth.currentUser!.uid;
-      final Timestamp timestamp = Timestamp.now();
+      final DateTime now = DateTime.now();
+      final Timestamp timestamp = Timestamp.fromDate(now);
 
       Commentaire newCommentaire = Commentaire(
           userID: currentUserId,

@@ -254,6 +254,18 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
                 child: Text('Error loading comments: ${snapshot.error}'),
               );
             }
+            if (snapshot.data!.isEmpty) {
+              return Center(
+                  child: Text(
+                      'Vous n''avez aucune Activité.',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600],
+                      )
+                  )
+              );
+            }
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }

@@ -21,7 +21,10 @@ class DemandeArtisanService extends ChangeNotifier{
   String recieverId,
   String demandeid,
       )async{
-    final Timestamp timestamp = Timestamp.now();
+    Timestamp timestamp = Timestamp.now();
+    DateTime dateTime = timestamp.toDate();
+    dateTime= dateTime.subtract(const Duration(hours: 1));
+    timestamp = Timestamp.fromDate(dateTime);
 
     DemandeArtisan newDemandeArtisan = DemandeArtisan(
         datedebut: datedebut,

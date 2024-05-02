@@ -223,8 +223,7 @@ class ActiviteTodayState extends State<ActiviteToday> {
   }
   Widget _buildRendezVousList() {
     return StreamBuilder(
-      stream: _rendezVousService.getRendezVous(
-          FirebaseAuth.instance.currentUser!.uid),
+      stream: _rendezVousService.getRendezVous(FirebaseAuth.instance.currentUser!.uid),
       //_firebaseAuth.currentUser!.uid
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -256,6 +255,18 @@ class ActiviteTodayState extends State<ActiviteToday> {
             if (snapshot.hasError) {
               return Center(
                 child: Text('Error loading comments: ${snapshot.error}'),
+              );
+            }
+            if (snapshot.data!.isEmpty) {
+              return Center(
+                  child: Text(
+                      'Vous n''avez aucune Activité.',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600],
+                      )
+                  )
               );
             }
             if (!snapshot.hasData) {

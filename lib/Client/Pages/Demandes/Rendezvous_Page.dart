@@ -101,7 +101,16 @@ class _RendezVousPageState extends State<RendezVousPage> {
     final String phone = userDoc.data()!['numTel'] as String;
     return phone;
   }
-
+  //get adresse de l'artisan
+  Future<String> getAdresseUser(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      return 'Utilisateur introuvable';
+    }
+    final String adresse = userDoc.data()!['adresse'] as String;
+    return adresse;
+  }
   //get image user
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
@@ -192,6 +201,18 @@ class _RendezVousPageState extends State<RendezVousPage> {
               if (snapshot.hasError) {
                 return Center(child: Text('Error loading demandes encours:  ${snapshot.error}'));
               }
+              if (snapshot.data!.isEmpty) {
+                return Center(
+                    child: Text(
+                        'Vous n''avez aucun Rendez-Vous.',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                        )
+                    )
+                );
+              }
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
@@ -219,6 +240,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
     String imageUrl = await getUserPathImage(artisanID);//'https://firebasestorage.googleapis.com/v0/b/selekny-app.appspot.com/o/Prestations%2FLPsJnqkVdXQUf6iBcXn0.png?alt=media&token=44ac0673-f427-43cf-9308-4b1213e73277';
     String nomArtisan = await getNameUser(artisanID);
     int rating = await getRatingUser(artisanID);
+    String adresseartisan = await getAdresseUser(artisanID);
     String phone = await getPhoneUser(artisanID);
     //----
     String datefin = data['datefin'];
@@ -254,7 +276,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
             latitude: latitude,
             longitude: longitude,
             idartisan: artisanID,
-            timestamp: timestamp,
+            timestamp: timestamp, adresseartisan: adresseartisan,
           ),
           const SizedBox(height: 10),
         ],

@@ -438,7 +438,16 @@ class _ChatListPageState extends State<ChatListPage> {
         }
         final documents = snapshot.data!;
         if (documents.isEmpty) {
-          return const Center(child: Text('No conversations found'));
+          return Center(
+              child: Text(
+                  'Vous n''avez aucune Conversation.',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600],
+                  )
+              )
+          );
         }
         return ListView.builder(
           itemCount: documents.length,

@@ -19,6 +19,7 @@ class DetChatList extends StatelessWidget {
   final String domaine;
   final int rating;
   final int type;
+
   const DetChatList({
     super.key,
     required this.userName,
@@ -80,7 +81,9 @@ class DetChatList extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(    //otherUserId
-                            builder: (context) => ProfilePage2(idartisan: otheruserId, imageurl: profileImage, nomartisan: userName, phone: phone, domaine: domaine, rating: rating),
+                            builder: (context) => ProfilePage2(idartisan: otheruserId, imageurl: profileImage,
+                              nomartisan: userName, phone: phone,
+                              domaine: domaine, rating: rating, adresse: adresse,),
                           ),
                         );
                       }else{

@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/contactpage.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/details.dart';
-import 'package:reda/Artisan/Pages/ProfilClient/signaler.dart'; // Ensure correct path to ProfileBody
+import 'package:reda/Artisan/Pages/ProfilClient/signaler.dart';
+import 'package:reda/Pages/Chat/chat_page.dart'; // Ensure correct path to ProfileBody
 
 class ProfilePage1 extends StatelessWidget {
   final String idclient;
@@ -39,7 +41,9 @@ class ProfilePage1 extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ContactPage(), // Navigation to ContactPage
+                builder: (context) => ChatPage(receiverUserID: idclient, currentUserId:FirebaseAuth.instance.currentUser!.uid,
+                    type: 2, userName: nomClient,
+                    profileImage: image, otheruserId: idclient, phone: phone, adresse: adress, domaine: 'domaine', rating: 4), // Navigation to ContactPage
               ),
             );
           },

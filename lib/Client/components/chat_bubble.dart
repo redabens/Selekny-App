@@ -8,63 +8,74 @@ class ChatBubble extends StatelessWidget {
   final String message;
   final Color backgroundColor;
   final Color textColor;
+  final String? otherUserImage; // Optional, could be null for the current user
   const ChatBubble({
     super.key,
     required this.message,
     required this.backgroundColor,
     required this.textColor,
+    this.otherUserImage,
   });
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    BorderRadius borderRadius = BorderRadius.circular(20);
+    final double maxWidth = screenWidth * 0.75;
 
-    if (textColor == Colors.black) {
-      borderRadius = const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-        bottomRight: Radius.circular(20),
-        bottomLeft: Radius.circular(0),
-      );
-    } else if (textColor == Colors.white) {
+    BorderRadius borderRadius = BorderRadius.circular(20);
+    bool isCurrentUser = textColor == Colors.white;
+
+    if (isCurrentUser) {
       borderRadius = const BorderRadius.only(
         topLeft: Radius.circular(20),
         topRight: Radius.circular(20),
         bottomRight: Radius.circular(0),
         bottomLeft: Radius.circular(20),
       );
+    } else {
+      borderRadius = const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+        bottomRight: Radius.circular(20),
+        bottomLeft: Radius.circular(0),
+      );
     }
 
+    Widget messageBubble = ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: maxWidth, // Max width constraint
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: borderRadius,
+        ),
+        child: Text(
+          message,
+          style: GoogleFonts.poppins(
+            fontSize: 15,
+            color: textColor,
+          ),
+        ),
+      ),
+    );
+
     return Align(
-      alignment: textColor == Colors.black ? Alignment.centerLeft : Alignment.centerRight,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minWidth: 0,
-          maxWidth: screenWidth * 0.8, // Maximum width is 80% of the screen width
-        ),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: borderRadius,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                spreadRadius: 2,
-                blurRadius: 5,
-              ),
-            ],
-          ),
-          child: Text(
-            message,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              color: textColor,
+      alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: isCurrentUser ? messageBubble : Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (otherUserImage != null) ...[
+            CircleAvatar(
+              backgroundImage: NetworkImage(otherUserImage!),
+              radius: 10,
             ),
-          ),
-        ),
+            const SizedBox(width: 4),
+          ],
+          messageBubble,
+        ],
       ),
     );
   }

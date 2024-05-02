@@ -33,6 +33,7 @@ class DetDemandeAcceptee extends StatefulWidget {
   final String heuredebut;
   final String heurefin;
   final String idartisan;
+  final String adresseartisan;
   final Timestamp timestamp;
 
   const DetDemandeAcceptee({
@@ -59,7 +60,8 @@ class DetDemandeAcceptee extends StatefulWidget {
     required this.heuredebut,
     required this.heurefin,
     required this.idartisan,
-    required this.timestamp
+    required this.timestamp,
+    required this.adresseartisan,
   });
   @override
   State<DetDemandeAcceptee> createState() => _DetDemandeAccepteeState();
@@ -202,7 +204,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,), // Navigation to ContactPage
+                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresseartisan,), // Navigation to ContactPage
                                 ),
                               );
                               await Future.delayed(const Duration(milliseconds: 800));// Example navigation
@@ -325,7 +327,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                             width: 1,
                           ),
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(22, 6)), // Updated dimensions to match the ElevatedButton
+                        minimumSize: MaterialStateProperty.all(const Size(22, 6)), // Updated dimensions to match the ElevatedButton
                         padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12, vertical: 7)), // Optional, adjust as necessary
                         shape: MaterialStateProperty.all(
 

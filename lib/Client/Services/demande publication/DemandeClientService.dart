@@ -19,7 +19,10 @@ class DemandeClientService extends ChangeNotifier{
       bool urgence,
       double latitude,
       double longitude)async{
-    final Timestamp timestamp = Timestamp.now();
+    Timestamp timestamp = Timestamp.now();
+    DateTime dateTime = timestamp.toDate();
+    dateTime= dateTime.subtract(const Duration(hours: 1));
+    timestamp = Timestamp.fromDate(dateTime);
 
     DemandeClient newDemandeClient = DemandeClient(
         datedebut: datedebut,
@@ -44,43 +47,7 @@ class DemandeClientService extends ChangeNotifier{
     return Future.value(null);
 
   }
-  Future<void> sendRendezVous(String datedebut,
-      String datefin,
-      String heuredebut,
-      String heurefin,
-      String adresse,
-      String iddomaine,
-      String idprestation,
-      String idclient,
-      String idartisan,
-      bool urgence,
-      double latitude,
-      double longitude,)async{
-    final Timestamp timestamp = Timestamp.now();
 
-    DemandeClient newDemandeClient = DemandeClient(
-      datedebut: datedebut,
-      datefin: datefin,
-      heuredebut: heuredebut,
-      heurefin: heurefin,
-      adresse: adresse,
-      iddomaine : iddomaine,
-      idprestation: idprestation,
-      idclient: idclient,
-      idartisan: idartisan,
-      urgence: urgence,
-      latitude: latitude,
-      longitude: longitude,
-      timestamp: timestamp,);
-    await _firestore
-        .collection('users')
-        .doc(idclient)
-        .collection('RendezVous')
-        .add(newDemandeClient.toMap());
-
-    return Future.value(null);
-
-  }
   Future<void> deleteDemandeClient(Timestamp timestamp,String recieverId)async {
     final firestore = FirebaseFirestore.instance;
 

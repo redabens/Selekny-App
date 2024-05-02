@@ -60,14 +60,14 @@ class _ChatPageState extends State<ChatPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children:
             [
-              Container( // Enveloppez l'icône dans un Container pour créer un bouton carré
-                height: 40, // Définissez la hauteur et la largeur pour obtenir un bouton carré
+              Container(
+                height: 40,
                 width: 40,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
+                child: IconButton(
                   icon: const Icon(
                     Icons.arrow_back_ios_new_outlined,
                     color: Color(0xFF33363F),
@@ -75,13 +75,12 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-
                   },
                 ),
               ),
-              const SizedBox(width:5),
+              const SizedBox(width:2),
               Padding(
-                padding: const EdgeInsets.only(right: 30.0),
+                padding: const EdgeInsets.only(right: 15.0),
                 child: GestureDetector(
                   onTap: () {
                     // Handle photo tap here (e.g., navigate to a new screen, show a dialog)
@@ -91,7 +90,7 @@ class _ChatPageState extends State<ChatPage> {
                         MaterialPageRoute(    //otherUserId
                           builder: (context) => ProfilePage2(idartisan: widget.otheruserId, imageurl: widget.profileImage,
                               nomartisan: widget.userName, phone: widget.phone,
-                              domaine: widget.domaine, rating: widget.rating),
+                              domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse,),
                         ),
                       );
                     }else{
@@ -105,8 +104,8 @@ class _ChatPageState extends State<ChatPage> {
                     } // Example action (replace with your desired functionality)
                   },
                   child: Container(
-                    width: 45, // Adjust as needed
-                    height: 45, // Adjust as needed
+                    width: 36,
+                    height: 36,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
@@ -147,7 +146,7 @@ class _ChatPageState extends State<ChatPage> {
                     text: widget.userName,
                     style: GoogleFonts.poppins(
                       color: const Color(0xFF333333),
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -159,13 +158,7 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
       backgroundColor: Colors.white,
-      bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(9.0),
-        child: Divider(
-          color: Colors.black26,
-          height: 1, // epaisseur du trait
-        ),
-      ),
+
     );
   }
 
@@ -182,7 +175,8 @@ class _ChatPageState extends State<ChatPage> {
               return snapshot.data!; // Use the built AppBar widget
             } else if (snapshot.hasError) {
               print(snapshot.error);
-              return AppBar(title: const Text('Error Loading AppBar')); // Handle errors
+              return AppBar(title: const Text('Loading the user ...',
+              )); // style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
             }
             return const LinearProgressIndicator(); // Show loading indicator
           },
@@ -225,87 +219,85 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildMessageItem(DocumentSnapshot doc){
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-    // align the messages to the right sender is the current user , otherwise the left
-    var alignment = (data['senderId'] == widget.currentUserId)
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
-    var bubbleColor = (data['senderId'] == widget.currentUserId)
-        ? const Color(0xFF3E69FE)
-        : const Color(0xFFE6E6E6);
-
-    var textColor = (data['senderId'] == widget.currentUserId)
-        ? Colors.white
-        : Colors.black;
+    var isCurrentUser = data['senderId'] == widget.currentUserId;
+    var alignment = isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
+    var bubbleColor = isCurrentUser ? myBlueColor : myGrayColor;
+    var textColor = isCurrentUser ? Colors.white : Colors.black;
+    var otherUserImage = isCurrentUser ? null : widget.profileImage;
 
     return Container(
       alignment: alignment,
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Column(
-          crossAxisAlignment: (data['senderId'] == widget.currentUserId)
-              ?CrossAxisAlignment.end
-              :CrossAxisAlignment.start,
-          mainAxisAlignment: (data['senderId'] == widget.currentUserId)
-              ? MainAxisAlignment.end
-              : MainAxisAlignment.start,
-          children: [
-            //Text(data['senderEmail']),
-            ChatBubble(
-              message: data['message'],
-              backgroundColor: bubbleColor,
-              textColor: textColor,
-            ),
-
-          ],
+        child: ChatBubble(
+          message: data['message'],
+          backgroundColor: bubbleColor,
+          textColor: textColor,
+          otherUserImage: otherUserImage,
         ),
       ),
     );
-    return Text(data["message"]);
   }
+
 
 
 
   // build message input
-  Widget _buildMessageInput(){
+  Widget _buildMessageInput() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
       child: Row(
-          children: [
-            Expanded(
-                child: TextFormField(
-                    controller: _messageController,
-                    style: const TextStyle(color: Colors.black),
-                    decoration: const InputDecoration(
-                      hintText: "Ecrire un message...",
-                      hintStyle: TextStyle(color: Colors.grey, fontSize: 16,fontFamily: 'poppins' ),
-                      border: InputBorder.none,
-                    )
-
-                )),
-            const SizedBox(
-              width: 12,
-            ),
-            GestureDetector(
-              onTap: () {
-                sendMessage();
-              },
-              child: Container(
-                height: 42,
-                width: 42,
-                decoration: BoxDecoration(
-                  color: myBlueColor,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Center(
-                    child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    )
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              decoration: BoxDecoration(
+                color: myGrayColor,
+                borderRadius: BorderRadius.circular(30.0), // Rounded corners
+              ),
+              child: TextFormField(
+                controller: _messageController,
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 16),
+                decoration: InputDecoration(
+                  hintText: "  Écrire un message ...",
+                  hintStyle: GoogleFonts.poppins(color: Colors.black.withOpacity(0.5), fontSize: 14,fontWeight: FontWeight.w500),
+                  border: InputBorder.none, // No border
                 ),
               ),
             ),
-          ] //expanded
+          ),
+          const SizedBox(width: 10),
+          GestureDetector(
+            onTap: () {
+              sendMessage();
+            },
+            child: Container(
+              height: 44, // Increased size for better touch area
+              width: 44,
+              decoration: BoxDecoration(
+                color: myBlueColor.withOpacity(0.7), // Solid blue color for the send button
+                borderRadius: BorderRadius.circular(24), // Circle shape
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blueAccent.withOpacity(1),
+                    spreadRadius: 1,
+                    blurRadius: 8,
+                    offset: const Offset(0, 4), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.send,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
 }
