@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
+import '../../../Pages/retourAuth.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
 class GestionClientsPage extends StatefulWidget {
   const GestionClientsPage({
@@ -16,6 +18,7 @@ class GestionClientsPage extends StatefulWidget {
 }
 
 class _GestionClientsPageState extends State<GestionClientsPage> {
+  int _currentIndex = 1;
  void _onItemTap(bool isEnCours) {
    setState(() {
      isEnCoursSelected = isEnCours;
@@ -35,7 +38,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
 final TextEditingController _searchController = TextEditingController();
   List allResults = [];
   getClientStream() async{
-    var data = await FirebaseFirestore.instance.collection('User').where('role', isEqualTo: "client").orderBy('name').get();
+    var data = await FirebaseFirestore.instance.collection('users').where('role', isEqualTo: "client").orderBy('nom').get();
 
     setState(() {
       allResults = data.docs;
@@ -47,9 +50,9 @@ final TextEditingController _searchController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> getUserPathImage(String userID) async {
-    DocumentSnapshot userDoc = await _firestore.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
     if (userDoc.exists) {
-      String pathImage = userDoc['PathImage'];
+      String pathImage = userDoc['pathImage'];
       final reference = FirebaseStorage.instance.ref().child(pathImage);
       final url = await reference.getDownloadURL();
       return url;
@@ -57,16 +60,6 @@ final TextEditingController _searchController = TextEditingController();
       return  '';
     }
   }
-  Future<String> getUserName(String userID) async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
-    if (userDoc.exists) {
-      String userName = userDoc['name'];
-      return userName;
-    } else {
-      return 'default_name';
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +128,105 @@ final TextEditingController _searchController = TextEditingController();
           const SizedBox(height: 10),
         ],
       ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFF8F8F8),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        iconSize: 30,
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AllSignalementsPage(),),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/signalement.png',
+                  color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GestionArtisansPage(),),
+                );
+
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/gestion.png',
+                  color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RetourAuth(),),
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutartisan.png',
+                  color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutdomaine.png',
+                  color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+        ],
+      ),
     );
   }
 
@@ -161,7 +253,7 @@ final TextEditingController _searchController = TextEditingController();
                 return Text('Error loading users: ${snapshot.error}');
               }
               if (!snapshot.hasData) {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
               return ListView(children: snapshot.data!);
             }
@@ -177,7 +269,7 @@ final TextEditingController _searchController = TextEditingController();
     String userName = "??????";
     String job = "?????";
     try {
-      userName = await getUserName(userID);
+      userName = data['nom'];
       job = 'Client';
       profileImage = await getUserPathImage(userID);
       print("l'url :$profileImage");
@@ -190,7 +282,7 @@ final TextEditingController _searchController = TextEditingController();
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           DetGestionUsers(userName: userName, job: job,profileImage: profileImage),
-          const SizedBox(height: 84),
+          const SizedBox(height: 14),
         ],
       ),
     );

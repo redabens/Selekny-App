@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/DetailsSignalement_page.dart';
+import '';
 
 class DetSignalement extends StatelessWidget {
   final String signalementID;

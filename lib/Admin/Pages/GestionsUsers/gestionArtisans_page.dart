@@ -6,7 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
+import '../../../Pages/retourAuth.dart';
 import 'gestionClients_page.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
+
 
 
 
@@ -20,6 +23,7 @@ class GestionArtisansPage extends StatefulWidget {
 
 class _GestionArtisansPageState extends State<GestionArtisansPage> {
   bool isEnCoursSelected = true;  // variable de suivi de l'état
+  int _currentIndex = 1;
 
   void _onItemTap(bool isEnCours) {
     setState(() {
@@ -32,9 +36,9 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
 
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
     if (userDoc.exists) {
-      String pathImage = userDoc['PathImage'];
+      String pathImage = userDoc['pathImage'];
       // Retourner le PathImage
       final reference = FirebaseStorage.instance.ref().child(pathImage);
       final url = await reference.getDownloadURL();
@@ -44,9 +48,9 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
     }
   }
   Future<String> getUserName(String userID) async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
     if (userDoc.exists) {
-      String userName = userDoc['name'];
+      String userName = userDoc['nom'];
       return userName;
     } else {
       return 'default_name';
@@ -54,9 +58,9 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
   }
 
   Future<String> getUserJob(String userID) async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
     if (userDoc.exists) {
-      String job = userDoc['job'];
+      String job = userDoc['domaine'];
       return job;
     } else {
       return 'default';
@@ -132,6 +136,105 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
           const SizedBox(height: 10),
         ],
       ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFF8F8F8),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        iconSize: 30,
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AllSignalementsPage(),),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/signalement.png',
+                  color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GestionArtisansPage(),),
+                );
+
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/gestion.png',
+                  color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RetourAuth(),),
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutartisan.png',
+                  color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutdomaine.png',
+                  color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+        ],
+      ),
     );
   }
 
@@ -158,7 +261,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 return Text('Error loading users: ${snapshot.error}');
               }
               if (!snapshot.hasData) {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
               return ListView(children: snapshot.data!);
             }
@@ -191,7 +294,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           DetGestionUsers(userName: userName, job: job,profileImage: profileImage),
-
+          const SizedBox(height: 14),
         ],
       ),
     );

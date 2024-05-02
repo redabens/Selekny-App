@@ -37,6 +37,7 @@ class DetailsSignalement extends StatefulWidget {
     required this.signalantUrl
   }) : super(key: key);
 
+
   @override
   _DetailsSignalementState createState() => _DetailsSignalementState();
 }
@@ -44,10 +45,6 @@ class DetailsSignalement extends StatefulWidget {
 class _DetailsSignalementState extends State<DetailsSignalement> {
   int _currentIndex = 0;
   SignalementsService _SignalementService = SignalementsService();
-  final List<Widget> _pages = [
-    AllSignalementsPage(),
-    // les eutre pageeeees
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -268,100 +265,7 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFFF8F8F8),
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
-        iconSize: 30,
-        items: [
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _currentIndex = 0;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
-                );
-              },
-              child: Container(
-                height: 40,
-                child: Image.asset(
-                  'icons/signalement.png',
-                  color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
-                ),
-              ),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _currentIndex = 1;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
-                );
-              },
-              child: Container(
-                height: 40,
-                child: Image.asset(
-                  'icons/gestion.png',
-                  color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
-                ),
-              ),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _currentIndex = 2;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
-                );
-              },
-              child: Container(
-                height: 40,
-                child: Image.asset(
-                  'icons/ajoutartisan.png',
-                  color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
-                ),
-              ),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _currentIndex = 3;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
-                );
-              },
-              child: Container(
-                height: 40,
-                child: Image.asset(
-                  'icons/ajoutdomaine.png',
-                  color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
-                ),
-              ),
-            ),
-            label: '',
-          ),
-        ],
-      ),
+
     );
   }
 }

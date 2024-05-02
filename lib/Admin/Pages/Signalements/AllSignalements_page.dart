@@ -3,10 +3,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../Pages/retourAuth.dart';
 import 'DetailsSignalement_page.dart';
 import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Admin/components/signalements_component.dart';
 import 'package:intl/intl.dart';
+import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
 
 
 class AllSignalementsPage extends StatefulWidget {
@@ -18,13 +20,6 @@ class AllSignalementsPage extends StatefulWidget {
 class AllSignalementsPageState extends State<AllSignalementsPage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    //les 4 pages de la navbar
-    AllSignalementsPage(),
-    //Gestion(),
-    // AjoutArtisan(),
-    // AjoutDomaine(),
-  ];
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -43,12 +38,13 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
   Future<String> getUserPathImage(String userID) async {
     DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
     if (userDoc.exists) {
-      String pathImage = userDoc['PathImage'];
+      String pathImage = userDoc['pathImage'];
       final reference = FirebaseStorage.instance.ref().child(pathImage);
       final url = await reference.getDownloadURL();
       print('loooooooooooooooooook $url');
       return url;
     } else {
+      print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXSSS');
       return "";
     }
   }
@@ -140,7 +136,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => AllSignalementsPage(),),
                 );
               },
               child: Container(
@@ -161,7 +157,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => GestionArtisansPage(),),
                 );
 
 
@@ -184,7 +180,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const RetourAuth(),),
                 );
 
               },
@@ -206,7 +202,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                  MaterialPageRoute(builder: (context) => const RetourAuth(),)
                 );
 
               },
@@ -248,10 +244,21 @@ Widget _buildSignalList() {
           future: Future.wait(snapshot.data!.docs.map((document) => _buildSignalItem(document))),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return Center(child: Text('Error loading comments ${snapshot.error}'));
+              return Center(child: Text('Error loading signalements ${snapshot.error}'));
             }
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
+            } if (snapshot.data!.isEmpty) {
+              return Center(
+                child: Text(
+                  'Vous n\'avez aucun signalement',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+              );
             }
             return ListView(children: snapshot.data!);
           });

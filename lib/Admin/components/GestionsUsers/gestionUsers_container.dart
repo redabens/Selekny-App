@@ -8,14 +8,19 @@ Widget buildUserProfileImage(String? profileImage) {
     return CachedNetworkImage(
       imageUrl: profileImage,
       placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Image.asset('assets/anonyme.png'),
+      errorWidget: (context, url, error) =>  Icon(
+      Icons.account_circle,
+      size: 50,
+      color: Colors.grey[400],
+    ),
     );
   } else {
     // if url nexiste pas ou null => assets
-    return Image.asset(
-      'assets/anonyme.png',
-      fit: BoxFit.cover,
-    );
+    return  Icon(
+  Icons.account_circle,
+  size: 50,
+  color: Colors.grey[400],
+  );
   }
 }
 
@@ -37,13 +42,13 @@ class DetGestionUsers extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 6,
-        right: 6,
+        left:   16,
+        right: 16,
       ),
       child: Stack(
         children: [
           Container(
-            height: 74,
+            height: 68,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
