@@ -72,10 +72,6 @@ final TextEditingController _searchController = TextEditingController();
           AppBar(
             elevation: 0.0, // Remove default shadow
             backgroundColor: Colors.white,
-            leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.arrow_back_ios_new),
-            ),
             title: Text(
               'Gestion des utilisateurs',
               style:GoogleFonts.poppins (

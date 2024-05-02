@@ -10,9 +10,6 @@ import '../../../Pages/retourAuth.dart';
 import 'gestionClients_page.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
-
-
-
 class GestionArtisansPage extends StatefulWidget {
   const GestionArtisansPage({
     super.key,
@@ -80,10 +77,6 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
           AppBar(
             elevation: 0.0, // Remove default shadow
             backgroundColor: Colors.white,
-            leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.arrow_back_ios_new),
-            ),
             title: Text(
               'Gestion des utilisateurs',
               style: GoogleFonts.poppins(

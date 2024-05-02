@@ -22,7 +22,7 @@ class SignalementsService extends ChangeNotifier {
         'timestamp': timestamp,
         'raison': raison,
       });
-      print('fffffffffffffffffff signalement effectue');
+      print('ffffffffff signalement effectue');
     } else {
       print('User is not authenticated');
     }
@@ -32,6 +32,7 @@ class SignalementsService extends ChangeNotifier {
   Stream<QuerySnapshot> getAllSignalements() {
     return _firestore
         .collection('Signalements')
+        .orderBy('timestamp')
         .snapshots();
   }
 
@@ -44,7 +45,7 @@ class SignalementsService extends ChangeNotifier {
         await signalementRef.delete();
         print('!!!!!!!!!!!!! Signalement avec ID $signalementID supprimé avec succès.');
       } else {
-        print('!!!!!!!!!!!!!! Le signalement avec ID $signalementID n\'existe pas.');
+        print('!!!!!!!!! Le signalement avec ID $signalementID n\'existe pas.');
       }
     } catch (e) {
       print('!!!!!!!!!! Erreur lors de la suppression du signalement $signalementID: $e');

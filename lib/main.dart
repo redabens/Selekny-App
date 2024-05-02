@@ -85,6 +85,7 @@ class MyAppState extends State<MyApp> {
     final currentUserId =_firebaseAuth.currentUser!.uid;*/
     return MaterialApp(
       //title: 'Flutter Demo',
+
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -92,10 +93,10 @@ class MyAppState extends State<MyApp> {
       ),
       home:
       //DetailsSignalement(signaleurName: 'signaleurName', signalantName: 'signalantName', signaleurJob: 'signaleurJob', signalantJob: 'signalantJob', date: 'date', heure: 'heure', raison: 'raison')
-      AllSignalementsPage(),
+      //AllSignalementsPage(),
       //const ChatPage(receiverUserID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2', currentUserId: 'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3', type: 1)
      // const AjouterCommentairePage(nomPrestataire: 'mohamed benabed', artisanID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2'),
-     // !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const ActiviteAvenir(),
+      !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const ActiviteAvenir(),
       //const ProfilePage(),
       //const CreationArtisanPage(),
       //const ChatListPage(type: 1,),

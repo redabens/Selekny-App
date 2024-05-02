@@ -64,7 +64,6 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
   Future<String> getUserJob(String userId) async {
     try {
-      // Access the Firestore collection 'users' and get the document with userId
       DocumentSnapshot userDoc =
       await _firestore.collection('users').doc(userId).get();
 
@@ -83,10 +82,9 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
           return 'Client';
         }
       } else {
-        return 'client';
+        return 'Client';
       }
     } catch (e) {
-
       print('Error fetching user job: $e');
       return '';
     }
