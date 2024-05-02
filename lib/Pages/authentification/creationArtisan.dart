@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Pages/auth.dart';
+import 'package:reda/Pages/retourAuth.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
 import 'package:reda/Services/ConvertAdr.dart';
@@ -33,7 +36,7 @@ class CreationArtisanScreen extends StatefulWidget {
 
 class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   final _formKey = GlobalKey<FormState>(); // Define _formKey here
-
+  int _currentIndex = 2;
   bool _showPassword = false;
   // String _email = '';
   bool _loading = false;
@@ -75,7 +78,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
             latitude: position['latitude'],
             longitude: position['longitude'],
             statut: true,
-            domaine: job,
+            domaine: job, token: '', nbRating: 1,
           );
           // ajouter l utilisateur a la base de donnees firestore
           // CollectionReference users =
@@ -128,12 +131,12 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   Widget build(BuildContext context) {
     var isDark = Theme.of(context).brightness == Brightness.dark;
     var textColor = isDark ? Colors.white : Colors.black.withOpacity(0.4);
-
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
-        child: Stack(
-          children: [
+    return Scaffold(
+      body:SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
+          child: Stack(
+            children: [
             Positioned(
               top: 0,
               left: 0,
@@ -386,6 +389,105 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
             ),
           ],
         ),
+      ),
+    ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFF8F8F8),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        iconSize: 30,
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AllSignalementsPage(),),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/signalement.png',
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
+                );
+
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/gestion.png',
+                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutartisan.png',
+                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
+                );
+
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutdomaine.png',
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
+import 'package:reda/Client/ProfilArtisan/profil.dart';
 import 'package:reda/Client/components/chat_bubble.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Services/Chat/chat_service.dart';
@@ -10,6 +12,13 @@ import 'package:google_fonts/google_fonts.dart';
 const Color myBlueColor = Color(0xFF3E69FE);
 
 class ChatPage extends StatefulWidget{
+  final String userName;
+  final String profileImage;
+  final String otheruserId;
+  final String phone;
+  final String adresse;
+  final String domaine;
+  final int rating;
   final String receiverUserID;
   final String currentUserId;
   final int type;
@@ -17,7 +26,10 @@ class ChatPage extends StatefulWidget{
     super.key,
     required this.receiverUserID,
     required this.currentUserId,
-    required this.type,
+    required this.type, required this.userName,
+    required this.profileImage, required this.otheruserId,
+    required this.phone, required this.adresse,
+    required this.domaine, required this.rating,
   });
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -36,6 +48,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+<<<<<<< HEAD
   Future<String> getUserNameById(String userId) async {
 
     final userCollection = FirebaseFirestore.instance.collection('users');
@@ -65,26 +78,14 @@ class _ChatPageState extends State<ChatPage> {
   }
   late String _imageUrl;
 
+=======
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
   @override
   void initState() {
     super.initState();
-    _loadImageUrl(widget.receiverUserID);
-  }
-
-  Future<void> _loadImageUrl(String userId) async {
-    try {
-      final userCollection = FirebaseFirestore.instance.collection('users');
-      final userDocument = userCollection.doc(userId);
-      final imgPath = await userDocument.get().then((snapshot) => snapshot.data()?['pathImage']);
-      String url = await getImageUrl(imgPath);
-      setState(() {
-        _imageUrl = url;
-      });
-    } catch (error) {
-      print("Error: $error");
-    }
   }
   Future<Widget> _buildAppBar(String otherUserId) async {
+<<<<<<< HEAD
 
     String otherUserName = '';
     try {
@@ -95,11 +96,14 @@ class _ChatPageState extends State<ChatPage> {
       print("Error fetching other user name: $error");
     }
 
+=======
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
     return AppBar(
       title: Row(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
+<<<<<<< HEAD
       children:
           [
       Container( // Enveloppez l'icône dans un Container pour créer un bouton carré
@@ -135,29 +139,110 @@ class _ChatPageState extends State<ChatPage> {
                 border: Border.all(
                   color: Colors.blueGrey,
                   width: 2.0, // Épaisseur de la bordure
+=======
+            children:
+            [
+              Container( // Enveloppez l'icône dans un Container pour créer un bouton carré
+                height: 40, // Définissez la hauteur et la largeur pour obtenir un bouton carré
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_outlined,
+                    color: Color(0xFF33363F),
+                    size: 22,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+
+                  },
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(40.0),
-                child: CachedNetworkImage(
-                  imageUrl: _imageUrl,
-                  placeholder: (context, url) => const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+              const SizedBox(width:5),
+              Padding(
+                padding: const EdgeInsets.only(right: 30.0),
+                child: GestureDetector(
+                  onTap: () {
+                    // Handle photo tap here (e.g., navigate to a new screen, show a dialog)
+                    if(widget.type == 1){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(    //otherUserId
+                          builder: (context) => ProfilePage2(idartisan: widget.otheruserId, imageurl: widget.profileImage,
+                              nomartisan: widget.userName, phone: widget.phone,
+                              domaine: widget.domaine, rating: widget.rating),
+                        ),
+                      );
+                    }else{
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(    //otherUserId
+                          builder: (context) => ProfilePage1(image: widget.profileImage, nomClient: widget.userName,
+                            phone: widget.phone, adress: widget.adresse, idclient: widget.otheruserId,),
+                        ),
+                      );
+                    } // Example action (replace with your desired functionality)
+                  },
+                  child: Container(
+                    width: 45, // Adjust as needed
+                    height: 45, // Adjust as needed
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: myBlueColor,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50.0),
+                      child: widget.profileImage != ''
+                          ? ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            50), // Ajout du BorderRadius
+                        child: Image.network(
+                          widget.profileImage,
+                          width: 45,
+                          height: 45,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                          : Icon(
+                        Icons.account_circle,
+                        size: 45,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ),
                 ),
+
               ),
+<<<<<<< HEAD
             ),
 
             ),
   ],),
+=======
+            ],),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 
           Expanded(
             child: RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
+<<<<<<< HEAD
                     text: otherUserName,
                     style: GoogleFonts.poppins(
                       color: Color(0xFF333333),
+=======
+                    text: widget.userName,
+                    style: GoogleFonts.poppins(
+                      color: const Color(0xFF333333),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
@@ -166,7 +251,11 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
           ),
+<<<<<<< HEAD
           SizedBox(width: 8),
+=======
+          const SizedBox(width: 8),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
         ],
       ),
       backgroundColor: Colors.white,
@@ -182,8 +271,6 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    //String imageUrl = 'https://firebasestorage.googleapis.com/v0/b/selekny-app.appspot.com/o/Prestations%2F1vyrPcSqF0LTRZpaYUVy.png?alt=media&token=078326f3-518a-44a8-9609-9d538343b362';
-    //geturl();
 
     return Scaffold(
       appBar: PreferredSize(

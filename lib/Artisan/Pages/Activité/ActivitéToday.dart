@@ -25,6 +25,7 @@ class ActiviteTodayState extends State<ActiviteToday> {
   int _currentIndex = 0;
   final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
   DateTime now = DateTime.now();
+  int counter = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -53,14 +54,45 @@ class ActiviteTodayState extends State<ActiviteToday> {
         return downloadUrl;
       } catch (error) {
         print("Error fetching user image URL: $error");
-        return 'assets/images/placeholder.png'; // Default image on error
+        return ''; // Default image on error
       }
     } else {
       // Retourner une valeur par défaut si l'utilisateur n'existe pas
-      return 'assets/images/placeholder.png';
+      return '';
     }
   }
-
+  Future<String> getNameUser(String userID) async {
+    final userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    if (!userDoc.exists) {
+      return 'Utilisateur introuvable';
+    }
+    final String userName = userDoc.data()!['nom'] as String;
+    return userName;
+  }
+//get phone number de l'artisan
+  Future<String> getPhoneUser(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      return 'Utilisateur introuvable';
+    }
+    final String phone = userDoc.data()!['numTel'] as String;
+    return phone;
+  }
+  Future<String> getSyncDemande(Timestamp timestamp) async {
+    final DateTime timeDemande = timestamp.toDate();
+    final DateTime now = DateTime.now();
+    Duration difference = now.difference(timeDemande);
+    if (difference.inDays > 0) {
+      return 'Envoyé il y''a ${difference.inDays} jr';
+    } else if (difference.inHours > 0) {
+      return 'Envoyé il y''a ${difference.inHours} h';
+    } else if (difference.inMinutes > 0) {
+      return 'Envoyé il y''a ${difference.inMinutes} min';
+    } else {
+      return 'Envoyé il y''a ${difference.inSeconds} second';
+    }
+  }
   Future<String> getNomPrestation(String idPrestation, String idDomaine) async {
     try {
       final domainsCollection = FirebaseFirestore.instance.collection('Domaine');
@@ -212,6 +244,7 @@ class ActiviteTodayState extends State<ActiviteToday> {
         // Print details of each non-urgent document (optional)
         for (var doc in nonUrgentDocuments) {
           print("Document Data (non-urgent): ${doc.data()}");
+          counter++;
         }
 
         return FutureBuilder<List<Widget>>(
@@ -242,6 +275,10 @@ class ActiviteTodayState extends State<ActiviteToday> {
     String nomprestation = await getNomPrestation(
         data['idprestation'], data['iddomaine']);
     print(nomprestation);
+    String nomClient = await getNameUser(data['idclient']);
+    String phone = await getPhoneUser(data['idclient']);
+    final String sync = await getSyncDemande(data['timestamp']);
+    String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -259,7 +296,10 @@ class ActiviteTodayState extends State<ActiviteToday> {
             nomprestation: nomprestation,
             imageUrl: image, datefin: data['datefin'],
             heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type1: 2, type2: 1, ),
+            longitude: data['longitude'], type1: 2, type2: 1,
+            nomclient: nomClient, phone: phone,
+            demandeid: document.id, sync: sync,
+            nomArtisan: nomArtisan, idartisan: FirebaseAuth.instance.currentUser!.uid, ),
           const SizedBox(height: 10,),
         ],
       ),
@@ -304,7 +344,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-
 class Buttons extends StatelessWidget {
   const Buttons({super.key});
 
@@ -312,13 +351,12 @@ class Buttons extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width ,
       height: 60,
       color: Colors.white,
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,// Align children to the start
         children: [
-          SizedBox(width: 10),
           TodayButton(),
           AvenirButton(),
         ],
@@ -334,11 +372,10 @@ class TodayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 170,
+      width: MediaQuery.of(context).size.width * 0.5,
       height: 40,
       child: GestureDetector(
-
-
+        onTap: (){},
         child: Container(
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.zero, // Pas de coin arrondi
@@ -350,30 +387,35 @@ class TodayButton extends StatelessWidget {
             ),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children:
             [
-              const SizedBox(width: 30,),
 
-            Container(
-            height: 20,
-            width:20,
-            child: const ImageIcon(
-              AssetImage('assets/auj.png'),
-                 color: Color(0xFFF5C443),
-            ),),
+              Row(
+                children:
+                [
+                  Container(
+                    height: 20,
+                    width:20,
+                    child: const ImageIcon(
+                      AssetImage('assets/auj.png'),
+                      color: Color(0xFFF5C443),
+                    ),),
 
 
-              Text(
-            'Aujourd\'hui',
-              style: GoogleFonts.poppins(
-                color: const Color(0xFFF5A529),
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
+                  Text(
+                    'Aujourd\'hui',
+                    style: GoogleFonts.poppins(
+                      color: const Color(0xFFF5A529),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
 
+                    ),
+                  ),
+
+                ],
               ),
-            ),
-
-          ],
+            ],
           ),
         ),
       ),
@@ -387,7 +429,7 @@ class AvenirButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 170,
+      width: MediaQuery.of(context).size.width * 0.5,
       height: 40,
       child: GestureDetector(
         onTap: () => Navigator.push(
@@ -406,26 +448,32 @@ class AvenirButton extends StatelessWidget {
             ),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children:
             [
-              const SizedBox(width: 40),
-              Container(
-                height: 15,
-                width:15,
-                child: const ImageIcon(
-                  AssetImage('assets/heure.png'),
-                  color: Color(0xFFC4C4C4),
-                ),),
+              Row(
 
-              const SizedBox(width: 5),
-              Text(
-                'À venir',
-                style: GoogleFonts.poppins(
-                  color: const Color(0xFFC4C4C4),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
+                children:
+                [
+                  Container(
+                    height: 15,
+                    width:15,
+                    child: const ImageIcon(
+                      AssetImage('assets/heure.png'),
+                      color: Color(0xFFC4C4C4),
+                    ),),
 
-                ),
+                  const SizedBox(width: 5),
+                  Text(
+                    'À venir',
+                    style: GoogleFonts.poppins(
+                      color: const Color(0xFFC4C4C4),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -435,7 +483,6 @@ class AvenirButton extends StatelessWidget {
   }
 
 }
-
 /*
 class Salut extends StatelessWidget {
   @override

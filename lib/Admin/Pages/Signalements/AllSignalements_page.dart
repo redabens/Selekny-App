@@ -3,8 +3,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+<<<<<<< HEAD
 import '../../../Pages/retourAuth.dart';
 import 'DetailsSignalement_page.dart';
+=======
+import 'package:reda/Pages/authentification/creationArtisan.dart';
+import 'package:reda/Pages/retourAuth.dart';
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Admin/components/signalements_component.dart';
 import 'package:intl/intl.dart';
@@ -64,6 +69,10 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
   Future<String> getUserJob(String userId) async {
     try {
+<<<<<<< HEAD
+=======
+      // Access the Firestore collection 'users' and get the document with userId
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
       DocumentSnapshot userDoc =
       await _firestore.collection('users').doc(userId).get();
 
@@ -82,9 +91,16 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
           return 'Client';
         }
       } else {
+<<<<<<< HEAD
         return 'Client';
       }
     } catch (e) {
+=======
+        return 'client';
+      }
+    } catch (e) {
+
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
       print('Error fetching user job: $e');
       return '';
     }
@@ -119,7 +135,11 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
       ),
 
       bottomNavigationBar: BottomNavigationBar(
+<<<<<<< HEAD
         backgroundColor: Color(0xFFF8F8F8),
+=======
+        backgroundColor: const Color(0xFFF8F8F8),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
@@ -141,7 +161,11 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/signalement.png',
+<<<<<<< HEAD
                   color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
+=======
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -155,7 +179,11 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
+<<<<<<< HEAD
                   MaterialPageRoute(builder: (context) => GestionArtisansPage(),),
+=======
+                  MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
 
@@ -164,7 +192,11 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/gestion.png',
+<<<<<<< HEAD
                   color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
+=======
+                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -178,7 +210,11 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
+<<<<<<< HEAD
                   MaterialPageRoute(builder: (context) => const RetourAuth(),),
+=======
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
               },
@@ -186,7 +222,11 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
+<<<<<<< HEAD
                   color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
+=======
+                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -208,7 +248,11 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
+<<<<<<< HEAD
                   color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
+=======
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),

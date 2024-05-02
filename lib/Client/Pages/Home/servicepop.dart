@@ -12,7 +12,11 @@ class Servicepop extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+<<<<<<< HEAD
            Text(
+=======
+          Text(
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
             'Services populaires',
             style: GoogleFonts.poppins(fontWeight: FontWeight.w600 , fontSize: 20),
           ),
@@ -81,7 +85,11 @@ class Servicepop extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10), // Espace entre l'image et le texte
+<<<<<<< HEAD
                    Text(
+=======
+                    Text(
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                       'Installation chaudiere',
                       style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
                     ),

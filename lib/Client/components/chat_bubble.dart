@@ -8,7 +8,6 @@ class ChatBubble extends StatelessWidget {
   final String message;
   final Color backgroundColor;
   final Color textColor;
-
   const ChatBubble({
     Key? key,
     required this.message,
@@ -23,14 +22,22 @@ class ChatBubble extends StatelessWidget {
     BorderRadius borderRadius = BorderRadius.circular(20);
 
     if (textColor == Colors.black) {
+<<<<<<< HEAD
       borderRadius = BorderRadius.only(
+=======
+      borderRadius = const BorderRadius.only(
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
         topLeft: Radius.circular(20),
         topRight: Radius.circular(20),
         bottomRight: Radius.circular(20),
         bottomLeft: Radius.circular(0),
       );
     } else if (textColor == Colors.white) {
+<<<<<<< HEAD
       borderRadius = BorderRadius.only(
+=======
+      borderRadius = const BorderRadius.only(
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
         topLeft: Radius.circular(20),
         topRight: Radius.circular(20),
         bottomRight: Radius.circular(0),

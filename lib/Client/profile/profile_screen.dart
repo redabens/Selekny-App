@@ -36,7 +36,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = 3;
   String tProfile = 'Profile';
   String tProfileHeading = '';
   String tProfileSubHeading = '';
@@ -69,11 +69,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return downloadUrl;
       } catch (error) {
         print("Error fetching user image URL: $error");
-        return 'assets/images/placeholder.png'; // Default image on error
+        return ''; // Default image on error
       }
     } else {
       // Retourner une valeur par défaut si l'utilisateur n'existe pas
-      return 'assets/images/placeholder.png';
+      return '';
     }
   }
   Future<void> fetchUserData() async {

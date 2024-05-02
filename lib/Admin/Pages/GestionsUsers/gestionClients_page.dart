@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
+<<<<<<< HEAD
+=======
+import 'package:reda/Pages/authentification/creationArtisan.dart';
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 import '../../../Pages/retourAuth.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,23 +23,31 @@ class GestionClientsPage extends StatefulWidget {
 
 class _GestionClientsPageState extends State<GestionClientsPage> {
   int _currentIndex = 1;
+<<<<<<< HEAD
  void _onItemTap(bool isEnCours) {
    setState(() {
      isEnCoursSelected = isEnCours;
    });
  }
+=======
+  void _onItemTap(bool isEnCours) {
+    setState(() {
+      isEnCoursSelected = isEnCours;
+    });
+  }
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
   bool isEnCoursSelected = false;
- //pour la recherche de clients------------------------------
-@override
+  //pour la recherche de clients------------------------------
+  @override
   void initState(){
     super.initState();
     getClientStream();
     _searchController.addListener(_onSearchChanged);
-}
- void _onSearchChanged(){
-  print(_searchController.text);
- }
-final TextEditingController _searchController = TextEditingController();
+  }
+  void _onSearchChanged(){
+    print(_searchController.text);
+  }
+  final TextEditingController _searchController = TextEditingController();
   List allResults = [];
   getClientStream() async{
     var data = await FirebaseFirestore.instance.collection('users').where('role', isEqualTo: "client").orderBy('nom').get();
@@ -148,7 +160,11 @@ final TextEditingController _searchController = TextEditingController();
                 height: 40,
                 child: Image.asset(
                   'icons/signalement.png',
+<<<<<<< HEAD
                   color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
+=======
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -162,7 +178,11 @@ final TextEditingController _searchController = TextEditingController();
                 });
                 Navigator.push(
                   context,
+<<<<<<< HEAD
                   MaterialPageRoute(builder: (context) => GestionArtisansPage(),),
+=======
+                  MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
 
@@ -185,7 +205,11 @@ final TextEditingController _searchController = TextEditingController();
                 });
                 Navigator.push(
                   context,
+<<<<<<< HEAD
                   MaterialPageRoute(builder: (context) => const RetourAuth(),),
+=======
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
               },
@@ -297,56 +321,56 @@ final TextEditingController _searchController = TextEditingController();
 
   Widget _buildSelectionRow() {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-    Expanded(
-    child: GestureDetector(
-    onTap: () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => GestionArtisansPage())),
-    child: Column( // Utiliser une colonne pour séparer le texte de la ligne
-    children: [
-    Text(
-    'Mes Artisans',
-    textAlign: TextAlign.center,
-    style: TextStyle(
-    color: isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
-    fontSize: 18,
-    fontWeight: FontWeight.w800,
-    ),
-    ),
-    SizedBox(height: 12), // Espace entre le texte et la ligne
-    Container(
-    height: isEnCoursSelected ? 4 : 1, // Épaisseur de la ligne
-    color: isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
-    ),
-    ],
-    ),
-    ),
-    ),
-    Expanded(
-    child: GestureDetector(
-    onTap: () => _onItemTap(false),
-    child: Column( // Utiliser une colonne pour séparer le texte de la ligne
-    children: [
-    Text(
-    'Mes Clients',
-    textAlign: TextAlign.center,
-    style: TextStyle(
-    color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
-    fontSize: 18,
-    fontWeight: FontWeight.w700,
-    ),
-    ),
-    SizedBox(height: 10), // Espace entre le texte et la ligne
-    Container(
-    height: isEnCoursSelected ? 1 : 4, // Épaisseur de la ligne
-    color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
-    ),
-    ],
-    ),
-    ),
-    ),
-    ],
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => GestionArtisansPage())),
+            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
+              children: [
+                Text(
+                  'Mes Artisans',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 12), // Espace entre le texte et la ligne
+                Container(
+                  height: isEnCoursSelected ? 4 : 1, // Épaisseur de la ligne
+                  color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => _onItemTap(false),
+            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
+              children: [
+                Text(
+                  'Mes Clients',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(height: 10), // Espace entre le texte et la ligne
+                Container(
+                  height: isEnCoursSelected ? 1 : 4, // Épaisseur de la ligne
+                  color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 

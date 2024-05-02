@@ -92,6 +92,16 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
     final String userName = userDoc.data()!['nom'] as String;  
     return userName;
   }
+  // get rating artisan
+  Future<int> getRatingUser(String userID) async {
+    final userDoc = await _firestore.collection('users').doc(userID).get();
+    if (!userDoc.exists) {
+      print ('Utilisateur introuvable');
+      return 0;
+    }
+    final int rating = userDoc.data()!['rating'] as int;
+    return rating;
+  }
 //get phone number de l'artisan
   Future<String> getPhoneUser(String userId) async {
     final firestore = FirebaseFirestore.instance;
@@ -105,14 +115,29 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
   //get image user
   Future<String> getUserPathImage(String userID) async {
-    DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
+    // Récupérer le document utilisateur
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
+        'users').doc(userID).get();
+
+    // Vérifier si le document existe
     if (userDoc.exists) {
+      // Extraire le PathImage
+      print('here');
       String pathImage = userDoc['pathImage'];
+      print(pathImage);
+      // Retourner le PathImage
       final reference = FirebaseStorage.instance.ref().child(pathImage);
-      final url = await reference.getDownloadURL();
-      return url;
+      try {
+        // Get the download URL for the user image
+        final downloadUrl = await reference.getDownloadURL();
+        return downloadUrl;
+      } catch (error) {
+        print("Error fetching user image URL: $error");
+        return ''; // Default image on error
+      }
     } else {
-      return 'default_image_url';
+      // Retourner une valeur par défaut si l'utilisateur n'existe pas
+      return '';
     }
   }
 
@@ -165,7 +190,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage(),),
                 );
@@ -186,7 +211,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
                 );
@@ -209,7 +234,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ChatListPage(type: 1,),),
                 );
@@ -231,7 +256,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilePage(),),
                 );
@@ -314,7 +339,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
     String location = data['adresse'];
     String imageUrl = await getUserPathImage(artisanID);//'https://firebasestorage.googleapis.com/v0/b/selekny-app.appspot.com/o/Prestations%2FLPsJnqkVdXQUf6iBcXn0.png?alt=media&token=44ac0673-f427-43cf-9308-4b1213e73277';
     String nomArtisan = await getNameUser(artisanID);
-    String rating = '4.5';
+    int rating = await getRatingUser(artisanID);
     String phone = await getPhoneUser(artisanID);
     //----
     String datefin = data['datefin'];

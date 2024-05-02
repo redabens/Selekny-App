@@ -31,7 +31,11 @@ class Body extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+<<<<<<< HEAD
                    Text(
+=======
+                  Text(
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                     'Service à domicile',
                     style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
@@ -47,9 +51,9 @@ class Body extends StatelessWidget {
                       'Voir tout',
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF3E69FE),
+                        color: const Color(0xFF3E69FE),
                         decoration: TextDecoration.underline,
-                        decorationColor: Color(0xFF3E69FE),
+                        decorationColor: const Color(0xFF3E69FE),
                       ),
                     ),
                   ),

@@ -5,7 +5,31 @@ import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/components/Demande.dart';
+import 'package:reda/Pages/user_repository.dart';
+import 'package:reda/Services/notifications.dart';
+late String nomPrestation;
 
+Future<void> getNomPrestationById(String idDomaine, String idPrestation) async {
+  try {
+    QuerySnapshot querySnapshot =
+    await FirebaseFirestore.instance.collection('Domaine').get();
+
+    for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+      if (doc.id == idDomaine && doc.exists) {
+        QuerySnapshot prestationsSnapshot =
+        await doc.reference.collection('Prestations').get();
+
+        prestationsSnapshot.docs.forEach((prestationDoc) async {
+          if (prestationDoc.id == idPrestation && prestationDoc.exists) {
+            nomPrestation = prestationDoc['nom_prestation'];
+          }
+        });
+      }
+    }
+  } catch (e) {
+    print("Erreur lors de la récupération des prestations: $e");
+  }
+}
 double radians(double degrees) => degrees * pi / 180;
 double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
   const earthRadius = 6371.01; // Rayon de la Terre en km
@@ -75,7 +99,10 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
     }
     final artisansRef = db.collection('users').where('role',isEqualTo: 'artisan');
 
-    await artisansRef.get().then((QuerySnapshot artisansSnapshot) {
+    await artisansRef.get().then((QuerySnapshot artisansSnapshot) async {
+      if(artisansSnapshot.docs.isEmpty){
+        print('Votre Demande n''a trouver aucun artisan');
+      }
       for (int i=0;i< artisansSnapshot.docs.length;i++) {
         final artisanData = artisansSnapshot.docs[i].data() as Map<String, dynamic>;
         final artisanLat = artisanData['latitude'];
@@ -90,7 +117,23 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
                 demandeData['adresse'], demandeData['id_Domaine'],
                 demandeData['id_Prestation'], demandeData['id_Client'],
                 demandeData['urgence'], demandeData['latitude'],
-                demandeData['longitude'], artisansSnapshot.docs[i].id);
+                demandeData['longitude'], artisansSnapshot.docs[i].id); String typeService;
+            if (demandeData['urgence']) {
+              typeService = "(urgent)";
+            } else {
+              typeService = "(non urgent)";
+            }
+            String token = await UserRepository.instance
+                .getTokenById(artisansSnapshot.docs[i].id);
+
+            print("Token de l'artisan $i : $token");
+
+            await getNomPrestationById(
+            demandeData['id_Domaine'], demandeData['id_Prestation']);
+
+            print("Voici le service publie : $nomPrestation");
+            NotificationServices.sendPushNotification(
+                token, "Offre d'un service $typeService", nomPrestation);
           }
         }
       }

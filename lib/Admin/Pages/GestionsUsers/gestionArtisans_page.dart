@@ -2,13 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:reda/Services/user_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
+<<<<<<< HEAD
 import '../../../Pages/retourAuth.dart';
 import 'gestionClients_page.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
+=======
+import 'package:reda/Pages/authentification/creationArtisan.dart';
+import '../../../Pages/retourAuth.dart';
+import 'gestionClients_page.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
+
+
+
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 
 class GestionArtisansPage extends StatefulWidget {
   const GestionArtisansPage({
@@ -167,7 +176,11 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 });
                 Navigator.push(
                   context,
+<<<<<<< HEAD
                   MaterialPageRoute(builder: (context) => GestionArtisansPage(),),
+=======
+                  MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
 
@@ -176,7 +189,11 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/gestion.png',
+<<<<<<< HEAD
                   color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
+=======
+                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 ),
               ),
             ),
@@ -190,7 +207,11 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 });
                 Navigator.push(
                   context,
+<<<<<<< HEAD
                   MaterialPageRoute(builder: (context) => const RetourAuth(),),
+=======
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                 );
 
               },
@@ -270,12 +291,12 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
     String userName = "??????";
     String job = "?????";
     try {
-     userName = await getUserName(userID);
+      userName = await getUserName(userID);
       print("nooooooooooooooooooom:$userName");
       job = await getUserJob(userID);
       print("le job:$job");
-     profileImage = await getUserPathImage(userID);
-    print("l'url :$profileImage");
+      profileImage = await getUserPathImage(userID);
+      print("l'url :$profileImage");
     } catch (error) {
 
       print('zzzzzzzzzzzzzzzz');
@@ -346,10 +367,10 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 10), // Espace entre le texte et la ligne
+                const SizedBox(height: 10), // Espace entre le texte et la ligne
                 Container(
                   height: isEnCoursSelected ? 1 : 4, // Épaisseur de la ligne
-                  color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                  color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
                 ),
               ],
             ),

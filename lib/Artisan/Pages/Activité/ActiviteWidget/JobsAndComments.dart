@@ -9,6 +9,7 @@ class Jobsandcomments extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       height: 80,
 
       child: const Row(
@@ -33,7 +34,7 @@ class Jobs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 170,
+      width: MediaQuery.of(context).size.width*0.4,
       height: 65,
       decoration: BoxDecoration(
         color: const Color(0xFFF6F6F6),
@@ -123,7 +124,7 @@ class Comments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 170,
+      width: MediaQuery.of(context).size.width*0.4,
       height: 65,
       decoration: BoxDecoration(
         color: const Color(0xFFF6F6F6),

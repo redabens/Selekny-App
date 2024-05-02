@@ -2,8 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Client/ProfilArtisan/profil.dart';
+import 'package:reda/Client/PubDemande/DemandeEnvoyeInit.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Pages/user_repository.dart';
+import 'package:reda/Services/notifications.dart';
 
 class DetDemandeAcceptee extends StatefulWidget {
   final String domaine;
@@ -14,7 +18,7 @@ class DetDemandeAcceptee extends StatefulWidget {
   final String prestation;
   final String imageUrl;
   final String nomArtisan;
-  final String rating;
+  final int rating;
   final String phone;
   final bool urgence;
   //-----------------
@@ -191,21 +195,40 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
                             ),
                           ),
-                          Container(
-                            width: 54, // Adjust as needed
-                            height: 54, // Adjust as needed
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                width: 1.0,
+                          GestureDetector(
+                            onTap: () async {
+                              // Your code to handle tap actions here (e.g., navigate to profile page)
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
+                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,), // Navigation to ContactPage
+                                ),
+                              );
+                              await Future.delayed(const Duration(milliseconds: 800));// Example navigation
+                            },
+                            child: Container(
+                              width: 54, // Adjust as needed
+                              height: 54, // Adjust as needed
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 1.0,
+                                ),
                               ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50.0),
-                              child: CachedNetworkImage(
-                                imageUrl: widget.imageUrl,
-                                placeholder: (context, url) => const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                              child: widget.imageUrl != ''
+                                  ? ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    50), // Ajout du BorderRadius
+                                    child: Image.network(
+                                      widget.imageUrl,
+                                      width: 54,
+                                      height: 54,
+                                      fit: BoxFit.cover,
+                                  ),
+                              )
+                                  : Icon(
+                                Icons.account_circle,
+                                size: 54,
+                                color: Colors.grey[400],
                               ),
                             ),
                           ),
@@ -220,7 +243,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                             children: [
                               const Icon(Icons.star, color: Colors.yellow, size: 20),
                               Text(
-                                widget.rating,
+                                widget.rating.toString(),
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
@@ -254,6 +277,15 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                   children: [
                     ElevatedButton(
                       onPressed: ()  async {
+                        String token = await UserRepository.instance
+                            .getTokenById(widget.idartisan);
+
+                        await getNomPrestationById(widget.iddomaine, widget.idprestation);
+
+                        NotificationServices.sendPushNotification(
+                            token,
+                            "Votre demande a été confirmé",
+                            "Service demandé : $nomPrestation");
                         _DemandeClientService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient,widget.idartisan, widget.urgence, widget.latitude, widget.longitude);
                         _DemandeArtisanService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan) ;
                         _DemandeClientService.deleteDemandeClient(widget.timestamp, widget.idclient);

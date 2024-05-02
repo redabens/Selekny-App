@@ -11,7 +11,8 @@ class Buttonrefuser extends StatefulWidget {
   final String idclient;
   final Timestamp timestamp;
   final int type;
-  const Buttonrefuser({super.key, required this.timestamp, required this.type, required this.idclient});
+  final String demandeid;
+  const Buttonrefuser({super.key, required this.timestamp, required this.type, required this.idclient, required this.demandeid});
 
   @override
   ButtonrefuserState createState() => ButtonrefuserState();
@@ -33,7 +34,7 @@ class ButtonrefuserState extends State<Buttonrefuser> {
       child: widget.type == 1? TextButton(
         onPressed:() async {
           _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-          _demandeEncoursService.deleteDemande(widget.timestamp);
+          _demandeEncoursService.deleteDemande(widget.demandeid);
           await Future.delayed(const Duration(milliseconds: 100));
         },// hna lazm quand on annule la classe Box Demande troh completement
 

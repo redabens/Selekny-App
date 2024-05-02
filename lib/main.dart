@@ -1,7 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+<<<<<<< HEAD
 import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
@@ -13,27 +15,208 @@ import 'Admin/Pages/Signalements/DetailsSignalement_page.dart';
 import 'Admin/Pages/Signalements/AllSignalements_page.dart';
 
 import 'firebase_options.dart';
+=======
+import 'package:get/get.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
+import 'package:reda/Client/Pages/Home/home.dart';
+import 'package:reda/Client/Pages/Home/search.dart';
+import 'package:reda/Pages/WelcomeScreen.dart';
+import 'package:reda/Pages/user_repository.dart';
+import 'package:reda/Services/notifications.dart';
+import 'firebase_options.dart';
+import 'dart:convert';
+import 'dart:math';
+import 'package:provider/provider.dart';
+import 'package:connectivity/connectivity.dart';
+
+class ConnectivityProvider extends ChangeNotifier {
+  ConnectivityResult _connectivityResult = ConnectivityResult.none;
+
+  ConnectivityProvider() {
+    _initConnectivity();
+  }
+
+  ConnectivityResult get connectivityResult => _connectivityResult;
+
+  void _initConnectivity() async {
+    ConnectivityResult result = await Connectivity().checkConnectivity();
+    _updateConnectivityStatus(result);
+
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      _updateConnectivityStatus(result);
+    });
+  }
+
+  void _updateConnectivityStatus(ConnectivityResult result) {
+    _connectivityResult = result;
+    notifyListeners();
+  }
+}
+
+class ConnectivityWidget extends StatelessWidget {
+  final Widget child;
+
+  const ConnectivityWidget({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<ConnectivityResult>(
+      stream: Connectivity().onConnectivityChanged,
+      builder: (context, snapshot) {
+        final connectivityProvider = Provider.of<ConnectivityProvider>(context);
+        final connectivityResult = snapshot.data;
+
+        if (connectivityResult == ConnectivityResult.none) {
+          return const Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 80,
+                    color: Color(0xFF3E69FE),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "Erreur de connexion",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Vérifiez votre connexion Internet et réessayez.",
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return child;
+      },
+    );
+  }
+}
+
+double radians(double degrees) => degrees * pi / 180;
+double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
+  const earthRadius = 6371.01; // Rayon de la Terre en km
+
+  double dLat = radians(lat2 - lat1);
+  double dLon = radians(lon2 - lon1);
+
+  double a = sin(dLat / 2) * sin(dLat / 2) +
+      cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon / 2) * sin(dLon / 2);
+  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+  return earthRadius * c; // Distance en km
+}
+
+User? currentUser = FirebaseAuth.instance.currentUser;
+
+final navigatorkey = GlobalKey<NavigatorState>();
+NotificationServices notificationServices = NotificationServices();
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final ConnectivityResult connectivityResult =
+  await Connectivity().checkConnectivity();
+
+  final ConnectivityProvider connectivityProvider = ConnectivityProvider();
+  connectivityProvider._updateConnectivityStatus(connectivityResult);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+ /* var result = await FlutterNotificationChannel.registerNotificationChannel(
+    description: 'Your channel description',
+    id: 'selekny',
+    importance: NotificationImportance.IMPORTANCE_HIGH,
+    name: 'Selekny',
+  );
+  print("/nNotificationChannelResult : ${result}");*/
+
   // el bardo : Latitude: 36.7199646, Longitude: 3.1991359;
-  runApp(const MyApp());
+  Future firebaseBackgroundMessage(RemoteMessage message) async {
+    if (message.notification != null) {
+      print("Some notification received in background");
+    }
+  }
+
+  notificationServices.requestNotificationPermission();
+  //notificationServices.isTokenRefresh();
+  notificationServices.getDeviceToken().then((value) {
+    print("device token : $value");
+  });
+  // init firebase messaging
+  await NotificationServices.initLocalNotifications();
+
+  // listen to background notifications
+  FirebaseMessaging.onBackgroundMessage(firebaseBackgroundMessage);
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    if (message.notification != null) {
+      print("Background Notification Tapped");
+      /* navigatorkey.currentState!.push(MaterialPageRoute(
+          builder: (context) =>
+              ChatListPage(currentUserID: currentUser?.uid ?? "")));*/
+    }
+  });
+
+  // to handle foreground notifications
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    String payloadData = jsonEncode(message.data);
+    print("Got a message in foreground");
+    if (message.notification != null) {
+      NotificationServices.showSimpleNotification(
+          title: message.notification!.title!,
+          body: message.notification!.body!,
+          payload: payloadData);
+    }
+  });
+
+  // to handle in terminated state
+
+  final RemoteMessage? message =
+  await FirebaseMessaging.instance.getInitialMessage();
+  if (message != null) {
+    print("Launched from terminated state");
+    Future.delayed(const Duration(seconds: 1), () {
+      // delay time for app initialization
+      navigatorkey.currentState!.pushNamed("/message", arguments: message);
+    });
+  }
+
+  await fetchPrestations();
+  runApp(ChangeNotifierProvider.value(
+    value: connectivityProvider,
+    child: const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ConnectivityWidget(
+        child: MyApp(),
+      ),
+    ),
+  ));
 }
+/*void main() {
+  runApp(const MyApp());
+}*/
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
   State<MyApp> createState() => MyAppState();
 }
-class MyAppState extends State<MyApp> {
-  var isLogin = false;
-  var auth = FirebaseAuth.instance;
-  late String role ;
-  Future<String> getUserRole(String email) async {
 
+class MyAppState extends State<MyApp> {
+  late bool isLogin = false;
+  var auth = FirebaseAuth.instance;
+  late Future<String> roleFuture;
+  late String role = '';
+  Future<String> getUserRole(String email) async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
       await FirebaseFirestore.instance
@@ -51,22 +234,47 @@ class MyAppState extends State<MyApp> {
       }
     } catch (e) {
       print('Error retrieving user role: $e');
-      return''; // Réinitialiser le rôle en cas d'erreur
+      return ''; // Réinitialiser le rôle en cas d'erreur
     }
   }
+
+  String _token = '';
+
+  static Future<void> saveUserToken(String token) async {
+    // Assume user is logged in for this example
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'token': token,
+    });
+  }
+
+  Future<void> setupToken() async {
+    // Get the token each time the application loads
+    String? token = await FirebaseMessaging.instance.getToken();
+
+    // Save the initial token to the database
+    await saveUserToken(token!);
+
+    // Any time the token refreshes, store this in the database too.
+    FirebaseMessaging.instance.onTokenRefresh.listen(saveUserToken);
+  }
+
   @override
   void initState() {
     super.initState();
     checkIfLogin(); // Appel de la méthode pour vérifier l'état de connexion
+    setupToken();
   }
 
   void checkIfLogin() async {
     auth.authStateChanges().listen((User? user) async {
       final useremail = auth.currentUser?.email;
-      role = await getUserRole(useremail!) ;
+      role = await getUserRole(useremail!);
       print(useremail);
       print(role);
       if (user != null && mounted) {
+        await Future.delayed(const Duration(milliseconds: 2000));
         setState(() {
           isLogin = true;
         });
@@ -78,6 +286,7 @@ class MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     SignalementsService _SignalementService = SignalementsService();
     print('oooooooooooooooooofffff main main');
     //_SignalementService.sendSignalement('poGC2ByeJPekcaN0NiSdAWDW7Oz2', 'il a également manqué de courtoisie pendant toute la durée de lintervention. Il semblait pressé et peu intéressé par mon problème. De plus, après avoir prétendument réparé la fuite, le problème est réapparu dès le lendemain. Je suis très insatisfait du service fourni par ce plombie');
@@ -106,9 +315,96 @@ class MyAppState extends State<MyApp> {
       //const HomePage(),
       //const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
       //const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
+=======
+    return GetMaterialApp(
+      // Ajoute initialBinding ici pour initialiser le UserRepository
+      initialBinding: BindingsBuilder(() {
+        Get.put(UserRepository());
+      }),
+      home: ChangeNotifierProvider(
+        create: (context) => ConnectivityProvider(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: ConnectivityWidget(
+            child: Container(
+              color: Colors.white, // Couleur de l'arrière-plan de la page
+              child: Center(
+                child: !isLogin
+                    ? const WelcomePage()
+                    : (role == 'client')
+                    ? const HomePage()
+                    : const ActiviteToday(),
+              ),
+            ),
+          ),
+
+          /*  routes: {
+          "/message": (context) =>
+              ChatListPage(currentUserID: currentUser?.uid ?? ""),
+        },*/
+        ),
+      ),
+    );
+  }
+// const CreationArtisanPage(),
+//const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
+//const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
+//const PubDemandePage(),
+//const LoginScreen(),
+//const HomePage(),
+//const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
+//const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
+//const ChatPage(receiverUserEmail:"ms_iratni@esi.dz", receiverUserID: "eOILQzRtIQlxwCGKhFMy"),
+}
+
+
+
+
+
+
+
+/*class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return OfflineBuilder(
+      child: const LoadingWidget(),
+      connectivityBuilder: (BuildContext context,
+          ConnectivityResult connectivity, Widget child) {
+        final bool isConnected = connectivity != ConnectivityResult.none;
+        if (isConnected) {
+          return !isLogin
+              ? const WelcomePage()
+              : (role == 'client')
+                  ? const HomePage()
+                  : const NotifUrgente();
+        } else {
+          return const OfflineWidget();
+        }
+      },
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
     );
   }
 }
+
+*/
+
+
+
+
+
+
+
 
 /*class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

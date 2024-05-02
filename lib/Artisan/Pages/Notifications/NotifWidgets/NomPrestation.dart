@@ -11,8 +11,8 @@ class NomPrestation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 240,
-      height: 30,
+      width: MediaQuery.of(context).size.width * 0.71,
+      //height: 30,
       color: Colors.white,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.start, // Align items to the start

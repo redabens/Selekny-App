@@ -87,4 +87,28 @@ class UserRepository extends GetxController {
     imgUrl = userData['pathImage'] ?? '';
     return imgUrl;
   }
+
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await db.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : ${token}");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
+  }
 }

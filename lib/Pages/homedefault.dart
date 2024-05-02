@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Home/header.dart';
-import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Client/Pages/Home/body.dart';
 import 'package:reda/Pages/retourAuth.dart'; // Importation de la classe Searchbar
 
@@ -19,8 +18,7 @@ class _HomeDefaultPageState extends State<HomeDefaultPage> {
       backgroundColor: Colors.white,
       body: const Column(
         children: [
-          Header(),
-          Searchbar(),
+          Header(type: 2,),
           SizedBox(height: 15), // Ajout d'un espace entre le header et le reste du contenu
           Expanded(
             child: SingleChildScrollView(

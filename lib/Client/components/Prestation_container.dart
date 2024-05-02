@@ -44,8 +44,13 @@ class Prestation extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: CachedNetworkImage(
                 imageUrl: imageUrl,
+<<<<<<< HEAD
                 placeholder: (context, url) => CircularProgressIndicator(),
                 errorWidget: (context, url, error) => Icon(Icons.error),
+=======
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
               ),
             ),
           ),
@@ -86,7 +91,11 @@ class Prestation extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
+<<<<<<< HEAD
                     builder: (context) => RetourAuth(),
+=======
+                    builder: (context) => const RetourAuth(),
+>>>>>>> 025829b883452b8e096dc1e25d03a2a53f499a4b
                   ),
                 );
               }

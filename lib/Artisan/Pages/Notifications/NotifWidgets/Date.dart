@@ -10,14 +10,13 @@ class Date extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 240,
-      height: 20,
-      color: Colors.white,
+      width: MediaQuery.of(context).size.width * 0.71,
+      //height: 20,
       child: type == 1 ? Row(
         // mainAxisAlignment: MainAxisAlignment.start, // Align items to the start
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(width: 7),
+          const SizedBox(width: 5),
           Container(
             height: 13,
             width: 13,
@@ -56,12 +55,12 @@ class Date extends StatelessWidget {
             datedebut,
             style: GoogleFonts.poppins(
               color: const Color(0xFF757575),
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
           ),
         ],
-      ) : const SizedBox(),
+      ) : const SizedBox(height: 0,),
       // Ajoutez plus de widgets Text ici pour les éléments supplémentaires
     );
   }
