@@ -6,6 +6,7 @@ import 'package:reda/Client/ProfilArtisan/profil.dart';
 import 'package:reda/Client/PubDemande/DemandeEnvoyeInit.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 
@@ -67,6 +68,7 @@ class DetDemandeAcceptee extends StatefulWidget {
 class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
   final DemandeClientService _DemandeClientService = DemandeClientService();
   final DemandeArtisanService _DemandeArtisanService = DemandeArtisanService();
+  final RendezVousService _rendezVousService = RendezVousService();
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -286,8 +288,8 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                             token,
                             "Votre demande a été confirmé",
                             "Service demandé : $nomPrestation");
-                        _DemandeClientService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient,widget.idartisan, widget.urgence, widget.latitude, widget.longitude);
-                        _DemandeArtisanService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan) ;
+                        _rendezVousService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan,widget.idartisan);
+                        _rendezVousService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan,widget.idclient) ;
                         _DemandeClientService.deleteDemandeClient(widget.timestamp, widget.idclient);
                         await Future.delayed(const Duration(milliseconds: 100));
                       },

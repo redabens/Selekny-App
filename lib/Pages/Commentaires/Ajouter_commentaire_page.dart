@@ -20,13 +20,6 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
   final TextEditingController _commentController = TextEditingController();
   final CommentaireService _commentaireService =CommentaireService();
   bool _isWritingComment = true;
-  void ajoutComment() async{
-    if(_commentController.text.isNotEmpty){
-      await _commentaireService.sendCommentaire((widget.artisanID), _commentController.text,_lastStarIndex);
-      // clear the text controller after sending the message
-      _commentController.clear();
-    }
-  }
   @override
   void initState() {
     super.initState();
@@ -129,8 +122,11 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.send),
-                          onPressed: (){
-                            ajoutComment;
+                          onPressed: () async {
+                            await _commentaireService.sendCommentaire(widget.artisanID, _commentController.text,_lastStarIndex);
+                            // clear the text controller after sending the message
+                            _commentController.clear();
+                            await Future.delayed(Duration(milliseconds: 100));
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (context) => const HomePage()),

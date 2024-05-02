@@ -117,7 +117,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
                 demandeData['adresse'], demandeData['id_Domaine'],
                 demandeData['id_Prestation'], demandeData['id_Client'],
                 demandeData['urgence'], demandeData['latitude'],
-                demandeData['longitude'], artisansSnapshot.docs[i].id); String typeService;
+                demandeData['longitude'], artisansSnapshot.docs[i].id,demandeData.id); String typeService;
             if (demandeData['urgence']) {
               typeService = "(urgent)";
             } else {

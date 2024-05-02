@@ -114,7 +114,7 @@ class Detcommentaire extends StatelessWidget {
                             comment,
                             style: const TextStyle(
                               fontWeight: FontWeight.w400,
-                              fontSize: 12,
+                              fontSize: 13,
                             ),
                           ),
                         ),
@@ -134,7 +134,7 @@ class Detcommentaire extends StatelessWidget {
                 Text(
                   getFormattedDate(timestamp),
                   style: const TextStyle(
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w400,
                     fontSize: 12,
                   ),
                 ),
@@ -142,7 +142,7 @@ class Detcommentaire extends StatelessWidget {
                 Text(
                   getFormattedTime(timestamp),
                   style: const TextStyle(
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w400,
                     fontSize: 12,
                   ),
                 ),

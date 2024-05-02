@@ -288,7 +288,7 @@ class NotifDemandeState extends State<NotifDemande> {
             heurefin: data['heurefin'], latitude: data['latitude'],
             longitude: data['longitude'], type1: 1, type2: 1,
             nomclient: nomClient, phone: phone,
-            demandeid: document.id, sync: sync,
+            demandeid: data['demandeid'], sync: sync,
             nomArtisan: nomArtisan, idartisan: FirebaseAuth.instance.currentUser!.uid,),
           const SizedBox(height: 10,),
         ],

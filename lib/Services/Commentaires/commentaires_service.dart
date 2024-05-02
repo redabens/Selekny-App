@@ -18,19 +18,18 @@ import 'commentaire.dart';
           timestamp: timestamp,
       );
       await _firestore
-          .collection('Artisans')
+          .collection('users')
           .doc(recieverId)
           .collection('Commentaires')
           .add(newCommentaire.toMap());
-
+      print('commentaires envoyee');
       return Future.value(null);
-
     }
 
     Stream<QuerySnapshot> getCommentaires(String artisanId){
 
       return _firestore
-          .collection('Artisans')
+          .collection('users')
           .doc(artisanId).collection('Commentaires')
           .orderBy('timestamp',descending: true)
           .snapshots();

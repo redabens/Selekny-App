@@ -4,6 +4,7 @@ import 'package:reda/Client/ProfilArtisan/contactpage.dart';
 import 'package:reda/Client/ProfilArtisan/detailsprofil.dart';
 import 'package:reda/Client/ProfilArtisan/signaler.dart';
 import 'package:reda/Client/Services/getartisan.dart';
+import 'package:reda/Pages/Commentaires/Afficher_commentaire_page.dart';
 
 class ProfilePage2 extends StatefulWidget {
   final String idartisan;
@@ -61,7 +62,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
           onComment:(){
             Navigator.push(context,
               MaterialPageRoute(
-                builder: (context) => ContactPage(), // Navigation to ContactPage
+                builder: (context) => AfficherCommentairePage(artisanID: widget.idartisan), // Navigation to ContactPage
               ),
             );
           },

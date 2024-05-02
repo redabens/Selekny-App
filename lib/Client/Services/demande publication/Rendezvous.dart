@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-class DemandeArtisan{
+class RendezVous{
   final String datedebut;
   final String datefin;
   final String heuredebut;
@@ -12,31 +12,28 @@ class DemandeArtisan{
   final bool urgence;
   final double latitude;
   final double longitude;
-  final String demandeid;
   final Timestamp timestamp;
 
-  DemandeArtisan({
-  required this.datedebut,
-  required this.datefin,
-  required this.heuredebut,
-  required this.heurefin,
-  required this.adresse,
-  required this.iddomaine,
-  required this.idprestation,
-  required this.idclient,
-  required this.idartisan,
-  required this.urgence,
-  required this.latitude,
-  required this.longitude,
-  required this.timestamp,
-  required this.demandeid,
+  RendezVous({
+    required this.datedebut,
+    required this.datefin,
+    required this.heuredebut,
+    required this.heurefin,
+    required this.adresse,
+    required this.iddomaine,
+    required this.idprestation,
+    required this.idclient,
+    required this.idartisan,
+    required this.urgence,
+    required this.latitude,
+    required this.longitude,
+    required this.timestamp,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'datedebut': datedebut,
       'datefin': datefin,
-      'demandeid':demandeid,
       'heuredebut': heuredebut,
       'heurefin': heurefin,
       'adresse': adresse,

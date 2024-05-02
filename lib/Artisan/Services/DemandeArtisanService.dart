@@ -17,7 +17,10 @@ class DemandeArtisanService extends ChangeNotifier{
   String idclient,
   bool urgence,
   double latitude,
-  double longitude,String recieverId)async{
+  double longitude,
+  String recieverId,
+  String demandeid,
+      )async{
     final Timestamp timestamp = Timestamp.now();
 
     DemandeArtisan newDemandeArtisan = DemandeArtisan(
@@ -32,8 +35,10 @@ class DemandeArtisanService extends ChangeNotifier{
         urgence: urgence,
         latitude: latitude,
         longitude: longitude,
-        timestamp: timestamp, idartisan: recieverId,
-        );
+        timestamp: timestamp,
+        idartisan: recieverId,
+        demandeid :demandeid,
+       );
     await _firestore
         .collection('users')
         .doc(recieverId)
@@ -43,42 +48,7 @@ class DemandeArtisanService extends ChangeNotifier{
     return Future.value(null);
 
   }
-  Future<void> sendRendezVous(String datedebut,
-      String datefin,
-      String heuredebut,
-      String heurefin,
-      String adresse,
-      String iddomaine,
-      String idprestation,
-      String idclient,
-      bool urgence,
-      double latitude,
-      double longitude,String recieverId)async{
-    final Timestamp timestamp = Timestamp.now();
 
-    DemandeArtisan newDemandeArtisan = DemandeArtisan(
-        datedebut: datedebut,
-        datefin: datefin,
-        heuredebut: heuredebut,
-        heurefin: heurefin,
-        adresse: adresse,
-        iddomaine : iddomaine,
-        idprestation: idprestation,
-        idclient: idclient,
-        idartisan: recieverId,
-        urgence: urgence,
-        latitude: latitude,
-        longitude: longitude,
-        timestamp: timestamp,);
-    await _firestore
-        .collection('users')
-        .doc(recieverId)
-        .collection('RendezVous')
-        .add(newDemandeArtisan.toMap());
-
-    return Future.value(null);
-
-  }
   Future<void> deleteDemandeArtisan(Timestamp timestamp,String recieverId)async {
     final firestore = FirebaseFirestore.instance;
 
@@ -110,35 +80,5 @@ class DemandeArtisanService extends ChangeNotifier{
         .orderBy('timestamp',descending: true)
         .snapshots();
   }
-  Stream<QuerySnapshot> getRendezVous(String artisanId){
 
-    return _firestore
-        .collection('users')
-        .doc(artisanId).collection('RendezVous')
-        .orderBy('timestamp',descending: true)
-        .snapshots();
-  }
-  Future<void> deleteRendezVous(Timestamp timestamp,String recieverId)async {
-    final firestore = FirebaseFirestore.instance;
-
-    // Get the subcollection reference
-    CollectionReference<Map<String, dynamic>> subcollectionRef =
-    firestore.collection('users').doc(recieverId).collection('RendezVous');
-
-    // Construct the timestamp query
-    Query<Map<String, dynamic>> timestampQuery =
-    subcollectionRef.where('timestamp', isEqualTo: timestamp);
-
-    // Perform the delete operation
-    timestampQuery.get().then((querySnapshot) {
-      if (querySnapshot.docs.isNotEmpty) {
-        querySnapshot.docs.forEach((documentSnapshot) {
-          print('${documentSnapshot.data()}');
-          documentSnapshot.reference.delete();
-        });
-      }
-    });
-    print('delete avec success art');
-    return Future.value(null);
-  }
 }

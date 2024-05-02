@@ -30,29 +30,38 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
   }
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
+        'users').doc(userID).get();
+
+    // Vérifier si le document existe
+    if (userDoc.exists) {
+      // Extraire le PathImage
+      print('here');
+      String pathImage = userDoc['pathImage'];
+      print(pathImage);
+      // Retourner le PathImage
+      final reference = FirebaseStorage.instance.ref().child(pathImage);
+      try {
+        // Get the download URL for the user image
+        final downloadUrl = await reference.getDownloadURL();
+        return downloadUrl;
+      } catch (error) {
+        print("Error fetching user image URL: $error");
+        return ''; // Default image on error
+      }
+    } else {
+      // Retourner une valeur par défaut si l'utilisateur n'existe pas
+      return '';
+    }
+  }
+  Future<String> getUserName(String userID) async {
+    // Récupérer le document utilisateur
     DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
 
     // Vérifier si le document existe
     if (userDoc.exists) {
       // Extraire le PathImage
-      String pathImage = userDoc['PathImage'];
-      // Retourner le PathImage
-      final reference = FirebaseStorage.instance.ref().child(pathImage);
-      final url = await reference.getDownloadURL();
-      return url;
-    } else {
-      // Retourner une valeur par défaut si l'utilisateur n'existe pas
-      return 'default_image_url';
-    }
-  }
-  Future<String> getUserName(String userID) async {
-    // Récupérer le document utilisateur
-    DocumentSnapshot userDoc = await _firestore.collection('User').doc(userID).get();
-
-    // Vérifier si le document existe
-    if (userDoc.exists) {
-      // Extraire le PathImage
-      String userName = userDoc['name'];
+      String userName = userDoc['nom'];
       // Retourner le PathImage
       return userName;
     } else {
@@ -67,7 +76,9 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
         title: const Text(
@@ -126,7 +137,7 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
   // build message item
   Future<Widget> _buildCommentaireItem(DocumentSnapshot document) async {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    String profileImage = "assets/images/placeholder.png"; // Default image
+    String profileImage = ""; // Default image
     String userName = "";
     try {
       profileImage = await getUserPathImage(data['userID']);

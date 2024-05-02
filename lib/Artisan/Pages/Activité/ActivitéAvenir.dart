@@ -8,7 +8,7 @@ import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/ActiviteWidget/JobsAndComments.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
-import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 
@@ -22,7 +22,7 @@ class ActiviteAvenir extends StatefulWidget {
 
 class ActiviteAvenirState extends State<ActiviteAvenir> {
   int _currentIndex = 0;
-  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
+  final RendezVousService _rendezVousService = RendezVousService();
   DateTime now = DateTime.now();
   @override
   void initState() {
@@ -220,7 +220,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
   }
   Widget _buildRendezVousList() {
     return StreamBuilder(
-      stream: _demandeArtisanService.getRendezVous(
+      stream: _rendezVousService.getRendezVous(
           FirebaseAuth.instance.currentUser!.uid),
       //_firebaseAuth.currentUser!.uid
       builder: (context, snapshot) {
