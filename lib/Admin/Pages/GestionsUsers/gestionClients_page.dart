@@ -47,7 +47,7 @@ final TextEditingController _searchController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> getUserPathImage(String userID) async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc = await _firestore.collection('User').doc(userID).get();
     if (userDoc.exists) {
       String pathImage = userDoc['PathImage'];
       final reference = FirebaseStorage.instance.ref().child(pathImage);
@@ -178,13 +178,10 @@ final TextEditingController _searchController = TextEditingController();
     String job = "?????";
     try {
       userName = await getUserName(userID);
-      print("nooooooooooooooooooom:$userName");
       job = 'Client';
       profileImage = await getUserPathImage(userID);
       print("l'url :$profileImage");
     } catch (error) {
-
-      print('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz');
       print("Error fetching user image: $error");
     }
     return Container(
@@ -193,7 +190,7 @@ final TextEditingController _searchController = TextEditingController();
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           DetGestionUsers(userName: userName, job: job,profileImage: profileImage),
-
+          const SizedBox(height: 84),
         ],
       ),
     );

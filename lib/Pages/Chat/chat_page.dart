@@ -44,6 +44,15 @@ class _ChatPageState extends State<ChatPage> {
     print(name);
     return name;
   }
+
+  Future<String> getUserImagePath(String userId) async {
+      final userCollection = FirebaseFirestore.instance.collection('users');
+      final userDocument = userCollection.doc(userId);
+      final imgPath = await userDocument.get().then((snapshot) => snapshot.data()?['pathImage']);
+      String url = await getImageUrl(imgPath);
+      return url;
+  }
+
   Future<String> getImageUrl(String imagePath) async {
     try {
       final reference = FirebaseStorage.instance.ref().child(imagePath);
@@ -79,20 +88,43 @@ class _ChatPageState extends State<ChatPage> {
 
     String otherUserName = '';
     try {
-
+      final imagePath = await  getUserImagePath(otherUserId) ;
+      final url = await getImageUrl(imagePath);
       otherUserName = await getUserNameById(otherUserId);
-
     }catch (error) {
       print("Error fetching other user name: $error");
     }
 
     return AppBar(
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ChatListPage(type: widget.type,),),
-      )),
       title: Row(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children:
+          [
+      Container( // Enveloppez l'icône dans un Container pour créer un bouton carré
+      height: 40, // Définissez la hauteur et la largeur pour obtenir un bouton carré
+        width: 40,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
+          icon: Icon(
+            Icons.arrow_back_ios_new_outlined,
+            color: Color(0xFF33363F),
+            size: 22,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatListPage(type: 1)),
+            );
+
+          },
+        ),
+      ),
+          SizedBox(width:5),
           Padding(
             padding: const EdgeInsets.only(right: 30.0),
             child: Container(
@@ -114,7 +146,10 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ),
             ),
-          ),
+
+            ),
+  ],),
+
           Expanded(
             child: RichText(
               text: TextSpan(
@@ -123,7 +158,7 @@ class _ChatPageState extends State<ChatPage> {
                     text: otherUserName,
                     style: GoogleFonts.poppins(
                       color: Color(0xFF333333),
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -131,6 +166,7 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
           ),
+          SizedBox(width: 8),
         ],
       ),
       backgroundColor: Colors.white,
@@ -143,7 +179,6 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {

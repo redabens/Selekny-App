@@ -37,8 +37,8 @@ class DetGestionUsers extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 22,
-        right: 22,
+        left: 6,
+        right: 6,
       ),
       child: Stack(
         children: [
@@ -69,7 +69,7 @@ class DetGestionUsers extends StatelessWidget {
                           profileImage), // Using the function here
                     ),
                   ),
-                  const SizedBox(width: 30),
+                  const SizedBox(width: 20),
                   //espace entre container image et text
                   Expanded(
                     child: Column(
@@ -82,8 +82,8 @@ class DetGestionUsers extends StatelessWidget {
                               userName,
                               style: GoogleFonts.poppins(
                                 color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w900,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ],
@@ -97,8 +97,8 @@ class DetGestionUsers extends StatelessWidget {
                           child: Text(
                             job,
                             style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
                               color: const Color(0xFF7F7F7F),
                             ),
                           ),
@@ -120,7 +120,7 @@ class DetGestionUsers extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 84),
+         // const SizedBox(height: 84),
         ],
       ),
     );

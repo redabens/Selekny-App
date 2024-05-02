@@ -1,0 +1,419 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'AllSignalements_page.dart';
+import 'EtesVousSur.dart';
+import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
+import 'package:reda/Admin/Services/signalement_service.dart';
+
+class DetailsSignalement extends StatefulWidget {
+  final String signalementID;
+  final String signaleurID;
+  final String signalantID;
+  final String signaleurName;
+  final String signalantName;
+  final String signaleurJob;
+  final String signalantJob;
+  final String date;
+  final String heure;
+  final String raison;
+  final String signaleurUrl;
+  final String signalantUrl;
+
+  const DetailsSignalement({
+    Key? key,
+    required this.signalementID,
+    required this.signaleurID,
+    required this.signalantID,
+    required this.signaleurName,
+    required this.signalantName,
+    required this.signaleurJob,
+    required this.signalantJob,
+    required this.date,
+    required this.heure,
+    required this.raison,
+    required this.signaleurUrl,
+    required this.signalantUrl
+  }) : super(key: key);
+
+  @override
+  _DetailsSignalementState createState() => _DetailsSignalementState();
+}
+
+class _DetailsSignalementState extends State<DetailsSignalement> {
+  int _currentIndex = 0;
+  SignalementsService _SignalementService = SignalementsService();
+  final List<Widget> _pages = [
+    AllSignalementsPage(),
+    // les eutre pageeeees
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: MyAppBar(),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 20),
+            Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 15),
+                  // SignalerPar
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: 110,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Signalement effectué par :',
+                          style: GoogleFonts.poppins(
+                            color: Color(0xFF685D5D),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        DetGestionUsers(
+                          userName: widget.signaleurName,
+                          job: widget.signaleurJob,
+                          profileImage: widget.signaleurUrl,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  // UserSignaler
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: 110,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'L\'utilisateur signalé est :',
+                          style: GoogleFonts.poppins(
+                            color: Color(0xFF685D5D),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        DetGestionUsers(
+                          userName: widget.signalantName,
+                          job: widget.signalantJob,
+                          profileImage: widget.signalantUrl,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  // Motif
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Motif du signalement :',
+                          style: GoogleFonts.poppins(
+                            color: Color(0xFF685D5D),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: Color(0xFFC4C4C4),
+                              width: 2.0,
+                            ),
+                          ),
+                          child: Text(
+                            widget.raison,
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  // Date
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Date du signalement :',
+                          style: GoogleFonts.poppins(
+                            color: Color(0xFF685D5D),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            SizedBox(width: 20),
+                            Text(
+                              widget.date,
+                              style: GoogleFonts.poppins(
+                                color: Color(0xFF685D5D),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'à 18:17',
+                              style: GoogleFonts.poppins(
+                                color: Color(0xFF685D5D),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    height: 45,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        // Ignorer Button
+                        GestureDetector(
+                          onTap: () async{
+                            _SignalementService.deleteSignalement(widget.signalementID);
+                            await Future.delayed(Duration(milliseconds: 300));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => AllSignalementsPage()),
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.41,
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFC4C4C4),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Ignorer',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // Bloquer Button
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => EtesVousSur()),
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.42,
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFF0000),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Bloquer',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFF8F8F8),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex,
+        iconSize: 30,
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/signalement.png',
+                  color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/gestion.png',
+                  color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutartisan.png',
+                  color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => _pages[_currentIndex]),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutdomaine.png',
+                  color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Size get preferredSize => Size.fromHeight(70);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        AppBar(
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Color(0xFFF3F3F3),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios_new_outlined,
+                    color: Color(0xFF33363F),
+                    size: 25,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AllSignalementsPage()),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(width: 40),
+              Center(
+                child: Text(
+                  'Détails du signalement',
+                  style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

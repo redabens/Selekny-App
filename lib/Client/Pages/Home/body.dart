@@ -4,6 +4,7 @@ import 'package:reda/Client/Pages/Home/listimag2.dart';
 import 'package:reda/Client/Pages/Home/servicepop.dart';
 import 'package:reda/Client/Pages/Home/services.dart';
 import 'package:reda/Client/Pages/voirtout_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Body extends StatelessWidget {
   final int type;
@@ -26,15 +27,15 @@ class Body extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.only(left: 15,top:10),
+              padding: const EdgeInsets.only(left: 26,top:10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Text(
+                   Text(
                     'Service à domicile',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
-                  const SizedBox(width: 105), // Espace entre les deux textes
+                  const SizedBox(width: 96), // Espace entre les deux textes
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -42,9 +43,9 @@ class Body extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => VoirtoutPage(type: type,)),
                       );
                     },
-                    child: const Text(
+                    child: Text(
                       'Voir tout',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3E69FE),
                         decoration: TextDecoration.underline,

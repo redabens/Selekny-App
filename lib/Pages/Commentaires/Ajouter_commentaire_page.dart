@@ -123,14 +123,13 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
                             style: const TextStyle(
                                 fontSize: 15,
                                 height: 1.0, // Augmenter l'espace entre les lignes
-
                                 textBaseline: TextBaseline.alphabetic), // Ajout d'un petit espace entre les lignes
                           ),
                         ),
                         IconButton(
                           icon: const Icon(Icons.send),
                           onPressed: (){
-                            ajoutComment;
+                            ajoutComment;//<<<<==========================
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (context) => const HomePage()),

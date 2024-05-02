@@ -28,6 +28,8 @@ class ChatListPage extends StatefulWidget{
 class _ChatListPageState extends State<ChatListPage> {
   int _currentIndex = 2;
   final ChatListService _ChatListService = ChatListService();
+
+  //functions-----------------------------------------------------
   Future<String> getUserImgPathById(String userId) async {
 
     final userCollection = FirebaseFirestore.instance.collection('users');
@@ -57,10 +59,8 @@ class _ChatListPageState extends State<ChatListPage> {
     // Convert the timestamp to a DateTime object
     DateTime dateTime = timestamp.toDate();
 
-    // Calculate the difference between the timestamp and now
     Duration difference = DateTime.now().difference(dateTime);
 
-    // If less than 24 hours, display time
     if (difference.inHours < 24) {
       return getFormattedTime(timestamp); // Returns formatted time (e.g., "15:30")
     } else {
@@ -88,15 +88,12 @@ class _ChatListPageState extends State<ChatListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
+
         title:  Text(
           'Messagerie',
           style: GoogleFonts.poppins(
             fontSize: 24,
-            fontWeight:  FontWeight.w900,
+            fontWeight:  FontWeight.w800,
           ),
         ),
         centerTitle: true,

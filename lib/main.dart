@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/Chat/chat_page.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
+import 'Admin/Pages/Signalements/DetailsSignalement_page.dart';
+import 'Admin/Pages/Signalements/AllSignalements_page.dart';
+
 import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -73,6 +78,9 @@ class MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SignalementsService _SignalementService = SignalementsService();
+    print('oooooooooooooooooofffff main main');
+    //_SignalementService.sendSignalement('poGC2ByeJPekcaN0NiSdAWDW7Oz2', 'il a également manqué de courtoisie pendant toute la durée de lintervention. Il semblait pressé et peu intéressé par mon problème. De plus, après avoir prétendument réparé la fuite, le problème est réapparu dès le lendemain. Je suis très insatisfait du service fourni par ce plombie');
     /*final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     final currentUserId =_firebaseAuth.currentUser!.uid;*/
     return MaterialApp(
@@ -82,9 +90,12 @@ class MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: //const ChatPage(receiverUserID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2', currentUserId: 'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3', type: 1)
-      //const AjouterCommentairePage(nomPrestataire: 'mohamed benabed', artisanID: 'poGC2ByeJPekcaN0NiSdAWDW7Oz2'),
-      !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const ActiviteAvenir(),
+      home:
+      //DetailsSignalement(signaleurName: 'signaleurName', signalantName: 'signalantName', signaleurJob: 'signaleurJob', signalantJob: 'signalantJob', date: 'date', heure: 'heure', raison: 'raison')
+      AllSignalementsPage(),
+      //const ChatPage(receiverUserID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2', currentUserId: 'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3', type: 1)
+     // const AjouterCommentairePage(nomPrestataire: 'mohamed benabed', artisanID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2'),
+     // !isLogin ? const WelcomePage() : (role== 'client') ? const HomePage(): const ActiviteAvenir(),
       //const ProfilePage(),
       //const CreationArtisanPage(),
       //const ChatListPage(type: 1,),

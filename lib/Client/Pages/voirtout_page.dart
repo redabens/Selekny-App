@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Client/components/Domaine_container.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class VoirtoutPage extends StatefulWidget {
   final int type;
@@ -98,10 +99,10 @@ class _VoirtoutPageState extends State<VoirtoutPage> {
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
-          title: const Text(
+          title: Text(
             'Domaines',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w800,
             ),
           ),
           centerTitle: true,

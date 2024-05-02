@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Demandes/Rendezvous_Page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
@@ -15,15 +16,15 @@ class Header extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Selekny',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 25,
                   color: Colors.black,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],

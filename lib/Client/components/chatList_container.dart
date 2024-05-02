@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 const Color myBlueColor = Color(0xFF3E69FE);
 
 class DetChatList extends StatelessWidget {
@@ -41,8 +43,8 @@ class DetChatList extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: const Color(0xFFFD1D1D1),
-                width: 1.0,
+                color: const Color(0xFFFD1D1D1).withOpacity(0.5),
+                width: 1.2,
               ),
              /* boxShadow: [
                 BoxShadow(
@@ -89,24 +91,24 @@ class DetChatList extends StatelessWidget {
                           children: [
                             Text(
                               userName,
-                              style: const TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: Colors.black,
-                                fontSize: 17,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w800,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 5),
                         Container(
-                          width:MediaQuery.of(context).size.width*0.5,
-                          child :Text(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          child: Text(
                             lastMsg,
-                            style: const TextStyle(
+                            maxLines: 1, // Limit to a single line
+                            overflow: TextOverflow.ellipsis, // Show '...' if overflow
+                            style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              fontFamily: 'Poppins',
+                              fontSize: 13,
                               color: Color(0xFF7F7F7F),
                             ),
                           ),
@@ -127,10 +129,9 @@ class DetChatList extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   timestamp,
-                  style: const TextStyle(
+                  style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
-                    fontFamily: 'Poppins',
                     color: Color(0xFF7F7F7F),
                   ),
                 ),
