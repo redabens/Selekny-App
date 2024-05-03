@@ -12,6 +12,7 @@ class UserModel {
   final double latitude;
   final double longitude;
   final bool vehicule;
+  final int nbsignalement;
   final String token;
 
   UserModel({
@@ -26,6 +27,7 @@ class UserModel {
     required this.latitude,
     required this.longitude,
     required this.vehicule,
+    required this.nbsignalement,
     required this.token,
   });
 
@@ -41,6 +43,7 @@ class UserModel {
         latitude = 0,
         longitude = 0,
         vehicule = false,
+        nbsignalement = 0,
         token = '';
   static UserModel fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -55,6 +58,7 @@ class UserModel {
         latitude: json['latitude'],
         longitude: json['longitude'],
         vehicule: json['vehicule'],
+        nbsignalement: json['nbsignalement'],
         token: json['token'],);
   }
 
@@ -85,6 +89,7 @@ class UserModel {
         double? latitude,
         double? longitude,
         bool? vehicule,
+        int? nbsignalement,
         String? token}) {
     return UserModel(
         id: id ?? id,
@@ -98,6 +103,7 @@ class UserModel {
         latitude: latitude ?? this.latitude,
         longitude: longitude ?? this.longitude,
         vehicule: vehicule ?? this.vehicule,
+        nbsignalement: nbsignalement ?? this.nbsignalement,
         token: token ?? this.token, );
   }
 
@@ -116,6 +122,7 @@ class UserModel {
         latitude: data['latitude'],
         longitude: data['longitude'],
         vehicule: data['vehicule'],
+        nbsignalement: data['nbsignalement'],
         token: data['token'],
         );
   }
@@ -133,6 +140,7 @@ class ClientModel extends UserModel {
         required super.longitude,
         required super.latitude,
         required super.vehicule,
+        required super.nbsignalement,
         required super.token})
       : super(role: 'client');
 }
@@ -156,6 +164,7 @@ class ArtisanModel extends UserModel {
         required super.longitude,
         required this.domaine,
         required super.vehicule,
+        required super.nbsignalement,
         required super.token,
         required this.rating,
         required this.workcount})
@@ -187,6 +196,7 @@ class ArtisanModel extends UserModel {
         domaine: json['domaine'],
         rating: json['rating'],
         vehicule: json['vehicule'],
+        nbsignalement: json['nbsignalement'],
         token: json['token'],
         workcount: json['workcount'],);
   }

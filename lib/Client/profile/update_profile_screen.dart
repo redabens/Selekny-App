@@ -134,7 +134,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         latitude: userModel.latitude,
         longitude: userModel.longitude,
         token: userModel.token,
-        vehicule: userModel.vehicule);
+        vehicule: userModel.vehicule,
+        nbsignalement: userModel.nbsignalement);
 
     try {
       await userRepository.updateUser(updatedUser);
@@ -194,7 +195,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 latitude: userModel.latitude,
                 longitude: userModel.longitude,
                 token: userModel.token,
-                vehicule: userModel.vehicule);
+                vehicule: userModel.vehicule, nbsignalement: userModel.nbsignalement);
             Navigator.pop(context, updatedUser);
           },
           icon: Container(

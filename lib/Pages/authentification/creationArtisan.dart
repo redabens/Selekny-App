@@ -82,7 +82,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
             token: '',
             rating: 4,
             vehicule: false,
-            workcount: 0,
+            workcount: 0, nbsignalement: 0,
           );
           // ajouter l utilisateur a la base de donnees firestore
           // CollectionReference users =
