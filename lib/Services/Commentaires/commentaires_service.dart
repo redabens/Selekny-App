@@ -46,14 +46,10 @@ class CommentaireService extends ChangeNotifier{
           throw Exception("Artisan with ID $artisanID not found");
         }
         var data = artisanSnapshot.data() as Map<String, dynamic>;
-        print('the client rating  ==========> $ratingClient');
         double currentRating = (data['rating'] as num?)?.toDouble() ?? 0.0;
-        print('cuuuuureeent RAATIIING ====> $currentRating');
         int workcount = (data['workcount'] as num?)?.toInt() ?? 0;
-        print('wooorkk counttt ====> $workcount');
         double newRating = (currentRating * workcount + ratingClient) / (workcount + 1);
         newRating = double.parse(newRating.toStringAsFixed(1));
-        print('The neew ratiiiing g g g g g  ====> $workcount');
         transaction.update(artisanRef, {
           'rating': newRating,
           'workcount': FieldValue.increment(1),
