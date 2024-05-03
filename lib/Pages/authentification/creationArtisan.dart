@@ -7,25 +7,29 @@ import 'package:reda/Services/notifications.dart';
 import '../WelcomeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:country_code_picker/country_code_picker.dart'; // Importer le package country_code_picker
+import 'package:country_code_picker/country_code_picker.dart';
 
 NotificationServices notificationServices = NotificationServices();
 late String token;
+late ValueNotifier<String> selectedDomaine;
+late List<String> domaines = [];
+late List<String> allPrestations = [];
+List<String> selectedPrestations = [];
 
-void getToken() async {
+Future<void> getToken() async {
   token = await notificationServices.getDeviceToken() ?? '';
 }
 
 class CreationArtisanPage extends StatelessWidget {
-  const CreationArtisanPage({super.key});
+  const CreationArtisanPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Inscription Page',
-      theme: ThemeData.light(), // Utiliser le thème clair par défaut
+      theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const Scaffold(
+      home: Scaffold(
         body: CreationArtisanScreen(),
       ),
     );
@@ -33,15 +37,14 @@ class CreationArtisanPage extends StatelessWidget {
 }
 
 class CreationArtisanScreen extends StatefulWidget {
-  const CreationArtisanScreen({super.key});
+  const CreationArtisanScreen({Key? key}) : super(key: key);
 
   @override
   _CreationArtisanScreenState createState() => _CreationArtisanScreenState();
 }
 
 class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
-  final _formKey = GlobalKey<FormState>(); // Définir _formKey ici
-
+  final _formKey = GlobalKey<FormState>();
   bool _showPassword = false;
   bool _loading = false;
   final TextEditingController _passwordController = TextEditingController();
@@ -55,8 +58,49 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
-  late ValueNotifier<String> selectedDomaine;
-  late List<String> domaines = [];
+  Future<List<String>> fetchPrestationsByDomaine(String selectedDomaine) async {
+    List<String> prestations = [];
+
+    if (selectedDomaine.isEmpty) {
+      print('Erreur: Le domaine sélectionné est vide.');
+      return prestations;
+    }
+    try {
+      print(
+          "Le domaine sélectionné: $selectedDomaine"); // Ajout d'un message de débogage
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Domaine')
+          .where('Nom',
+              isEqualTo: selectedDomaine) // Utilisation du nom du domaine
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        String domaineId = querySnapshot.docs.first.id;
+        QuerySnapshot prestationsSnapshot = await FirebaseFirestore.instance
+            .collection('Domaine')
+            .doc(domaineId)
+            .collection('Prestations')
+            .get();
+
+        prestationsSnapshot.docs.forEach((prestationDoc) async {
+          String nomPrestation = prestationDoc['nom_prestation'];
+          prestations.add(nomPrestation);
+        });
+      }
+
+      setState(() {
+        allPrestations = prestations; // Mise à jour de la liste de prestations
+      });
+
+      print(
+          "Prestations possibles: $prestations"); // Ajout d'un message de débogage
+      return prestations;
+    } catch (e) {
+      print("Erreur lors de la récupération des prestations: $e");
+      return prestations;
+    }
+  }
 
   @override
   void initState() {
@@ -65,14 +109,18 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
     fetchDomaines().then((domainesList) {
       setState(() {
         domaines = domainesList;
-        selectedDomaine.value = domaines.isNotEmpty ? domaines.first ?? '' : '';
+        selectedDomaine.value = domaines.isNotEmpty ? domaines.first : '';
       });
+    });
+
+    selectedDomaine.addListener(() {
+      fetchPrestationsByDomaine(selectedDomaine.value); // Call on change
     });
   }
 
   @override
   void dispose() {
-    selectedDomaine.dispose(); // Libérer les ressources de selectedDomaine
+    selectedDomaine.dispose();
     super.dispose();
   }
 
@@ -83,19 +131,16 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance.collection('Domaine').get();
 
-      // Parcours de tous les documents de la collection "Domaine"
       for (var doc in querySnapshot.docs) {
-        // Ajout du champ "Nom" à la liste des domaines
         domaines.add(doc['Nom']);
       }
     } catch (e) {
       print("Erreur lors de la récupération des domaines: $e");
     }
-
     return domaines;
   }
 
-  void handleSubmit() async {
+  Future<void> handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.value.text;
       final password = _passwordController.value.text;
@@ -108,61 +153,66 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
       setState(() => _loading = true);
 
-      getToken();
-      void signUp() async {
-        try {
-          User? user = await _auth.signUpwithEmailAndPassword(email, password);
-          String id = user != null ? user.uid : '';
-          ArtisanModel newArtisan = ArtisanModel(
-              id: id,
-              nom: name,
-              numTel: number,
-              adresse: adresse,
-              email: email,
-              motDePasse: password,
-              pathImage: '',
-              latitude: position['latitude'],
-              longitude: position['longitude'],
-              statut: true,
-              domaine:
-                  selectedDomaine.value, // Utilisez le domaine sélectionné ici
-              token: '',
-              nbRating: 1);
+      await getToken();
+      await signUp(email, password, name, number, adresse, position);
 
-          if (user != null) {
-            print("User successfully created");
-            UserRepository userRepository = UserRepository();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const WelcomePage()),
-            );
-            try {
-              await FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(id)
-                  .set(newArtisan.toJson());
-
-              print('Document added successfully');
-              print("ID auth : $id");
-            } on FirebaseAuthException catch (e) {
-              print("Error adding document: $e");
-            }
-          } else {
-            print("Some error happend");
-          }
-        } on FirebaseAuthException catch (e) {
-          if (e.code == "weak-password") {
-            print('The password provided is too weak');
-          } else if (e.code == "email-already-in-use") {
-            print('The account already exists for that email');
-          }
-        } catch (e) {
-          print(e.toString());
-        }
-      }
-
-      signUp();
       setState(() => _loading = false);
+    }
+  }
+
+  Future<void> signUp(String email, String password, String name, String number,
+      String adresse, Map position) async {
+    try {
+      User? user = await _auth.signUpwithEmailAndPassword(email, password);
+      String id = user != null ? user.uid : '';
+      ArtisanModel newArtisan = ArtisanModel(
+          id: id,
+          nom: name,
+          numTel: number,
+          adresse: adresse,
+          email: email,
+          motDePasse: password,
+          pathImage: '',
+          latitude: position['latitude'],
+          longitude: position['longitude'],
+          statut: true,
+          domaine: selectedDomaine.value,
+          prestations: selectedPrestations,
+          token: '',
+          rating: 4,
+          vehicule: false,
+          nbsignalement: 0,
+          workcount: 0);
+
+      if (user != null) {
+        print("User successfully created");
+        UserRepository userRepository = UserRepository();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const WelcomePage()),
+        );
+        try {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(id)
+              .set(newArtisan.toJson());
+
+          print('Document added successfully');
+          print("ID auth : $id");
+        } on FirebaseAuthException catch (e) {
+          print("Error adding document: $e");
+        }
+      } else {
+        print("Some error happend");
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "weak-password") {
+        print('The password provided is too weak');
+      } else if (e.code == "email-already-in-use") {
+        print('The account already exists for that email');
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -183,7 +233,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
               child: Column(
                 children: [
                   Image.asset(
-                    'lib/Front/assets/logo.png',
+                    'assets/logo.png',
                     width: 85,
                     height: 90,
                   ),
@@ -198,7 +248,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 ],
               ),
             ),
-            // Login fields
             Padding(
               padding: const EdgeInsets.only(left: 0, top: 60),
               child: Column(
@@ -256,15 +305,11 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             border: const UnderlineInputBorder(),
                             suffixIcon: const Icon(Icons.phone),
                             prefixIcon: CountryCodePicker(
-                              // Utiliser CountryCodePicker pour afficher une liste déroulante de pays
                               onChanged: (CountryCode? code) {
                                 print(code);
                               },
-                              initialSelection:
-                                  'DZ', // Sélectionner l'Algérie comme pays par défaut
-                              favorite: const [
-                                'DZ'
-                              ], // Définir les pays favoris
+                              initialSelection: 'DZ',
+                              favorite: const ['DZ'],
                               showCountryOnly: true,
                               showOnlyCountryWhenClosed: true,
                               alignLeft: false,
@@ -289,7 +334,11 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             border: const UnderlineInputBorder(),
                           ),
                           onChanged: (String? newValue) {
-                            selectedDomaine.value = newValue!;
+                            setState(() {
+                              selectedDomaine.value = newValue ?? '';
+                              fetchPrestationsByDomaine(newValue ?? '');
+                              selectedPrestations.clear();
+                            });
                           },
                           items: domaines.map<DropdownMenuItem<String>>(
                             (String value) {
@@ -361,7 +410,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Veuillez confirmer le mot de passe';
                             } else {
-                              // Vérifier si cela correspond à la valeur dans le champ "Créer mot de passe"
                               if (value != _passwordController.value.text) {
                                 return 'Les mots de passe ne correspondent pas';
                               }
@@ -392,6 +440,56 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  DropdownButtonFormField<String>(
+                    value: null,
+                    hint: Text('Sélectionner les prestations'),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        if (newValue != null && newValue == 'Tout') {
+                          selectedPrestations = List.from(allPrestations);
+                        } else {
+                          if (selectedPrestations.contains('Tout')) {
+                            selectedPrestations.remove('Tout');
+                          }
+                          if (selectedPrestations.contains(newValue)) {
+                            selectedPrestations.remove(newValue);
+                          } else {
+                            selectedPrestations.add(newValue!);
+                          }
+                        }
+                      });
+                    },
+                    items: [
+                      DropdownMenuItem<String>(
+                        value: 'Tout',
+                        child: Text('Sélectionner tout'),
+                      ),
+                      ...allPrestations.map<DropdownMenuItem<String>>(
+                        (prestation) {
+                          return DropdownMenuItem<String>(
+                            value: prestation,
+                            child: Text(prestation),
+                          );
+                        },
+                      ).toList(),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    children: selectedPrestations.map((prestation) {
+                      return Chip(
+                        label: Text(prestation),
+                        onDeleted: () {
+                          setState(() {
+                            selectedPrestations.remove(prestation);
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
                   const SizedBox(height: 25),
                   ElevatedButton(
                     onPressed: () => handleSubmit(),
@@ -408,7 +506,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                       ),
                     ),
                     child: _loading
-                        ? const SizedBox(
+                        ? SizedBox(
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(

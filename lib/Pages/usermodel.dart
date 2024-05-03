@@ -11,6 +11,8 @@ class UserModel {
   final String pathImage;
   final double latitude;
   final double longitude;
+  final bool vehicule;
+  final int nbsignalement;
   final String token;
 
   UserModel({
@@ -24,6 +26,8 @@ class UserModel {
     required this.pathImage,
     required this.latitude,
     required this.longitude,
+    required this.vehicule,
+    required this.nbsignalement,
     required this.token,
   });
 
@@ -38,20 +42,25 @@ class UserModel {
         pathImage = '',
         latitude = 0,
         longitude = 0,
+        vehicule = false,
+        nbsignalement = 0,
         token = '';
   static UserModel fromJson(Map<String, dynamic> json) {
     return UserModel(
-        id: json['id'] ?? '',
-        nom: json['nom'] ?? '',
-        numTel: json['numTel'] ?? '',
-        adresse: json['adresse'] ?? '',
-        email: json['email'] ?? '',
-        motDePasse: json['motDePasse'] ?? '',
-        role: json['role'] ?? '',
-        pathImage: json['pathImage'] ?? '',
-        latitude: json['latitude'],
-        longitude: json['longitude'],
-        token: json['token']);
+      id: json['id'] ?? '',
+      nom: json['nom'] ?? '',
+      numTel: json['numTel'] ?? '',
+      adresse: json['adresse'] ?? '',
+      email: json['email'] ?? '',
+      motDePasse: json['motDePasse'] ?? '',
+      role: json['role'] ?? '',
+      pathImage: json['pathImage'] ?? '',
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      vehicule: json['vehicule'],
+      nbsignalement: json['nbsignalement'],
+      token: json['token'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +74,7 @@ class UserModel {
       'pathImage': pathImage,
       'latitude': latitude,
       'longitude': longitude,
+      'vehicule': vehicule,
       'token': token
     };
   }
@@ -79,36 +89,44 @@ class UserModel {
       String? pathImage,
       double? latitude,
       double? longitude,
+      bool? vehicule,
+      int? nbsignalement,
       String? token}) {
     return UserModel(
-        id: id ?? id,
-        nom: nom ?? this.nom,
-        numTel: numTel ?? this.numTel,
-        adresse: adresse ?? this.adresse,
-        email: email ?? this.email,
-        motDePasse: motDePasse ?? this.motDePasse,
-        role: role ?? this.role,
-        pathImage: pathImage ?? this.pathImage,
-        latitude: latitude ?? this.latitude,
-        longitude: longitude ?? this.longitude,
-        token: token ?? this.token);
+      id: id ?? id,
+      nom: nom ?? this.nom,
+      numTel: numTel ?? this.numTel,
+      adresse: adresse ?? this.adresse,
+      email: email ?? this.email,
+      motDePasse: motDePasse ?? this.motDePasse,
+      role: role ?? this.role,
+      pathImage: pathImage ?? this.pathImage,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      vehicule: vehicule ?? this.vehicule,
+      nbsignalement: nbsignalement ?? this.nbsignalement,
+      token: token ?? this.token,
+    );
   }
 
   factory UserModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return UserModel(
-        id: document.id,
-        nom: data['nom'],
-        numTel: data['numTel'],
-        adresse: data['adresse'],
-        email: data['email'],
-        motDePasse: data['motdepasse'],
-        role: data['role'],
-        pathImage: data['pathImage'],
-        latitude: data['latitude'],
-        longitude: data['longitude'],
-        token: data['token']);
+      id: document.id,
+      nom: data['nom'],
+      numTel: data['numTel'],
+      adresse: data['adresse'],
+      email: data['email'],
+      motDePasse: data['motdepasse'],
+      role: data['role'],
+      pathImage: data['pathImage'],
+      latitude: data['latitude'],
+      longitude: data['longitude'],
+      vehicule: data['vehicule'],
+      nbsignalement: data['nbsignalement'],
+      token: data['token'],
+    );
   }
 }
 
@@ -123,6 +141,8 @@ class ClientModel extends UserModel {
       required super.pathImage,
       required super.longitude,
       required super.latitude,
+      required super.vehicule,
+      required super.nbsignalement,
       required super.token})
       : super(role: 'client');
 }
@@ -130,7 +150,9 @@ class ClientModel extends UserModel {
 class ArtisanModel extends UserModel {
   final bool statut;
   final String domaine;
-  int nbRating = 1;
+  final List<String> prestations;
+  int rating = 4;
+  int workcount = 0;
 
   ArtisanModel(
       {required super.id,
@@ -144,35 +166,44 @@ class ArtisanModel extends UserModel {
       required super.latitude,
       required super.longitude,
       required this.domaine,
+      required super.vehicule,
+      required super.nbsignalement,
       required super.token,
-      required this.nbRating})
-      : super(
-          role: 'artisan',
-        );
+      required this.rating,
+      required this.workcount,
+      required this.prestations})
+      : super(role: 'artisan');
 
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = super.toJson();
     data['statut'] = statut;
     data['domaine'] = domaine;
-    data['nbRating'] = nbRating;
+    data['rating'] = rating;
+    data['workcount'] = workcount;
+    data['prestations'] = prestations;
     return data;
   }
 
   static ArtisanModel fromJson(Map<String, dynamic> json) {
     return ArtisanModel(
-        id: json['id'] ?? '',
-        nom: json['nom'] ?? '',
-        numTel: json['numTel'] ?? '',
-        adresse: json['adresse'] ?? '',
-        email: json['email'] ?? '',
-        motDePasse: json['motDePasse'] ?? '',
-        pathImage: json['pathImage'] ?? '',
-        latitude: json['latitude'],
-        longitude: json['longitude'],
-        statut: json['statut'],
-        domaine: json['domaine'],
-        nbRating: json['nbRating'],
-        token: json['token']);
+      id: json['id'] ?? '',
+      nom: json['nom'] ?? '',
+      numTel: json['numTel'] ?? '',
+      adresse: json['adresse'] ?? '',
+      email: json['email'] ?? '',
+      motDePasse: json['motDePasse'] ?? '',
+      pathImage: json['pathImage'] ?? '',
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      statut: json['statut'],
+      domaine: json['domaine'],
+      prestations: json['prestations'],
+      rating: json['rating'],
+      vehicule: json['vehicule'],
+      nbsignalement: json['nbsignalement'],
+      token: json['token'],
+      workcount: json['workcount'],
+    );
   }
 }

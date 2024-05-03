@@ -15,6 +15,7 @@ import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/authentification/connexion.dart';
+import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 import 'firebase_options.dart';
@@ -304,7 +305,7 @@ class MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: ConnectivityWidget(
+          /* home: ConnectivityWidget(
             child: Container(
               color: Colors.white, // Couleur de l'arrière-plan de la page
               child: Center(
@@ -325,8 +326,8 @@ class MyAppState extends State<MyApp> {
                             : const NotifUrgente(),
               ),
             ),
-          ),
-          //home: const GestionArtisansPage(),
+          ),*/
+          home: const CreationArtisanPage(),
           routes: {
             "/PublierDemandePage": (context) => NotifDemande(),
             "/AccepteParArtisan": (context) => DemandeAccepteePage(),
