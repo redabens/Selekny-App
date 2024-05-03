@@ -1,4 +1,4 @@
-class GestionUsers{
+class GestionUsers {
   final String userID;
   final String job;
 
@@ -7,10 +7,10 @@ class GestionUsers{
     required this.job,
   });
 
-  Map<String, dynamic> toMap(){
-    return{
-      'userID':userID,
-      'job':job,
+  Map<String, dynamic> toMap() {
+    return {
+      'userID': userID,
+      'job': job,
     };
   }
 }

@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:reda/Services/user_service.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Admin/Pages/GestionsUsers/gestionClients_page.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
-import 'gestionClients_page.dart';
-
-
+import 'package:reda/Pages/authentification/creationArtisan.dart';
+import '../../../Pages/retourAuth.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
 class GestionArtisansPage extends StatefulWidget {
   const GestionArtisansPage({
@@ -19,22 +19,26 @@ class GestionArtisansPage extends StatefulWidget {
 }
 
 class _GestionArtisansPageState extends State<GestionArtisansPage> {
-  bool isEnCoursSelected = true;  // variable de suivi de l'état
+  bool isEnCoursSelected = true; // variable de suivi de l'état
+  int _currentIndex = 1;
+  String searchText = '';
 
   void _onItemTap(bool isEnCours) {
     setState(() {
       isEnCoursSelected = isEnCours;
     });
   }
+
   final GestionUsersService _GestionUsersService = GestionUsersService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
     if (userDoc.exists) {
-      String pathImage = userDoc['PathImage'];
+      String pathImage = userDoc['pathImage'];
       // Retourner le PathImage
       final reference = FirebaseStorage.instance.ref().child(pathImage);
       final url = await reference.getDownloadURL();
@@ -43,10 +47,12 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
       return "";
     }
   }
+
   Future<String> getUserName(String userID) async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
     if (userDoc.exists) {
-      String userName = userDoc['name'];
+      String userName = userDoc['nom'];
       return userName;
     } else {
       return 'default_name';
@@ -54,9 +60,10 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
   }
 
   Future<String> getUserJob(String userID) async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('User').doc(userID).get();
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
     if (userDoc.exists) {
-      String job = userDoc['job'];
+      String job = userDoc['domaine'];
       return job;
     } else {
       return 'default';
@@ -90,7 +97,6 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
             centerTitle: true,
           ),
           const SizedBox(height: 18),
-          // Rest of your body content
           _buildSelectionRow(),
           Padding(
             padding: const EdgeInsets.only(top: 20.0, left: 26, right: 26),
@@ -111,6 +117,11 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          searchText = value;
+                        });
+                      },
                       decoration: InputDecoration(
                         hintText: 'Recherche des utilisateurs...',
                         hintStyle: GoogleFonts.poppins(
@@ -132,10 +143,112 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
           const SizedBox(height: 10),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFF8F8F8),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex:
+            _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        iconSize: 30,
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AllSignalementsPage(),
+                  ),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/signalement.png',
+                  color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GestionArtisansPage(),
+                  ),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/gestion.png',
+                  color: _currentIndex == 1
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CreationArtisanPage(),
+                  ),
+                );
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutartisan.png',
+                  color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RetourAuth(),
+                    ));
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'icons/ajoutdomaine.png',
+                  color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
+                ),
+              ),
+            ),
+            label: '',
+          ),
+        ],
+      ),
     );
   }
-
-
 
   Widget _buildGestionUsersList() {
     return StreamBuilder(
@@ -148,20 +261,23 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
           return const Text('Loading...');
         }
         final documents = snapshot.data!.docs;
-        for (var doc in documents) {
-          print("====> Document Data: ${doc.data()}");
-        }
+        final filteredDocuments = documents.where((document) {
+          final userData = document.data() as Map<String, dynamic>;
+          final userName = userData['nom'] as String;
+          return userName.toLowerCase().contains(searchText.toLowerCase());
+        }).toList();
         return FutureBuilder<List<Widget>>(
-            future: Future.wait(documents.map((document) => _buildGestionUsersItem(document))),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text('Error loading users: ${snapshot.error}');
-              }
-              if (!snapshot.hasData) {
-                return const CircularProgressIndicator();
-              }
-              return ListView(children: snapshot.data!);
+          future: Future.wait(filteredDocuments
+              .map((document) => _buildGestionUsersItem(document))),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error loading users: ${snapshot.error}');
             }
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return ListView(children: snapshot.data!);
+          },
         );
       },
     );
@@ -174,14 +290,13 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
     String userName = "??????";
     String job = "?????";
     try {
-     userName = await getUserName(userID);
+      userName = await getUserName(userID);
       print("nooooooooooooooooooom:$userName");
       job = await getUserJob(userID);
       print("le job:$job");
-     profileImage = await getUserPathImage(userID);
-    print("l'url :$profileImage");
+      profileImage = await getUserPathImage(userID);
+      print("l'url :$profileImage");
     } catch (error) {
-
       print('zzzzzzzzzzzzzzzz');
       print("Error fetching user image: $error");
     }
@@ -190,23 +305,13 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DetGestionUsers(userName: userName, job: job,profileImage: profileImage),
-
+          DetGestionUsers(
+              userName: userName, job: job, profileImage: profileImage),
+          const SizedBox(height: 14),
         ],
       ),
     );
   }
-
-
-
-
-
-
-
-
-
-
-
 
   Widget _buildSelectionRow() {
     return Row(
@@ -215,21 +320,22 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
         Expanded(
           child: GestureDetector(
             onTap: () => _onItemTap(true),
-            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
+            child: Column(
+              // Utiliser une colonne pour séparer le texte de la ligne
               children: [
                 Text(
                   'Mes Artisans',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                    color: isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 12), // Espace entre le texte et la ligne
+                SizedBox(height: 12), // Espace entre le texte et la ligne
                 Container(
                   height: isEnCoursSelected ? 4 : 1, // Épaisseur de la ligne
-                  color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                  color: isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
                 ),
               ],
             ),
@@ -237,15 +343,16 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
         ),
         Expanded(
           child: GestureDetector(
-            onTap: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const GestionClientsPage())),
-            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => GestionClientsPage())),
+            child: Column(
+              // Utiliser une colonne pour séparer le texte de la ligne
               children: [
                 Text(
                   'Mes Clients',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                    color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
@@ -253,7 +360,9 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 const SizedBox(height: 10), // Espace entre le texte et la ligne
                 Container(
                   height: isEnCoursSelected ? 1 : 4, // Épaisseur de la ligne
-                  color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                  color: !isEnCoursSelected
+                      ? const Color(0xFFF5A529)
+                      : Colors.grey,
                 ),
               ],
             ),
@@ -261,7 +370,5 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
         ),
       ],
     );
-
   }
-
 }

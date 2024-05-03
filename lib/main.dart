@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:get/get.dart';
+import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 
@@ -303,7 +304,7 @@ class MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: ConnectivityWidget(
+          /*home: ConnectivityWidget(
             child: Container(
               color: Colors.white, // Couleur de l'arrière-plan de la page
               child: Center(
@@ -324,7 +325,8 @@ class MyAppState extends State<MyApp> {
                             : const NotifUrgente(),
               ),
             ),
-          ),
+          ),*/
+          home: const GestionArtisansPage(),
           routes: {
             "/PublierDemandePage": (context) => NotifDemande(),
             "/AccepteParArtisan": (context) => DemandeAccepteePage(),
