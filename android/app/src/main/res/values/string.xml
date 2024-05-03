@@ -1,9 +1,9 @@
-<resources>   
-<string name="app_name">selekny-app</string>
+<resources>
+    <string name="app_name">selekny-app</string>
 
-<string name="facebook_app_id">2275293379528815</string>
-<string name="fb_login_protocol_scheme">fb2275293379528815</string>
-<string name="facebook_client_token">9d9cf520dcc09b6c56db1232b0cd0c98</string>
+    <string name="facebook_app_id">2275293379528815</string>
+    <string name="fb_login_protocol_scheme">fb2275293379528815</string>
+    <string name="facebook_client_token">9d9cf520dcc09b6c56db1232b0cd0c98</string>
 
 
 </resources>
