@@ -8,6 +8,7 @@ import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
+import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
@@ -289,11 +290,11 @@ class MyAppState extends State<MyApp> {
             child: Container(
               color: Colors.white, // Couleur de l'arrière-plan de la page
               child: Center(
-                child: !isLogin
+                child: AjouterCommentairePage(nomPrestataire: 'mohamed benabed', artisanID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2',), /*!isLogin
                     ? const WelcomePage()
                     : (role == 'client')
                     ? const HomePage()
-                    : const ActiviteToday(),
+                    : const ActiviteToday(),*/
               ),
             ),
           ),

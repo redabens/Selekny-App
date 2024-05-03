@@ -302,7 +302,6 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              // Ajout de la vérification pour les données vides
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
