@@ -22,7 +22,9 @@ class RendezVousClient extends StatefulWidget {
   final String prestation;
   final String imageUrl;
   final String nomArtisan;
-  final int rating;
+  final double rating;
+  final int workcount;
+  final bool vehicule;
   final String phone;
   final bool urgence;
   //-----------------
@@ -63,7 +65,10 @@ class RendezVousClient extends StatefulWidget {
     required this.heuredebut,
     required this.heurefin,
     required this.idartisan,
-    required this.timestamp, required this.adresseartisan
+    required this.timestamp,
+    required this.adresseartisan,
+    required this.workcount,
+    required this.vehicule,
   });
   @override
   State<RendezVousClient> createState() => _RendezVousClientState();
@@ -206,7 +211,8 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresseartisan,), // Navigation to ContactPage
+                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
+                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
                               ),
                               ); // Example navigation
                             },

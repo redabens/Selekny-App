@@ -10,12 +10,12 @@ class Signaler extends StatefulWidget {
   final String nomClient;
   final String phone;
   final String adress;
-  //final bool isVehicled;
+  final bool isVehicled;
   const Signaler({super.key,
     required this.image,
     required this.nomClient,
     required this.phone,
-    required this.adress, required this.idclient,
+    required this.adress, required this.idclient, required this.isVehicled,
   });
 
   @override
@@ -59,7 +59,7 @@ class _SignalerState extends State<Signaler> {
         },
         child:Stack(
           children: [
-            ProfilePage1(image: widget.image, nomClient: widget.nomClient, phone: widget.phone, adress: widget.adress, idclient: widget.idclient,), // Page de profil en arrière-plan
+            ProfilePage1(image: widget.image, nomClient: widget.nomClient, phone: widget.phone, adress: widget.adress, idclient: widget.idclient, isVehicled: widget.isVehicled,), // Page de profil en arrière-plan
             Container(
               color: const Color.fromRGBO(128, 128, 128, 0.7), // Couleur grise semi-transparente
               width: double.infinity,
@@ -122,7 +122,7 @@ class _SignalerState extends State<Signaler> {
                         GestureDetector(
                           onTap:() {
                             _signalementsService.sendSignalement(_commentController.value.text.toString(), widget.idclient, FirebaseAuth.instance.currentUser!.uid);
-                            Navigator.pop(context, MaterialPageRoute(builder: (context)=>ProfilePage1(image: widget.image, nomClient: widget.nomClient, phone: widget.phone, adress: widget.adress, idclient: widget.idclient,)),);  // Revenir à ProfilePage2
+                            Navigator.pop(context, MaterialPageRoute(builder: (context)=>ProfilePage1(image: widget.image, nomClient: widget.nomClient, phone: widget.phone, adress: widget.adress, idclient: widget.idclient, isVehicled: widget.isVehicled,)),);  // Revenir à ProfilePage2
                           },
                           child: Container(
                             decoration: BoxDecoration(

@@ -7,7 +7,7 @@ class ProfileBody2 extends StatelessWidget {
   final String name;
   final String domaine;
   final String phone;
-  //final bool isVehicled;
+  final bool isVehicled;
   final String rating;
   final int workCount;
   final VoidCallback onContact;
@@ -20,7 +20,7 @@ class ProfileBody2 extends StatelessWidget {
     required this.name,
     required this.domaine,
     required this.phone,
-    //required this.isVehicled,
+    required this.isVehicled,
     required this.onContact,
     required this.onReport,
     required this.rating,
@@ -238,7 +238,7 @@ class ProfileBody2 extends StatelessWidget {
             ),
           ),
           // Section "Véhiculé"
-          /*SizedBox(height: screenHeight * 0.03),
+          SizedBox(height: screenHeight * 0.03),
           Container(
             width: screenWidth * 0.9,
             height: screenHeight * 0.055,
@@ -246,13 +246,13 @@ class ProfileBody2 extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(screenWidth * 0.05),
               border: Border.all(color: Colors.blue),
-              color: isVehicled ? const Color(0xFF7CF6A5) : Colors.white,
+              color: isVehicled ? const Color(0xFF7CF6A5) : Colors.red.withOpacity(0.5),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Image.asset(
-                  'asset/Car.png', // Car icon
+                  'assets/Car.png', // Car icon
                   width: screenWidth * 0.05,
                   height: screenWidth * 0.05,
                 ),
@@ -266,7 +266,7 @@ class ProfileBody2 extends StatelessWidget {
                 ),
               ],
             ),
-          ),*/
+          ),
           SizedBox(height: screenHeight * 0.08),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

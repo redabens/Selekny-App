@@ -18,7 +18,9 @@ class ChatPage extends StatefulWidget{
   final String phone;
   final String adresse;
   final String domaine;
-  final int rating;
+  final double rating;
+  final int workcount;
+  final bool vehicule;
   final String receiverUserID;
   final String currentUserId;
   final int type;
@@ -29,7 +31,7 @@ class ChatPage extends StatefulWidget{
     required this.type, required this.userName,
     required this.profileImage, required this.otheruserId,
     required this.phone, required this.adresse,
-    required this.domaine, required this.rating,
+    required this.domaine, required this.rating, required this.workcount, required this.vehicule,
   });
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -90,7 +92,7 @@ class _ChatPageState extends State<ChatPage> {
                         MaterialPageRoute(    //otherUserId
                           builder: (context) => ProfilePage2(idartisan: widget.otheruserId, imageurl: widget.profileImage,
                               nomartisan: widget.userName, phone: widget.phone,
-                              domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse,),
+                              domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse, workcount: widget.workcount, vehicule: widget.vehicule,),
                         ),
                       );
                     }else{
@@ -98,7 +100,7 @@ class _ChatPageState extends State<ChatPage> {
                         context,
                         MaterialPageRoute(    //otherUserId
                           builder: (context) => ProfilePage1(image: widget.profileImage, nomClient: widget.userName,
-                            phone: widget.phone, adress: widget.adresse, idclient: widget.otheruserId,),
+                            phone: widget.phone, adress: widget.adresse, idclient: widget.otheruserId, isVehicled: widget.vehicule,),
                         ),
                       );
                     } // Example action (replace with your desired functionality)

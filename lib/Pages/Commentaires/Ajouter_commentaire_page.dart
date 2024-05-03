@@ -43,106 +43,107 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          const HomePage(),
-          Container(
-            color: const Color.fromRGBO(128, 128, 128, 0.7),
-            width: double.infinity,
-            height: double.infinity,
-          ),
-          Center(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              width: 300,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.grey),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: [
+              const HomePage(),
+              Container(
+                color: const Color.fromRGBO(128, 128, 128, 0.7),
+                width: double.infinity,
+                height: double.infinity,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Noter votre prestataire : ${widget.nomPrestataire}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.grey),
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      5,
-                          (index) => IconButton(
-                        iconSize: 40,
-                        padding: const EdgeInsets.symmetric(horizontal: 1),
-                        icon: Icon(
-                          index < _lastStarIndex ? Icons.star : Icons.star_border,
-                          color: index < _lastStarIndex ? Colors.yellow : Colors.grey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Noter votre prestataire : ${widget.nomPrestataire}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _lastStarIndex = index + 1;
-                          });
-                        },
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _commentController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            maxLength: 66, // Limite de 150 caractères
-                            decoration: const InputDecoration(
-                              hintText: 'Ajouter un commentaire',
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(10),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          5,
+                              (index) => IconButton(
+                            iconSize: 40,
+                            padding: const EdgeInsets.symmetric(horizontal: 1),
+                            icon: Icon(
+                              index < _lastStarIndex ? Icons.star : Icons.star_border,
+                              color: index < _lastStarIndex ? Colors.yellow : Colors.grey,
                             ),
-                            style: const TextStyle(
-                                fontSize: 15,
-                                height: 1.0, // Augmenter l'espace entre les lignes
-
-                                textBaseline: TextBaseline.alphabetic), // Ajout d'un petit espace entre les lignes
+                            onPressed: () {
+                              setState(() {
+                                _lastStarIndex = index + 1;
+                              });
+                            },
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.send),
-                          onPressed: () async {
-                            await _commentaireService.sendCommentaire(widget.artisanID, _commentController.text,_lastStarIndex);
-                            // clear the text controller after sending the message
-                            _commentController.clear();
-                            await Future.delayed(Duration(milliseconds: 100));
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => const HomePage()),
-                            );
-                          }
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey),
                         ),
-                      ],
-                    ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _commentController,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: null,
+                                maxLength: 66, // Limite de 150 caractères
+                                decoration: const InputDecoration(
+                                  hintText: 'Ajouter un commentaire',
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.all(10),
+                                ),
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    height: 1.0, // Augmenter l'espace entre les lignes
+
+                                    textBaseline: TextBaseline.alphabetic), // Ajout d'un petit espace entre les lignes
+                              ),
+                            ),
+                            IconButton(
+                                icon: const Icon(Icons.send),
+                                onPressed: () async {
+                                  await _commentaireService.sendCommentaire(widget.artisanID, _commentController.text,_lastStarIndex);
+                                  await _commentaireService.updateRating(widget.artisanID, _lastStarIndex);
+                                  // clear the text controller after sending the message
+                                  _commentController.clear();
+                                  await Future.delayed(const Duration(milliseconds: 100));
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const HomePage()),
+                                  );
+                                }
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    )
+        )
     );
   }
 }

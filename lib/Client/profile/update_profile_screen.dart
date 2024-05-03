@@ -39,7 +39,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   double longitude = 0;
   String newUrlImg = '';
   String fileName = '';
-
+  bool vehicule = false;
   bool isLoading = true;
 
   // Colors
@@ -107,6 +107,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           latitude = userModel.latitude;
           longitude = userModel.longitude;
           oldImgUrl = userModel.pathImage;
+          vehicule = userModel.vehicule;
           isLoading = false;
           print("User data fetched inside setState");
         });
@@ -131,7 +132,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         motDePasse: newPassword == '' ? password : newPassword,
         pathImage: fileName,
         latitude: userModel.latitude,
-        longitude: userModel.longitude, token: userModel.token);
+        longitude: userModel.longitude,
+        token: userModel.token,
+        vehicule: userModel.vehicule);
 
     try {
       await userRepository.updateUser(updatedUser);
@@ -189,7 +192,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 motDePasse: newPassword == '' ? password : newPassword,
                 pathImage: newUrlImg,
                 latitude: userModel.latitude,
-                longitude: userModel.longitude, token: userModel.token);
+                longitude: userModel.longitude,
+                token: userModel.token,
+                vehicule: userModel.vehicule);
             Navigator.pop(context, updatedUser);
           },
           icon: Container(

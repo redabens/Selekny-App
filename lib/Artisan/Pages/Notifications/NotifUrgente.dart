@@ -76,6 +76,17 @@ class NotifUrgenteState extends State<NotifUrgente> {
     final String phone = userDoc.data()!['numTel'] as String;
     return phone;
   }
+  // get Vehicule user
+  Future<bool> getVehiculeUser(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      print('introuvable');
+      return false;
+    }
+    final bool vehicule = userDoc.data()!['vehicule'] as bool;
+    return vehicule;
+  }
   Future<String> getSyncDemande(Timestamp timestamp) async {
     final DateTime timeDemande = timestamp.toDate();
     final DateTime now = DateTime.now();
@@ -255,6 +266,10 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 child: Text('Error loading comments: ${snapshot.error}'),
               );
             }
+
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
             if (snapshot.data!.isEmpty) {
               return Center(
                   child: Text(
@@ -266,9 +281,6 @@ class NotifUrgenteState extends State<NotifUrgente> {
                       )
                   )
               );
-            }
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
             }
             return ListView(children: snapshot.data!);
           },
@@ -289,6 +301,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
     String idartisan = data['idartisan'];
     String nomClient = await getNameUser(data['idclient']);
     String phone = await getPhoneUser(data['idclient']);
+    bool vehicule = await getVehiculeUser(data['idclient']);
     final String sync = await getSyncDemande(data['timestamp']);
     String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
     return Container(
@@ -312,7 +325,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
             type1: 1, type2: 1,
             nomclient: nomClient, phone: phone,
             demandeid: data['demandeid'], sync: sync,
-            nomArtisan: nomArtisan, idartisan: idartisan,),
+            nomArtisan: nomArtisan, idartisan: idartisan, vehicule: vehicule,),
           const SizedBox(height: 10,),
         ],
       ),

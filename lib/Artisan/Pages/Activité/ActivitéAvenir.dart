@@ -77,6 +77,17 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
     final String phone = userDoc.data()!['numTel'] as String;
     return phone;
   }
+  // get Vehicule user
+  Future<bool> getVehiculeUser(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      print('introuvable');
+      return false;
+    }
+    final bool vehicule = userDoc.data()!['vehicule'] as bool;
+    return vehicule;
+  }
   Future<String> getSyncDemande(Timestamp timestamp) async {
     final DateTime timeDemande = timestamp.toDate();
     final DateTime now = DateTime.now();
@@ -254,6 +265,9 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
                 child: Text('Error loading comments: ${snapshot.error}'),
               );
             }
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
             if (snapshot.data!.isEmpty) {
               return Center(
                   child: Text(
@@ -265,9 +279,6 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
                       )
                   )
               );
-            }
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
             }
             return ListView(children: snapshot.data!);
           },
@@ -286,6 +297,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
     print(nomprestation);
     String nomClient = await getNameUser(data['idclient']);
     String phone = await getPhoneUser(data['idclient']);
+    bool vehicule = await getVehiculeUser(data['idclient']);
     final String sync = await getSyncDemande(data['timestamp']);
     String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
     return Container(
@@ -308,7 +320,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
             longitude: data['longitude'], type1: 2, type2: 2,
             nomclient: nomClient, phone: phone,
             demandeid: document.id, sync: sync,
-            nomArtisan: nomArtisan, idartisan: FirebaseAuth.instance.currentUser!.uid,),
+            nomArtisan: nomArtisan, idartisan: FirebaseAuth.instance.currentUser!.uid, vehicule: vehicule,),
           const SizedBox(height: 10,),
         ],
       ),

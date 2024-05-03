@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeEncours_service.dart';
 import 'package:reda/Client/components/demandeEncours_container.dart';
+import 'package:reda/Services/ModifPrix.dart';
 import '../Home/home.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
@@ -34,7 +35,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final DemandeEncoursService _DemandeEncoursService = DemandeEncoursService();
-
+  final ModifPrixService _modifPrixService = ModifPrixService();
   // get id domaine de la demande (general)
 
   Future<String> getIdDomaineDemande(String demandeID) async {
@@ -83,25 +84,6 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
         throw Exception("Prestation non trouvée");
       }
       return prestation.get('nom_prestation');
-    } catch (e) {
-      print('Erreur lors de l\'obtention de la prestation: $e');
-      return 'Erreur: $e';
-    }
-  }
-
-  //get prix demande
-  Future<String> getPrixDemande(String domaineID,String PrestationID) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    try {
-      DocumentSnapshot domaine = await firestore.collection('Domaine').doc(domaineID).get();
-      if (!domaine.exists) {
-        throw Exception("Domaine non trouvé");
-      }
-      DocumentSnapshot prestation = await domaine.reference.collection('Prestations').doc(PrestationID).get();
-      if (!prestation.exists) {
-        throw Exception("Prestation non trouvée");
-      }
-      return prestation.get('prix');
     } catch (e) {
       print('Erreur lors de l\'obtention de la prestation: $e');
       return 'Erreur: $e';
@@ -181,7 +163,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
           ),
           const SizedBox(height: 18),
           _buildTitleAndDescription(), // le petit texte du début
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           _buildSelectionRow(),
           const SizedBox(height: 2),
           Expanded(
@@ -333,7 +315,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
 
     final String domaineName = await getDomaineDemande(domaineID);
     final String prestation = await getPrestationDemande(domaineID,prestationID);
-    final String prix = await getPrixDemande(domaineID,prestationID);
+    final String prix = await _modifPrixService.getPrixPrestation(domaineID, prestationID);
     final String date = data['date_debut'];
     final String heure = '${data['heure_debut']} - ${data['heure_fin']}';
     final String sync = await getSyncDemande(demandeID);
@@ -380,7 +362,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                SizedBox(height: 12), // Espace entre le texte et la ligne
+                const SizedBox(height: 10), // Espace entre le texte et la ligne
                 Container(
                   height: isEnCoursSelected ? 4 : 1, // Épaisseur de la ligne
                   color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
@@ -406,10 +388,10 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 10), // Espace entre le texte et la ligne
+                const SizedBox(height: 10), // Espace entre le texte et la ligne
                 Container(
                   height: isEnCoursSelected ? 1 : 4, // Épaisseur de la ligne
-                  color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                  color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
                 ),
               ],
             ),
@@ -423,7 +405,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 0),
+        const SizedBox(height: 0),
         Padding( // Add Padding widget here
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           // Set padding values
