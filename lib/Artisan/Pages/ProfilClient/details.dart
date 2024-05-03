@@ -6,7 +6,7 @@ class ProfileBody extends StatelessWidget {
   final String name;
   final String phone;
   final String address;
-  //final bool isVehicled;
+  final bool isVehicled;
   final VoidCallback onContact;
   final VoidCallback onReport;
 
@@ -15,7 +15,7 @@ class ProfileBody extends StatelessWidget {
     required this.name,
     required this.phone,
     required this.address,
-    //required this.isVehicled,
+    required this.isVehicled,
     required this.onContact,
     required this.onReport,
   });
@@ -117,7 +117,7 @@ class ProfileBody extends StatelessWidget {
             ],
           ),
         ),
-        /*SizedBox(height: screenHeight * 0.04),
+        SizedBox(height: screenHeight * 0.04),
         Container(
           width: screenWidth * 0.9,
           height: screenHeight * 0.055,
@@ -144,7 +144,7 @@ class ProfileBody extends StatelessWidget {
               ),
             ],
           ),
-        ),*/
+        ),
         SizedBox(height: screenHeight * 0.07),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

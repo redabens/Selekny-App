@@ -17,6 +17,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
 
 class ConnectivityProvider extends ChangeNotifier {
   ConnectivityResult _connectivityResult = ConnectivityResult.none;
@@ -290,11 +291,13 @@ class MyAppState extends State<MyApp> {
             child: Container(
               color: Colors.white, // Couleur de l'arrière-plan de la page
               child: Center(
-                child: AjouterCommentairePage(nomPrestataire: 'mohamed benabed', artisanID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2',), /*!isLogin
+                child: //AllSignalementsPage(),//GestionArtisansPage(),
+               //AjouterCommentairePage(nomPrestataire: 'mohamed benabed', artisanID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2',),
+               !isLogin
                     ? const WelcomePage()
                     : (role == 'client')
                     ? const HomePage()
-                    : const ActiviteToday(),*/
+                    : const ActiviteToday(),
               ),
             ),
           ),

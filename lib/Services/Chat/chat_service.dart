@@ -23,7 +23,8 @@ class ChatService extends ChangeNotifier {
     //final String currentUserEmail = 'mm_bensemane@esi.dz';
     //final currentUser = _firebaseAuth.currentUser;
 
-    final Timestamp timestamp = Timestamp.now();
+    final DateTime now = DateTime.now();
+    final Timestamp timestamp = Timestamp.fromDate(now);
 
     // Create new message
     Message newMessage = Message(
@@ -42,7 +43,7 @@ class ChatService extends ChangeNotifier {
     await _firestore.collection('Conversations').doc(chatRoomId).set({
       'user1': currentUserId,
       'user2': recieverId,
-      'timestamp': Timestamp.now(),
+      'timestamp': timestamp,
     }, SetOptions(merge: true)); // Merge to avoid overwriting messages
 
     // Add new message to DB

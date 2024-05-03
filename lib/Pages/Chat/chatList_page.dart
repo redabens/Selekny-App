@@ -77,13 +77,13 @@ class _ChatListPageState extends State<ChatListPage> {
   }
 
   // get rating artisan
-  Future<int> getRatingUser(String userID) async {
+  Future<double> getRatingUser(String userID) async {
     final userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
     if (!userDoc.exists) {
       print ('Utilisateur introuvable');
       return 0;
     }
-    final int rating = userDoc.data()!['rating'] as int;
+    final double rating = userDoc.data()!['rating'] as double;
     return rating;
   }
 //get phone number de l'artisan
@@ -125,6 +125,28 @@ class _ChatListPageState extends State<ChatListPage> {
     }
     final String adresse = userDoc.data()!['adresse'] as String;
     return adresse;
+  }
+  // get Vehicule user
+  Future<bool> getVehiculeUser(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      print('introuvable');
+      return false;
+    }
+    final bool vehicule = userDoc.data()!['vehicule'] as bool;
+    return vehicule;
+  }
+  // get Vehicule user
+  Future<int> getWorkCountUser(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      print('introuvable');
+      return 0;
+    }
+    final int workcount = userDoc.data()!['workcount'] as int;
+    return workcount;
   }
   //get image user
   Future<String> getUserPathImage(String userID) async {
@@ -438,7 +460,16 @@ class _ChatListPageState extends State<ChatListPage> {
         }
         final documents = snapshot.data!;
         if (documents.isEmpty) {
-          return const Center(child: Text('No conversations found'));
+          return Center(
+              child: Text(
+                  'Vous n''avez aucune Conversation.',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600],
+                  )
+              )
+          );
         }
         return ListView.builder(
           itemCount: documents.length,
@@ -470,9 +501,10 @@ class _ChatListPageState extends State<ChatListPage> {
     String phone = "";
     String adresse = "";
     String role = "";
-    int rating = 4;
+    double rating = 4;
     String domaine = "";
-
+    bool vehicule = false;
+    int workcount = 0;
     //Teest to get the other user in the coversation
     try {
       if (data['user1'] == FirebaseAuth.instance.currentUser!.uid) {
@@ -482,9 +514,11 @@ class _ChatListPageState extends State<ChatListPage> {
         phone = await getPhoneUser(otherUserId);
         adresse = await getAdresseUser(otherUserId);
         role = await getRoleUser(otherUserId);
+        vehicule = await getVehiculeUser(otherUserId);
         if (role == 'artisan'){
           rating = await getRatingUser(otherUserId);
           domaine = await getDomaineUser(otherUserId);
+          workcount = await getWorkCountUser(otherUserId);
         }
       } else {
         otherUserId = data['user1'];
@@ -493,9 +527,11 @@ class _ChatListPageState extends State<ChatListPage> {
         phone = await getPhoneUser(otherUserId);
         adresse = await getAdresseUser(otherUserId);
         role = await getRoleUser(otherUserId);
+        vehicule = await getVehiculeUser(otherUserId);
         if (role == 'artisan'){
           rating = await getRatingUser(otherUserId);
           domaine = await getDomaineUser(otherUserId);
+          workcount = await getWorkCountUser(otherUserId);
         }
       }
     }catch (error) {
@@ -532,7 +568,7 @@ class _ChatListPageState extends State<ChatListPage> {
                     type: widget.type, userName: userName,
                     profileImage: profileImage,otheruserId: otherUserId,
                     phone: phone, adresse: adresse,
-                    domaine: domaine, rating: rating,
+                    domaine: domaine, rating: rating, workcount: workcount, vehicule: vehicule,
                   ),
                 ),
               );
@@ -546,6 +582,7 @@ class _ChatListPageState extends State<ChatListPage> {
               otheruserId: otherUserId,
               phone: phone, adresse: adresse,
               domaine: domaine, rating: rating,
+              workcount: workcount, vehicule: vehicule,
             ),
           ),
         ],

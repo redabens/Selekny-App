@@ -17,7 +17,10 @@ class HistoriqueService extends ChangeNotifier {
       bool urgence,
       double latitude,
       double longitude,) async {
-    final Timestamp timestamp = Timestamp.now();
+    Timestamp timestamp = Timestamp.now();
+    DateTime dateTime = timestamp.toDate();
+    dateTime= dateTime.subtract(const Duration(hours: 1));
+    timestamp = Timestamp.fromDate(dateTime);
 
     Historique newHistorique = Historique(
       datedebut: datedebut,

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 
-class DetDemandeEncours extends StatefulWidget {
+class DetDemandeEncours extends StatelessWidget {
   final String domaine;
   final String prestation;
   final String date;
@@ -10,54 +9,39 @@ class DetDemandeEncours extends StatefulWidget {
   final String prix;
   final String sync;
   final bool urgence;
-  final String demandeID;
 
   const DetDemandeEncours({
-    Key? key,
+    super.key,
     required this.domaine,
     required this.prestation,
     required this.date,
     required this.heure,
     required this.prix,
     required this.sync,
-    required this.urgence,
-    required this.demandeID,
+    required this.urgence
+  });
 
-  }) : super(key: key);
-
-  @override
-  _DetDemandeEncoursState createState() => _DetDemandeEncoursState();
-}
-
-class _DetDemandeEncoursState extends State<DetDemandeEncours> {
-  bool isCancelled = false;
-DemandeClientService _DemandeClientService = DemandeClientService();
   @override
   Widget build(BuildContext context) {
-    // Get the screen's dimensions to scale layout accordingly
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.05, // Padding based on screen width
+      padding: const EdgeInsets.only(
+        left: 22,
+        right: 22,
       ),
       child: Stack(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(
-              vertical: screenHeight * 0.02, // Margin based on screen height
-            ),
-            padding: EdgeInsets.all(screenWidth * 0.06), // Padding based on screen width
+            margin: const EdgeInsets.symmetric(vertical: 10), // Espacement entre les boxes
+            padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: isCancelled ? Colors.red.withOpacity(0.5) : Colors.white,
-              borderRadius: BorderRadius.circular(screenWidth * 0.05),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: screenWidth * 0.02,
-                  blurRadius: screenWidth * 0.03,
-                  offset: Offset(0, screenWidth * 0.01),
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
@@ -67,19 +51,18 @@ DemandeClientService _DemandeClientService = DemandeClientService();
                 Row(
                   children: [
                     Text(
-                      widget.domaine,
+                      domaine,
                       style: GoogleFonts.poppins(
-                        fontSize: screenWidth * 0.042,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: screenWidth * 0.05),
+                    const SizedBox(width: 10), // Correction de l'espace
                     Expanded(
                       child: Text(
-                        widget.prestation,
+                        prestation,
                         style: GoogleFonts.poppins(
-                          fontSize: screenWidth * 0.035,
-                          color: Colors.black.withOpacity(0.6),
+                          fontSize: 14,
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -87,85 +70,46 @@ DemandeClientService _DemandeClientService = DemandeClientService();
                     ),
                   ],
                 ),
-                SizedBox(height: screenHeight * 0.015),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Image.asset(
-                      'icons/calendrier.png',
-                      height: screenWidth * 0.056,
+                      'icons/calendrier.png', // Chemin de l'image
+                      height: 20,             // Taille de l'image
                     ),
                     Text(
-                      " ${widget.date}",
+                      " $date",
                       style: GoogleFonts.poppins(
-                        fontSize: screenWidth * 0.04,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.6),
-                      ),
-                    ),
-                    Spacer(),
-                    Text(
-                      widget.urgence ? "Urgent" : widget.heure,
-                      style: GoogleFonts.poppins(
-                        fontSize: screenWidth * 0.038,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: widget.urgence ? Colors.red : null,
+                      ),
+                    ),
+                    const Spacer(),   // Ajoute de l'espace entre les éléments
+                    Text(
+                      urgence ? "Urgente" : heure, // Affiche "Urgente" si urgence est vrai, sinon affiche l'heure
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: urgence ? Colors.red : null, // Couleur rouge si urgence est vrai
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: screenHeight * 0.015),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Text(
-                      widget.prix,
+                      prix,
                       style: GoogleFonts.poppins(
-                        color: Color(0xFF3E69FE),
-                        fontWeight: FontWeight.w700,
-                        fontSize: screenWidth * 0.036,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Spacer(flex: 3), // Move button to the right
-                    if (!isCancelled)
-                      ElevatedButton(
-                        onPressed: () async {
-
-                          setState(() {
-                            isCancelled = true;
-                          });
-
-                         // await Future.delayed(const Duration(milliseconds: 100));
-                          await _DemandeClientService.deleteDemandeEncours(widget.demandeID);
-                          isCancelled= false;
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF3E69FE),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(screenWidth * 0.035),
-                          ),
-                        ),
-                        child: Text(
-                          'Annuler',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: screenWidth * 0.036,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                SizedBox(height: screenHeight * 0.015), // Space between button and `sync`
-                if (isCancelled)
-                  SizedBox.shrink(), // Hide button when cancelled
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end, // Align `sync` to the right
-                  children: [
-                    Text(""),
-                    const Spacer(flex:2),
+                    const Spacer(), // Ajoute de l'espace
                     Text(
-                      widget.sync,
+                      sync,
                       style: GoogleFonts.poppins(
-                        fontSize: screenWidth * 0.03,
-                        color: Colors.black.withOpacity(0.7)
+                        fontSize: 12,
                       ),
                     ),
                   ],

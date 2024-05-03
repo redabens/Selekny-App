@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
-import 'package:reda/Services/Signaler.dart';
 
 class Signaler extends StatefulWidget {
   final String idartisan;
@@ -11,10 +10,15 @@ class Signaler extends StatefulWidget {
   final String nomartisan;
   final String phone;
   final String domaine;
-  final int rating;
+  final double rating;
+  final String adresseartisan;
+  final int workcount;
+  final bool vehicule;
   const Signaler({super.key,  required this.idartisan,
     required this.imageUrl, required this.nomartisan,
-    required this.phone, required this.domaine, required this.rating});
+    required this.phone, required this.domaine,
+    required this.rating, required this.adresseartisan,
+    required this.workcount, required this.vehicule});
 
   @override
   _SignalerState createState() => _SignalerState();
@@ -57,7 +61,8 @@ class _SignalerState extends State<Signaler> {
         child: Stack(
           children: [
             ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-              nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,), // Page de profil en arrière-plan
+              nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine,
+              rating: widget.rating, adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Page de profil en arrière-plan
             Container(
               color: const Color.fromRGBO(128, 128, 128, 0.7), // Couleur grise semi-transparente
               width: double.infinity,
@@ -120,7 +125,8 @@ class _SignalerState extends State<Signaler> {
                           onTap:() {
                             _signalementsService.sendSignalement(_commentController.value.text.toString(), widget.idartisan, FirebaseAuth.instance.currentUser!.uid);
                             Navigator.pop(context, MaterialPageRoute(builder: (context)=> ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                              nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,)),);  // Revenir à ProfilePage2
+                              nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine,
+                              rating: widget.rating, adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,)),);  // Revenir à ProfilePage2
                           },
                           child: Container(
                             decoration: BoxDecoration(

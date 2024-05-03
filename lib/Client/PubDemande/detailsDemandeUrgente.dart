@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:reda/Client/Services/demande%20publication/getMateriel.dart';
 import 'package:reda/Client/components/Date.dart';
 import 'package:reda/Client/components/Demande.dart';
+import 'package:reda/Services/ModifPrix.dart';
 import 'Materiel.dart';
 import 'Prix.dart';
 import 'NomPrestation.dart';
@@ -32,9 +33,10 @@ class DetailsDemandeUrgente extends StatefulWidget {
 
 class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
   String? materiel; // Declare materiel as nullable String
-  String? prix;
+  String? prix = '';
   Date datedebut = Date();
   bool urgence = true;
+  final ModifPrixService _modifPrixService = ModifPrixService();
   late Demande demandeinit = Demande(
       id_Client: "",
       id_Prestation: "",
@@ -60,7 +62,7 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
   Future<void> _fetchMaterial(String domaineID, String prestationID) async {
     try {
       materiel = await getMaterielById(domaineID, prestationID);
-      prix = await getPrixById(domaineID, prestationID);
+      prix = await _modifPrixService.getPrixPrestation(domaineID, prestationID);
       setState(() {}); // Update UI with fetched material
     } catch (e) {
       print("Erreur lors de la recherche de matériel : $e");

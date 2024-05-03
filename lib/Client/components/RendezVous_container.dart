@@ -8,6 +8,8 @@ import 'package:reda/Client/PubDemande/DemandeEnvoyeInit.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Services/demande%20publication/HistoriqueServices.dart';
+import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
+import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 
@@ -20,10 +22,13 @@ class RendezVousClient extends StatefulWidget {
   final String prestation;
   final String imageUrl;
   final String nomArtisan;
-  final int rating;
+  final double rating;
+  final int workcount;
+  final bool vehicule;
   final String phone;
   final bool urgence;
   //-----------------
+  final String adresseartisan;
   final double latitude;
   final double longitude;
   final String iddomaine;
@@ -60,7 +65,10 @@ class RendezVousClient extends StatefulWidget {
     required this.heuredebut,
     required this.heurefin,
     required this.idartisan,
-    required this.timestamp
+    required this.timestamp,
+    required this.adresseartisan,
+    required this.workcount,
+    required this.vehicule,
   });
   @override
   State<RendezVousClient> createState() => _RendezVousClientState();
@@ -68,7 +76,7 @@ class RendezVousClient extends StatefulWidget {
 
 class _RendezVousClientState extends State<RendezVousClient> {
   final DemandeClientService _DemandeClientService = DemandeClientService();
-  final DemandeArtisanService _DemandeArtisanService = DemandeArtisanService();
+  final RendezVousService _rendezVousService = RendezVousService();
   final HistoriqueService _historiqueService = HistoriqueService();
   @override
   Widget build(BuildContext context) {
@@ -203,7 +211,8 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,), // Navigation to ContactPage
+                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
+                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
                               ),
                               ); // Example navigation
                             },
@@ -285,6 +294,10 @@ class _RendezVousClientState extends State<RendezVousClient> {
                             widget.urgence, widget.latitude, widget.longitude);
                         _DemandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
                         await Future.delayed(const Duration(milliseconds: 100));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan),
+                        ),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(const Color(0xFF3E69FE)),
@@ -307,8 +320,8 @@ class _RendezVousClientState extends State<RendezVousClient> {
                     const SizedBox(width: 8),
                     OutlinedButton(
                       onPressed: () async{
-                        _DemandeClientService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-                        _DemandeArtisanService.deleteRendezVous(widget.timestamp, widget.idartisan);
+                        _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+                        _rendezVousService.deleteRendezVous(widget.timestamp, widget.idartisan);
                         await Future.delayed(const Duration(milliseconds: 100));
                       },
                       style: ButtonStyle(

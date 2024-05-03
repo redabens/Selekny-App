@@ -24,7 +24,7 @@ class SignalementsService extends ChangeNotifier {
     } else {
       print('User is not authenticated');
     }
-    await Future.value(null);
+   await Future.value(null);
   }
 
   Stream<QuerySnapshot> getAllSignalements() {
@@ -49,4 +49,25 @@ class SignalementsService extends ChangeNotifier {
       print('!!!!!!!!!! Erreur lors de la suppression du signalement $signalementID: $e');
     }
   }
+  Future<void> incrementSignalement(String signalantID) async {
+    var userDoc = _firestore.collection('users').doc(signalantID);
+
+    return  _firestore.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(userDoc);
+      if (!snapshot.exists) {
+        throw Exception("Utilisateur non trouvé!");
+      }
+      var userData = snapshot.data() as Map<String, dynamic>?;
+      if (userData == null) {
+        throw Exception("Données utilisateur non disponibles");
+      }
+      int currentSignalement = userData['nbsignalement'] as int? ?? 0;
+      transaction.update(userDoc, {'nbsignalement': currentSignalement + 1});
+    }).catchError((error) {
+      print("Erreur lors de l'incrémentation de nbsignalement: $error");
+      throw error;
+    });
+  }
+
+
 }

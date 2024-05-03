@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/contactpage.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/details.dart';
-import 'package:reda/Artisan/Pages/ProfilClient/signaler.dart'; // Ensure correct path to ProfileBody
+import 'package:reda/Artisan/Pages/ProfilClient/signaler.dart';
+import 'package:reda/Pages/Chat/chat_page.dart'; // Ensure correct path to ProfileBody
 
 class ProfilePage1 extends StatelessWidget {
   final String idclient;
@@ -9,10 +11,10 @@ class ProfilePage1 extends StatelessWidget {
   final String nomClient;
   final String phone;
   final String adress;
-  //final bool isVehicled;
+  final bool isVehicled;
   const ProfilePage1({super.key, required this.image,
     required this.nomClient, required this.phone,
-    required this.adress, required this.idclient});
+    required this.adress, required this.idclient, required this.isVehicled});
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +36,14 @@ class ProfilePage1 extends StatelessWidget {
           name: nomClient, // Direct name value
           phone: phone, // Direct phone value
           address: adress, // Direct address value
-          //isVehicled: false, // Indicates if the person has a vehicle
+          isVehicled: isVehicled, // Indicates if the person has a vehicle
           onContact: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ContactPage(), // Navigation to ContactPage
+                builder: (context) => ChatPage(receiverUserID: idclient, currentUserId:FirebaseAuth.instance.currentUser!.uid,
+                    type: 2, userName: nomClient,
+                    profileImage: image, otheruserId: idclient, phone: phone, adresse: adress, domaine: 'domaine', rating: 4, workcount: 0, vehicule: isVehicled,), // Navigation to ContactPage
               ),
             );
           },
@@ -47,7 +51,7 @@ class ProfilePage1 extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Signaler(image: image, nomClient: nomClient, phone: phone, adress: adress, idclient: idclient,), // Navigation to ReportPage
+                builder: (context) => Signaler(image: image, nomClient: nomClient, phone: phone, adress: adress, idclient: idclient, isVehicled: isVehicled,), // Navigation to ReportPage
               ),
             );
           },

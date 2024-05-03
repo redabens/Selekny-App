@@ -6,6 +6,7 @@ import 'package:reda/Client/ProfilArtisan/profil.dart';
 import 'package:reda/Client/PubDemande/DemandeEnvoyeInit.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 
@@ -18,7 +19,9 @@ class DetDemandeAcceptee extends StatefulWidget {
   final String prestation;
   final String imageUrl;
   final String nomArtisan;
-  final int rating;
+  final double rating;
+  final int workcount;
+  final bool vehicule;
   final String phone;
   final bool urgence;
   //-----------------
@@ -32,6 +35,7 @@ class DetDemandeAcceptee extends StatefulWidget {
   final String heuredebut;
   final String heurefin;
   final String idartisan;
+  final String adresseartisan;
   final Timestamp timestamp;
 
   const DetDemandeAcceptee({
@@ -58,7 +62,8 @@ class DetDemandeAcceptee extends StatefulWidget {
     required this.heuredebut,
     required this.heurefin,
     required this.idartisan,
-    required this.timestamp
+    required this.timestamp,
+    required this.adresseartisan, required this.workcount, required this.vehicule,
   });
   @override
   State<DetDemandeAcceptee> createState() => _DetDemandeAccepteeState();
@@ -67,6 +72,7 @@ class DetDemandeAcceptee extends StatefulWidget {
 class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
   final DemandeClientService _DemandeClientService = DemandeClientService();
   final DemandeArtisanService _DemandeArtisanService = DemandeArtisanService();
+  final RendezVousService _rendezVousService = RendezVousService();
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -200,7 +206,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,), // Navigation to ContactPage
+                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
                                 ),
                               );
                               await Future.delayed(const Duration(milliseconds: 800));// Example navigation
@@ -286,8 +292,8 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                             token,
                             "Votre demande a été confirmé",
                             "Service demandé : $nomPrestation");
-                        _DemandeClientService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient,widget.idartisan, widget.urgence, widget.latitude, widget.longitude);
-                        _DemandeArtisanService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan) ;
+                        _rendezVousService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan,widget.idartisan);
+                        _rendezVousService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan,widget.idclient) ;
                         _DemandeClientService.deleteDemandeClient(widget.timestamp, widget.idclient);
                         await Future.delayed(const Duration(milliseconds: 100));
                       },
@@ -323,7 +329,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                             width: 1,
                           ),
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(22, 6)), // Updated dimensions to match the ElevatedButton
+                        minimumSize: MaterialStateProperty.all(const Size(22, 6)), // Updated dimensions to match the ElevatedButton
                         padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12, vertical: 7)), // Optional, adjust as necessary
                         shape: MaterialStateProperty.all(
 

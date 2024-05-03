@@ -8,7 +8,7 @@ import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/ActiviteWidget/JobsAndComments.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
-import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
+import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 
@@ -22,7 +22,7 @@ class ActiviteAvenir extends StatefulWidget {
 
 class ActiviteAvenirState extends State<ActiviteAvenir> {
   int _currentIndex = 0;
-  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
+  final RendezVousService _rendezVousService = RendezVousService();
   DateTime now = DateTime.now();
   @override
   void initState() {
@@ -76,6 +76,17 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
     }
     final String phone = userDoc.data()!['numTel'] as String;
     return phone;
+  }
+  // get Vehicule user
+  Future<bool> getVehiculeUser(String userId) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      print('introuvable');
+      return false;
+    }
+    final bool vehicule = userDoc.data()!['vehicule'] as bool;
+    return vehicule;
   }
   Future<String> getSyncDemande(Timestamp timestamp) async {
     final DateTime timeDemande = timestamp.toDate();
@@ -220,7 +231,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
   }
   Widget _buildRendezVousList() {
     return StreamBuilder(
-      stream: _demandeArtisanService.getRendezVous(
+      stream: _rendezVousService.getRendezVous(
           FirebaseAuth.instance.currentUser!.uid),
       //_firebaseAuth.currentUser!.uid
       builder: (context, snapshot) {
@@ -257,6 +268,18 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }
+            if (snapshot.data!.isEmpty) {
+              return Center(
+                  child: Text(
+                      'Vous n''avez aucune Activité.',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600],
+                      )
+                  )
+              );
+            }
             return ListView(children: snapshot.data!);
           },
         );
@@ -274,6 +297,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
     print(nomprestation);
     String nomClient = await getNameUser(data['idclient']);
     String phone = await getPhoneUser(data['idclient']);
+    bool vehicule = await getVehiculeUser(data['idclient']);
     final String sync = await getSyncDemande(data['timestamp']);
     String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
     return Container(
@@ -296,7 +320,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
             longitude: data['longitude'], type1: 2, type2: 2,
             nomclient: nomClient, phone: phone,
             demandeid: document.id, sync: sync,
-            nomArtisan: nomArtisan, idartisan: FirebaseAuth.instance.currentUser!.uid,),
+            nomArtisan: nomArtisan, idartisan: FirebaseAuth.instance.currentUser!.uid, vehicule: vehicule,),
           const SizedBox(height: 10,),
         ],
       ),

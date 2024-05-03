@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/components/demandeAcceptee_container.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Services/ModifPrix.dart';
 import '../Home/home.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
@@ -32,6 +34,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final DemandeClientService _DemandeAccepteeService = DemandeClientService();
+  final ModifPrixService _modifPrixService = ModifPrixService();
 
   // get le nom domaine de la demande acceptee
   Future<String> getDomaineDemande(String domaineID) async {
@@ -53,11 +56,13 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
     try{
       DocumentSnapshot domaine = await firestore.collection('Domaine').doc(domaineID).get();
       if (!domaine.exists) {
-        throw Exception("Domaine non trouvé");
+        print('aucun domaine trouve');
+        return '';
       }
       DocumentSnapshot prestation = await domaine.reference.collection('Prestations').doc(PrestationID).get();
       if (!prestation.exists) {
-        throw Exception("Prestation non trouvée");
+        print('aucune prestations trouve');
+        return '';
       }
       return prestation.get('nom_prestation');
     } catch (e) {
@@ -65,54 +70,6 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
       return 'Erreur: $e';
     }
   }
-
-  //get prix demande
-  Future<String> getPrixDemande(String domaineID,String PrestationID) async {
-    try {
-      DocumentSnapshot domaine = await _firestore.collection('Domaine').doc(domaineID).get();
-      if (!domaine.exists) {
-        throw Exception("Domaine non trouvé");
-      }
-      DocumentSnapshot prestation = await domaine.reference.collection('Prestations').doc(PrestationID).get();
-      if (!prestation.exists) {
-        throw Exception("Prestation non trouvée");
-      }
-      return prestation.get('prix');
-    } catch (e) {
-      print('Erreur lors de prix prestation: $e');
-      return 'Erreur: $e';
-    }
-  }
-  //get le nom de lartisan  
-  Future<String> getNameUser(String userID) async {
-    final userDoc = await _firestore.collection('users').doc(userID).get();
-    if (!userDoc.exists) {
-      return 'Utilisateur introuvable'; 
-    }
-    final String userName = userDoc.data()!['nom'] as String;  
-    return userName;
-  }
-  // get rating artisan
-  Future<int> getRatingUser(String userID) async {
-    final userDoc = await _firestore.collection('users').doc(userID).get();
-    if (!userDoc.exists) {
-      print ('Utilisateur introuvable');
-      return 0;
-    }
-    final int rating = userDoc.data()!['rating'] as int;
-    return rating;
-  }
-//get phone number de l'artisan
-  Future<String> getPhoneUser(String userId) async {
-    final firestore = FirebaseFirestore.instance;
-    final userDoc = await firestore.collection('users').doc(userId).get();
-    if (!userDoc.exists) {
-      return 'Utilisateur introuvable';
-    }
-    final String phone = userDoc.data()!['numTel'] as String;
-    return phone;
-  }
-
   //get image user
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
@@ -122,7 +79,6 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
     // Vérifier si le document existe
     if (userDoc.exists) {
       // Extraire le PathImage
-      print('here');
       String pathImage = userDoc['pathImage'];
       print(pathImage);
       // Retourner le PathImage
@@ -159,13 +115,13 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
               'Demandes',
               style: GoogleFonts.poppins(
                 fontSize: 24,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w900,
               ),
             ),
             centerTitle: true,
           ),
           const SizedBox(height: 18),
-          _buildTitleAndDescription(),
+          _buildTitleAndDescription(), // le petit texte du début
           const SizedBox(height: 10),
           _buildSelectionRow(),
           const SizedBox(height: 2),
@@ -287,6 +243,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
         if(snapshot.connectionState == ConnectionState.waiting){
           return const Text('Loading..');
         }
+
         final documents = snapshot.data!.docs;
 
         // Print details of each document
@@ -297,7 +254,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
             future: Future.wait(snapshot.data!.docs.map((document) => _buildDemandeAccepteeItem(document))),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Center(child: Text('Error loading demandes acceptées: ${snapshot.error}'));
+                return Center(child: Text('Error loading demandes encours:  ${snapshot.error}'));
               }
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
@@ -305,81 +262,100 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                        'Vous n\'avez aucune demande acceptée',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[600],
-                        )
+                      'Vous n''avez aucune demande acceptée.',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600],
                     )
-                );
+                )
+              );
               }
               return ListView(children: snapshot.data!);
-            }
-        );
+            });
       },
     );
   }
 
   Future<Widget> _buildDemandeAccepteeItem(DocumentSnapshot document) async {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    String demandeID = document.id;
-    String userID = _firebaseAuth.currentUser!.uid;//'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3';
-    String domaineID = data['iddomaine'];
-    String PrestationID = data['idprestation'];
-    String artisanID = data['idartisan'];
-    String domaine = await getDomaineDemande(domaineID);//'Plombrie';
-    String prestation = await getPrestationDemande(domaineID, PrestationID);
-    bool urgence = data['urgence'];
+    if (document.data() != null) {
+      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-    String date = data['datedebut'];
-    String heure = '${data['heuredebut']} - ${data['heurefin']}';
-    String prix = await getPrixDemande(domaineID, PrestationID);
-    String location = data['adresse'];
-    String imageUrl = await getUserPathImage(artisanID);//'https://firebasestorage.googleapis.com/v0/b/selekny-app.appspot.com/o/Prestations%2FLPsJnqkVdXQUf6iBcXn0.png?alt=media&token=44ac0673-f427-43cf-9308-4b1213e73277';
-    String nomArtisan = await getNameUser(artisanID);
-    int rating = await getRatingUser(artisanID);
-    String phone = await getPhoneUser(artisanID);
-    //----
-    String datefin = data['datefin'];
-    String heureDebut = data['heuredebut'];
-    String heureFin = data['heurefin'];
-   double latitude = data['latitude'];
-    double longitude = data['longitude'];
-    Timestamp timestamp = data['timestamp'];
-
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          DetDemandeAcceptee(domaine: domaine,
-            location: location,
-            date: date,
-            heure: heure,
-            prix: prix,
-            prestation: prestation,
-            imageUrl: imageUrl,
-            nomArtisan: nomArtisan,
-            rating: rating,
-            phone: phone,
-            urgence: urgence,
-            datedebut: date,
-            datefin:datefin ,
-            iddomaine: domaineID,
-            idprestation: PrestationID,
-            idclient: userID,
-            heuredebut: heureDebut ,
-            heurefin: heureFin,
-            latitude: latitude,
-            longitude: longitude,
-            idartisan: artisanID,
-            timestamp: timestamp,
-         ),
-          const SizedBox(height: 10),
-        ],
-      ),
-    );
+      // Extract values from the data map using null check operator
+      String demandeID = document.id;
+      String userID = _firebaseAuth.currentUser!.uid; // 'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3';
+      String domaineID = data['iddomaine']; // Handle null with an empty string
+      String PrestationID = data['idprestation']; // Handle null with an empty string
+      String artisanID = data['idartisan']; // Handle null with an empty string
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(artisanID).get();
+      Map<String, dynamic> datas = userDoc.data() as Map<String, dynamic>;
+      String domaine = await getDomaineDemande(domaineID);//'Plombrie';
+      print(domaine);
+      String prestation = await getPrestationDemande(domaineID, PrestationID);
+      print(prestation);
+      bool urgence = data['urgence']; // Handle null with a default value
+      print(urgence);
+      String date = data['datedebut']; // Handle null with an empty string
+      String heure = '${data['heuredebut']} - ${data['heurefin']}'; // Handle null with empty strings
+      String prix = await _modifPrixService.getPrixPrestation(domaineID, PrestationID); // Handle null with an empty string
+      String location = data['adresse']; // Handle null with an empty string
+      String imageUrl = await getUserPathImage(artisanID); // 'https://firebasestorage.googleapis.com/v0/b/selekny-app.appspot.com/o/Prestations%2FLPsJnqkVdXQUf6iBcXn0.png?alt=media&token=44ac0673-f427-43cf-9308-4b1213e73277';
+      print(imageUrl);
+      String nomArtisan = datas['nom']; // Handle null with an empty string
+      double rating = datas['rating']; // Handle null with a default value
+      bool vehicule = datas['vehicule']; // Handle null with a default value
+      int workcount = datas['workcount']; // Handle null with a default value
+      String adresseartisan = datas['adresse']; // Handle null with an empty string
+      String phone = datas['numTel']; // Handle null with an empty string
+      //----
+      String datefin = data['datefin'];
+      String heureDebut = data['heuredebut'];
+      String heureFin = data['heurefin'];
+      double latitude = data['latitude'];
+      double longitude = data['longitude'];
+      Timestamp timestamp = data['timestamp'];
+      // ... rest of your code using the extracted values
+      return DetDemandeAcceptee(
+        domaine: domaine,
+        location: location,
+        date: date,
+        heure: heure,
+        prix: prix,
+        prestation: prestation,
+        imageUrl: imageUrl,
+        nomArtisan: nomArtisan,
+        rating: rating,
+        phone: phone,
+        urgence: urgence,
+        datedebut: date,
+        datefin: datefin,
+        iddomaine: domaineID,
+        idprestation: PrestationID,
+        idclient: userID,
+        heuredebut: heureDebut,
+        heurefin: heureFin,
+        latitude: latitude,
+        longitude: longitude,
+        idartisan: artisanID,
+        timestamp: timestamp,
+        adresseartisan: adresseartisan,
+        workcount: workcount,
+        vehicule: vehicule,
+      );
+    } else {
+      // Handle the case where the document is null
+      print('Error: Document is null for document ID: ${document.id}');
+      return Center(
+          child: Text(
+              'Vous n''avez aucun Rendez-Vous.',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              )
+          )
+      );; // or some placeholder widget
+    }
   }
 
 //---------------------------------------------------------------------------------------------------

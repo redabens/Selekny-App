@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -12,53 +13,67 @@ import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
 class GestionClientsPage extends StatefulWidget {
   const GestionClientsPage({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
+
   @override
   State<GestionClientsPage> createState() => _GestionClientsPageState();
 }
 
 class _GestionClientsPageState extends State<GestionClientsPage> {
   int _currentIndex = 1;
+  bool isEnCoursSelected = false;
+  String searchText = '';
+
+  final TextEditingController _searchController = TextEditingController();
+  List<DocumentSnapshot> allResults = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+    getClientsStream();
+  }
+
   void _onItemTap(bool isEnCours) {
     setState(() {
       isEnCoursSelected = isEnCours;
     });
   }
-  bool isEnCoursSelected = false;
-  //pour la recherche de clients------------------------------
-  @override
-  void initState(){
-    super.initState();
-    getClientStream();
-    _searchController.addListener(_onSearchChanged);
+
+  void _onSearchChanged() {
+    // Filter results when search text changes
+    setState(() {
+      searchText = _searchController.text;
+    });
   }
-  void _onSearchChanged(){
-    print(_searchController.text);
-  }
-  final TextEditingController _searchController = TextEditingController();
-  List allResults = [];
-  getClientStream() async{
-    var data = await FirebaseFirestore.instance.collection('users').where('role', isEqualTo: "client").orderBy('nom').get();
+
+  getClientsStream() async {
+    var data = await FirebaseFirestore.instance
+        .collection('users')
+        .where('role', isEqualTo: "client")
+        .orderBy('nom')
+        .get();
 
     setState(() {
       allResults = data.docs;
     });
   }
-  //------------------------------------------------------
+
   final GestionUsersService _GestionUsersService = GestionUsersService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> getUserPathImage(String userID) async {
-    DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
+    DocumentSnapshot userDoc =
+    await _firestore.collection('users').doc(userID).get();
     if (userDoc.exists) {
       String pathImage = userDoc['pathImage'];
       final reference = FirebaseStorage.instance.ref().child(pathImage);
       final url = await reference.getDownloadURL();
       return url;
     } else {
-      return  '';
+      return '';
     }
   }
 
@@ -73,13 +88,9 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
           AppBar(
             elevation: 0.0, // Remove default shadow
             backgroundColor: Colors.white,
-            leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.arrow_back_ios_new),
-            ),
             title: Text(
-              'Gestion des utilisateurs',
-              style:GoogleFonts.poppins (
+              'Gestion des clients',
+              style: GoogleFonts.poppins(
                 fontSize: 24,
                 fontWeight: FontWeight.w900,
               ),
@@ -129,13 +140,13 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
           const SizedBox(height: 10),
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        currentIndex:
+        _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
         iconSize: 30,
         items: [
           BottomNavigationBarItem(
@@ -146,14 +157,18 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AllSignalementsPage(),),
+                  MaterialPageRoute(
+                    builder: (context) => AllSignalementsPage(),
+                  ),
                 );
               },
               child: Container(
                 height: 40,
                 child: Image.asset(
                   'icons/signalement.png',
-                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 0
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -167,10 +182,10 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
+                  MaterialPageRoute(
+                    builder: (context) => const GestionArtisansPage(),
+                  ),
                 );
-
-
               },
               child: Container(
                 height: 40,
@@ -190,9 +205,10 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+                  MaterialPageRoute(
+                    builder: (context) => const CreationArtisanPage(),
+                  ),
                 );
-
               },
               child: Container(
                 height: 40,
@@ -212,9 +228,9 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 });
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
-                );
-
+                    MaterialPageRoute(
+                      builder: (context) => const RetourAuth(),
+                    ));
               },
               child: Container(
                 height: 40,
@@ -231,11 +247,9 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
     );
   }
 
-
-
   Widget _buildGestionUsersList() {
     return StreamBuilder(
-      stream: _GestionUsersService.getAllClients(),
+      stream: _GestionUsersService.getAllArtisans(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -244,20 +258,23 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
           return const Text('Loading...');
         }
         final documents = snapshot.data!.docs;
-        for (var doc in documents) {
-          print("====> Document Data: ${doc.data()}");
-        }
+        final filteredDocuments = documents.where((document) {
+          final userData = document.data() as Map<String, dynamic>;
+          final userName = userData['nom'] as String;
+          return userName.toLowerCase().contains(searchText.toLowerCase());
+        }).toList();
         return FutureBuilder<List<Widget>>(
-            future: Future.wait(documents.map((document) => _buildGestionUsersItem(document))),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text('Error loading users: ${snapshot.error}');
-              }
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return ListView(children: snapshot.data!);
+          future: Future.wait(filteredDocuments
+              .map((document) => _buildGestionUsersItem(document))),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error loading users: ${snapshot.error}');
             }
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return ListView(children: snapshot.data!);
+          },
         );
       },
     );
@@ -282,23 +299,13 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DetGestionUsers(userName: userName, job: job,profileImage: profileImage),
+          DetGestionUsers(
+              userName: userName, job: job, profileImage: profileImage),
           const SizedBox(height: 14),
         ],
       ),
     );
   }
-
-
-
-
-
-
-
-
-
-
-
 
   Widget _buildSelectionRow() {
     return Row(
@@ -306,15 +313,18 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => GestionArtisansPage())),
-            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => GestionArtisansPage())),
+            child: Column(
+              // Utiliser une colonne pour séparer le texte de la ligne
               children: [
                 Text(
                   'Mes Artisans',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                    color: isEnCoursSelected
+                        ? const Color(0xFFF5A529)
+                        : Colors.grey,
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
@@ -322,7 +332,8 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 const SizedBox(height: 12), // Espace entre le texte et la ligne
                 Container(
                   height: isEnCoursSelected ? 4 : 1, // Épaisseur de la ligne
-                  color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
+                  color:
+                  isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
                 ),
               ],
             ),
@@ -330,8 +341,13 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
         ),
         Expanded(
           child: GestureDetector(
-            onTap: () => _onItemTap(false),
-            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
+            onTap: () {
+              _onItemTap(false);
+              searchText = ''; // Clear search text when switching to clients
+              _searchController.clear(); // Clear text field
+            },
+            child: Column(
+              // Utiliser une colonne pour séparer le texte de la ligne
               children: [
                 Text(
                   'Mes Clients',
@@ -354,6 +370,4 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
       ],
     );
   }
-
-
 }

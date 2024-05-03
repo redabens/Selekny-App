@@ -17,8 +17,11 @@ class DetChatList extends StatelessWidget {
   final String phone;
   final String adresse;
   final String domaine;
-  final int rating;
+  final double rating;
+  final int workcount;
+  final bool vehicule;
   final int type;
+
   const DetChatList({
     super.key,
     required this.userName,
@@ -30,7 +33,7 @@ class DetChatList extends StatelessWidget {
     required this.phone,
     required this.adresse,
     required this.domaine,
-    required this.rating,
+    required this.rating, required this.workcount, required this.vehicule,
   });
 
   String getFormattedTime(Timestamp timestamp) {
@@ -80,14 +83,16 @@ class DetChatList extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(    //otherUserId
-                            builder: (context) => ProfilePage2(idartisan: otheruserId, imageurl: profileImage, nomartisan: userName, phone: phone, domaine: domaine, rating: rating),
+                            builder: (context) => ProfilePage2(idartisan: otheruserId, imageurl: profileImage,
+                              nomartisan: userName, phone: phone,
+                              domaine: domaine, rating: rating, adresse: adresse, workcount: workcount, vehicule: vehicule,),
                           ),
                         );
                       }else{
                         Navigator.push(
                           context,
                           MaterialPageRoute(    //otherUserId
-                            builder: (context) => ProfilePage1(image: profileImage, nomClient: userName, phone: phone, adress: adresse, idclient: otheruserId,),
+                              builder: (context) => ProfilePage1(image: profileImage, nomClient: userName, phone: phone, adress: adresse, idclient: otheruserId, isVehicled: vehicule,),
                           ),
                         );
                       } // Example action (replace with your desired functionality)

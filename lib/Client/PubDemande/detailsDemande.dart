@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/Services/demande%20publication/getMateriel.dart';
 import 'package:reda/Client/components/Date.dart';
 import 'package:reda/Client/components/Demande.dart';
+import 'package:reda/Services/ModifPrix.dart';
 import './Materiel.dart';
 import './Prix.dart';
 import './NomPrestation.dart';
@@ -36,6 +37,7 @@ class DetailsDemandeState extends State<DetailsDemande> {
   String? prix;
   late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: false, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
    Date datedebut = Date();
+  final ModifPrixService _modifPrixService = ModifPrixService();
    Date datefin =Date();
   bool urgence = false;
   @override
@@ -53,7 +55,7 @@ class DetailsDemandeState extends State<DetailsDemande> {
   Future<void> _fetchMaterial(String domaineID, String prestationID) async {
     try {
       materiel = await getMaterielById(domaineID, prestationID);
-      prix = await getPrixById(domaineID, prestationID);
+      prix = await _modifPrixService.getPrixPrestation(domaineID, prestationID);
       setState(() {}); // Update UI with fetched material
     } catch (e) {
       print("Erreur lors de la recherche de matériel : $e");

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeClientService.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeEncours_service.dart';
+import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
 
 class Buttonrefuser extends StatefulWidget {
   final String idclient;
@@ -22,6 +23,7 @@ class ButtonrefuserState extends State<Buttonrefuser> {
   final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
   final DemandeClientService _demandeClientService = DemandeClientService();
   final DemandeEncoursService _demandeEncoursService = DemandeEncoursService();
+  final RendezVousService _rendezVousService = RendezVousService();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,8 +64,8 @@ class ButtonrefuserState extends State<Buttonrefuser> {
         ),
       ) : TextButton(
         onPressed:() async {
-          _demandeArtisanService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-          _demandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
+          _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+          _rendezVousService.deleteRendezVous(widget.timestamp, widget.idclient);
           await Future.delayed(const Duration(milliseconds: 100));
         },// hna lazm quand on annule la classe Box Demande troh completement
 

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeClientService.dart';
 import 'package:reda/Client/Services/demande%20publication/HistoriqueServices.dart';
+import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
 class Buttontraiterannuler extends StatelessWidget {
   final String idclient;
   final Timestamp timestamp;
@@ -71,8 +72,7 @@ class ButtonTraiter extends StatefulWidget {
 class ButtonTraiterState extends State<ButtonTraiter> {
   Color _buttonColor = const Color(0xFF49F77A);
   Color _textColor = Colors.black;
-  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
-  final DemandeClientService _demandeClientService = DemandeClientService();
+  final RendezVousService _rendezVousService = RendezVousService();
   final HistoriqueService _historiqueService = HistoriqueService();
   void _changeColor() {
     setState(() {
@@ -97,7 +97,7 @@ class ButtonTraiterState extends State<ButtonTraiter> {
               widget.heurefin, widget.location, widget.iddomaine,
               widget.idprestation, widget.idclient, widget.idartisan,
               widget.urgence, widget.latitude, widget.longitude);
-          _demandeArtisanService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+          _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
           print('Traite avec success');
           await Future.delayed(const Duration(milliseconds: 100));
           },
@@ -138,8 +138,7 @@ class ButtonAnnuler extends StatefulWidget {
 }
 
 class ButtonAnnulerState extends State<ButtonAnnuler> {
-  final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
-  final DemandeClientService _demandeClientService = DemandeClientService();
+  final RendezVousService _rendezVousService = RendezVousService();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -151,8 +150,8 @@ class ButtonAnnulerState extends State<ButtonAnnuler> {
       ),
       child: TextButton(
         onPressed: () async {
-          _demandeArtisanService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-          _demandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
+          _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+          _rendezVousService.deleteRendezVous(widget.timestamp, widget.idclient);
           print('annuler avec success');
           await Future.delayed(const Duration(milliseconds: 100));
         }, // hna lazm quand on annule la classe Box Demande troh completement

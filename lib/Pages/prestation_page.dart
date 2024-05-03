@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Client/components/Prestation_container.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PrestationPage extends StatefulWidget {
   final int indexe;
@@ -49,12 +48,12 @@ class _PrestationPageState extends State<PrestationPage> {
         String? url;
         try {
           url = await reference.getDownloadURL();
-          print("{{{{{{{{==============================}}}}}}}} l'url : $url");
           print(url);
         } catch (e) {
-          print("Error downloading image URL:================ $e");
+          print("Error downloading image URL: $e");
           // Handle the error here (e.g., display a placeholder image)
         }
+
         return Prestation(
           nomprestation: doc.data()['nom_prestation'],
           imageUrl: url ?? "placeholder_image.png",// Use downloaded URL or a placeholder
@@ -102,10 +101,10 @@ class _PrestationPageState extends State<PrestationPage> {
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
-          title: Text(
+          title: const Text(
             'Prestations',
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w800,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
           ),
           centerTitle: true,

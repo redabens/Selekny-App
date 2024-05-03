@@ -17,64 +17,64 @@ class EtesVousSurState extends State<EtesVousSur> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children:
+     body: Stack(
+    children:
         [
-          DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '///',),
-          Container(
-            color: Color.fromRGBO(128,128,128,0.7),
-            width: double.infinity,
-            height: double.infinity,
-          ),
+          DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '///',nbsignalement: 0,),
+    Container(
+    color: Color.fromRGBO(128,128,128,0.7),
+    width: double.infinity,
+    height: double.infinity,
+    ),
 
-          Center(
-            child: Container(
-              height: 180,
-              padding: EdgeInsets.all(15),
-              width: MediaQuery.of(context).size.width * 0.7,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Color(0xFFC4C4C4)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                //mainAxisSize: MianAxisSize.min,
-                children:
-                [
-                  RichText(
-                    text: TextSpan(children: <TextSpan>[
+    Center(
+      child: Container(
+       height: 180,
+        padding: EdgeInsets.all(15),
+        width: MediaQuery.of(context).size.width * 0.7,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Color(0xFFC4C4C4)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          //mainAxisSize: MianAxisSize.min,
+          children:
+            [
+            RichText(
+            text: TextSpan(children: <TextSpan>[
 
-                      TextSpan( text:'L\'utilisateur sera supprimé definitivement de l’application.'  , style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),),
+        TextSpan( text:'L\'utilisateur sera supprimé definitivement de l’application.'  , style: GoogleFonts.poppins(
+          color: Colors.black,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),),
 
 
-                    ],
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  RichText(
-                    text: TextSpan(children: <TextSpan>[
-                      TextSpan( text:'Êtes-vous sûr de cette action ?'  , style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),),
-
-                    ],
-                    ),
-                  ),
-                  SizedBox(height:25),
-                  Buttons(),
-                ],
-              ),
+            ],
             ),
-          ),
+            ),
+              SizedBox(height: 5),
+              RichText(
+                  text: TextSpan(children: <TextSpan>[
+                    TextSpan( text:'Êtes-vous sûr de cette action ?'  , style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),),
+
+                  ],
+                  ),
+              ),
+              SizedBox(height:25),
+              Buttons(),
+  ],
+    ),
+    ),
+    ),
         ],
-      ),
+     ),
     );
   }
 }
@@ -154,7 +154,7 @@ class Non extends StatelessWidget {
       child: GestureDetector(
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '//',)//lazm la page de bloquer ici
+          MaterialPageRoute(builder: (context) => DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '//',nbsignalement: 0,)//lazm la page de bloquer ici
 
           ),
         ),

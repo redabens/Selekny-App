@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Services/Commentaires/commentaires_service.dart';
@@ -128,7 +127,7 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
                                   await _commentaireService.updateRating(widget.artisanID, _lastStarIndex);
                                   // clear the text controller after sending the message
                                   _commentController.clear();
-                                  await Future.delayed(Duration(milliseconds: 100));
+                                  await Future.delayed(const Duration(milliseconds: 100));
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(builder: (context) => const HomePage()),
