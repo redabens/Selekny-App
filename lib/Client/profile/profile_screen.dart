@@ -11,6 +11,7 @@ import 'profile_menu.dart';
 import 'update_profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Client/profile/Vehicule.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -49,14 +50,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String tProfileHeading = '';
   String tProfileSubHeading = '';
   String imageUrl = '';
-
+  bool vehicule = false;
   late UserRepository userRepository;
+  Future<void> getVehiculeStatut() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+    if (user != null) {
+      try {
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+        DocumentSnapshot userDoc = await firestore.collection('users').doc(user.uid).get();
+        if (userDoc.exists) {
+         vehicule = userDoc.get('vehicule');
+        } else {
+          print("User not found");
+        }
+      } catch (e) {
+        print("Error fetching vehicule status: $e");
+      }
+    } else {
+      print("No user logged in");
+    }
+  }
   @override
   void initState() {
     super.initState();
     userRepository = UserRepository();
     fetchUserData();
+    setState(() {
+      getVehiculeStatut();
+    });
   }
 
   Future<String> getUserPathImage(String userID) async {
@@ -85,6 +108,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return '';
     }
   }
+
+
 
   Future<void> fetchUserData() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -222,12 +247,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 });
                               },
                             ),
-                            ProfileMenuWidget(
-                              title: "Statut véhiculé",
-                              icon: Icons.car_crash_outlined,
-                              endIcon: false,
-                              onPress: () {},
-                            ),
+
+                            Vehicule(vehicule: vehicule),
+
                             ProfileMenuWidget(
                               title: "Mode sombre",
                               icon: Icons.mode_night_outlined,
@@ -420,3 +442,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+
