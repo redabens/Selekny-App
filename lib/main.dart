@@ -305,7 +305,7 @@ class MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          /* home: ConnectivityWidget(
+          home: ConnectivityWidget(
             child: Container(
               color: Colors.white, // Couleur de l'arrière-plan de la page
               child: Center(
@@ -326,8 +326,8 @@ class MyAppState extends State<MyApp> {
                             : const NotifUrgente(),
               ),
             ),
-          ),*/
-          home: const CreationArtisanPage(),
+          ),
+          //home: const CreationArtisanPage(),
           routes: {
             "/PublierDemandePage": (context) => NotifDemande(),
             "/AccepteParArtisan": (context) => DemandeAccepteePage(),
