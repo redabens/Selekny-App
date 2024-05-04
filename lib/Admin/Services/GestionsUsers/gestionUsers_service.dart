@@ -7,11 +7,8 @@ class GestionUsersService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-
   Stream<QuerySnapshot> getAllUsers() {
-    return _firestore
-        .collection('users')
-        .snapshots();
+    return _firestore.collection('users').snapshots();
   }
 
   Stream<QuerySnapshot> getAllArtisans() {
@@ -20,6 +17,7 @@ class GestionUsersService extends ChangeNotifier {
         .where('role', isEqualTo: 'artisan')
         .snapshots();
   }
+
   Stream<QuerySnapshot> getAllClients() {
     return FirebaseFirestore.instance
         .collection('users')

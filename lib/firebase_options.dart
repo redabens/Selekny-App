@@ -26,7 +26,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+              'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -58,7 +61,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'selekny-app.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
+  /*static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyACqgugfFtUeow54Yvfav9NvxySLN-0yec',
     appId: '1:898438711816:ios:c0e9fa99c7d884218ddfbd',
     messagingSenderId: '898438711816',
@@ -66,5 +69,5 @@ class DefaultFirebaseOptions {
     databaseURL: 'https://selekny-app-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'selekny-app.appspot.com',
     iosBundleId: 'com.example.reda',
-  );
+  );*/
 }

@@ -1,15 +1,9 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Client/ProfilArtisan/profil.dart';
-import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
-import 'package:reda/Client/Services/demande%20publication/HistoriqueServices.dart';
-import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
-import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
+import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
 
-class RendezVousClient extends StatefulWidget {
+class HistoriqueArtisan extends StatefulWidget {
   final String domaine;
   final String location;
   final String date;
@@ -17,27 +11,16 @@ class RendezVousClient extends StatefulWidget {
   final String prix;
   final String prestation;
   final String imageUrl;
-  final String nomArtisan;
-  final double rating;
-  final int workcount;
+  final String nomClient;
   final bool vehicule;
   final String phone;
   final bool urgence;
-  //-----------------
-  final String adresseartisan;
-  final double latitude;
-  final double longitude;
-  final String iddomaine;
-  final String idprestation;
   final String idclient;
-  final String datedebut;
   final String datefin;
   final String heuredebut;
   final String heurefin;
-  final String idartisan;
-  final Timestamp timestamp;
 
-  const RendezVousClient({
+  const HistoriqueArtisan({
     super.key,
     required this.domaine,
     required this.location,
@@ -46,34 +29,20 @@ class RendezVousClient extends StatefulWidget {
     required this.prix,
     required this.prestation,
     required this.imageUrl,
-    required this.nomArtisan,
-    required this.rating,
+    required this.nomClient,
     required this.phone,
     required this.urgence,
-    //----------------------------
-    required this.latitude,
-    required this.longitude,
-    required this.iddomaine,
-    required this.idprestation,
     required this.idclient,
-    required this.datedebut,
     required this.datefin,
     required this.heuredebut,
     required this.heurefin,
-    required this.idartisan,
-    required this.timestamp,
-    required this.adresseartisan,
-    required this.workcount,
     required this.vehicule,
   });
   @override
-  State<RendezVousClient> createState() => _RendezVousClientState();
+  State<HistoriqueArtisan> createState() => _HistoriqueArtisanState();
 }
 
-class _RendezVousClientState extends State<RendezVousClient> {
-  final DemandeClientService _DemandeClientService = DemandeClientService();
-  final RendezVousService _rendezVousService = RendezVousService();
-  final HistoriqueService _historiqueService = HistoriqueService();
+class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -113,7 +82,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.domaine,
+                            widget.prestation,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -194,23 +163,13 @@ class _RendezVousClientState extends State<RendezVousClient> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            widget.prestation,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
-                            ),
-                          ),
                           GestureDetector(
                             onTap: () {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
-                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
-                              ),
-                              ); // Example navigation
+                                builder: (context) => ProfilePage1(image: widget.imageUrl, nomClient: widget.nomClient,
+                                  phone: widget.phone, adress: widget.location, idclient: widget.idclient, isVehicled: widget.vehicule),
+                              ),); // Example navigation
                             },
                             child: Container(
                               width: 54, // Adjust as needed
@@ -225,11 +184,11 @@ class _RendezVousClientState extends State<RendezVousClient> {
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                     50), // Ajout du BorderRadius
-                                    child: Image.network(
-                                      widget.imageUrl,
-                                      width: 54,
-                                      height: 54,
-                                      fit: BoxFit.cover,
+                                child: Image.network(
+                                  widget.imageUrl,
+                                  width: 54,
+                                  height: 54,
+                                  fit: BoxFit.cover,
                                 ),
                               )
                                   : Icon(
@@ -240,25 +199,12 @@ class _RendezVousClientState extends State<RendezVousClient> {
                             ),
                           ),
                           Text(
-                            widget.nomArtisan,
+                            widget.nomClient,
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                             ),
                           ),
                           const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              const Icon(Icons.star, color: Colors.yellow, size: 20),
-                              Text(
-                                widget.rating.toString(),
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black.withOpacity(0.5),
-                                ),
-                              ),
-                            ],
-                          ),
                           Row(
                             children: [
                               const Icon(Icons.phone, size: 20),
@@ -276,76 +222,6 @@ class _RendezVousClientState extends State<RendezVousClient> {
                     ),
                   ],
                 ),
-                const SizedBox() ,
-
-                // !confirmed && cancelled ?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: ()  async {
-                        _historiqueService.sendHistorique(widget.datedebut, widget.datefin, widget.heuredebut,
-                            widget.heurefin, widget.location, widget.iddomaine,
-                            widget.idprestation, widget.idclient, widget.idartisan,
-                            widget.urgence, widget.latitude, widget.longitude,widget.idclient);
-                        _DemandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
-                        await Future.delayed(const Duration(milliseconds: 100));
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan),
-                        ),
-                        );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(const Color(0xFF3E69FE)),
-                        minimumSize: MaterialStateProperty.all(const Size(22, 6)),
-                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 8, vertical: 8)), // Ajoutez du padding si nécessaire
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        'Traité',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    OutlinedButton(
-                      onPressed: () async{
-                        _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-                        _rendezVousService.deleteRendezVous(widget.timestamp, widget.idartisan);
-                        await Future.delayed(const Duration(milliseconds: 100));
-                      },
-                      style: ButtonStyle(
-                        side: MaterialStateProperty.all(
-                          const BorderSide(
-                            color: Color(0xFF3E69FE),
-                            width: 1,
-                          ),
-                        ),
-                        minimumSize: MaterialStateProperty.all(const Size(22, 6)), // Updated dimensions to match the ElevatedButton
-                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12, vertical: 7)), // Optional, adjust as necessary
-                        shape: MaterialStateProperty.all(
-
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        'Annuler',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: const Color(0xFF3E69FE),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
           ),

@@ -96,7 +96,7 @@ class ButtonTraiterState extends State<ButtonTraiter> {
           _historiqueService.sendHistorique(widget.datedebut, widget.datefin, widget.heuredebut,
               widget.heurefin, widget.location, widget.iddomaine,
               widget.idprestation, widget.idclient, widget.idartisan,
-              widget.urgence, widget.latitude, widget.longitude);
+              widget.urgence, widget.latitude, widget.longitude,widget.idartisan);
           _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
           print('Traite avec success');
           await Future.delayed(const Duration(milliseconds: 100));

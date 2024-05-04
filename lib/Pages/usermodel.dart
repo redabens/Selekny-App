@@ -150,6 +150,7 @@ class ArtisanModel extends UserModel {
   final String domaine;
   int rating = 4;
   int workcount = 0;
+  List<String> prestations = [];
 
   ArtisanModel(
       {required super.id,
@@ -163,6 +164,7 @@ class ArtisanModel extends UserModel {
         required super.latitude,
         required super.longitude,
         required this.domaine,
+        required this.prestations,
         required super.vehicule,
         required super.nbsignalement,
         required super.token,
@@ -178,6 +180,7 @@ class ArtisanModel extends UserModel {
     data['domaine'] = domaine;
     data['rating'] = rating;
     data['workcount'] = workcount;
+    data['prestations'] = prestations;
     return data;
   }
 
@@ -194,6 +197,7 @@ class ArtisanModel extends UserModel {
         longitude: json['longitude'],
         statut: json['statut'],
         domaine: json['domaine'],
+        prestations: json['prestations'],
         rating: json['rating'],
         vehicule: json['vehicule'],
         nbsignalement: json['nbsignalement'],

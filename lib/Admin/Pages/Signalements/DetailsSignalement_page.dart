@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'AllSignalements_page.dart';
@@ -18,6 +19,7 @@ class DetailsSignalement extends StatefulWidget {
   final String raison;
   final String signaleurUrl;
   final String signalantUrl;
+  final int nbsignalement;
 
   const DetailsSignalement({
     super.key,
@@ -32,7 +34,8 @@ class DetailsSignalement extends StatefulWidget {
     required this.heure,
     required this.raison,
     required this.signaleurUrl,
-    required this.signalantUrl
+    required this.signalantUrl,
+    required this.nbsignalement
   });
 
 
@@ -86,7 +89,7 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                   // UserSignaler
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: 110,
+                    height: 100,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,10 +108,23 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                           job: widget.signalantJob,
                           profileImage: widget.signalantUrl,
                         ),
+
                       ],
                     ),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 4),
+                  Container(
+                    child: Text(
+                      'Cet utilisateur a été signalé ${widget.nbsignalement} fois.',  // Utilisation du paramètre
+                      style: GoogleFonts.poppins(
+                        color: Colors.red,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
                   // Motif
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -177,7 +193,7 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              'à 18:17',
+                              widget.heure,
                               style: GoogleFonts.poppins(
                                 color: const Color(0xFF685D5D),
                                 fontSize: 12,
@@ -191,7 +207,7 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                   ),
                   const SizedBox(height: 15),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     height: 45,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -199,7 +215,8 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                         // Ignorer Button
                         GestureDetector(
                           onTap: () async{
-                            _SignalementService.deleteSignalement(widget.signalementID);
+                            await  _SignalementService.deleteSignalement(widget.signalementID);
+                            // await _SignalementService.incrementSignalement(widget.signalantID);
                             await Future.delayed(const Duration(milliseconds: 300));
                             Navigator.push(
                               context,
@@ -231,7 +248,7 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => EtesVousSur()),
+                              MaterialPageRoute(builder: (context) => const EtesVousSur()),
                             );
                           },
                           child: Container(

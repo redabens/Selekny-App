@@ -1,87 +1,86 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'DetailsSignalement_page.dart';
 import 'AllSignalements_page.dart';
 
 class EtesVousSur extends StatefulWidget {
+  const EtesVousSur({super.key});
+
   @override
   EtesVousSurState createState() => EtesVousSurState();
 
 }
 
 class EtesVousSurState extends State<EtesVousSur> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     body: Stack(
-    children:
+      body: Stack(
+        children:
         [
-          DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '///',),
-    Container(
-    color: Color.fromRGBO(128,128,128,0.7),
-    width: double.infinity,
-    height: double.infinity,
-    ),
+          const DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '///',nbsignalement: 0,),
+          Container(
+            color: const Color.fromRGBO(128,128,128,0.7),
+            width: double.infinity,
+            height: double.infinity,
+          ),
 
-    Center(
-      child: Container(
-       height: 180,
-        padding: EdgeInsets.all(15),
-        width: MediaQuery.of(context).size.width * 0.7,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Color(0xFFC4C4C4)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          //mainAxisSize: MianAxisSize.min,
-          children:
-            [
-            RichText(
-            text: TextSpan(children: <TextSpan>[
-
-        TextSpan( text:'L\'utilisateur sera supprimé definitivement de l’application.'  , style: GoogleFonts.poppins(
-          color: Colors.black,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),),
-
-
-            ],
-            ),
-            ),
-              SizedBox(height: 5),
-              RichText(
-                  text: TextSpan(children: <TextSpan>[
-                    TextSpan( text:'Êtes-vous sûr de cette action ?'  , style: GoogleFonts.poppins(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),),
-
-                  ],
-                  ),
+          Center(
+            child: Container(
+              height: 180,
+              padding: const EdgeInsets.all(15),
+              width: MediaQuery.of(context).size.width * 0.7,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xFFC4C4C4)),
               ),
-              SizedBox(height:25),
-              Buttons(),
-  ],
-    ),
-    ),
-    ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                //mainAxisSize: MianAxisSize.min,
+                children:
+                [
+                  RichText(
+                    text: TextSpan(children: <TextSpan>[
+
+                      TextSpan( text:'L\'utilisateur sera supprimé definitivement de l’application.'  , style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),),
+
+
+                    ],
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  RichText(
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan( text:'Êtes-vous sûr de cette action ?'  , style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),),
+
+                    ],
+                    ),
+                  ),
+                  const SizedBox(height:25),
+                  const Buttons(),
+                ],
+              ),
+            ),
+          ),
         ],
-     ),
+      ),
     );
   }
 }
 
 class Buttons extends StatelessWidget {
-
-
+  const Buttons({super.key});
   // final VoidCallback onPressed;
 
   @override
@@ -89,7 +88,7 @@ class Buttons extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.95,
       height: 35,
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children:
         [
@@ -102,17 +101,16 @@ class Buttons extends StatelessWidget {
   }
 }
 class Oui extends StatelessWidget {
-
-
+  const Oui({super.key});
   // final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.2,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Color(0xFF3E69FE),
+        color: const Color(0xFF3E69FE),
         borderRadius: BorderRadius.circular(8),
       ),
       child: GestureDetector(
@@ -138,6 +136,8 @@ class Oui extends StatelessWidget {
   }
 }
 class Non extends StatelessWidget {
+  const Non({super.key});
+
 
 
   // final VoidCallback onPressed;
@@ -146,15 +146,15 @@ class Non extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.2,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Color(0xFFC4C4C4),
+        color: const Color(0xFFC4C4C4),
         borderRadius: BorderRadius.circular(8),
       ),
       child: GestureDetector(
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '//',)//lazm la page de bloquer ici
+          MaterialPageRoute(builder: (context) => const DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '//',nbsignalement: 0,)//lazm la page de bloquer ici
 
           ),
         ),

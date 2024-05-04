@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reda/Client/Pages/Home/datails.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Servicepop extends StatelessWidget {
@@ -24,10 +23,6 @@ class Servicepop extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const DetailPage()),
-                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -59,10 +54,6 @@ class Servicepop extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const DetailPage()),
-                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(

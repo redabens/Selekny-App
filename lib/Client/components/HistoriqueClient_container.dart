@@ -1,17 +1,10 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
-import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
-import 'package:reda/Client/Services/demande%20publication/HistoriqueServices.dart';
-import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
-import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 
-class RendezVousClient extends StatefulWidget {
+class HistoriqueClient extends StatefulWidget {
   final String domaine;
-  final String location;
   final String date;
   final String heure;
   final String prix;
@@ -22,25 +15,17 @@ class RendezVousClient extends StatefulWidget {
   final int workcount;
   final bool vehicule;
   final String phone;
-  final bool urgence;
   //-----------------
   final String adresseartisan;
-  final double latitude;
-  final double longitude;
-  final String iddomaine;
-  final String idprestation;
   final String idclient;
-  final String datedebut;
   final String datefin;
   final String heuredebut;
   final String heurefin;
   final String idartisan;
-  final Timestamp timestamp;
 
-  const RendezVousClient({
+  const HistoriqueClient({
     super.key,
     required this.domaine,
-    required this.location,
     required this.date,
     required this.heure,
     required this.prix,
@@ -49,31 +34,20 @@ class RendezVousClient extends StatefulWidget {
     required this.nomArtisan,
     required this.rating,
     required this.phone,
-    required this.urgence,
-    //----------------------------
-    required this.latitude,
-    required this.longitude,
-    required this.iddomaine,
-    required this.idprestation,
     required this.idclient,
-    required this.datedebut,
     required this.datefin,
     required this.heuredebut,
     required this.heurefin,
     required this.idartisan,
-    required this.timestamp,
     required this.adresseartisan,
     required this.workcount,
     required this.vehicule,
   });
   @override
-  State<RendezVousClient> createState() => _RendezVousClientState();
+  State<HistoriqueClient> createState() => _HistoriqueClientState();
 }
 
-class _RendezVousClientState extends State<RendezVousClient> {
-  final DemandeClientService _DemandeClientService = DemandeClientService();
-  final RendezVousService _rendezVousService = RendezVousService();
-  final HistoriqueService _historiqueService = HistoriqueService();
+class _HistoriqueClientState extends State<HistoriqueClient> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -120,29 +94,6 @@ class _RendezVousClientState extends State<RendezVousClient> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              const Icon(Icons.location_on, size: 21),
-                              Flexible(
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxWidth: screenWidth * 0.6, // Define a maximum width for the text
-                                  ),
-                                  child: Text(
-                                    widget.location,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 12,
-                                      color: Colors.black.withOpacity(0.5),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
-                                    maxLines: 3,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
                           Text(
                             'Date du rendez-vous :',
                             style: GoogleFonts.poppins(
@@ -167,15 +118,6 @@ class _RendezVousClientState extends State<RendezVousClient> {
                                 ),
                               ),
                             ],
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            widget.urgence ? "Urgente" : widget.heure,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: widget.urgence ? Colors.red : null,
-                            ),
                           ),
                           const SizedBox(height: 10),
                           Text(
@@ -225,11 +167,11 @@ class _RendezVousClientState extends State<RendezVousClient> {
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                     50), // Ajout du BorderRadius
-                                    child: Image.network(
-                                      widget.imageUrl,
-                                      width: 54,
-                                      height: 54,
-                                      fit: BoxFit.cover,
+                                child: Image.network(
+                                  widget.imageUrl,
+                                  width: 54,
+                                  height: 54,
+                                  fit: BoxFit.cover,
                                 ),
                               )
                                   : Icon(
@@ -248,19 +190,6 @@ class _RendezVousClientState extends State<RendezVousClient> {
                           const SizedBox(height: 10),
                           Row(
                             children: [
-                              const Icon(Icons.star, color: Colors.yellow, size: 20),
-                              Text(
-                                widget.rating.toString(),
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black.withOpacity(0.5),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
                               const Icon(Icons.phone, size: 20),
                               Text(
                                 widget.phone,
@@ -276,76 +205,6 @@ class _RendezVousClientState extends State<RendezVousClient> {
                     ),
                   ],
                 ),
-                const SizedBox() ,
-
-                // !confirmed && cancelled ?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: ()  async {
-                        _historiqueService.sendHistorique(widget.datedebut, widget.datefin, widget.heuredebut,
-                            widget.heurefin, widget.location, widget.iddomaine,
-                            widget.idprestation, widget.idclient, widget.idartisan,
-                            widget.urgence, widget.latitude, widget.longitude,widget.idclient);
-                        _DemandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
-                        await Future.delayed(const Duration(milliseconds: 100));
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan),
-                        ),
-                        );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(const Color(0xFF3E69FE)),
-                        minimumSize: MaterialStateProperty.all(const Size(22, 6)),
-                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 8, vertical: 8)), // Ajoutez du padding si nécessaire
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        'Traité',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    OutlinedButton(
-                      onPressed: () async{
-                        _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-                        _rendezVousService.deleteRendezVous(widget.timestamp, widget.idartisan);
-                        await Future.delayed(const Duration(milliseconds: 100));
-                      },
-                      style: ButtonStyle(
-                        side: MaterialStateProperty.all(
-                          const BorderSide(
-                            color: Color(0xFF3E69FE),
-                            width: 1,
-                          ),
-                        ),
-                        minimumSize: MaterialStateProperty.all(const Size(22, 6)), // Updated dimensions to match the ElevatedButton
-                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12, vertical: 7)), // Optional, adjust as necessary
-                        shape: MaterialStateProperty.all(
-
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        'Annuler',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: const Color(0xFF3E69FE),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
           ),

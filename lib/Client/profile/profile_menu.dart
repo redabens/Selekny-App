@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 
 class ProfileMenuWidget extends StatelessWidget {
-  ProfileMenuWidget({
+  const ProfileMenuWidget({
     super.key,
     required this.title,
     required this.icon,
@@ -35,7 +36,8 @@ class ProfileMenuWidget extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(color: textColor),
+        style: TextStyle(color: textColor,
+            fontSize: 15),
       ),
       trailing: endIcon
           ? Container(
@@ -43,7 +45,7 @@ class ProfileMenuWidget extends StatelessWidget {
         height: 10,
         child: Icon(
           Icons.arrow_forward_ios_outlined,
-          size: 25.0,
+          size: 20.0,
           color: Theme.of(context).iconTheme.color,
         ),
       )

@@ -2,22 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:reda/Client/components/RendezVous_container.dart';
-import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
+import 'package:reda/Client/Services/demande%20publication/HistoriqueServices.dart';
+import 'package:reda/Client/components/HistoriqueArtisan_container.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Services/ModifPrix.dart';
 
-class RendezVousPage extends StatefulWidget {
-  const RendezVousPage({
+class HistoriqueArtisanPage extends StatefulWidget {
+  const HistoriqueArtisanPage({
     super.key,
   });
   @override
-  State<RendezVousPage> createState() => _RendezVousPageState();
+  State<HistoriqueArtisanPage> createState() => _HistoriqueArtisanPageState();
 }
-class _RendezVousPageState extends State<RendezVousPage> {
+class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
   //---------------LES FONCTION GETTERS---------------------------------------------------
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final DemandeClientService _DemandeAccepteeService = DemandeClientService();
+  final HistoriqueService _historiqueService = HistoriqueService();
   final ModifPrixService _modifPrixService = ModifPrixService();
 
   // get le nom domaine de la demande acceptee
@@ -98,7 +98,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
               icon: const Icon(Icons.arrow_back_ios_new),
             ),
             title: Text(
-              'Rendez-Vous',
+              'Historique',
               style: GoogleFonts.poppins(
                 fontSize: 24,
                 fontWeight: FontWeight.w900,
@@ -116,12 +116,12 @@ class _RendezVousPageState extends State<RendezVousPage> {
           const SizedBox(height: 10),
         ],
       ),
-      );
+    );
   }
 
   Widget _buildRendezVousList(){
     return StreamBuilder(
-      stream: _DemandeAccepteeService.getRendezVous(_firebaseAuth.currentUser!.uid), //_firebaseAuth.currentUser!.uid
+      stream: _historiqueService.getHistorique(_firebaseAuth.currentUser!.uid), //_firebaseAuth.currentUser!.uid
       builder: (context, snapshot){
         if (snapshot.hasError){
           return Text('Error${snapshot.error}');
@@ -147,14 +147,14 @@ class _RendezVousPageState extends State<RendezVousPage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                      'Vous n''avez aucun Rendez-vous.',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600],
+                        'Vous n''avez aucun Historique.',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                        )
                     )
-                )
-              );
+                );
               }
               return ListView(children: snapshot.data!);
             });
@@ -166,11 +166,11 @@ class _RendezVousPageState extends State<RendezVousPage> {
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
       String demandeID = document.id;
-      String userID = _firebaseAuth.currentUser!.uid;
+      String artisanID = _firebaseAuth.currentUser!.uid;
       String domaineID = data['iddomaine'];
       String PrestationID = data['idprestation'];
-      String artisanID = data['idartisan'];
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(artisanID).get();
+      String clientID = data['idclient'];
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(clientID).get();
       Map<String, dynamic> datas = userDoc.data() as Map<String, dynamic>;
       String domaine = await getDomaineDemande(domaineID);//'Plombrie';
       String prestation = await getPrestationDemande(domaineID, PrestationID);
@@ -179,53 +179,34 @@ class _RendezVousPageState extends State<RendezVousPage> {
       String heure = '${data['heuredebut']} - ${data['heurefin']}';
       String prix = await _modifPrixService.getPrixPrestation(domaineID, PrestationID);
       String location = data['adresse'];
-      String imageUrl = await getUserPathImage(artisanID);
-      String nomArtisan = datas['nom'];
-      double rating = datas['rating'];
+      String imageUrl = await getUserPathImage(clientID);
+      String nomClient = datas['nom'];
       bool vehicule = datas['vehicule'];
-      int workcount = datas['workcount'];
-      String adresseartisan = datas['adresse'];
       String phone = datas['numTel'];
-      //----
       String datefin = data['datefin'];
       String heureDebut = data['heuredebut'];
       String heureFin = data['heurefin'];
-      double latitude = data['latitude'];
-      double longitude = data['longitude'];
-      Timestamp timestamp = data['timestamp'];
-      return RendezVousClient(
-        domaine: domaine,
-        location: location,
-        date: date,
-        heure: heure,
-        prix: prix,
-        prestation: prestation,
-        imageUrl: imageUrl,
-        nomArtisan: nomArtisan,
-        rating: rating,
-        phone: phone,
-        urgence: urgence,
-        datedebut: date,
-        datefin: datefin,
-        iddomaine: domaineID,
-        idprestation: PrestationID,
-        idclient: userID,
-        heuredebut: heureDebut,
-        heurefin: heureFin,
-        latitude: latitude,
-        longitude: longitude,
-        idartisan: artisanID,
-        timestamp: timestamp,
-        adresseartisan: adresseartisan,
-        workcount: workcount,
-        vehicule: vehicule,
-      );
+      return HistoriqueArtisan(domaine: domaine,
+          location: location,
+          date: date,
+          heure: heure,
+          prix: prix,
+          prestation: prestation,
+          imageUrl: imageUrl,
+          nomClient: nomClient,
+          phone: phone,
+          urgence: urgence,
+          idclient: clientID,
+          datefin: datefin,
+          heuredebut: heureDebut,
+          heurefin: heureFin,
+          vehicule: vehicule);
     } else {
       // Handle the case where the document is null
       print('Error: Document is null for document ID: ${document.id}');
       return Center(
           child: Text(
-              'Vous n''avez aucun Rendez-Vous.',
+              'Vous n''avez aucun Historique.',
               style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -255,7 +236,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
                 ),
                 const TextSpan(
                   text:
-                  ' Vous pouvez ici consulter vos Rendez-Vous.',
+                  ' Vous pouvez ici consulter votre historique de demandes.',
                 ),
               ],
             ),

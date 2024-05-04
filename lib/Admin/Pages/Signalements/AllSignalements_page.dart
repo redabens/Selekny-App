@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  SignalementsService _SignalementsService = SignalementsService();
+  final SignalementsService _SignalementsService = SignalementsService();
 
   //-----------------FONCTUIONS---------------------------------------
   Future<String> getNameUser(String userID) async {
@@ -34,6 +35,16 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
     final String userName = userDoc.data()!['nom'] as String;
     return userName;
   }
+
+  Future<int> getNbSignalementUser(String userID) async {
+    final userDoc = await _firestore.collection('users').doc(userID).get();
+    if (!userDoc.exists) {
+      return 0;
+    }
+    final int nb = userDoc.data()!['nbsignalement'] as int;
+    return nb;
+  }
+
 
   Future<String> getUserPathImage(String userID) async {
     DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
@@ -201,8 +212,8 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                   _currentIndex = 3;
                 });
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth(),)
+                    context,
+                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
                 );
 
               },
@@ -223,75 +234,75 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
   }
 
 
-Widget _buildSignalList() {
+  Widget _buildSignalList() {
 
-  return StreamBuilder(
-    stream: _SignalementsService.getAllSignalements(), //_firebaseAuth.currentUser!.uid
-    builder: (context, snapshot){
-      if (snapshot.hasError){
-        return Text('Error${snapshot.error}');
-      }
-      if(snapshot.connectionState == ConnectionState.waiting){
-        return const Text('Loading..');
-      }
-      final documents = snapshot.data!.docs;
+    return StreamBuilder(
+      stream: _SignalementsService.getAllSignalements(), //_firebaseAuth.currentUser!.uid
+      builder: (context, snapshot){
+        if (snapshot.hasError){
+          return Text('Error${snapshot.error}');
+        }
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return const Text('Loading..');
+        }
+        final documents = snapshot.data!.docs;
 
-      // Print details of each document
-      for (var doc in documents) {
-        print("Document Data: ${doc.data()}");
-      }
-      return FutureBuilder<List<Widget>>(
-          future: Future.wait(snapshot.data!.docs.map((document) => _buildSignalItem(document))),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Error loading signalements ${snapshot.error}'));
-            }
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            } if (snapshot.data!.isEmpty) {
-              return Center(
-                child: Text(
-                  'Vous n\'avez aucun signalement',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
+        // Print details of each document
+        for (var doc in documents) {
+          print("Document Data: ${doc.data()}");
+        }
+        return FutureBuilder<List<Widget>>(
+            future: Future.wait(snapshot.data!.docs.map((document) => _buildSignalItem(document))),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text('Error loading signalements ${snapshot.error}'));
+              }
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              } if (snapshot.data!.isEmpty) {
+                return Center(
+                  child: Text(
+                    'Vous n\'avez aucun signalement',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-              );
-            }
-            return ListView(children: snapshot.data!);
-          });
-    },
-  );
-}
+                );
+              }
+              return ListView(children: snapshot.data!);
+            });
+      },
+    );
+  }
 
-Future<Widget> _buildSignalItem(DocumentSnapshot document) async {
-  Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-  String signalementID = document.id;
-  String signaleurID = data['id_signaleur'];
-  String signalantID = data['id_signalant'];
-  String raison = data['raison'];
-  Timestamp timestamp = data['timestamp'];
+  Future<Widget> _buildSignalItem(DocumentSnapshot document) async {
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    String signalementID = document.id;
+    String signaleurID = data['id_signaleur'];
+    String signalantID = data['id_signalant'];
+    String raison = data['raison'];
+    Timestamp timestamp = data['timestamp'];
 
-final String signaleurUrl = await getUserPathImage(signaleurID);
-final String signalantUrl = await getUserPathImage(signalantID);
-  final String signaleurName = await getNameUser(signaleurID);
-  final String signalantName =  await getNameUser(signalantID);
-  final String date = await getFormattedDate(timestamp);
-  final String heure = await getFormattedTime(timestamp);
-  final String signalantJob = await getUserJob(signalantID);
-  final String signaleurJob = await getUserJob(signaleurID);
-
-  return Container(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-       DetSignalement(signalementID: signalementID ,signaleurId: signaleurID,signalantId: signalantID,signaleurName:signaleurName, signalantName: signalantName, leDate: date, aHeure: heure,signaleurJob: signaleurJob,signalantJob: signalantJob,raison: raison,signaleurUrl: signaleurUrl,signalantUrl: signalantUrl,),
-        const SizedBox(height: 16),
-      ],
-    ),
-  );
-}
+    final String signaleurUrl = await getUserPathImage(signaleurID);
+    final String signalantUrl = await getUserPathImage(signalantID);
+    final String signaleurName = await getNameUser(signaleurID);
+    final String signalantName =  await getNameUser(signalantID);
+    final String date = await getFormattedDate(timestamp);
+    final String heure = await getFormattedTime(timestamp);
+    final String signalantJob = await getUserJob(signalantID);
+    final String signaleurJob = await getUserJob(signaleurID);
+    final int nbsignalement = await getNbSignalementUser(signalantID);
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          DetSignalement(signalementID: signalementID ,signaleurId: signaleurID,signalantId: signalantID,signaleurName:signaleurName, signalantName: signalantName, leDate: date, aHeure: heure,signaleurJob: signaleurJob,signalantJob: signalantJob,raison: raison,signaleurUrl: signaleurUrl,signalantUrl: signalantUrl,nbsignalement: nbsignalement,),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
 }
