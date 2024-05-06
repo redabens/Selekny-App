@@ -51,10 +51,9 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
       String pathImage = userDoc['pathImage'];
       final reference = FirebaseStorage.instance.ref().child(pathImage);
       final url = await reference.getDownloadURL();
-      print('loooooooooooooooooook $url');
       return url;
     } else {
-      print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXSSS');
+      print('erreur getUserPathImage getAllSignalements');
       return "";
     }
   }

@@ -16,7 +16,8 @@ class HistoriqueService extends ChangeNotifier {
       String idartisan,
       bool urgence,
       double latitude,
-      double longitude,) async {
+      double longitude,
+      String receiverId) async {
     Timestamp timestamp = Timestamp.now();
     DateTime dateTime = timestamp.toDate();
     dateTime= dateTime.subtract(const Duration(hours: 1));
@@ -38,13 +39,20 @@ class HistoriqueService extends ChangeNotifier {
       timestamp: timestamp,);
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(idclient)
+        .doc(receiverId)
         .collection('Historique')
         .add(newHistorique.toMap());
 
     return Future.value(null);
   }
+  Stream<QuerySnapshot> getHistorique(String userId){
 
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId).collection('Historique')
+        .orderBy('timestamp',descending: true)
+        .snapshots();
+  }
   Future<void> deleteHistorique(String demandeID) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     try {

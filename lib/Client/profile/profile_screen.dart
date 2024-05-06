@@ -1,6 +1,8 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:reda/Client/Pages/Demandes/HistoriqueClientPage.dart';
 import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
@@ -46,40 +48,17 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = 3;
   String tProfileHeading = '';
   String tProfileSubHeading = '';
   String imageUrl = '';
-  bool vehicule = false;
   late UserRepository userRepository;
-  Future<void> getVehiculeStatut() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user = auth.currentUser;
-    if (user != null) {
-      try {
-        FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-        DocumentSnapshot userDoc = await firestore.collection('users').doc(user.uid).get();
-        if (userDoc.exists) {
-         vehicule = userDoc.get('vehicule');
-        } else {
-          print("User not found");
-        }
-      } catch (e) {
-        print("Error fetching vehicule status: $e");
-      }
-    } else {
-      print("No user logged in");
-    }
-  }
   @override
   void initState() {
     super.initState();
     userRepository = UserRepository();
     fetchUserData();
-    setState(() {
-      getVehiculeStatut();
-    });
+    getVehiculeStatut();
   }
 
   Future<String> getUserPathImage(String userID) async {
@@ -90,7 +69,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // Vérifier si le document existe
     if (userDoc.exists) {
       // Extraire le PathImage
-      print('here');
       String pathImage = userDoc['pathImage'];
       print(pathImage);
       // Retourner le PathImage
@@ -110,18 +88,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
 
-
+  late bool vehicule ;
+  Future<void> getVehiculeStatut() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+    if (user != null) {
+      try {
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+        DocumentSnapshot userDoc = await firestore.collection('users').doc(user.uid).get();
+        if (userDoc.exists) {
+          setState(() {
+            vehicule = userDoc.get('vehicule');
+          });
+        } else {
+          print("User not found");
+        }
+      } catch (e) {
+        print("Error fetching vehicule status: $e");
+      }
+    } else {
+      print("No user logged in");
+    }
+    await Future.value(Null);
+  }
   Future<void> fetchUserData() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? currentUser = auth.currentUser;
     String? email = currentUser?.email;
-
+    bool vehicule = false;
     if (email != null) {
       try {
         UserModel? userModel = await userRepository.getUserDetails(email);
         imageUrl = await getUserPathImage(currentUser!.uid);
-        print("img url : $imageUrl");
-        print("User data retrieved successfully");
         setState(() {
           tProfileHeading = userModel.nom;
           tProfileSubHeading = email;
@@ -248,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                             ),
 
-                            Vehicule(vehicule: vehicule),
+                            const Vehicule(),
 
                             ProfileMenuWidget(
                               title: "Mode sombre",
@@ -258,8 +256,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ProfileMenuWidget(
                               title: "Historique",
                               icon: Icons.history_rounded,
-                              onPress: () {
-
+                              onPress: () {Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                  const HistoriqueClientPage(),
+                                ),
+                              );
                               },
                             ),
                             ProfileMenuWidget(
@@ -442,4 +445,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-

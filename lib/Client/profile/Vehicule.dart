@@ -4,14 +4,43 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-class Vehicule extends StatelessWidget {
-final bool vehicule;
+class Vehicule extends StatefulWidget {
   const Vehicule({
     super.key,
-   required this.vehicule,
   });
   @override
+  _VehiculeState createState() => _VehiculeState();
+}
 
+class _VehiculeState extends State<Vehicule> {
+  late bool vehicule;
+  Future<void> getVehiculeStatut() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+    if (user != null) {
+      try {
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+        DocumentSnapshot userDoc = await firestore.collection('users').doc(user.uid).get();
+        if (userDoc.exists) {
+          setState(() {
+            vehicule = userDoc.get('vehicule');
+          });
+        } else {
+          print("User not found");
+        }
+      } catch (e) {
+        print("Error fetching vehicule status: $e");
+      }
+    } else {
+      print("No user logged in");
+    }
+    await Future.value(Null);
+  }
+  @override
+  void initState() {
+    super.initState();
+    getVehiculeStatut();
+  }
   Widget build(BuildContext context) {
     return Container(
       height: 40,
@@ -58,10 +87,10 @@ final bool vehicule;
 
 
 class VehiculeSwitch extends StatefulWidget {
-final bool vehicule ;
+  final bool vehicule ;
   const VehiculeSwitch({
     super.key,
-required this.vehicule,
+    required this.vehicule,
   });
 
   @override
