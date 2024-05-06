@@ -12,7 +12,7 @@ import '../Pages/Demandes/HistoriqueClientPage.dart';
 class SettingsClientSection extends StatelessWidget {
   final bool vehicule;
   const SettingsClientSection({super.key,
-    required this.vehicule});
+    required this.vehicule,});
 
   @override
   Widget build(BuildContext context) {
@@ -131,12 +131,6 @@ class SettingsClientSection extends StatelessWidget {
                     ),
                   );
                 },
-              ),
-              const SettingsItem(
-                imagePath: 'assets/statut.png',
-                text: 'Statut',
-                hasSwitch: true,
-                initialSwitchState: true,
               ),
               SettingsItem(
                 imagePath: 'assets/Car.png',

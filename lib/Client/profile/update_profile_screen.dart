@@ -1,4 +1,3 @@
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,7 @@ class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
 
   @override
-  _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
+  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
@@ -88,19 +87,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       return null;
     }
   }
+
   Future<String> getUserPathImage(String pathImage) async {
-      // Retourner le PathImage
-      final reference = FirebaseStorage.instance.ref().child(pathImage);
-      try {
-        // Get the download URL for the user image
-        final downloadUrl = await reference.getDownloadURL();
-        print(downloadUrl);
-        return downloadUrl;
-      } catch (error) {
-        print("Error fetching user image URL: $error");
-        return ''; // Default image on error
-      }
+    // Retourner le PathImage
+    final reference = FirebaseStorage.instance.ref().child(pathImage);
+    try {
+      // Get the download URL for the user image
+      final downloadUrl = await reference.getDownloadURL();
+      print(downloadUrl);
+      return downloadUrl;
+    } catch (error) {
+      print("Error fetching user image URL: $error");
+      return ''; // Default image on error
+    }
   }
+
   Future<void> fetchUserData() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? currentUser = auth.currentUser;
@@ -109,8 +110,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     if (email != null) {
       try {
         userModel = await userRepository.getUserDetails(email);
-        String? oldImgUrl = await getUserPathImage(userModel.pathImage);
-        print('$oldImgUrl');
+        oldImgUrl = await getUserPathImage(userModel.pathImage);
+
         print("User data retrieved successfully");
         setState(() {
           Id = id ?? '';
@@ -150,7 +151,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         longitude: userModel.longitude,
         token: userModel.token,
         vehicule: userModel.vehicule,
-        nbsignalement: userModel.nbsignalement);
+        nbsignalement: userModel.nbsignalement, bloque: userModel.bloque,);
 
     try {
       await userRepository.updateUser(updatedUser);
@@ -210,7 +211,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 latitude: userModel.latitude,
                 longitude: userModel.longitude,
                 token: userModel.token,
-                vehicule: userModel.vehicule, nbsignalement: userModel.nbsignalement);
+                vehicule: userModel.vehicule,
+                nbsignalement: userModel.nbsignalement, bloque: userModel.bloque,);
             Navigator.pop(context, updatedUser);
           },
           icon: Container(
@@ -509,3 +511,4 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 }
+

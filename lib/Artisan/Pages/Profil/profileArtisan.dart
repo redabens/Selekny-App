@@ -77,13 +77,24 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
       return false;
     }
   }
+  Future<bool> getStatutArtisan(String artisanId)async{
+    try{
+      final artisandoc = await FirebaseFirestore.instance.collection('users').doc(artisanId).get();
+      Map<String,dynamic> data = artisandoc.data() as Map<String,dynamic>;
+      return data['statut'];
+    } catch(e){
+      print("error : $e");
+      return false;
+    }
+  }
   Future<ProfileData> _fetchProfileData() async {
     // Combine data fetching logic from getNomArtisan, getUserPathImage, etc.
     String nomartisan = await getNomArtisan(FirebaseAuth.instance.currentUser!.uid);
     String imageUrl = await getUserPathImage(FirebaseAuth.instance.currentUser!.uid);
     String domaine = await getDomaineArtisan(FirebaseAuth.instance.currentUser!.uid);
     bool vehicule = await getVehiculeArtisan(FirebaseAuth.instance.currentUser!.uid);
-    return ProfileData(nomartisan, email, imageUrl, domaine, vehicule);
+    bool statut = await getStatutArtisan(FirebaseAuth.instance.currentUser!.uid);
+    return ProfileData(nomartisan, email, imageUrl, domaine, vehicule,statut);
   }
   @override
   void initState() {
@@ -105,8 +116,9 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
             fontSize: screenWidth * 0.08, // Taille proportionnelle
           ),
         ),
+        elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.grey[100],
+        backgroundColor: Colors.grey[150],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -143,15 +155,18 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                           domaine: profileData.domaine,
                         ),
                         SizedBox(height: screenHeight * 0.02),
-                        SettingsArtisanSection(vehicule: profileData.vehicule),
+                        SettingsArtisanSection(vehicule: profileData.vehicule, statut: profileData.statut,),
                       ],
                     );
                   }
 
-                  return const Column(
+                  return  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [Center(child: CircularProgressIndicator()),],
+                    children: [
+                      SizedBox(height: screenHeight * 0.3,),
+                      const Center(child: CircularProgressIndicator()),
+                    ],
                   );
 
                 },
@@ -268,7 +283,7 @@ class ProfileData {
   final String imageUrl;
   final String domaine;
   final bool vehicule;
-
-  ProfileData(this.nomartisan, this.email, this.imageUrl, this.domaine, this.vehicule);
+  final bool statut;
+  ProfileData(this.nomartisan, this.email, this.imageUrl, this.domaine, this.vehicule, this.statut);
 }
 

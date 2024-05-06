@@ -9,7 +9,6 @@ import 'package:reda/Artisan/Pages/Activit%C3%A9/ActiviteWidget/JobsAndComments.
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
-import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 
 import '../Profil/profileArtisan.dart';
@@ -121,6 +120,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const MyAppBar(),
       body: Column(
           children: [

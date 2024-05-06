@@ -186,6 +186,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
           token: '',
           rating: 4,
           vehicule: false,
+          bloque: false,
           nbsignalement: 0,
           workcount: 0);
 

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,7 +30,6 @@ class _SettingsItemState extends State<SettingsItem> {
   @override
   void initState() {
     super.initState();
-    print('${widget.text} et ${widget.initialSwitchState}');
     setState(() { switchState = widget.initialSwitchState;// Définir l'état initial
       });
   }
@@ -71,7 +72,7 @@ class _SettingsItemState extends State<SettingsItem> {
                 ),
               ],
             ),
-            if (widget.isClickable)
+            if (widget.isClickable && widget.text != 'Déconnexion')
               Image.asset(
                 'assets/fleche.png',
                 width: screenWidth * 0.05,
@@ -84,8 +85,14 @@ class _SettingsItemState extends State<SettingsItem> {
                   activeColor: const Color(0xFF3E69FE),
                   inactiveTrackColor: Colors.grey,
                   onChanged: (value) {
+                    DocumentReference userRef =
+                    FirebaseFirestore.instance.collection('users')
+                        .doc(FirebaseAuth.instance.currentUser!.uid);
                     setState(() {
                       switchState = value;
+                      if(widget.text == 'Véhiculé'){
+                        userRef.update({'vehicule': switchState});
+                      }
                     });
                   },
                 ),

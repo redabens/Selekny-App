@@ -76,7 +76,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
               latitude: position['latitude'],
               longitude: position['longitude'],
               token: '',
-              vehicule: false, nbsignalement: 0);
+              vehicule: false,
+              bloque: false,
+              nbsignalement: 0);
           // ajouter l utilisateur a la base de donnees firestore
           // CollectionReference users =
           //FirebaseFirestore.instance.collection('users');

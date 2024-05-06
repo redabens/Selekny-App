@@ -63,6 +63,16 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
       return false;
     }
   }
+  Future<bool> getStatutArtisan(String artisanId)async{
+    try{
+      final artisandoc = await FirebaseFirestore.instance.collection('users').doc(artisanId).get();
+      Map<String,dynamic> data = artisandoc.data() as Map<String,dynamic>;
+      return data['statut'];
+    } catch(e){
+      print("error : $e");
+      return false;
+    }
+  }
   Future<ProfileData> _fetchProfileData() async {
     // Combine data fetching logic from getNomArtisan, getUserPathImage, etc.
     String nomclient = await getNomClient(FirebaseAuth.instance.currentUser!.uid);
@@ -127,15 +137,18 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
                           imageUrl: profileData.imageUrl,
                         ),
                         SizedBox(height: screenHeight * 0.02),
-                        SettingsClientSection(vehicule: profileData.vehicule),
+                        SettingsClientSection(vehicule: profileData.vehicule,),
                       ],
                     );
                   }
 
-                  return const Column(
+                  return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [Center(child: CircularProgressIndicator()),],
+                    children: [
+                      SizedBox(height: screenHeight * 0.3,),
+                      const Center(child: CircularProgressIndicator()),
+                    ],
                   );
 
                 },
@@ -251,7 +264,6 @@ class ProfileData {
   final String email;
   final String imageUrl;
   final bool vehicule;
-
   ProfileData(this.nomartisan, this.email, this.imageUrl, this.vehicule);
 }
 

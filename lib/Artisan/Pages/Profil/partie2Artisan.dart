@@ -11,8 +11,10 @@ import '../../../Pages/help.dart';
 
 class SettingsArtisanSection extends StatelessWidget {
   final bool vehicule;
+  final bool statut;
   const SettingsArtisanSection({super.key,
-    required this.vehicule});
+    required this.vehicule,
+    required this.statut});
 
   @override
   Widget build(BuildContext context) {
