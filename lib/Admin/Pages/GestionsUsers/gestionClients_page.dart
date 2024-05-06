@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
+import '../../../Pages/authentification/connexion.dart';
 import '../../../Pages/retourAuth.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -86,6 +88,22 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
           // espace fo9 titre de la page
           const SizedBox(height: 10.0),
           AppBar(
+            leading: IconButton(onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                    const LoginPage()),
+              );
+            },
+              icon: Image.asset(
+                'assets/deconexion.png',
+                fit: BoxFit.cover,
+                color: const Color(0xFF3E69FE),
+              ),
+
+            ),
             elevation: 0.0, // Remove default shadow
             backgroundColor: Colors.white,
             title: Text(
@@ -158,7 +176,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AllSignalementsPage(),
+                    builder: (context) => const AllSignalementsPage(),
                   ),
                 );
               },
@@ -229,7 +247,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const RetourAuth(),
+                      builder: (context) => const DomainServicePage(),
                     ));
               },
               child: Container(

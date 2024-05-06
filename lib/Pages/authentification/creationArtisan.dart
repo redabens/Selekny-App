@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Pages/artisaninscri.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:reda/Pages/user_repository.dart';
@@ -629,7 +630,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 });
                 Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
+                    MaterialPageRoute(builder: (context) => const DomainServicePage(),)
                 );
 
               },

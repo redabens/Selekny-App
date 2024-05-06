@@ -1,13 +1,14 @@
 
 import 'package:flutter/material.dart';
+import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/authentification/connexion.dart';
-class RetourAuth extends StatefulWidget {
-  const RetourAuth({super.key});
+class AucunArtisan extends StatefulWidget {
+  const AucunArtisan({super.key});
 
   @override
-  RetourAuthState createState() => RetourAuthState();
+  AucunArtisanState createState() => AucunArtisanState();
 }
-class RetourAuthState extends State<RetourAuth>{
+class AucunArtisanState extends State<AucunArtisan>{
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +21,20 @@ class RetourAuthState extends State<RetourAuth>{
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
-                'assets/envoye.png', // corrected asset name
+                'assets/pointexclamation.png', // corrected asset name
                 fit: BoxFit.cover,
+                width: 225,
+                height: 225,
               ),
             ),
             const SizedBox(height: 20),
             const Text(
-              "Vous n'éte pas connectez !",
+              "Aucun artisan trouvé!",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             const SizedBox(height: 10),
             const Text(
-              "Veuillez retourner à la page d'authentification.",
+              "Veuillez retourner à la page d'accueil.",
               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
             ),
             const SizedBox(height: 50),
@@ -40,7 +43,7 @@ class RetourAuthState extends State<RetourAuth>{
                 // Navigate to another page
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
               child: Container(

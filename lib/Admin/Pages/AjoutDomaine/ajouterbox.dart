@@ -1,49 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// Creation du box ajouter
+
+
 class PlusIconBox extends StatelessWidget {
   const PlusIconBox({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+    final screenHeight = MediaQuery.of(context).size.height; // Hauteur de l'écran
+
     return Column(
-      mainAxisSize: MainAxisSize.min, // Garde la taille minimale pour le contenu
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height:100,
+          height: screenHeight * 0.125,
+          width: screenWidth * 0.5, // Hauteur proportionnelle
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.grey, // Couleur de la bordure
-              width: 3.0, // Épaisseur de la bordure
+              color: Colors.grey,
+              width: screenWidth * 0.008, // Épaisseur proportionnelle
             ),
-            borderRadius: BorderRadius.circular(15), // Rayon des coins
+            borderRadius: BorderRadius.circular(screenWidth * 0.04), // Rayon proportionnel
           ),
           child: Center(
             child: Container(
-              width: 40, // Taille du cercle intérieur
-              height: 40,
+              width: screenWidth * 0.1, // Taille proportionnelle
+              height: screenWidth * 0.1, // Taille proportionnelle
               decoration: BoxDecoration(
-                color: Colors.white, // Couleur du cercle intérieur
+                color: Colors.white,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.grey, // Couleur de la bordure du cercle intérieur
-                  width: 3.0, // Épaisseur de la bordure intérieure
+                  color: Colors.grey,
+                  width: screenWidth * 0.008, // Épaisseur proportionnelle
                 ),
               ),
-              child: const Icon(
+              child:  Icon(
                 Icons.add,
-                color: Colors.grey, // Couleur du signe plus
-                size: 24, // Taille du signe plus
+                color: Colors.grey,
+                size: screenWidth * 0.06, // Taille proportionnelle
               ),
             ),
           ),
         ),
-        const SizedBox(height: 8), // Espace entre le box et le texte
+        SizedBox(height: screenHeight * 0.02), // Espace proportionnel
         Text(
-          "Ajouter", // Texte à afficher sous le box
+          "Ajouter",
           style: GoogleFonts.poppins(
-            fontSize: 16, // Taille du texte
-            color: Colors.grey, // Couleur du texte
+            fontSize: screenWidth * 0.04, // Taille proportionnelle
+            color: Colors.grey,
           ),
         ),
       ],

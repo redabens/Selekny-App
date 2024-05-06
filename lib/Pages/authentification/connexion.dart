@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
+import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'forgotpassword.dart';
@@ -105,30 +107,58 @@ class _LoginScreenState extends State<LoginScreen> {
       void signin() async {
         try {
           User? user = await _auth.signInwithEmailAndPassword(email, password);
-          await getUserRole(email);
-          print("Role : " + role);
-          if (role == selectedRole) {
-            print("User connection success");
-            if(role == 'client'){
+          if(user!.uid != '1kZ4ZrXf1BYiDtpmWnuxWsmcQQ32') {
+            final userdoc = await FirebaseFirestore.instance.collection('users')
+                .doc(user.uid)
+                .get();
+            print(user.uid);
+            Map<String, dynamic> data = userdoc.data() as Map<String, dynamic>;
+            final bloque = data['bloque'];
+            print('$bloque');
+            if (!bloque) {
+              await getUserRole(email);
+              print("Role : " + role);
+              if (role == selectedRole) {
+                print("User connection success");
+                if (role == 'client') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                        const HomePage()),
+                  );
+                }
+                else if (role == 'artisan') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                        const ActiviteAvenir()),
+                  );
+                }
+                //rediriger vers la page d acceuil
+              } else {
+                print(
+                    "User don t match , user's email not found with that email");
+                // afficher une erreur dans le UI  'cet utilisateur n existe pas'
+              }
+            }
+            else {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const HomePage()),
+                    const Banni()),
               );
             }
-            else if(role == 'artisan'){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                    const ActiviteAvenir()),
-              );
-            }
-            //rediriger vers la page d acceuil
-          } else {
-            print("User don t match , user's email not found with that email");
-            // afficher une erreur dans le UI  'cet utilisateur n existe pas'
+          }
+          else{
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                  const AllSignalementsPage()),
+            );
           }
         } on FirebaseAuthException catch (e) {
           if (e.code == 'user-not-found') {

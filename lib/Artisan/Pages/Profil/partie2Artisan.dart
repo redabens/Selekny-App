@@ -134,11 +134,11 @@ class SettingsArtisanSection extends StatelessWidget {
                   );
                 },
               ),
-              const SettingsItem(
+              SettingsItem(
                 imagePath: 'assets/statut.png',
                 text: 'Statut',
                 hasSwitch: true,
-                initialSwitchState: true,
+                initialSwitchState: statut,
               ),
               SettingsItem(
                 imagePath: 'assets/Car.png',

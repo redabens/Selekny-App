@@ -1,4 +1,6 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +10,7 @@ import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Admin/Services/Domaine_service.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 
+import '../../../Pages/authentification/connexion.dart';
 import 'ajouterbox.dart';
 import 'detaildubox.dart';
 import 'importerphoto.dart';
@@ -24,42 +27,59 @@ class DomainServicePageState extends State<DomainServicePage> {
   final DomainesService _domainesService = DomainesService();
   Future<String> getDomainePathImage(String pathImage) async {
 
-      // Retourner le PathImage
-      final reference = FirebaseStorage.instance.ref().child(pathImage);
-      try {
-        // Get the download URL for the user image
-        final downloadUrl = await reference.getDownloadURL();
-        return downloadUrl;
-      } catch (error) {
-        print("Error fetching user image URL: $error");
-        return ''; // Default image on error
-      }
+    // Retourner le PathImage
+    final reference = FirebaseStorage.instance.ref().child(pathImage);
+    try {
+      // Get the download URL for the user image
+      final downloadUrl = await reference.getDownloadURL();
+      return downloadUrl;
+    } catch (error) {
+      print("Error fetching user image URL: $error");
+      return ''; // Default image on error
+    }
   }
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-
-         title:Text(
-            'Domaine Service', // Texte déplacé vers le haut
-            style: GoogleFonts.poppins(
-              fontSize: 25, // Taille de la police
-              fontWeight: FontWeight.w600,
-              color: Colors.black, // Couleur du texte
-            ),
+        leading: IconButton(onPressed: () {
+          FirebaseAuth.instance.signOut();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                const LoginPage()),
+          );
+        },
+          icon: Image.asset(
+            'assets/deconexion.png',
+            fit: BoxFit.cover,
+            color: const Color(0xFF3E69FE),
           ),
+
+        ),
+        title:Text(
+          'Domaine Service',
+          style: GoogleFonts.poppins(
+            fontSize: screenWidth * 0.06,// Taille de la police
+            fontWeight: FontWeight.w600,
+            color: Colors.black, // Couleur du texte
+          ),
+        ),
 
         backgroundColor: Colors.white, // Couleur de fond de l'AppBar
         elevation: 0, // Supprimer l'ombre de l'AppBar
       ),
       backgroundColor: Colors.white, // Couleur de fond du Scaffold
 
-    body: Padding(
-    padding: const EdgeInsets.all(16), // Espacement général
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start, // Aligner le texte au début
-      children: [
-        const SizedBox(height:20),
+      body: Padding(
+        padding: EdgeInsets.all(screenWidth * 0.04), // Espacement général
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // Aligner le texte au début
+          children: [
+            SizedBox(height: screenHeight * 0.02),
             Expanded(
               child: _buildDomaineGrid(),
             ),
@@ -161,8 +181,8 @@ class DomainServicePageState extends State<DomainServicePage> {
               child: Container(
                 height: 40,
                 child: Image.asset(
-                    'icons/ajoutdomaine.png',
-                    color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black ,
+                  'icons/ajoutdomaine.png',
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black ,
                 ),
               ),
             ),
@@ -173,6 +193,8 @@ class DomainServicePageState extends State<DomainServicePage> {
     );
   }
   Widget _buildDomaineGrid() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return StreamBuilder(
       stream: _domainesService.getDomaines(),
       builder: (context, snapshot) {
@@ -227,9 +249,9 @@ class DomainServicePageState extends State<DomainServicePage> {
                 ),
               );
               return GridView.count(
-                crossAxisCount: 2, // Deux éléments par ligne
-                mainAxisSpacing: 8, // Réduire l'espace entre les lignes
-                crossAxisSpacing: 16, // Espace entre les colonnes
+                crossAxisCount: 2,
+                mainAxisSpacing: screenHeight * 0.01,
+                crossAxisSpacing: screenWidth * 0.04,
                 children: children,
               );
             });
@@ -237,21 +259,21 @@ class DomainServicePageState extends State<DomainServicePage> {
     );
   }
   Future<Widget> _buildDomaineItem(DocumentSnapshot document) async {
-      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-      String imageUrl = await getDomainePathImage(data['Image']);
-      print("nom: ${data['Nom']} et image : $imageUrl");
-      return DomainPhotoWidget(
-        domainName: data['Nom'],
-        imagePath: imageUrl,
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AjoutPrestationAunDomaine(idDomaine: document.id,
-              nomDomaine: data['Nom'],),
-            ),
-          );
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    String imageUrl = await getDomainePathImage(data['Image']);
+    print("nom: ${data['Nom']} et image : $imageUrl");
+    return DomainPhotoWidget(
+      domainName: data['Nom'],
+      imagePath: imageUrl,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AjoutPrestationAunDomaine(idDomaine: document.id,
+            nomDomaine: data['Nom'],),
+          ),
+        );
 
-        },
-      );
+      },
+    );
   }
 }

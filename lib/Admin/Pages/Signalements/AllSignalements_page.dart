@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
+import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'package:reda/Pages/retourAuth.dart';
 import 'package:reda/Admin/Services/signalement_service.dart';
@@ -114,6 +116,22 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
           const SizedBox(height: 20.0),
 
           AppBar(
+            leading: IconButton(onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                    const LoginPage()),
+              );
+            },
+              icon: Image.asset(
+                'assets/deconexion.png',
+                fit: BoxFit.cover,
+                color: const Color(0xFF3E69FE),
+              ),
+
+            ),
             elevation: 0.0,
             backgroundColor: Colors.white,
             title: Text(
@@ -149,7 +167,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AllSignalementsPage(),),
+                  MaterialPageRoute(builder: (context) => const AllSignalementsPage(),),
                 );
               },
               child: Container(
@@ -215,7 +233,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
+                    MaterialPageRoute(builder: (context) => const DomainServicePage(),)
                 );
 
               },

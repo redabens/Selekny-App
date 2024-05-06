@@ -7,12 +7,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
-import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
+import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/user_repository.dart';
@@ -298,7 +299,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  var admin;
   var isLogin;
+  var isbloqued;
   var auth = FirebaseAuth.instance;
   late Future<String> roleFuture;
   late String role = '';
@@ -327,7 +330,9 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    checkIfLogin(); // Appel de la méthode pour vérifier l'état de connexion
+    checkIfLogin();// Appel de la méthode pour vérifier l'état de connexion
+    checkifadmin();
+    checkifbloque();
   }
 
   @override
@@ -353,9 +358,13 @@ class HomeScreenState extends State<HomeScreen> {
           const LoginPage()
               : !isLogin
               ? const WelcomePage()
-              : (role == 'client')
+              : admin ?
+              const AllSignalementsPage()
+              : isbloqued ?
+                const Banni()
+              :(role == 'client')
               ? const HomePage()
-              : const NotifUrgente(),
+              : const ActiviteToday(),
         ),
       ),
 
@@ -367,7 +376,20 @@ class HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-
+  void checkifbloque() async{
+    try{
+      final userdoc = await FirebaseFirestore.instance.collection('users').doc(
+          FirebaseAuth.instance.currentUser!.uid).get();
+      Map<String, dynamic> data = userdoc.data() as Map<String, dynamic>;
+      setState(() {
+        isbloqued = data['bloque'];
+      });
+      await Future.delayed(const Duration(milliseconds: 2000));
+    }
+    catch(e){
+      print("error : $e");
+    }
+  }
   void checkIfLogin() async {
     auth.authStateChanges().listen((User? user) async {
       final useremail = auth.currentUser?.email;
@@ -380,6 +402,21 @@ class HomeScreenState extends State<HomeScreen> {
         });
       }
     });
+  }
+  void checkifadmin(){
+    if(FirebaseAuth.instance.currentUser != null) {
+      if (FirebaseAuth.instance.currentUser!.uid ==
+          '1kZ4ZrXf1BYiDtpmWnuxWsmcQQ32') {
+        setState(() {
+          admin = true;
+        });
+      }
+      else {
+        setState(() {
+          admin = false;
+        });
+      }
+    }
   }
 }
 

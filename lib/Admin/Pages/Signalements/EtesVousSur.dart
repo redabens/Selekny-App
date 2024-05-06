@@ -1,14 +1,35 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../Services/signalement_service.dart';
 import 'DetailsSignalement_page.dart';
 import 'AllSignalements_page.dart';
 
 class EtesVousSur extends StatefulWidget {
-  const EtesVousSur({super.key});
+  final String signalementID;
+  final String signaleurID;
+  final String signalantID;
+  final String signaleurName;
+  final String signalantName;
+  final String signaleurJob;
+  final String signalantJob;
+  final String date;
+  final String heure;
+  final String raison;
+  final String signaleurUrl;
+  final String signalantUrl;
+  final int nbsignalement;
+  const EtesVousSur({super.key, required this.signalementID,
+    required this.signaleurID, required this.signalantID,
+    required this.signaleurName, required this.signalantName,
+    required this.signaleurJob, required this.signalantJob,
+    required this.date, required this.heure,
+    required this.raison, required this.signaleurUrl,
+    required this.signalantUrl, required this.nbsignalement,});
 
   @override
   EtesVousSurState createState() => EtesVousSurState();
@@ -33,7 +54,12 @@ class EtesVousSurState extends State<EtesVousSur> {
       body: Stack(
         children:
         [
-          const DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '///',nbsignalement: 0,),
+          DetailsSignalement(signalementID:widget.signalementID,signaleurID: widget.signaleurID,
+            signalantID: widget.signalantID,signaleurName: widget.signaleurName,
+            signalantName: widget.signalantName, signaleurJob: widget.signaleurJob,
+            signalantJob: widget.signalantJob, date: widget.date, heure: widget.heure,
+            raison: widget.raison,signaleurUrl: widget.signaleurUrl,
+            signalantUrl: widget.signalantUrl,nbsignalement: widget.nbsignalement,),
           Container(
             color: const Color.fromRGBO(128,128,128,0.7),
             width: double.infinity,
@@ -81,7 +107,7 @@ class EtesVousSurState extends State<EtesVousSur> {
                     ),
                   ),
                   const SizedBox(height:25),
-                  const Buttons(),
+                  Buttons(userid: widget.signalantID,),
                 ],
               ),
             ),
@@ -93,7 +119,8 @@ class EtesVousSurState extends State<EtesVousSur> {
 }
 
 class Buttons extends StatelessWidget {
-  const Buttons({super.key});
+  final String userid;
+  const Buttons({super.key, required this.userid});
   // final VoidCallback onPressed;
 
   @override
@@ -101,12 +128,12 @@ class Buttons extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.95,
       height: 35,
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children:
         [
-          Oui(),
-          Non(),
+          Oui(userid: userid,),
+          const Non(),
         ],
       ),
     );
@@ -114,9 +141,18 @@ class Buttons extends StatelessWidget {
   }
 }
 class Oui extends StatelessWidget {
-  const Oui({super.key});
+  final String userid;
+  Oui({super.key, required this.userid});
+  final SignalementsService _SignalementService = SignalementsService();
   // final VoidCallback onPressed;
-
+  void changeBloque(String userid){
+    final userref = FirebaseFirestore.instance.collection('users').doc(userid);
+    try {
+      userref.update({'bloque': true});
+    }catch(e){
+      print('$e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -127,10 +163,12 @@ class Oui extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
+        onTap: () async {
+          changeBloque(userid);
+          await  _SignalementService.deleteSignalement(userid);
+          Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AllSignalementsPage()//lazm le compte se supprime
+          MaterialPageRoute(builder: (context) => const AllSignalementsPage()//lazm le compte se supprime
           ),
         );
         },
@@ -167,12 +205,7 @@ class Non extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: GestureDetector(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const DetailsSignalement(signalementID:'////',signaleurID: '///',signalantID: '////',signaleurName: '//////', signalantName: 'fdfdfd', signaleurJob: '///////', signalantJob: '/////', date: '/////', heure: '/////', raison: '/////',signaleurUrl: '///',signalantUrl: '//',nbsignalement: 0,)//lazm la page de bloquer ici
-
-          ),
-        ),
+        onTap: () => Navigator.pop(context),
         child: Center(
           child:Text(
             'Non',

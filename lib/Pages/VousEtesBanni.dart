@@ -1,13 +1,14 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:reda/Pages/authentification/connexion.dart';
-class RetourAuth extends StatefulWidget {
-  const RetourAuth({super.key});
+import 'package:reda/Pages/authentification/inscription.dart';
+class Banni extends StatefulWidget {
+  const Banni({super.key});
 
   @override
-  RetourAuthState createState() => RetourAuthState();
+  BanniState createState() => BanniState();
 }
-class RetourAuthState extends State<RetourAuth>{
+class BanniState extends State<Banni>{
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +21,21 @@ class RetourAuthState extends State<RetourAuth>{
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
-                'assets/envoye.png', // corrected asset name
+                'assets/banni2.png', // corrected asset name
+                height: 250,
+                width: 250,
                 fit: BoxFit.cover,
               ),
             ),
             const SizedBox(height: 20),
             const Text(
-              "Vous n'éte pas connectez !",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              "Vous avez etés Bloqué!",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
             ),
             const SizedBox(height: 10),
             const Text(
-              "Veuillez retourner à la page d'authentification.",
-              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
+              "Veuillez retourner à la page d'Inscription.",
+              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
             ),
             const SizedBox(height: 50),
             GestureDetector(
@@ -40,7 +43,7 @@ class RetourAuthState extends State<RetourAuth>{
                 // Navigate to another page
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  MaterialPageRoute(builder: (context) => const InscriptionPage()),
                 );
               },
               child: Container(
@@ -62,5 +65,12 @@ class RetourAuthState extends State<RetourAuth>{
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    if(FirebaseAuth.instance.currentUser != null) {
+      FirebaseAuth.instance.signOut();
+    }
   }
 }

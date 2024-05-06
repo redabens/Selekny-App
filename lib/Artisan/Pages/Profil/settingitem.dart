@@ -93,6 +93,9 @@ class _SettingsItemState extends State<SettingsItem> {
                       if(widget.text == 'Véhiculé'){
                         userRef.update({'vehicule': switchState});
                       }
+                      else if (widget.text == 'Statut'){
+                        userRef.update({'statut': switchState});
+                      }
                     });
                   },
                 ),

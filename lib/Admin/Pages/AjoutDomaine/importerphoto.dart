@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'ajouter demande.dart';
+import 'ajouterDomaine.dart';
 
 class Importer extends StatefulWidget {
   const Importer({super.key});
@@ -11,7 +10,7 @@ class Importer extends StatefulWidget {
 }
 
 class _ImporterState extends State<Importer> {
-  final TextEditingController _textController = TextEditingController(); // Champ de saisie pour le nom du domaine
+  final TextEditingController _textController = TextEditingController();
 
   @override
   void dispose() {
@@ -28,23 +27,23 @@ class _ImporterState extends State<Importer> {
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {
-          Navigator.pop(context,MaterialPageRoute(
-            builder: (context) => const DomainServicePage(),
-          ),); // Retour à la page précédente
+          // Fermer le clavier si ouvert et retour à la page précédente
+          FocusScope.of(context).unfocus();
+          Navigator.pop(context);
         },
         child: Stack(
           children: [
             const DomainServicePage(),
             Container(
-              color: const Color.fromRGBO(128, 128, 128, 0.7), // Overlay gris semi-transparent
+              color: const Color.fromRGBO(128, 128, 128, 0.7),
               width: double.infinity,
               height: double.infinity,
             ),
             Center(
               child: Container(
                 padding: EdgeInsets.all(screenWidth * 0.08),
-                width: screenWidth * 0.9, // Largeur proportionnelle
-                height: screenHeight * 0.4, // Hauteur proportionnelle
+                width: screenWidth * 0.9,
+                height: screenHeight * 0.4,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(screenWidth * 0.05),
@@ -53,51 +52,51 @@ class _ImporterState extends State<Importer> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Champ de saisie avec un texte d'indication
                     TextField(
                       controller: _textController,
                       decoration: InputDecoration(
                         hintText: 'Ajouter le nom du domaine',
-                        hintStyle: GoogleFonts.poppins(color: Colors.grey, fontSize: 14),
-                        enabledBorder: const UnderlineInputBorder(
+                        hintStyle: GoogleFonts.poppins(
+                          color: Colors.grey,
+                          fontSize: screenWidth * 0.04,
+                        ),
+                        enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
-                        focusedBorder: const UnderlineInputBorder(
+                        focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
                       ),
                     ),
-                    SizedBox(height: screenHeight * 0.02), // Espace entre les éléments
+                    SizedBox(height: screenHeight * 0.02),
                     Row(
                       children: [
-                        // Conteneur gris pour l'image
                         Expanded(
                           child: Container(
                             height: screenHeight * 0.15,
                             decoration: BoxDecoration(
-                              color: Colors.grey[300], // Couleur grise
+                              color: Colors.grey[300],
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Center(
                               child: Image.asset(
-                                'icons/ajoutimage.png', // Icône de l'image
+                                'icons/ajoutimage.png',
                                 height: screenHeight * 0.15,
                                 width: screenWidth * 0.15,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(width: screenWidth * 0.05), // Espace entre les éléments
-                        // Bouton pour importer une image
+                        SizedBox(width: screenWidth * 0.05),
                         GestureDetector(
                           onTap: () {
-                            // Action à effectuer lors de l'importation
+                            // Action à effectuer lors de l'importation d'une image
                           },
                           child: Container(
                             height: screenHeight * 0.05,
-                            width : screenWidth * 0.4,
+                            width: screenWidth * 0.4,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF3E69FE), // Couleur bleue
+                              color: Color(0xFF3E69FE),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
@@ -108,14 +107,14 @@ class _ImporterState extends State<Importer> {
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12,
+                                    fontSize: screenWidth * 0.035,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                const Icon(
+                                SizedBox(width: 8),
+                                Icon(
                                   Icons.file_upload,
                                   color: Colors.white,
-                                  size: 20,
+                                  size: screenWidth * 0.06,
                                 ),
                               ],
                             ),
@@ -123,25 +122,25 @@ class _ImporterState extends State<Importer> {
                         ),
                       ],
                     ),
-                    const Spacer(), // Ajoute de l'espace entre les éléments et le bouton "Terminer"
+                    Spacer(), // Ajouter de l'espace
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context); // Retour à la page principale
+                        Navigator.pop(context); // Retour à la page précédente
                       },
                       child: Container(
                         height: screenHeight * 0.05,
-                        width: screenWidth * 0.25, // Largeur du bouton "Terminer"
+                        width: screenWidth * 0.25,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF3E69FE), // Couleur bleue
-                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF3E69FE),
+                          borderRadius: BorderRadius.circular(screenWidth * 0.03),
                         ),
                         child: Center(
                           child: Text(
                             'Terminer',
                             style: GoogleFonts.poppins(
-                              color: Colors.white, // Couleur du texte
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              fontSize: screenWidth * 0.04,
                             ),
                           ),
                         ),

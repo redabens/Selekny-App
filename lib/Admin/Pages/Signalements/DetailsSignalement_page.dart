@@ -248,7 +248,12 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const EtesVousSur()),
+                              MaterialPageRoute(builder: (context) => EtesVousSur(signalementID:widget.signalementID,signaleurID: widget.signaleurID,
+                                signalantID: widget.signalantID,signaleurName: widget.signaleurName,
+                                signalantName: widget.signalantName, signaleurJob: widget.signaleurJob,
+                                signalantJob: widget.signalantJob, date: widget.date, heure: widget.heure,
+                                raison: widget.raison,signaleurUrl: widget.signaleurUrl,
+                                signalantUrl: widget.signalantUrl,nbsignalement: widget.nbsignalement,)),
                             );
                           },
                           child: Container(
