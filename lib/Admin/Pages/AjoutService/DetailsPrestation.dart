@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,6 +34,10 @@ class DetailsPrestationState extends State<DetailsPrestation> {
   bool _isEditingUnit = false;
   String _selectedUnit = 'DA';
 
+  //l'image
+ String imagePath = '';
+  String imageUrl = '';
+
 
   //---initialisation
   @override
@@ -44,6 +50,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
 //------------FONCTION TO GET PRESTATION FIELDS AND INITIALIZE THE CONTROLLERS-------------------
   Future<void> getPrestationData(String domaineID, String prestationID) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
+    FirebaseStorage storage = FirebaseStorage.instance;
     try {
       DocumentSnapshot domaine = await firestore.collection('Domaine').doc(domaineID).get();
       if (!domaine.exists) {
@@ -53,6 +60,9 @@ class DetailsPrestationState extends State<DetailsPrestation> {
         _controllerPrixmin.text = '';
         _controllerPrixmax.text = '';
         _controllerUnite.text = 'DA';
+        imagePath = '';
+        imageUrl = '';
+
         return;
       }
       DocumentSnapshot prestation = await domaine.reference.collection('Prestations').doc(prestationID).get();
@@ -63,6 +73,8 @@ class DetailsPrestationState extends State<DetailsPrestation> {
         _controllerPrixmin.text = '';
         _controllerPrixmax.text = '';
         _controllerUnite.text = '';
+        imagePath = '';
+        imageUrl = '';
         return;
       }
        //initialisation des controlleur si le domaine et la prestation existent
@@ -71,6 +83,8 @@ class DetailsPrestationState extends State<DetailsPrestation> {
       _controllerPrixmin.text = (prestation.get('prixmin') ?? 0).toString();
       _controllerPrixmax.text = (prestation.get('prixmax') ?? 0).toString();
       _controllerUnite.text =  prestation.get('unite')??'DA';
+      imagePath = prestation.get('image');
+      imageUrl = await storage.ref(imagePath).getDownloadURL();
 
     } catch (e) {
       print('Erreur lors de l\'obtention de la prestation: $e');
@@ -78,6 +92,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
       _controllerMateriel.text = '';
       _controllerPrixmin.text = '';
       _controllerUnite.text = 'DA';
+      imageUrl='';
     }
   }
 
@@ -103,6 +118,8 @@ class DetailsPrestationState extends State<DetailsPrestation> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,14 +143,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                      color: Colors.black.withOpacity(0.1),
                      width: 2.0,
                    ),
-                   boxShadow: [
-                     BoxShadow(
-                       color: Colors.black.withOpacity(0.1),
-                       spreadRadius:2,
-                       blurRadius: 5,
-                       offset: const Offset(0, 1),
-                     ),
-                   ],
+
                  ),
                  padding: const EdgeInsets.all(14),
                  child: Column(
@@ -220,14 +230,6 @@ class DetailsPrestationState extends State<DetailsPrestation> {
               color: Colors.black.withOpacity(0.1),
               width: 2.0,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius:2,
-                blurRadius: 5,
-                offset: const Offset(0, 1),
-              ),
-            ],
           ),
           padding: const EdgeInsets.all(10),
           child: Column(
@@ -321,14 +323,6 @@ class DetailsPrestationState extends State<DetailsPrestation> {
               color: Colors.black.withOpacity(0.1),
               width: 2.0,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius:2,
-                blurRadius: 5,
-                offset: const Offset(0, 1),
-              ),
-            ],
           ),
           padding: const EdgeInsets.all(10),
           child: Column(
@@ -516,14 +510,6 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                       color: Colors.black.withOpacity(0.1),
                       width: 2.0,
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius:2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
                   ),
                   padding: const EdgeInsets.all(10),
                   child: Column(
@@ -619,6 +605,96 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 15),
+                //-------------------------MODIFIER L'IMAGE---------------------------------------------
+        Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: Color(0xFFEBE5E5),
+              width: 2.0,
+            ),
+          ),
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(width: 10),
+                  Text(
+                    'La photo de la préstation :',
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height:10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children:
+                [
+                  //SizedBox(width:5),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    height: MediaQuery.of(context).size.width * 0.2,
+                    child: GestureDetector(
+                      onTap: () {
+                        // Add your tap functionality here if needed
+                      },
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl, // Replace with your image URL
+                        placeholder: (context, url) => const CircularProgressIndicator(), // Optional
+                        errorWidget: (context, url, error) => const Icon(Icons.error), // Optional
+                        fit: BoxFit.cover, // Adjust the fit as necessary
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(width:5),
+                  Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFD9D9D9), // Couleur du bouton
+                      borderRadius: BorderRadius.circular(8), // Border radius de 8
+                    ),
+                    child: TextButton.icon(
+                      onPressed: () {
+
+                      },
+                      icon: Icon(Icons.file_upload, color: Color(0xFF323232)), // Icône pour importer une photo avec la couleur spécifiée
+                      label: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Text(
+                          'modifier la photo',
+                          style: GoogleFonts.poppins(
+                            color: Color(0xFF323232),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.transparent, // Rendre le fond transparent pour que la couleur de fond du Container soit visible
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8), // Border radius de 8
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+              SizedBox(height: 10, width: 20),
+            ],
+          ),
+        ),
                 const SizedBox(height: 50,) ,
 
 
