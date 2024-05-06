@@ -1,4 +1,4 @@
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,7 +15,7 @@ class ProfileBody2 extends StatelessWidget {
   final VoidCallback onComment;
   final VoidCallback onPrestation;
 
-  ProfileBody2({
+  const ProfileBody2({super.key,
     required this.photoPath,
     required this.name,
     required this.domaine,
@@ -43,12 +43,12 @@ class ProfileBody2 extends StatelessWidget {
             borderRadius: BorderRadius.circular(
                 50), // Ajout du BorderRadius
                child: Image.network(
-              photoPath,
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-            ),
-          )
+                photoPath,
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+              ),
+            )
               : Icon(
             Icons.account_circle,
             size: 65,

@@ -2,11 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 
 class Detcommentaire extends StatelessWidget {
   final String userName;
   final int starRating;
   final String comment;
+  final String prestationName;
   final String profileImage;
   final Timestamp timestamp;
 
@@ -15,11 +18,12 @@ class Detcommentaire extends StatelessWidget {
     required this.userName,
     required this.starRating,
     required this.comment,
+    required this.prestationName,
     required this.profileImage,
     required this.timestamp,
   });
   String getFormattedDate(Timestamp timestamp) {
-    // Convertir le Timestamp en DateTime
+    //Convertir le Timestamp en DateTime
     DateTime dateTime = timestamp.toDate();
 
     // Formater la date
@@ -36,122 +40,94 @@ class Detcommentaire extends StatelessWidget {
     print(formattedTime);
     return formattedTime;
   }
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Stack(
-        children: [
-          Container(
-            height:100,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 3,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 50, // Adjust as needed
-                    height: 50, // Adjust as needed
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.blueGrey,
-                        width: 2.0,
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50.0),
-                      child: CachedNetworkImage(
-                        imageUrl: profileImage,
-                        // ...
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              userName,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
-                            ),
-                            Row(
-                              children: List.generate(
-                                5,
-                                    (index) => Icon(
-                                  Icons.star,
-                                  color: index < starRating ? Colors.yellow : Colors.grey,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                        Container(
-                          width:MediaQuery.of(context).size.width*0.5,
-                          child :Text(
-                            comment,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    return Container(
+      padding: EdgeInsets.all(screenWidth * 0.05),
+      margin: EdgeInsets.symmetric(  vertical: screenHeight * 0.01,
+        horizontal: screenWidth * 0.05,),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 3),
           ),
-          Positioned(
-            top: 50,
-            right: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  getFormattedDate(timestamp),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Première ligne avec la photo de profil
+          Row(
+            children: [
+              const CircleAvatar(
+                backgroundImage: AssetImage('assets/peintre.png'),
+                radius: 20,
+              ),
+              SizedBox(width: screenWidth * 0.02),
+              // Colonne avec le nom de l'utilisateur et le nom de la prestation
+              Flexible(
+                child:Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userName,
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height:  screenHeight *0.005), // Espace entre le nom et la prestation
+                    RichText(
+                      text: TextSpan(
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w400, color: Color(0xFF3E69FE), fontSize:screenWidth * 0.03),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text:
+                            prestationName,// Texte
+                          ),
+                        ],
+                      ),
+                      softWrap: true, // Permet au texte de se diviser en plusieurs lignes
+                      maxLines: 2,
+                    )
+                  ],
+                ),
+              ),
+            ],
+
+          ),
+          SizedBox(height: screenHeight *0.01),
+          // Commentaire
+          Text(
+            comment,
+            style: GoogleFonts.poppins(fontSize: 13),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Row(
+                children: List.generate(
+                  5,
+                      (index) => Icon(
+                    Icons.star,
+                    color: index < starRating ? Colors.yellow : Colors.grey,
+                    size:screenWidth * 0.05,
                   ),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  getFormattedTime(timestamp),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
+              ),
+              Spacer(),
+              Text(
+                getFormattedDate(timestamp),
+                style: GoogleFonts.poppins(fontWeight: FontWeight.w300, color: Colors.grey,fontSize: screenWidth * 0.035),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 }
-/**/

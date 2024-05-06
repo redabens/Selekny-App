@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reda/Admin/Pages/artisaninscri.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
@@ -500,7 +501,13 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                   ),
                   const SizedBox(height: 25),
                   ElevatedButton(
-                    onPressed: () => handleSubmit(),
+                    onPressed: () async {
+                        await handleSubmit();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Artisan(),),
+                        );
+                      },
                     style: ButtonStyle(
                       minimumSize:
                       MaterialStateProperty.all<Size>(const Size(350, 47)),

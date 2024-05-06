@@ -80,6 +80,7 @@ dependencies:
   app_settings: ^5.1.1
   flutter_local_notifications: ^17.1.0
   firebase_performance: ^0.9.3+17
+  url_launcher: ^6.2.6
 
 dev_dependencies:
   flutter_test:
@@ -163,6 +164,15 @@ flutter:
     - icons/ajoutdomaine.png
     - icons/gestion.png
     - icons/signalement.png
+    - assets/add.png
+    - assets/fleche.png
+    - assets/condition.png
+    - assets/statut.png
+    - assets/sombre.png
+    - assets/deconexion.png
+    - assets/contact.png
+    - assets/historique.png
+    - assets/profil.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,7 +1,8 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/components/Commentaire_container.dart';
 import 'package:reda/Services/Commentaires/commentaires_service.dart';
 
@@ -16,18 +17,9 @@ class AfficherCommentairePage extends StatefulWidget {
 }
 
 class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
-  final TextEditingController _commentaireController = TextEditingController();
   final CommentaireService _commentaireService =CommentaireService();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final int starRating= 3;
-  void ajoutComment() async{
-    if(_commentaireController.text.isNotEmpty){
-      await _commentaireService.sendCommentaire((widget.artisanID), _commentaireController.text,starRating);
-      // clear the text controller after sending the message
-      _commentaireController.clear();
-    }
-  }
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
     DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
@@ -74,6 +66,7 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
     return SafeArea(
       child: Scaffold(
       appBar: AppBar(
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
@@ -81,11 +74,13 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
-        title: const Text(
+        centerTitle: true,
+        title: Text(
           'Commentaires',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
       backgroundColor: Colors.white, // Définir la couleur de fond du Scaffold sur blanc
@@ -129,6 +124,18 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
+              if (snapshot.data!.isEmpty) {
+                return Center(
+                    child: Text(
+                        'Vous n''avez aucun Commentaires.',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                        )
+                    )
+                );
+              }
               return ListView(children: snapshot.data!);
             });
       },
@@ -152,7 +159,12 @@ class _AfficherCommentairePageState extends State<AfficherCommentairePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Detcommentaire(userName: userName, starRating: starRating, comment: data['comment'], profileImage: profileImage, timestamp: data['timestamp']),
+          Detcommentaire(userName: userName,
+            starRating: data['starRating'],
+            comment: data['comment'],
+            profileImage: profileImage,
+            timestamp: data['timestamp'],
+            prestationName: data['nomprestation'],),
 
         ],
       ),

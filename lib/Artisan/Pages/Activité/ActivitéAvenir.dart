@@ -12,6 +12,8 @@ import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.da
 import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 
+import '../Profil/profileArtisan.dart';
+
 class ActiviteAvenir extends StatefulWidget {
   const ActiviteAvenir({super.key});
 
@@ -211,7 +213,7 @@ class ActiviteAvenirState extends State<ActiviteAvenir> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
                 );
 
               },

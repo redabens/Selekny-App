@@ -4,11 +4,12 @@ import 'package:reda/Services/Commentaires/commentaires_service.dart';
 
 class AjouterCommentairePage extends StatefulWidget {
   final String nomPrestataire;
+  final String nomprestation;
   final String artisanID;
   const AjouterCommentairePage({
     super.key,
     required this.nomPrestataire,
-    required this.artisanID,
+    required this.artisanID, required this.nomprestation,
   });
 
   @override
@@ -123,7 +124,7 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
                             IconButton(
                                 icon: const Icon(Icons.send),
                                 onPressed: () async {
-                                  await _commentaireService.sendCommentaire(widget.artisanID, _commentController.text,_lastStarIndex);
+                                  await _commentaireService.sendCommentaire(widget.artisanID, _commentController.text,_lastStarIndex,widget.nomprestation);
                                   await _commentaireService.updateRating(widget.artisanID, _lastStarIndex);
                                   // clear the text controller after sending the message
                                   _commentController.clear();

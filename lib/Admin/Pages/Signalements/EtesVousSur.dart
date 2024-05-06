@@ -1,5 +1,7 @@
 
 
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'DetailsSignalement_page.dart';
@@ -14,6 +16,17 @@ class EtesVousSur extends StatefulWidget {
 }
 
 class EtesVousSurState extends State<EtesVousSur> {
+  final auth = FirebaseAuth.instance;
+  Future<void> blockUser(String uid) async {
+    final functions = FirebaseFunctions.instance;
+    final callable = functions.httpsCallable('blockUser');
+    try {
+      final result = await callable({'uid': uid}); // Pass the user ID
+      print('User blocked: ${result.data}'); // Handle success message (optional)
+    } catch (error) {
+      print('Error blocking user: $error'); // Handle errors
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,11 +127,13 @@ class Oui extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: GestureDetector(
-        onTap: () => Navigator.push(
+        onTap: () {
+          Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AllSignalementsPage()//lazm le compte se supprime
           ),
-        ),
+        );
+        },
         child: Center(
           child:Text(
             'Oui',

@@ -193,7 +193,9 @@ class _RendezVousPageState extends State<RendezVousPage> {
       double latitude = data['latitude'];
       double longitude = data['longitude'];
       Timestamp timestamp = data['timestamp'];
-      return RendezVousClient(
+      return Column( // Wrap in a Column for vertical spacing
+        children: [
+        RendezVousClient(
         domaine: domaine,
         location: location,
         date: date,
@@ -219,6 +221,9 @@ class _RendezVousPageState extends State<RendezVousPage> {
         adresseartisan: adresseartisan,
         workcount: workcount,
         vehicule: vehicule,
+      ),
+          const SizedBox(height: 10), // Add spacing between containers
+        ],
       );
     } else {
       // Handle the case where the document is null

@@ -13,6 +13,8 @@ import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
 
 
 class AllSignalementsPage extends StatefulWidget {
+  const AllSignalementsPage({super.key});
+
   @override
   AllSignalementsPageState createState() => AllSignalementsPageState();
 

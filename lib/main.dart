@@ -4,13 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 import 'Artisan/Pages/Activité/ActivitéToday.dart';
-import 'Client/Pages/Home/home.dart';
+import 'package:reda/Client/Pages/Home/home.dart';
 import 'Pages/WelcomeScreen.dart';
+import 'Pages/authentification/connexion.dart';
 import 'firebase_options.dart';
 import 'dart:convert';
 import 'dart:math';
@@ -252,18 +252,39 @@ class MyAppState extends State<MyApp> {
     checkIfLogin(); // Appel de la méthode pour vérifier l'état de connexion
     setupToken();
   }
-
+  void _checkUserStatus(User user) async {
+    try {
+      final idTokenResult = await user.getIdTokenResult(true); // Force refresh
+      final claims = idTokenResult.claims; // Access claims from ID token
+      if (claims?['disabled'] == true) {
+        // User is disabled
+        await FirebaseAuth.instance.signOut(); // Sign the user out
+        // Navigate to a login screen or display a message about being blocked
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+            const LoginPage(),
+          ),
+        );
+      } else {
+        await Future.delayed(const Duration(milliseconds: 2000));
+        setState(() {
+          isLogin = true;
+        });
+      }
+    } catch (error) {
+      // Handle errors gracefully (e.g., network issues)
+    }
+  }
   void checkIfLogin() async {
-    auth.authStateChanges().listen((User? user) async {
+    auth.authStateChanges().listen((user) async {
       final useremail = auth.currentUser?.email;
       role = await getUserRole(useremail!);
       print(useremail);
       print(role);
       if (user != null && mounted) {
-        await Future.delayed(const Duration(milliseconds: 2000));
-        setState(() {
-          isLogin = true;
-        });
+        _checkUserStatus(user);
       }
     });
   }

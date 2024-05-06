@@ -5,12 +5,10 @@ import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeEncours_service.dart';
 import 'package:reda/Client/components/demandeEncours_container.dart';
 import 'package:reda/Services/ModifPrix.dart';
+import '../../profile/profileClient.dart';
 import '../Home/home.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
-
-//import 'package:reda/Services/GestionUsers/gestionUsers_service.dart';
 
 class DemandeEncoursPage extends StatefulWidget {
   const DemandeEncoursPage({
@@ -256,7 +254,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                 });
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => const ProfilClientPage(),),
                 );
 
               },
@@ -299,6 +297,18 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
               }
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.data!.isEmpty) {
+                return Center(
+                    child: Text(
+                        'Vous n''avez aucune demande encours.',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                        )
+                    )
+                );
               }
               return ListView(children: snapshot.data!);
             });

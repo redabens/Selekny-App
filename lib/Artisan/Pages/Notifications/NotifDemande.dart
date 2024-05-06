@@ -10,6 +10,8 @@ import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 
+import '../Profil/profileArtisan.dart';
+
 class NotifDemande extends StatefulWidget {
   const NotifDemande({super.key});
 
@@ -208,7 +210,7 @@ class NotifDemandeState extends State<NotifDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
                 );
 
               },

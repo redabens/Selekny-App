@@ -7,7 +7,7 @@ class CommentaireService extends ChangeNotifier{
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> sendCommentaire(String recieverId,String comment, int starRating)async{
+  Future<void> sendCommentaire(String recieverId,String comment, int starRating,String nomprestation)async{
     final currentUserId=_firebaseAuth.currentUser!.uid;
     final DateTime now = DateTime.now();
     final Timestamp timestamp = Timestamp.fromDate(now);
@@ -16,6 +16,7 @@ class CommentaireService extends ChangeNotifier{
       userID: currentUserId,
       starRating: starRating,
       comment: comment,
+      nomprestation: nomprestation,
       timestamp: timestamp,
     );
     await _firestore

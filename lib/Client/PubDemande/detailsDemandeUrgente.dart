@@ -32,7 +32,7 @@ class DetailsDemandeUrgente extends StatefulWidget {
 }
 
 class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
-  String? materiel; // Declare materiel as nullable String
+  String? materiel=''; // Declare materiel as nullable String
   String? prix = '';
   Date datedebut = Date();
   bool urgence = true;

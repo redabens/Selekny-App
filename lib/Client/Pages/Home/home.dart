@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/Pages/Home/header.dart';
 import 'package:reda/Client/Pages/Home/body.dart';
+import 'package:reda/Client/profile/profileClient.dart';
 import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart'; // Importation de la classe Searchbar
 
@@ -119,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                 });
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => const ProfilClientPage(),),
                 );
 
               },

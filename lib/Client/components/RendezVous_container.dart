@@ -291,7 +291,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                         _DemandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
                         await Future.delayed(const Duration(milliseconds: 100));
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan),
+                            MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan, nomprestation: widget.prestation,),
                         ),
                         );
                       },

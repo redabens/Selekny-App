@@ -78,11 +78,12 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -91,6 +92,15 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8,),
+                          Text(
+                            widget.prestation,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -131,19 +141,13 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                         ],
                       ),
                     ),
+                    const Spacer(),
                     Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            widget.prestation,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
-                            ),
-                          ),
                           GestureDetector(
                             onTap: () {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
@@ -151,12 +155,12 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
                                   nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
                                   adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
-                              ),
+                               ),
                               ); // Example navigation
                             },
                             child: Container(
-                              width: 54, // Adjust as needed
-                              height: 54, // Adjust as needed
+                              width: 55, // Adjust as needed
+                              height: 55,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -181,10 +185,14 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               ),
                             ),
                           ),
-                          Text(
-                            widget.nomArtisan,
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
+                          const SizedBox(height: 8,),
+                          Container(
+                            width: 80,
+                            child: Text(
+                                widget.nomArtisan,
+                                style: GoogleFonts.poppins(
+                                fontSize: 12,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 10),

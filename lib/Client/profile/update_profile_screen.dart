@@ -1,4 +1,5 @@
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -87,16 +88,29 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       return null;
     }
   }
-
+  Future<String> getUserPathImage(String pathImage) async {
+      // Retourner le PathImage
+      final reference = FirebaseStorage.instance.ref().child(pathImage);
+      try {
+        // Get the download URL for the user image
+        final downloadUrl = await reference.getDownloadURL();
+        print(downloadUrl);
+        return downloadUrl;
+      } catch (error) {
+        print("Error fetching user image URL: $error");
+        return ''; // Default image on error
+      }
+  }
   Future<void> fetchUserData() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? currentUser = auth.currentUser;
     String? email = currentUser?.email;
     String? id = await getUserIdFromFirestore(email ?? '');
-
     if (email != null) {
       try {
         userModel = await userRepository.getUserDetails(email);
+        String? oldImgUrl = await getUserPathImage(userModel.pathImage);
+        print('$oldImgUrl');
         print("User data retrieved successfully");
         setState(() {
           Id = id ?? '';
@@ -107,7 +121,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           oldPassword = userModel.motDePasse;
           latitude = userModel.latitude;
           longitude = userModel.longitude;
-          oldImgUrl = userModel.pathImage;
+          oldImgUrl = oldImgUrl;
           vehicule = userModel.vehicule;
           isLoading = false;
           print("User data fetched inside setState");
