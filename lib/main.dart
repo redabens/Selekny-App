@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 
 import 'package:get/get.dart';
-import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 
@@ -15,16 +16,14 @@ import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/authentification/connexion.dart';
-import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 import 'firebase_options.dart';
 import 'dart:convert';
 import 'dart:math';
-import 'package:provider/provider.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity/connectivity.dart' as connectivity;
 
-class ConnectivityProvider extends ChangeNotifier {
+/*class ConnectivityProvider extends ChangeNotifier {
   ConnectivityResult _connectivityResult = ConnectivityResult.none;
 
   ConnectivityProvider() {
@@ -34,8 +33,12 @@ class ConnectivityProvider extends ChangeNotifier {
   ConnectivityResult get connectivityResult => _connectivityResult;
 
   void _initConnectivity() async {
-    ConnectivityResult result = await Connectivity().checkConnectivity();
-    _updateConnectivityStatus(result);
+    try {
+      ConnectivityResult result = await Connectivity().checkConnectivity();
+      _updateConnectivityStatus(result);
+    } catch (e) {
+      print("Error checking connectivity : $e");
+    }
 
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       _updateConnectivityStatus(result);
@@ -55,14 +58,12 @@ class ConnectivityWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ConnectivityResult>(
-      stream: Connectivity().onConnectivityChanged,
-      builder: (context, snapshot) {
-        final connectivityProvider = Provider.of<ConnectivityProvider>(context);
-        final connectivityResult = snapshot.data;
+    return Consumer<ConnectivityProvider>(
+      builder: (context, connectivityProvider, child) {
+        final connectivityResult = connectivityProvider.connectivityResult;
 
         if (connectivityResult == ConnectivityResult.none) {
-          return const Scaffold(
+          return Scaffold(
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -89,11 +90,11 @@ class ConnectivityWidget extends StatelessWidget {
           );
         }
 
-        return child;
+        return child!;
       },
     );
   }
-}
+}*/
 
 double radians(double degrees) => degrees * pi / 180;
 double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
@@ -116,38 +117,15 @@ NotificationServices notificationServices = NotificationServices();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final ConnectivityResult connectivityResult =
+/*final ConnectivityResult connectivityResult =
       await Connectivity().checkConnectivity();
 
   final ConnectivityProvider connectivityProvider = ConnectivityProvider();
-  connectivityProvider._updateConnectivityStatus(connectivityResult);
+  connectivityProvider._updateConnectivityStatus(connectivityResult);*/
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  /* var result = await FlutterNotificationChannel().registerNotificationChannel(
-    description: 'Your channel description',
-    id: 'selekny',
-    importance: NotificationImportance.IMPORTANCE_HIGH,
-    name: 'Selekny',
-  );
-  print("/nNotificationChannelResult : ${result}");*/
 
-  /*try {
-    final results1 = await geocode('Bab Ezzouar, Hay Moussalaha, Alger, Algérie');
-    final double latitude1 = results1['latitude'];
-    final double longitude1 = results1['longitude'];
-    print('Latitude: $latitude1, Longitude: $longitude1');
-    final results2 = await geocode('Musee El Bardo, Alger, Algérie');
-    final double latitude2 = results2['latitude'];
-    final double longitude2 = results2['longitude'];
-    print('Latitude: $latitude2, Longitude: $longitude2');
-    print("Calculer distance :");
-    final double distance = haversineDistance(latitude1,longitude1,latitude2,longitude2);
-    print('la distance est : $distance km');
-  } on Exception catch (e) {
-    print('Une erreur est survenue : $e');
-  }*/
-  // el bardo : Latitude: 36.7199646, Longitude: 3.1991359;
   Future firebaseBackgroundMessage(RemoteMessage message) async {
     if (message.notification != null) {
       print("Some notification received in background");
@@ -198,14 +176,16 @@ void main() async {
   }
 
   await fetchPrestations();
-  runApp(ChangeNotifierProvider.value(
+  /*runApp(ChangeNotifierProvider.value(
     value: connectivityProvider,
-    child: const MaterialApp(
+    child: MaterialApp(
       home: ConnectivityWidget(
         child: MyApp(),
       ),
     ),
-  ));
+  ));*/
+
+  runApp(const MyApp());
 }
 /*void main() {
   runApp(const MyApp());
@@ -219,6 +199,105 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  final String _token = '';
+
+  void initState() {
+    super.initState();
+    setupToken();
+  }
+
+  static Future<void> saveUserToken(String token) async {
+    // Assume user is logged in for this example
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'token': token,
+    });
+  }
+
+  Future<void> setupToken() async {
+    // Get the token each time the application loads
+    String? token = await FirebaseMessaging.instance.getToken();
+
+    // Save the initial token to the database
+    await saveUserToken(token!);
+
+    // Any time the token refreshes, store this in the database too.
+    FirebaseMessaging.instance.onTokenRefresh.listen(saveUserToken);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: OfflineBuilder(
+        connectivityBuilder: (BuildContext context,
+            ConnectivityResult connectivity, Widget child) {
+          final bool isConnected = connectivity != ConnectivityResult.none;
+          if (isConnected) {
+            return HomeScreen();
+          } else {
+            return Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 80,
+                      color: Color(0xFF3E69FE),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      "Erreur de connexion",
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        textStyle: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Vérifiez votre connexion Internet .",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        textStyle: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            );
+          }
+        },
+        child: HomeScreen(), // Ajoutez un widget enfant pour le OfflineBuilder
+      ),
+    );
+  }
+}
+
+// si user est deja connecte on le redirige directement vers la page d acceuil
+// This widget is the root of your application.
+
+// const CreationArtisanPage(),
+//const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
+//const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
+//const PubDemandePage(),
+//const LoginScreen(),
+//const HomePage(),
+//const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
+//const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
+//const ChatPage(receiverUserEmail:"ms_iratni@esi.dz", receiverUserID: "eOILQzRtIQlxwCGKhFMy"),
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => HomeScreenState();
+}
+
+class HomeScreenState extends State<HomeScreen> {
   var isLogin;
   var auth = FirebaseAuth.instance;
   late Future<String> roleFuture;
@@ -245,33 +324,48 @@ class MyAppState extends State<MyApp> {
     }
   }
 
-  final String _token = '';
-
-  static Future<void> saveUserToken(String token) async {
-    // Assume user is logged in for this example
-    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-
-    await FirebaseFirestore.instance.collection('users').doc(userId).update({
-      'token': token,
-    });
-  }
-
-  Future<void> setupToken() async {
-    // Get the token each time the application loads
-    String? token = await FirebaseMessaging.instance.getToken();
-
-    // Save the initial token to the database
-    await saveUserToken(token!);
-
-    // Any time the token refreshes, store this in the database too.
-    FirebaseMessaging.instance.onTokenRefresh.listen(saveUserToken);
-  }
-
   @override
   void initState() {
     super.initState();
     checkIfLogin(); // Appel de la méthode pour vérifier l'état de connexion
-    setupToken();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      // Ajoute initialBinding ici pour initialiser le UserRepository
+      initialBinding: BindingsBuilder(() {
+        Get.put(UserRepository());
+      }),
+
+      home: Container(
+        color: Colors.white, // Couleur de l'arrière-plan de la page
+        child: Center(
+          child: isLogin == null
+              ? /*const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Color(
+                            0xFF3E69FE)), // Couleur de remplissage de l'indicateur de chargement
+                        strokeWidth:
+                            3.0, // Épaisseur du cercle de l'indicateur de chargement
+                        semanticsLabel:
+                            'Custom Loading', // Balise sémantique pour l'accessibilité
+                      )*/
+              const LoginPage()
+              : !isLogin
+                  ? const WelcomePage()
+                  : (role == 'client')
+                      ? const HomePage()
+                      : const NotifUrgente(),
+        ),
+      ),
+
+      //home: const CreationArtisanPage(),
+      routes: {
+        "/PublierDemandePage": (context) => NotifDemande(),
+        "/AccepteParArtisan": (context) => DemandeAccepteePage(),
+        "/ConfirmeParClient": (context) => ActiviteToday(),
+      },
+    );
   }
 
   void checkIfLogin() async {
@@ -287,68 +381,7 @@ class MyAppState extends State<MyApp> {
       }
     });
   }
-
-// si user est deja connecte on le redirige directement vers la page d acceuil
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      // Ajoute initialBinding ici pour initialiser le UserRepository
-      initialBinding: BindingsBuilder(() {
-        Get.put(UserRepository());
-      }),
-      home: ChangeNotifierProvider(
-        create: (context) => ConnectivityProvider(),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: ConnectivityWidget(
-            child: Container(
-              color: Colors.white, // Couleur de l'arrière-plan de la page
-              child: Center(
-                child: isLogin == null
-                    ? /*const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Color(
-                            0xFF3E69FE)), // Couleur de remplissage de l'indicateur de chargement
-                        strokeWidth:
-                            3.0, // Épaisseur du cercle de l'indicateur de chargement
-                        semanticsLabel:
-                            'Custom Loading', // Balise sémantique pour l'accessibilité
-                      )*/
-                    const LoginPage()
-                    : !isLogin
-                        ? const WelcomePage()
-                        : (role == 'client')
-                            ? const HomePage()
-                            : const NotifUrgente(),
-              ),
-            ),
-          ),
-          //home: const CreationArtisanPage(),
-          routes: {
-            "/PublierDemandePage": (context) => NotifDemande(),
-            "/AccepteParArtisan": (context) => DemandeAccepteePage(),
-            "/ConfirmeParClient": (context) => ActiviteToday(),
-          },
-        ),
-      ),
-    );
-  }
-  // const CreationArtisanPage(),
-  //const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
-  //const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
-  //const PubDemandePage(),
-  //const LoginScreen(),
-  //const HomePage(),
-  //const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
-  //const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
-  //const ChatPage(receiverUserEmail:"ms_iratni@esi.dz", receiverUserID: "eOILQzRtIQlxwCGKhFMy"),
 }
-
-
 
 
 
@@ -386,7 +419,14 @@ class _HomeScreenState extends State<HomeScreen> {
 */
 
 
-
+/* home: ChangeNotifierProvider(
+        create: (context) => ConnectivityProvider(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),*/
 
 
 

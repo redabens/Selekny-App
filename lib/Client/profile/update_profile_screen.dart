@@ -7,7 +7,7 @@ import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({super.key});
+  const UpdateProfileScreen({Key? key}) : super(key: key);
 
   @override
   _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
@@ -135,8 +135,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         longitude: userModel.longitude,
         token: userModel.token,
         vehicule: userModel.vehicule,
-        nbsignalement: userModel.nbsignalement // ici aussi
-        );
+        nbsignalement: userModel.nbsignalement);
 
     try {
       await userRepository.updateUser(updatedUser);
@@ -160,10 +159,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             await userRepository.uploadImage("Users/Images/Profile/", image);
         // update user image record
         final uri = Uri.parse(imageUrl);
-        fileName = uri.pathSegments.last;
-        print("FILE NAME : $fileName");
+        //fileName = uri.pathSegments.last;
+        //print("FILE NAME : $fileName");
         setState(() {
-          newUrlImg = imageUrl.toString();
+          newUrlImg = imageUrl;
           print("Url img : $newUrlImg");
         });
       }
@@ -289,6 +288,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.only(left: 30, right: 30),
                       child: Form(
+                        key: _formKey,
                         child: Column(
                           children: [
                             TextFormField(
