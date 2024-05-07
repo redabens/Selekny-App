@@ -9,7 +9,8 @@ class SignalementsService extends ChangeNotifier {
   Future<void> sendSignalement(String raison,String signlantId,String userId) async {
     CollectionReference signalements = _firestore.collection(
         'Signalements');
-
+    final userdoc = await FirebaseFirestore.instance.collection('users').doc(signlantId);
+    userdoc.update({'nbsignalement': FieldValue.increment(1)});
     if (userId != '') {
       final Timestamp timestamp = Timestamp.now();
       await signalements.add({

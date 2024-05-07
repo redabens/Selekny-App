@@ -1,15 +1,65 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   static User? user = FirebaseAuth.instance.currentUser;
 
+  Future<bool> checkEmailExists(String email) async {
+    final usersCollection = FirebaseFirestore.instance.collection('users');
+    final query = usersCollection.where('email', isEqualTo: email).limit(1);
+
+    final querySnapshot = await query.get();
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  Future<bool> verifyPassword(String email, String password) async {
+    try {
+      // Authentification de l'utilisateur avec l'email et le mot de passe
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Si l'authentification réussit, le mot de passe est correct
+      return true;
+    } on FirebaseAuthException catch (e) {
+      // Si une erreur FirebaseAuthException est levée, le mot de passe est incorrect
+      print('Erreur d\'authentification : ${e.code}');
+      return false;
+    }
+  }
+
   Future<User?> signUpwithEmailAndPassword(
       String email, String password) async {
     try {
+      if (!email.contains('@gmail.com')) {
+        throw FirebaseAuthException(
+          code: 'invalid-email',
+          message: 'L\'email doit être un email Gmail.',
+        );
+      }
+
+      // Vérification du mot de passe
+      if (password.length < 8) {
+        throw FirebaseAuthException(
+          code: 'weak-password',
+          message: 'Le mot de passe doit contenir au moins 8 caractères.',
+        );
+      }
+      bool emailExists = await checkEmailExists(email);
+      if (emailExists) {
+        // Email already exists, show error message
+        throw FirebaseAuthException(
+          code: 'invalid-email',
+          message: 'L\'email exist deja essayez un autre.',
+        );
+      }
+
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
@@ -18,29 +68,56 @@ class FirebaseAuthService {
       if (user != null && !user.emailVerified) {
         try {
           await user.sendEmailVerification();
-          print("Email sent successfully to : " + email);
+          print("Email sent successfully to : $email");
         } catch (e) {
           print("Some error occured in sending email verification");
         }
       }
 
       return credential.user;
-    } catch (e) {
-      print("Somme error occured in sign up$e");
+    } on FirebaseAuthException catch (error) {
+      Fluttertoast.showToast(
+          msg: error?.message ?? "un error occured",
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red);
+      return null;
     }
-    return null;
   }
 
   Future<User?> signInwithEmailAndPassword(
       String email, String password) async {
+    bool emailExists = await checkEmailExists(email);
+    if (!emailExists) {
+      print("Cet email n'existe pas");
+      Fluttertoast.showToast(
+        msg: 'Cet email n\'existe pas. Veuillez essayer un autre.',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+      );
+      return null; // Retournez null car l'authentification a échoué
+    }
+
+    bool mdpCorrect = await verifyPassword(email, password);
+    if (!mdpCorrect) {
+      print("le mot de passe est incorrect");
+      Fluttertoast.showToast(
+        msg: 'Mot de passe incorrect',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+      );
+      return null; // Retournez null car l'authentification a échoué
+    }
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       return credential.user;
-    } catch (e) {
-      print("Somme error occured in sign in");
-      print(e.toString());
-      rethrow;
+    } on FirebaseAuthException catch (error) {
+      Fluttertoast.showToast(
+        msg: error.message ?? "Une erreur s'est produite. Veuillez réessayer.",
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+      );
+      return null; // Retournez null car l'authentification a échoué
     }
   }
 
@@ -79,17 +156,12 @@ class FirebaseAuthService {
     }
   }
 
-  static Future saveUserToken(String token) async {
-    Map<String, dynamic> data = {"email": user!.email, "token": token};
-    try {
-      await FirebaseFirestore.instance
-          .collection("userToken")
-          .doc(user!.email)
-          .set(data);
-      print("Token added");
-    } catch (e) {
-      print("There is an error in saving user's token");
-      print(e.toString());
-    }
+  static Future<void> saveUserToken(String token) async {
+    // Assume user is logged in for this example
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'tokens': FieldValue.arrayUnion([token]),
+    });
   }
 }

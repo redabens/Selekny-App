@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/components/Demande.dart';
-import 'package:reda/Pages/aucunartisan.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 late String nomPrestation;
@@ -69,7 +68,6 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
     _checkArtisansForLatestDemande();
   }
   Future<void> _checkArtisansForLatestDemande() async {
-    int j=0;
     await Future.delayed(const Duration(milliseconds: 300));
     final demandecol = FirebaseFirestore.instance.collection('Demandes');
     final demandeDoc = await demandecol.where('checked',isEqualTo: false).orderBy('timestamp', descending: true).get();
@@ -106,61 +104,40 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
         print('Votre Demande n''a trouver aucun artisan');
       }
       for (int i=0;i< artisansSnapshot.docs.length;i++) {
-        final artisanData = artisansSnapshot.docs[i].data() as Map<
-            String,
-            dynamic>;
+        final artisanData = artisansSnapshot.docs[i].data() as Map<String, dynamic>;
         final artisanLat = artisanData['latitude'];
         final artisanLong = artisanData['longitude'];
         final artisanDomaine = artisanData['domaine'];
-        if (artisanData['statut'] == true) {
-          if (artisanDomaine == domainenom) {
-            final distance = haversineDistance(
-                demandeLat, demandeLong, artisanLat, artisanLong);
-            if (distance <= 30.0) {
-              j++;
-              print(artisansSnapshot.docs[i].id);
-              _demandeArtisanService.sendDemandeArtisan(
-                  demandeData['date_debut'],
-                  demandeData['date_fin'],
-                  demandeData['heure_debut'],
-                  demandeData['heure_fin'],
-                  demandeData['adresse'],
-                  demandeData['id_Domaine'],
-                  demandeData['id_Prestation'],
-                  demandeData['id_Client'],
-                  demandeData['urgence'],
-                  demandeData['latitude'],
-                  demandeData['longitude'],
-                  artisansSnapshot.docs[i].id,
-                  demandeData.id);
-              String typeService;
-              if (demandeData['urgence']) {
-                typeService = "(urgent)";
-              } else {
-                typeService = "(non urgent)";
-              }
-              String token = await UserRepository.instance
-                  .getTokenById(artisansSnapshot.docs[i].id);
-
-              print("Token de l'artisan $i : $token");
-
-              await getNomPrestationById(
-                  demandeData['id_Domaine'], demandeData['id_Prestation']);
-
-              print("Voici le service publie : $nomPrestation");
-              NotificationServices.sendPushNotification(
-                  token, "Offre d'un service $typeService", nomPrestation);
+        if( artisanDomaine == domainenom){
+          final distance = haversineDistance(demandeLat, demandeLong, artisanLat, artisanLong);
+          if (distance <= 30.0) {
+            print(artisansSnapshot.docs[i].id);
+            _demandeArtisanService.sendDemandeArtisan(demandeData['date_debut'], demandeData['date_fin'],
+                demandeData['heure_debut'], demandeData['heure_fin'],
+                demandeData['adresse'], demandeData['id_Domaine'],
+                demandeData['id_Prestation'], demandeData['id_Client'],
+                demandeData['urgence'], demandeData['latitude'],
+                demandeData['longitude'], artisansSnapshot.docs[i].id,demandeData.id); String typeService;
+            if (demandeData['urgence']) {
+              typeService = "(urgent)";
+            } else {
+              typeService = "(non urgent)";
             }
+            String token = await UserRepository.instance
+                .getTokenById(artisansSnapshot.docs[i].id);
+
+            print("Token de l'artisan $i : $token");
+
+            await getNomPrestationById(
+                demandeData['id_Domaine'], demandeData['id_Prestation']);
+
+            print("Voici le service publie : $nomPrestation");
+            NotificationServices.sendPushNotification(
+                token, "Offre d'un service $typeService", nomPrestation);
           }
         }
       }
     });
-    if(j == 0){
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const AucunArtisan()),
-      );
-    }
     // Update the 'checked' value for the latest request after processing artisans
     await demandecol.doc(demandeData.id).update({'checked': true});
     print('success');

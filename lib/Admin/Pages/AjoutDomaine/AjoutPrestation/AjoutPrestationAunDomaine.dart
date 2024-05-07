@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/AjoutPrestation/DetailsPrestation.dart';
 import 'package:reda/Pages/retourAuth.dart';
-
 import '../../../Services/Domaine_service.dart';
 
 class AjoutPrestationAunDomaine extends StatefulWidget {
@@ -162,6 +162,8 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
             Prestation(
               nomprestation: data['nom_prestation'],
               imageUrl: imageUrl,
+              domaineId: widget.idDomaine,
+              prestationId: document.id,
             ),
             const SizedBox(height: 10), // Add spacing between containers
       ],
@@ -234,9 +236,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 class Prestation extends StatelessWidget {
   final String nomprestation;
   final String imageUrl;
+  final String domaineId;
+  final String prestationId;
   const Prestation({super.key,
     required this.nomprestation,
     required this.imageUrl,
+    required this.domaineId,
+    required this.prestationId,
   });
 
   @override
@@ -290,7 +296,7 @@ class Prestation extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth(),),
+                  MaterialPageRoute(builder: (context) => DetailsPrestation(domaineID: domaineId, prestationID: prestationId),),
                 );
               },
             ),

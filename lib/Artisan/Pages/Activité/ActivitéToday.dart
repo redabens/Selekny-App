@@ -126,9 +126,11 @@ class ActiviteTodayState extends State<ActiviteToday> {
       appBar: const MyAppBar(),
       body: Column(
           children: [
-            const Jobsandcomments(),
-            const SizedBox(width: 20, height: 20),
+            const SizedBox(height: 18,),
+            _buildTitleAndDescription(),
+            const SizedBox(height: 10,),
             const Buttons(),
+            const SizedBox(width: 20, height: 20),
             Expanded(child: _buildRendezVousList(),)
           ],
         ),
@@ -330,6 +332,34 @@ class ActiviteTodayState extends State<ActiviteToday> {
           const SizedBox(height: 10,),
         ],
       ),
+    );
+  }
+  Widget _buildTitleAndDescription() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 0),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: '• ',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const TextSpan(
+                  text:
+                  ' Vous pouvez ici consulter vos Activtées, cela represente les jobs à faire aujourd''huit.',
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

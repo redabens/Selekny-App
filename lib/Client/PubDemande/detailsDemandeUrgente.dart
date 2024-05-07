@@ -36,6 +36,7 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
   String? prix = '';
   Date datedebut = Date();
   bool urgence = true;
+  int _rayonRecherche = 5; // Valeur initiale du rayon de recherche
   final ModifPrixService _modifPrixService = ModifPrixService();
   late Demande demandeinit = Demande(
       id_Client: "",
@@ -84,6 +85,34 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
             const SizedBox(width: 50, height: 25,),
             Urgence(domaineID: widget.domaineID,prestationID: widget.prestationID,nomprestation: widget.nomprestation,demande: demandeinit, urgence: urgence,),
             const SizedBox(width: 50, height: 25,),
+            /*Container(
+              width: double.infinity, // Prendre la largeur maximale disponible
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                  const Text('Rayon de recherche:'),
+              DropdownButton<int>(
+                  value: _rayonRecherche,
+                  items: [
+                  for (int i in [5, 10, 15, 20, 25, 30]) // Boucle pour générer les options
+                DropdownMenuItem(
+                  value: i,
+                  child: Text('$i km'),
+            ),
+          ],
+          onChanged: (int? nouveauRayon) {
+            if (nouveauRayon != null) {
+              setState(() {
+                _rayonRecherche = nouveauRayon;
+              });
+            }
+          },
+        ),
+        ],
+      ),
+    ),
+            const SizedBox(width: 50, height: 25,),*/
             Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datedebut, domaineId: widget.domaineID,),
           ],
         ),

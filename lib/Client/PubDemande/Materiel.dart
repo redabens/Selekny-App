@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,8 +16,8 @@ class Materiel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 92.17,
-      width: 325,
+      //height: 92.17,
+      width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -57,12 +58,18 @@ class Materiel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(width: 30),
-              Text(
-                materiel,
-                style: GoogleFonts.poppins(
-                  color: const Color(0xFF6D6D6D),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
+              Expanded(
+                child: RichText(
+                  text: TextSpan(children: <TextSpan>[
+                    TextSpan(
+                      text: materiel,
+                      style: GoogleFonts.poppins(
+                        color: const Color(0xFF6D6D6D),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ]),
                 ),
               ),
             ],
