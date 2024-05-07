@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:reda/Client/Pages/ProfilPrestationPage.dart';
 import 'package:reda/Client/ProfilArtisan/contactpage.dart';
 import 'package:reda/Client/ProfilArtisan/detailsprofil.dart';
 import 'package:reda/Client/ProfilArtisan/signaler.dart';
@@ -82,7 +83,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
           onPrestation:() { Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ContactPage(), // Navigation to ContactPage
+              builder: (context) => ProfilPrestationPage(idartisan: widget.idartisan), // Navigation to ContactPage
             ),
           );
           },

@@ -8,8 +8,9 @@ import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
-import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
+
+import '../Profil/profileArtisan.dart';
 
 class NotifUrgente extends StatefulWidget {
   const NotifUrgente({super.key});
@@ -40,7 +41,6 @@ class NotifUrgenteState extends State<NotifUrgente> {
     // Vérifier si le document existe
     if (userDoc.exists) {
       // Extraire le PathImage
-      print('here');
       String pathImage = userDoc['pathImage'];
       print(pathImage);
       // Retourner le PathImage
@@ -118,6 +118,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const MyAppBar(),
       body: Column(
         children: [
@@ -211,7 +212,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
                 );
               },
               child: Container(

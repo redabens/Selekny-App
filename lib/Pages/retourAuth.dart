@@ -40,7 +40,7 @@ class RetourAuthState extends State<RetourAuth>{
                 // Navigate to another page
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
                 );
               },
               child: Container(

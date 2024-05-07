@@ -100,7 +100,7 @@ class ButtonTraiterState extends State<ButtonTraiter> {
           _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
           print('Traite avec success');
           await Future.delayed(const Duration(milliseconds: 100));
-        },
+          },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -167,7 +167,6 @@ class ButtonAnnulerState extends State<ButtonAnnuler> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-
             const SizedBox(width: 5),
             Container(
               height: 14,

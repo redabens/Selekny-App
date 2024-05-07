@@ -12,6 +12,7 @@ class UserModel {
   final double latitude;
   final double longitude;
   final bool vehicule;
+  final bool bloque;
   final int nbsignalement;
   final String token;
 
@@ -27,6 +28,7 @@ class UserModel {
     required this.latitude,
     required this.longitude,
     required this.vehicule,
+    required this.bloque,
     required this.nbsignalement,
     required this.token,
   });
@@ -43,6 +45,7 @@ class UserModel {
         latitude = 0,
         longitude = 0,
         vehicule = false,
+        bloque = false,
         nbsignalement = 0,
         token = '';
   static UserModel fromJson(Map<String, dynamic> json) {
@@ -58,6 +61,7 @@ class UserModel {
         latitude: json['latitude'],
         longitude: json['longitude'],
         vehicule: json['vehicule'],
+        bloque:json['bloque'],
         nbsignalement: json['nbsignalement'],
         token: json['token'],);
   }
@@ -74,6 +78,7 @@ class UserModel {
       'latitude': latitude,
       'longitude': longitude,
       'vehicule': vehicule,
+      'bloque': bloque,
       'token': token
     };
   }
@@ -89,6 +94,7 @@ class UserModel {
         double? latitude,
         double? longitude,
         bool? vehicule,
+        bool? bloque,
         int? nbsignalement,
         String? token}) {
     return UserModel(
@@ -103,6 +109,7 @@ class UserModel {
         latitude: latitude ?? this.latitude,
         longitude: longitude ?? this.longitude,
         vehicule: vehicule ?? this.vehicule,
+        bloque: bloque ?? this.bloque,
         nbsignalement: nbsignalement ?? this.nbsignalement,
         token: token ?? this.token, );
   }
@@ -122,6 +129,7 @@ class UserModel {
         latitude: data['latitude'],
         longitude: data['longitude'],
         vehicule: data['vehicule'],
+        bloque:data['bloque'],
         nbsignalement: data['nbsignalement'],
         token: data['token'],
         );
@@ -140,6 +148,7 @@ class ClientModel extends UserModel {
         required super.longitude,
         required super.latitude,
         required super.vehicule,
+        required super.bloque,
         required super.nbsignalement,
         required super.token})
       : super(role: 'client');
@@ -150,6 +159,7 @@ class ArtisanModel extends UserModel {
   final String domaine;
   int rating = 4;
   int workcount = 0;
+  List<String> prestations = [];
 
   ArtisanModel(
       {required super.id,
@@ -163,7 +173,9 @@ class ArtisanModel extends UserModel {
         required super.latitude,
         required super.longitude,
         required this.domaine,
+        required this.prestations,
         required super.vehicule,
+        required super.bloque,
         required super.nbsignalement,
         required super.token,
         required this.rating,
@@ -178,6 +190,7 @@ class ArtisanModel extends UserModel {
     data['domaine'] = domaine;
     data['rating'] = rating;
     data['workcount'] = workcount;
+    data['prestations'] = prestations;
     return data;
   }
 
@@ -194,8 +207,10 @@ class ArtisanModel extends UserModel {
         longitude: json['longitude'],
         statut: json['statut'],
         domaine: json['domaine'],
+        prestations: json['prestations'],
         rating: json['rating'],
         vehicule: json['vehicule'],
+        bloque: json['bloque'],
         nbsignalement: json['nbsignalement'],
         token: json['token'],
         workcount: json['workcount'],);

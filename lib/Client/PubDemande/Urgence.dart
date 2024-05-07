@@ -24,7 +24,7 @@ class Urgence extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 82,
-      width: 325,
+      width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -69,7 +69,7 @@ class Urgence extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 30),
+              const SizedBox(width: 10),
               Text(
                 'Trouver un prestataire disponible immédiatement',
                 style: GoogleFonts.poppins(

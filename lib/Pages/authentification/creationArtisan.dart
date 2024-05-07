@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
-import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
+import 'package:reda/Admin/Pages/artisaninscri.dart';
 import 'package:reda/Pages/auth.dart';
-import 'package:reda/Pages/retourAuth.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
 import 'package:reda/Services/ConvertAdr.dart';
+import 'package:reda/Services/notifications.dart';
+import '../../Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
+import '../../Admin/Pages/Signalements/AllSignalements_page.dart';
+import '../WelcomeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+
+import '../retourAuth.dart';
+
+NotificationServices notificationServices = NotificationServices();
+late String token;
+late ValueNotifier<String> selectedDomaine;
+late List<String> domaines = [];
+late List<String> allPrestations = [];
+List<String> selectedPrestations = [];
+
+Future<void> getToken() async {
+  token = await notificationServices.getDeviceToken() ?? '';
+}
 
 class CreationArtisanPage extends StatelessWidget {
   const CreationArtisanPage({super.key});
@@ -16,10 +33,8 @@ class CreationArtisanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Inscription Page',
-
-      theme: ThemeData.light(), // Use light theme by default
+      theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-
       home: const Scaffold(
         body: CreationArtisanScreen(),
       ),
@@ -31,17 +46,17 @@ class CreationArtisanScreen extends StatefulWidget {
   const CreationArtisanScreen({super.key});
 
   @override
-  _CreationArtisanScreenState createState() => _CreationArtisanScreenState();
+  State<CreationArtisanScreen> createState() => _CreationArtisanScreenState();
 }
 
 class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
-  final _formKey = GlobalKey<FormState>(); // Define _formKey here
   int _currentIndex = 2;
+  final _formKey = GlobalKey<FormState>();
   bool _showPassword = false;
-  // String _email = '';
   bool _loading = false;
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+  TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _adresseController = TextEditingController();
@@ -50,84 +65,161 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
-  void handleSubmit() async {
+  Future<List<String>> fetchPrestationsByDomaine(String selectedDomaine) async {
+    List<String> prestations = [];
+
+    if (selectedDomaine.isEmpty) {
+      print('Erreur: Le domaine sélectionné est vide.');
+      return prestations;
+    }
+    try {
+      print(
+          "Le domaine sélectionné: $selectedDomaine"); // Ajout d'un message de débogage
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Domaine')
+          .where('Nom',
+          isEqualTo: selectedDomaine) // Utilisation du nom du domaine
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        String domaineId = querySnapshot.docs.first.id;
+        QuerySnapshot prestationsSnapshot = await FirebaseFirestore.instance
+            .collection('Domaine')
+            .doc(domaineId)
+            .collection('Prestations')
+            .get();
+
+        prestationsSnapshot.docs.forEach((prestationDoc) async {
+          String nomPrestation = prestationDoc['nom_prestation'];
+          prestations.add(nomPrestation);
+        });
+      }
+
+      setState(() {
+        allPrestations = prestations; // Mise à jour de la liste de prestations
+      });
+
+      print(
+          "Prestations possibles: $prestations"); // Ajout d'un message de débogage
+      return prestations;
+    } catch (e) {
+      print("Erreur lors de la récupération des prestations: $e");
+      return prestations;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDomaine = ValueNotifier<String>('');
+    fetchDomaines().then((domainesList) {
+      setState(() {
+        domaines = domainesList;
+        selectedDomaine.value = domaines.isNotEmpty ? domaines.first : '';
+      });
+    });
+
+    selectedDomaine.addListener(() {
+      fetchPrestationsByDomaine(selectedDomaine.value); // Call on change
+    });
+  }
+
+  @override
+  void dispose() {
+    selectedDomaine.dispose();
+    super.dispose();
+  }
+
+  Future<List<String>> fetchDomaines() async {
+    List<String> domaines = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection('Domaine').get();
+
+      for (var doc in querySnapshot.docs) {
+        domaines.add(doc['Nom']);
+      }
+    } catch (e) {
+      print("Erreur lors de la récupération des domaines: $e");
+    }
+    return domaines;
+  }
+
+  Future<void> handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.value.text;
       final password = _passwordController.value.text;
       final adresse = _adresseController.value.text;
       final number = _numController.value.text;
       final name = _nameController.value.text;
-      final job = _jobController.value.text;
 
       final Map position = await geocode(adresse);
 
       setState(() => _loading = true);
 
-      void signUp() async {
-        try {
-          User? user = await _auth.signUpwithEmailAndPassword(email, password);
-          String id = user != null ? user.uid : '';
-          ArtisanModel newArtisan = ArtisanModel(
-            id: id,
-            nom: name,
-            numTel: number,
-            adresse: adresse,
-            email: email,
-            motDePasse: password,
-            pathImage: '',
-            latitude: position['latitude'],
-            longitude: position['longitude'],
-            statut: true,
-            domaine: job,
-            token: '',
-            rating: 4,
-            vehicule: false,
-            workcount: 0, nbsignalement: 0,
-          );
-          // ajouter l utilisateur a la base de donnees firestore
-          // CollectionReference users =
-          //FirebaseFirestore.instance.collection('users');
+      await getToken();
+      await signUp(email, password, name, number, adresse, position);
 
-          if (user != null) {
-            print("User successfully created");
-            UserRepository userRepository = UserRepository();
-            _nameController.clear();
-            _adresseController.clear();
-            _confirmPasswordController.clear();
-            _emailController.clear();
-            _jobController.clear();
-            _numController.clear();
-            _passwordController.clear();
-            _showPassword=false;
-            try {
-              await FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(id)
-                  .set(newArtisan.toJson());
-
-              print('Document added successfully');
-              print("ID auth : $id");
-            } on FirebaseAuthException catch (e) {
-              print("Error adding document: $e");
-            }
-          } else {
-            print("Some error happend");
-          }
-        } on FirebaseAuthException catch (e) {
-          if (e.code == "weak-password") {
-            print('The password provided is too weak');
-            // afficher une erreur dans le UI
-          } else if (e.code == "email-already-in-use") {
-            print('The account already exists for that email');
-            // afficher une erreur dans le UI
-          }
-        } catch (e) {
-          print(e.toString());
-        }
-      }
-
-      signUp();
       setState(() => _loading = false);
+    }
+  }
+
+  Future<void> signUp(String email, String password, String name, String number,
+      String adresse, Map position) async {
+    try {
+      User? user = await _auth.signUpwithEmailAndPassword(email, password);
+      String id = user != null ? user.uid : '';
+      ArtisanModel newArtisan = ArtisanModel(
+          id: id,
+          nom: name,
+          numTel: number,
+          adresse: adresse,
+          email: email,
+          motDePasse: password,
+          pathImage: '',
+          latitude: position['latitude'],
+          longitude: position['longitude'],
+          statut: true,
+          domaine: selectedDomaine.value,
+          prestations: selectedPrestations,
+          token: '',
+          rating: 4,
+          vehicule: false,
+          bloque: false,
+          nbsignalement: 0,
+          workcount: 0);
+
+      if (user != null) {
+        print("User successfully created");
+        UserRepository userRepository = UserRepository();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const WelcomePage()),
+        );
+        try {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(id)
+              .set(newArtisan.toJson());
+
+          print('Document added successfully');
+          print("ID auth : $id");
+        } on FirebaseAuthException catch (e) {
+          print("Error adding document: $e");
+        }
+      } else {
+        print("Some error happend");
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "weak-password") {
+        print('The password provided is too weak');
+      } else if (e.code == "email-already-in-use") {
+        print('The account already exists for that email');
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -135,12 +227,16 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   Widget build(BuildContext context) {
     var isDark = Theme.of(context).brightness == Brightness.dark;
     var textColor = isDark ? Colors.white : Colors.black.withOpacity(0.4);
+
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 20,
+        backgroundColor: Colors.white,),
       body:SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
-          child: Stack(
-            children: [
+       child: Padding(
+        padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
+        child: Stack(
+          children: [
             Positioned(
               top: 0,
               left: 0,
@@ -158,13 +254,11 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                     style: TextStyle(
                       fontSize: 27,
                       fontWeight: FontWeight.bold,
-                      //fontFamily: 'Nunito Sans',
                     ),
                   ),
                 ],
               ),
             ),
-            // Login fields
             Padding(
               padding: const EdgeInsets.only(left: 0, top: 60),
               child: Column(
@@ -172,8 +266,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 children: [
                   const SizedBox(height: 85),
                   Form(
-                    key:
-                    _formKey, // Add this line to associate the Form with _formKey
+                    key: _formKey,
                     child: Column(
                       children: [
                         TextFormField(
@@ -214,51 +307,64 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         TextFormField(
                           controller: _numController,
                           validator: (value) {
-                            if (value == '+213' ||
-                                value == null ||
-                                value.isEmpty) {
+                            if (value == null || value.isEmpty) {
                               return 'Numero obligatoire';
                             }
                             return null;
                           },
-
                           decoration: InputDecoration(
                             border: const UnderlineInputBorder(),
-                            labelText: '+213',
                             suffixIcon: const Icon(Icons.phone),
-                            prefixIcon: Image.asset(
-                              'assets/Algeria.png',
-                              width: 14,
-                              height: 14,
+                            prefixIcon: CountryCodePicker(
+                              onChanged: (CountryCode? code) {
+                                print(code);
+                              },
+                              initialSelection: 'DZ',
+                              favorite: const ['DZ'],
+                              showCountryOnly: true,
+                              showOnlyCountryWhenClosed: true,
+                              alignLeft: false,
                             ),
                           ),
-
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                           keyboardType: TextInputType.phone,
-                          // initialValue:  '+213',
                         ),
                         const SizedBox(height: 10),
-                        TextFormField(
-                          controller: _jobController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez saisir le job';
-                            }
-                            return null;
-                          },
-                          // onSaved: (value) {
-                          //   _email = value ?? '';
-                          // },
-                          //
+                        DropdownButtonFormField<String>(
+                          value: selectedDomaine.value,
+                          icon: const Icon(Icons.arrow_drop_down),
+                          iconSize: 24,
+                          elevation: 16,
                           decoration: InputDecoration(
-                            labelText: 'Job',
+                            labelText: 'Domaine',
                             labelStyle: TextStyle(
                               color: textColor,
                             ),
                             border: const UnderlineInputBorder(),
                           ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedDomaine.value = newValue ?? '';
+                              fetchPrestationsByDomaine(newValue ?? '');
+                              selectedPrestations.clear();
+                            });
+                          },
+                          items: domaines.map<DropdownMenuItem<String>>(
+                                (String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            },
+                          ).toList(),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Veuillez sélectionner un domaine";
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 10),
                         TextFormField(
@@ -269,10 +375,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             }
                             return null;
                           },
-                          // onSaved: (value) {
-                          //   _email = value ?? '';
-                          // },
-                          //
                           decoration: InputDecoration(
                             labelText: 'Email',
                             labelStyle: TextStyle(
@@ -319,7 +421,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Veuillez confirmer le mot de passe';
                             } else {
-                              // Check if it matches the value in the "Créer mot de passe" field
                               if (value != _passwordController.value.text) {
                                 return 'Les mots de passe ne correspondent pas';
                               }
@@ -350,10 +451,65 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  DropdownButtonFormField<String>(
+                    value: null,
+                    hint: const Text('Sélectionner les prestations'),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        if (newValue != null && newValue == 'Tout') {
+                          selectedPrestations = List.from(allPrestations);
+                        } else {
+                          if (selectedPrestations.contains('Tout')) {
+                            selectedPrestations.remove('Tout');
+                          }
+                          if (selectedPrestations.contains(newValue)) {
+                            selectedPrestations.remove(newValue);
+                          } else {
+                            selectedPrestations.add(newValue!);
+                          }
+                        }
+                      });
+                    },
+                    items: [
+                      const DropdownMenuItem<String>(
+                        value: 'Tout',
+                        child: Text('Sélectionner tout'),
+                      ),
+                      ...allPrestations.map<DropdownMenuItem<String>>(
+                            (prestation) {
+                          return DropdownMenuItem<String>(
+                            value: prestation,
+                            child: Text(prestation),
+                          );
+                        },
+                      ).toList(),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    children: selectedPrestations.map((prestation) {
+                      return Chip(
+                        label: Text(prestation),
+                        onDeleted: () {
+                          setState(() {
+                            selectedPrestations.remove(prestation);
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
                   const SizedBox(height: 25),
-                  // signUp button
                   ElevatedButton(
-                    onPressed: () => handleSubmit(),
+                    onPressed: () async {
+                        await handleSubmit();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Artisan(),),
+                        );
+                      },
                     style: ButtonStyle(
                       minimumSize:
                       MaterialStateProperty.all<Size>(const Size(350, 47)),
@@ -385,18 +541,15 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-
-                  const SizedBox(height: 12),
-                  // Row for additional text widgets
                 ],
               ),
             ),
           ],
         ),
       ),
-    ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFFF8F8F8),
+        backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
@@ -409,7 +562,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => AllSignalementsPage(),),
                 );
@@ -430,7 +583,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
                 );
@@ -453,7 +606,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
                 );
@@ -475,9 +628,9 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const RetourAuth(),)
+                    MaterialPageRoute(builder: (context) => const DomainServicePage(),)
                 );
 
               },

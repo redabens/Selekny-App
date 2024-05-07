@@ -225,11 +225,11 @@ class _RendezVousClientState extends State<RendezVousClient> {
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                     50), // Ajout du BorderRadius
-                                child: Image.network(
-                                  widget.imageUrl,
-                                  width: 54,
-                                  height: 54,
-                                  fit: BoxFit.cover,
+                                    child: Image.network(
+                                      widget.imageUrl,
+                                      width: 54,
+                                      height: 54,
+                                      fit: BoxFit.cover,
                                 ),
                               )
                                   : Icon(
@@ -291,8 +291,8 @@ class _RendezVousClientState extends State<RendezVousClient> {
                         _DemandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
                         await Future.delayed(const Duration(milliseconds: 100));
                         Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan),
-                          ),
+                            MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan, nomprestation: widget.prestation,),
+                        ),
                         );
                       },
                       style: ButtonStyle(

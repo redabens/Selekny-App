@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
+import '../../../Pages/authentification/connexion.dart';
 import '../../../Pages/retourAuth.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,8 +15,8 @@ import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
 class GestionClientsPage extends StatefulWidget {
   const GestionClientsPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<GestionClientsPage> createState() => _GestionClientsPageState();
@@ -84,12 +86,28 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
       body: Column(
         children: [
           // espace fo9 titre de la page
-          const SizedBox(height: 20.0),
+          const SizedBox(height: 10.0),
           AppBar(
+            leading: IconButton(onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                    const LoginPage()),
+              );
+            },
+              icon: Image.asset(
+                'assets/deconexion.png',
+                fit: BoxFit.cover,
+                color: const Color(0xFF3E69FE),
+              ),
+
+            ),
             elevation: 0.0, // Remove default shadow
             backgroundColor: Colors.white,
             title: Text(
-              'Gestion des clients',
+              'Gestion des utilisateurs',
               style: GoogleFonts.poppins(
                 fontSize: 24,
                 fontWeight: FontWeight.w900,
@@ -141,7 +159,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFFF8F8F8),
+        backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
@@ -158,7 +176,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AllSignalementsPage(),
+                    builder: (context) => const AllSignalementsPage(),
                   ),
                 );
               },
@@ -191,7 +209,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/gestion.png',
-                  color: _currentIndex == 1 ? Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
             ),
@@ -214,7 +232,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
-                  color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
             ),
@@ -229,14 +247,14 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const RetourAuth(),
+                      builder: (context) => const DomainServicePage(),
                     ));
               },
               child: Container(
                 height: 40,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
-                  color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
             ),
@@ -249,7 +267,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
 
   Widget _buildGestionUsersList() {
     return StreamBuilder(
-      stream: _GestionUsersService.getAllArtisans(),
+      stream: _GestionUsersService.getAllClients(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -314,7 +332,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
         Expanded(
           child: GestureDetector(
             onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => GestionArtisansPage())),
+                MaterialPageRoute(builder: (context) => const GestionArtisansPage())),
             child: Column(
               // Utiliser une colonne pour séparer le texte de la ligne
               children: [
@@ -353,15 +371,15 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                   'Mes Clients',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                    color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 10), // Espace entre le texte et la ligne
+                const SizedBox(height: 10), // Espace entre le texte et la ligne
                 Container(
                   height: isEnCoursSelected ? 1 : 4, // Épaisseur de la ligne
-                  color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                  color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
                 ),
               ],
             ),

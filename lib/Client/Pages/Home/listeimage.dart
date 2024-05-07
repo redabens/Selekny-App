@@ -26,7 +26,7 @@ class ImageList extends StatelessWidget {
     "default",
     "default",
     "default",
-    "FhihjpW4MAKVi7oVUtZq",
+    "default",
   ];
 
   @override

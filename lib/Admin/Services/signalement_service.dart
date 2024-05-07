@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SignalementsService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -24,7 +22,7 @@ class SignalementsService extends ChangeNotifier {
     } else {
       print('User is not authenticated');
     }
-   await Future.value(null);
+    await Future.value(null);
   }
 
   Stream<QuerySnapshot> getAllSignalements() {

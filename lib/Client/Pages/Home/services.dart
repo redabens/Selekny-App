@@ -14,10 +14,6 @@ class Services extends StatelessWidget {
           const SizedBox(width: 5), // Espacement initial
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const DetailPage()),
-              );
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10), // Bordures arrondies
@@ -33,10 +29,6 @@ class Services extends StatelessWidget {
           const SizedBox(width: 7), // Espacement entre les images
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const DetailPage()),
-              );
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10), // Bordures arrondies
@@ -52,10 +44,6 @@ class Services extends StatelessWidget {
           const SizedBox(width: 7), // Espacement entre les images
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const DetailPage()),
-              );
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10), // Bordures arrondies

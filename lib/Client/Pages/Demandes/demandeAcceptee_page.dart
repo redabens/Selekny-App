@@ -2,14 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/components/demandeAcceptee_container.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Services/ModifPrix.dart';
+import '../../profile/profileClient.dart';
 import '../Home/home.dart';
-import 'package:reda/Client/profile/profile_screen.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 
 class DemandeAccepteePage extends StatefulWidget {
@@ -214,7 +213,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 });
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage(),),
+                  MaterialPageRoute(builder: (context) => const ProfilClientPage(),),
                 );
 
               },

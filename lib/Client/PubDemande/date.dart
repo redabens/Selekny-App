@@ -25,7 +25,7 @@ class Dates extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 208,
-      width: 325,
+      width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(

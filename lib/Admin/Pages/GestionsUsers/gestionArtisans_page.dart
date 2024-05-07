@@ -3,10 +3,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Pages/GestionsUsers/gestionClients_page.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
+import '../../../Pages/authentification/connexion.dart';
 import '../../../Pages/retourAuth.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
@@ -77,14 +79,29 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
       body: Column(
         children: [
           // Add space above the AppBar
-          const SizedBox(height: 20.0),
-
+          const SizedBox(height: 10.0),
           // AppBar with adjusted elevation
           AppBar(
+            leading: IconButton(onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                    const LoginPage()),
+              );
+            },
+              icon: Image.asset(
+                'assets/deconexion.png',
+                fit: BoxFit.cover,
+                color: const Color(0xFF3E69FE),
+              ),
+
+            ),
             elevation: 0.0, // Remove default shadow
             backgroundColor: Colors.white,
             title: Text(
-              'Gestion des artisans',
+              'Gestion des utilisateurs',
               style: GoogleFonts.poppins(
                 fontSize: 24,
                 fontWeight: FontWeight.w900,
@@ -140,7 +157,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFFF8F8F8),
+        backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
@@ -157,7 +174,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AllSignalementsPage(),
+                    builder: (context) => const AllSignalementsPage(),
                   ),
                 );
               },
@@ -165,7 +182,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/signalement.png',
-                  color: _currentIndex == 0 ? Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
             ),
@@ -213,7 +230,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 height: 40,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
-                  color: _currentIndex == 2 ? Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
             ),
@@ -228,14 +245,14 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const RetourAuth(),
+                      builder: (context) => const DomainServicePage(),
                     ));
               },
               child: Container(
                 height: 40,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
-                  color: _currentIndex == 3 ? Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
             ),
@@ -323,7 +340,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                   'Mes Artisans',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                    color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
@@ -340,7 +357,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
         Expanded(
           child: GestureDetector(
             onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => GestionClientsPage())),
+                MaterialPageRoute(builder: (context) => const GestionClientsPage())),
             child: Column(
               // Utiliser une colonne pour séparer le texte de la ligne
               children: [
@@ -348,7 +365,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                   'Mes Clients',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: !isEnCoursSelected ? Color(0xFFF5A529) : Colors.grey,
+                    color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),

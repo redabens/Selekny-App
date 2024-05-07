@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:reda/Client/Services/demande%20publication/Historique.dart';
-import 'package:reda/Client/Services/demande%20publication/HistoriqueServices.dart';
 import 'package:reda/Client/components/RendezVous_container.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,16 +17,14 @@ class RendezVousPage extends StatefulWidget {
 class _RendezVousPageState extends State<RendezVousPage> {
   //---------------LES FONCTION GETTERS---------------------------------------------------
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final DemandeClientService _DemandeAccepteeService = DemandeClientService();
-  final HistoriqueService _historiqueService = HistoriqueService();
   final ModifPrixService _modifPrixService = ModifPrixService();
 
   // get le nom domaine de la demande acceptee
   Future<String> getDomaineDemande(String domaineID) async {
-    final _firestore = FirebaseFirestore.instance;
+    final firestore = FirebaseFirestore.instance;
 
-    final domaineDoc = await _firestore.collection('Domaine').doc(domaineID).get();
+    final domaineDoc = await firestore.collection('Domaine').doc(domaineID).get();
     if (domaineDoc.exists) {
       final domainName = domaineDoc.data()!['Nom'];
       print(' Nom domaine : $domainName');
@@ -169,33 +165,27 @@ class _RendezVousPageState extends State<RendezVousPage> {
   Future<Widget> _buildRendezVousItem(DocumentSnapshot document) async {
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
-      // Extract values from the data map using null check operator
       String demandeID = document.id;
-      String userID = _firebaseAuth.currentUser!.uid; // 'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3';
-      String domaineID = data['iddomaine']; // Handle null with an empty string
-      String PrestationID = data['idprestation']; // Handle null with an empty string
-      String artisanID = data['idartisan']; // Handle null with an empty string
+      String userID = _firebaseAuth.currentUser!.uid;
+      String domaineID = data['iddomaine'];
+      String PrestationID = data['idprestation'];
+      String artisanID = data['idartisan'];
       final userDoc = await FirebaseFirestore.instance.collection('users').doc(artisanID).get();
       Map<String, dynamic> datas = userDoc.data() as Map<String, dynamic>;
       String domaine = await getDomaineDemande(domaineID);//'Plombrie';
-      print(domaine);
       String prestation = await getPrestationDemande(domaineID, PrestationID);
-      print(prestation);
-      bool urgence = data['urgence']; // Handle null with a default value
-      print(urgence);
-      String date = data['datedebut']; // Handle null with an empty string
-      String heure = '${data['heuredebut']} - ${data['heurefin']}'; // Handle null with empty strings
-      String prix = await _modifPrixService.getPrixPrestation(domaineID, PrestationID); // Handle null with an empty string
-      String location = data['adresse']; // Handle null with an empty string
-      String imageUrl = await getUserPathImage(artisanID); // 'https://firebasestorage.googleapis.com/v0/b/selekny-app.appspot.com/o/Prestations%2FLPsJnqkVdXQUf6iBcXn0.png?alt=media&token=44ac0673-f427-43cf-9308-4b1213e73277';
-      print(imageUrl);
-      String nomArtisan = datas['nom']; // Handle null with an empty string
-      double rating = datas['rating']; // Handle null with a default value
-      bool vehicule = datas['vehicule']; // Handle null with a default value
-      int workcount = datas['workcount']; // Handle null with a default value
-      String adresseartisan = datas['adresse']; // Handle null with an empty string
-      String phone = datas['numTel']; // Handle null with an empty string
+      bool urgence = data['urgence'];
+      String date = data['datedebut'];
+      String heure = '${data['heuredebut']} - ${data['heurefin']}';
+      String prix = await _modifPrixService.getPrixPrestation(domaineID, PrestationID);
+      String location = data['adresse'];
+      String imageUrl = await getUserPathImage(artisanID);
+      String nomArtisan = datas['nom'];
+      double rating = datas['rating'];
+      bool vehicule = datas['vehicule'];
+      int workcount = datas['workcount'];
+      String adresseartisan = datas['adresse'];
+      String phone = datas['numTel'];
       //----
       String datefin = data['datefin'];
       String heureDebut = data['heuredebut'];
@@ -203,8 +193,9 @@ class _RendezVousPageState extends State<RendezVousPage> {
       double latitude = data['latitude'];
       double longitude = data['longitude'];
       Timestamp timestamp = data['timestamp'];
-      // ... rest of your code using the extracted values
-      return RendezVousClient(
+      return Column( // Wrap in a Column for vertical spacing
+        children: [
+        RendezVousClient(
         domaine: domaine,
         location: location,
         date: date,
@@ -230,6 +221,9 @@ class _RendezVousPageState extends State<RendezVousPage> {
         adresseartisan: adresseartisan,
         workcount: workcount,
         vehicule: vehicule,
+      ),
+          const SizedBox(height: 10), // Add spacing between containers
+        ],
       );
     } else {
       // Handle the case where the document is null

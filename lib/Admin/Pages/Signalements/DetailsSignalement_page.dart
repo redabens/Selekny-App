@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'AllSignalements_page.dart';
@@ -214,9 +215,9 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                         // Ignorer Button
                         GestureDetector(
                           onTap: () async{
-                           await  _SignalementService.deleteSignalement(widget.signalementID);
-                           // await _SignalementService.incrementSignalement(widget.signalantID);
-                           await Future.delayed(const Duration(milliseconds: 300));
+                            await  _SignalementService.deleteSignalement(widget.signalementID);
+                            // await _SignalementService.incrementSignalement(widget.signalantID);
+                            await Future.delayed(const Duration(milliseconds: 300));
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => AllSignalementsPage()),
@@ -247,7 +248,12 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => EtesVousSur()),
+                              MaterialPageRoute(builder: (context) => EtesVousSur(signalementID:widget.signalementID,signaleurID: widget.signaleurID,
+                                signalantID: widget.signalantID,signaleurName: widget.signaleurName,
+                                signalantName: widget.signalantName, signaleurJob: widget.signaleurJob,
+                                signalantJob: widget.signalantJob, date: widget.date, heure: widget.heure,
+                                raison: widget.raison,signaleurUrl: widget.signaleurUrl,
+                                signalantUrl: widget.signalantUrl,nbsignalement: widget.nbsignalement,)),
                             );
                           },
                           child: Container(
