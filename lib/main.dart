@@ -343,7 +343,7 @@ class HomeScreenState extends State<HomeScreen> {
         Get.put(UserRepository());
       }),
 
-      home: Container(
+     /* home: Container(
         color: Colors.white, // Couleur de l'arrière-plan de la page
         child: Center(
           child: isLogin == null
@@ -367,8 +367,8 @@ class HomeScreenState extends State<HomeScreen> {
               : const ActiviteToday(),
         ),
       ),
-
-      //home: const CreationArtisanPage(),
+*/
+      home: const AllSignalementsPage(),
       routes: {
         "/PublierDemandePage": (context) => const NotifDemande(),
         "/AccepteParArtisan": (context) => const DemandeAccepteePage(),
