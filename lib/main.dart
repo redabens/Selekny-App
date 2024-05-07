@@ -17,6 +17,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:reda/Admin/Pages/AjoutService/AjoutPrestation.dart';
 import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
 import 'package:reda/Admin/Pages/AjoutService/DetailsPrestation.dart';
 
@@ -292,9 +293,10 @@ class MyAppState extends State<MyApp> {
             child: Container(
               color: Colors.white, // Couleur de l'arrière-plan de la page
               child: Center(
-                child: DetailsPrestation(domaineID: 'xUA4wVQmTtvi1ENZGd5W',prestationID: 'kxHd5WkmRZ9faz43YuUE',), //AllSignalementsPage(),//GestionArtisansPage(),
+                child: FormulaireAjoutPrestation(domaineID: 'xUA4wVQmTtvi1ENZGd5W',),
+                //DetailsPrestation(domaineID: 'xUA4wVQmTtvi1ENZGd5W',prestationID: 'kxHd5WkmRZ9faz43YuUE',), //AllSignalementsPage(),//GestionArtisansPage(),
                //AjouterCommentairePage(nomPrestataire: 'mohamed benabed', artisanID: 'Tz5EKrFdU7hWobWnkOIohVB3aWz2',),
-              /* !isLogin
+              /*!isLogin
                     ? const WelcomePage()
                     : (role == 'client')
                     ? const HomePage()
