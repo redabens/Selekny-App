@@ -22,9 +22,11 @@ class Urgence extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: 82,
-      width: MediaQuery.of(context).size.width * 0.8,
+      height: screenHeight * 0.13,
+      width: screenWidth * 0.8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -57,27 +59,32 @@ class Urgence extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(width: 80,),
+            SizedBox(width: screenWidth*0.13),
 
               EmergencySwitch(domaineID: domaineID, prestationID: prestationID, nomprestation: nomprestation, demande: demande, urgence: urgence,),
 
 
             ],
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: screenHeight * 0.009),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(width: 10),
+             Expanded(
+               child:
               Text(
                 'Trouver un prestataire disponible immédiatement',
                 style: GoogleFonts.poppins(
                   color: const Color(0xFF6D6D6D),
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.w700,
-                ),
+                ),overflow: TextOverflow.ellipsis,
+              softWrap: true,
+                maxLines: 2,
               ),
+             ),
             ],
           ),
 

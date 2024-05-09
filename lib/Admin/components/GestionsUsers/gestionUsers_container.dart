@@ -40,6 +40,8 @@ class DetGestionUsers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
         left: 16,
@@ -48,7 +50,8 @@ class DetGestionUsers extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            height: 68,
+            height: screenHeight*0.086,
+            width: screenWidth*0.9,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),

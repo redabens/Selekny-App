@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/PubDemande/detailsDemande.dart';
 import 'package:reda/Client/Services/demande%20publication/getMateriel.dart';
 
@@ -69,7 +70,11 @@ class CustomSearch extends SearchDelegate {
       itemBuilder: (context, index) {
         var result = matchQuery[index];
         return ListTile(
-          title: Text(result),
+          title: Text(result ,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w500
+            ),),
+
           onTap: () async {
             String prestationID = ''; // Remplacer par la vraie valeur de l'ID
             String domaineID = ''; // Remplacer par la vraie valeur de l'ID

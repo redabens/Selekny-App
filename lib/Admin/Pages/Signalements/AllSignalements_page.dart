@@ -12,6 +12,7 @@ import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Admin/components/signalements_component.dart';
 import 'package:intl/intl.dart';
 import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
+import 'package:reda/Admin/Pages/deconnexion.dart';
 
 
 class AllSignalementsPage extends StatefulWidget {
@@ -56,7 +57,6 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
       String pathImage = userDoc['pathImage'];
       final reference = FirebaseStorage.instance.ref().child(pathImage);
       final url = await reference.getDownloadURL();
-      print('loooooooooooooooooook $url');
       return url;
     } else {
       print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXSSS');
@@ -117,12 +117,12 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
           AppBar(
             leading: IconButton(onPressed: () {
-              FirebaseAuth.instance.signOut();
+             // FirebaseAuth.instance.signOut();
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const LoginPage()),
+                    const Deconnecter( )),
               );
             },
               icon: Image.asset(
@@ -137,7 +137,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
             title: Text(
               'Signalements',
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: 21,
                 fontWeight: FontWeight.w800,
               ),
             ),

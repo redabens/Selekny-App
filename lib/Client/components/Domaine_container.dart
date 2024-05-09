@@ -17,12 +17,14 @@ class Domaine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      width: 390,
-      height: 69,
+      width: screenWidth*0.9,
+      height: screenHeight*0.09,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.black54),
+        border: Border.all(color: Colors.black54.withOpacity(0.3)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -30,8 +32,8 @@ class Domaine extends StatelessWidget {
         children: [
           const SizedBox(width: 10),
           Container(
-            width: 50,
-            height: 60,
+            width: screenWidth*0.14,
+            height: screenWidth*0.14,
             child: ClipRRect(
               child: CachedNetworkImage(
 
@@ -42,7 +44,7 @@ class Domaine extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 10),
+         SizedBox(width: screenWidth*0.07),
           Container(
             child: Text(
               nomdomaine,

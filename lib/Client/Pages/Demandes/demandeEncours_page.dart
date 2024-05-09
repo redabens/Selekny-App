@@ -112,7 +112,9 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
     final Timestamp timestamp = demandeDoc.data()!['timestamp'];
     final DateTime timeDemande = timestamp.toDate();
     final DateTime now = DateTime.now();
-    Duration difference = now.difference(timeDemande);
+
+    Duration diff = now.difference(timeDemande);
+    Duration difference = diff - Duration(hours: 1);
     if (difference.inDays > 0) {
       return 'il y a ${difference.inDays} jr';
     } else if (difference.inHours > 0) {
@@ -140,6 +142,8 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+    double screenHeight = MediaQuery.of(context).size.height; //
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -153,7 +157,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
             title: Text(
               'Demandes',
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: 21,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -163,7 +167,6 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
           _buildTitleAndDescription(), // le petit texte du début
           const SizedBox(height: 10),
           _buildSelectionRow(),
-          const SizedBox(height: 2),
           Expanded(
             child: _buildDemandeEncoursList(),
           ),
@@ -274,6 +277,8 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
   }
 
   Widget _buildDemandeEncoursList(){
+    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+    double screenHeight = MediaQuery.of(context).size.height; //
     return StreamBuilder(
       stream: _DemandeEncoursService.getDemandesEnCours(), //_firebaseAuth.currentUser!.uid
       builder: (context, snapshot){
@@ -300,10 +305,11 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
               }
               if (snapshot.data!.isEmpty) {
                 return Center(
+
                     child: Text(
-                        'Vous n''avez aucune demande encours.',
+                        'Vous n\'avez aucune demande encours.',
                         style: GoogleFonts.poppins(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Colors.grey[600],
                         )
@@ -368,7 +374,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -394,7 +400,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -415,7 +421,6 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 0),
         Padding( // Add Padding widget here
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           // Set padding values
@@ -431,7 +436,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                 ),
                 const TextSpan(
                   text:
-                  ' Vous pouvez ici consulter vos demandes en cours, en attente, et celles qui sont confirmées pour la date du rendez-vous.',
+                  ' Vous pouvez ici consulter vos demandes en cours et celles qui sont acceptées puis choisir votre préstataire.',
                 ),
               ],
             ),

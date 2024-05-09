@@ -46,6 +46,8 @@ class DetChatList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
         left: 22,
@@ -54,7 +56,7 @@ class DetChatList extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            height:80,
+            height:screenHeight*0.102,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
@@ -85,7 +87,7 @@ class DetChatList extends StatelessWidget {
                           MaterialPageRoute(    //otherUserId
                             builder: (context) => ProfilePage2(idartisan: otheruserId, imageurl: profileImage,
                               nomartisan: userName, phone: phone,
-                              domaine: domaine, rating: rating, adresse: adresse, workcount: workcount, vehicule: vehicule,),
+                              domaine: domaine, rating: rating, adresse: adresse, workcount: workcount, vehicule: vehicule),
                           ),
                         );
                       }else{
@@ -98,8 +100,8 @@ class DetChatList extends StatelessWidget {
                       } // Example action (replace with your desired functionality)
                     },
                     child: Container(
-                      width: 54, // Adjust as needed
-                      height: 54, // Adjust as needed
+                      width: screenWidth*0.14, // Adjust as needed
+                      height: screenWidth*0.14, // Adjust as needed
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -115,8 +117,8 @@ class DetChatList extends StatelessWidget {
                               54), // Ajout du BorderRadius
                           child: Image.network(
                             profileImage,
-                            width: 54,
-                            height: 54,
+                            width: screenWidth*0.14,
+                            height: screenWidth*0.14,
                             fit: BoxFit.cover,
                           ),
                         )

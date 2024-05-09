@@ -31,6 +31,8 @@ class ImageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only( top:10, left:2), // Ajout de padding au haut de la liste
       child: SingleChildScrollView(
@@ -51,17 +53,17 @@ class ImageList extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     child: Image.asset(
                       imagePaths[index],
-                      width: 79,
-                      height: 79,
+                      width: screenWidth*0.2,
+                      height: screenWidth*0.2,
                       fit: BoxFit.cover,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
                       texts[index],
-                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],

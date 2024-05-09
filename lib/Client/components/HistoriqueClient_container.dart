@@ -154,7 +154,7 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
                                   nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
-                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
+                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule), // Navigation to ContactPage
                                ),
                               ); // Example navigation
                             },

@@ -113,7 +113,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
             title: Text(
               'Demandes',
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: 21,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -261,9 +261,9 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                      'Vous n''avez aucune demande acceptée.',
+                      'Vous n\'avez aucune demande acceptée.',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Colors.grey[600],
                     )
@@ -375,7 +375,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     color: isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -398,7 +398,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     color: !isEnCoursSelected ? const Color(0xFFF5A529) : Colors.grey,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -434,7 +434,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 ),
                 const TextSpan(
                   text:
-                  ' Vous pouvez ici consulter vos demandes en cours, en attente, et celles qui sont confirmées pour la date du rendez-vous.',
+                  ' Vous pouvez ici consulter vos demandes en cours et celles qui sont acceptées puis choisir votre préstataire.',
                 ),
               ],
             ),

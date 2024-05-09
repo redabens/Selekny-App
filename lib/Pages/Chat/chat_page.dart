@@ -92,7 +92,7 @@ class _ChatPageState extends State<ChatPage> {
                         MaterialPageRoute(    //otherUserId
                           builder: (context) => ProfilePage2(idartisan: widget.otheruserId, imageurl: widget.profileImage,
                               nomartisan: widget.userName, phone: widget.phone,
-                              domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse, workcount: widget.workcount, vehicule: widget.vehicule,),
+                              domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse, workcount: widget.workcount, vehicule: widget.vehicule),
                         ),
                       );
                     }else{

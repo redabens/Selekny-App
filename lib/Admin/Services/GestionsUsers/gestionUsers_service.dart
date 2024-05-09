@@ -15,6 +15,7 @@ class GestionUsersService extends ChangeNotifier {
     return FirebaseFirestore.instance
         .collection('users')
         .where('role', isEqualTo: 'artisan')
+        .limit(12)
         .snapshots();
   }
 
@@ -22,6 +23,7 @@ class GestionUsersService extends ChangeNotifier {
     return FirebaseFirestore.instance
         .collection('users')
         .where('role', isEqualTo: 'client')
+        .limit(12)
         .snapshots();
   }
 }

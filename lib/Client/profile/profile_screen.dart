@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: Center(
           child: Text(
-            'Profile',
+            'Profil',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w800,
               fontSize: 26,

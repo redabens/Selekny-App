@@ -44,7 +44,8 @@ class ChatBubble extends StatelessWidget {
 
     Widget messageBubble = ConstrainedBox(
       constraints: BoxConstraints(
-        maxWidth: maxWidth, // Max width constraint
+        maxWidth: maxWidth,
+        minHeight: 0,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

@@ -23,9 +23,11 @@ class Dates extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: 208,
-      width: MediaQuery.of(context).size.width * 0.8,
+      height: screenHeight*0.3,
+      width: screenWidth* 0.8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -65,15 +67,20 @@ class Dates extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 30),
-              Text(
-                'Selectionner la date de début et la fin de la \n prestation ',
+              const SizedBox(width: 10),
+            Expanded(
+             child: Text(
+                'Selectionner la date de début et la fin de la prestation ',
                 style: GoogleFonts.poppins(
                   color: const Color(0xFF6D6D6D),
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
-                ),
+                ),overflow: TextOverflow.ellipsis,
+                softWrap: true,
+                maxLines: 2,
               ),
+    ),
+
             ],
           ),
           const SizedBox(width: 25, height: 10,),
@@ -81,9 +88,9 @@ class Dates extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 33),
+              const SizedBox(width: 10),
               Text(
-                'Début',
+                'Début :',
                 style: GoogleFonts.poppins(
                   color: const Color(0xFF6D6D6D),
                   fontSize: 9,
@@ -94,29 +101,28 @@ class Dates extends StatelessWidget {
 
 
           ),
-          const SizedBox(width: 15, height: 5,),
+          const SizedBox( height: 5,),
            Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 25),
+              const SizedBox(width: 10),
               JourDebut(datedebut: datedebut,),
-              const SizedBox(width: 9),
+              SizedBox(width: screenWidth*0.02),
               MoisDebut(datedebut: datedebut,),
-              const SizedBox(width: 9),
+              SizedBox(width: screenWidth*0.02),
               AnneeDebut(datedebut: datedebut,),
             ],
 
-
           ),
-          const SizedBox(width: 25, height: 10,),
+          const SizedBox(width: 10, height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 33),
+               const SizedBox(width: 10),
               Text(
-                'Fin',
+                'Fin :',
                 style: GoogleFonts.poppins(
                   color: const Color(0xFF6D6D6D),
                   fontSize: 9,
@@ -127,16 +133,16 @@ class Dates extends StatelessWidget {
 
 
           ),
-          const SizedBox(width: 15, height: 5,),
+          const SizedBox( height: 5,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 25),
+              const SizedBox(width: 10),
               JourFin(datefin: datefin,),
-              const SizedBox(width: 9),
+              SizedBox(width: screenWidth*0.02),
               MoisFin(datefin: datefin,),
-              const SizedBox(width: 9),
+              SizedBox(width: screenWidth*0.02),
               AnneeFin(datefin: datefin,),
             ],
 

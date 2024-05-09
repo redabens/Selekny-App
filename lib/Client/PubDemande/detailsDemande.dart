@@ -82,7 +82,9 @@ class DetailsDemandeState extends State<DetailsDemande> {
               Heure(demande: demandeinit,),
               const SizedBox(width: 50, height: 25,),
               Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datefin, domaineId: widget.domaineID,),
+              const SizedBox(height: 50),
             ],
+
           ),
           ),
     );
@@ -135,14 +137,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
 
-             const SizedBox(width: 40),
+             const SizedBox(width: 30),
               Center( // Centrer le texte horizontalement
                 child: Text(
                   'Détails de la demande',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
 
                   ),
                 ),

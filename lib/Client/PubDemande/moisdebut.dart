@@ -20,9 +20,11 @@ class MoisDebutState extends State<MoisDebut> {
   int moisdebut = 0; // Variable pour stocker le mois sélectionné
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: 30,
-      width: 105,
+      height: screenHeight*0.04,
+      width: screenWidth*0.23,
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS

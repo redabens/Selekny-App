@@ -100,7 +100,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
             title: Text(
               'Rendez-Vous',
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: 21,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -147,9 +147,9 @@ class _RendezVousPageState extends State<RendezVousPage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                      'Vous n''avez aucun Rendez-vous.',
+                      'Vous n\'avez aucun Rendez-vous.',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Colors.grey[600],
                     )

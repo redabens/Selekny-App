@@ -29,6 +29,7 @@ class ChatListPage extends StatefulWidget{
 
 class _ChatListPageState extends State<ChatListPage> {
   int _currentIndex = 2;
+  String searchText = '';
   final ChatListService _ChatListService = ChatListService();
 
   //functions-----------------------------------------------------
@@ -179,13 +180,15 @@ class _ChatListPageState extends State<ChatListPage> {
   }
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
 
           title:  Text(
             'Messagerie',
             style: GoogleFonts.poppins(
-              fontSize: 24,
+              fontSize: 21,
               fontWeight:  FontWeight.w800,
             ),
           ),
@@ -207,13 +210,14 @@ class _ChatListPageState extends State<ChatListPage> {
                     left: 26,
                     right: 26),
                 child: Container(
-                  height: 50.0,
+                  width: screenWidth*0.92 ,
+                  height: 45.0,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.0), // Set border radius
+                    borderRadius: BorderRadius.circular(30), // Set border radius
                     border: Border.all(
                       color: Colors.grey[300] ?? Colors.grey, // Set border color
-                      width: 3.0, // Set border widthS
+                      width: 2.0, // Set border widthS
                     ),
                   ),
                   child: Row(
@@ -225,11 +229,17 @@ class _ChatListPageState extends State<ChatListPage> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              searchText = value;
+                            });
+                          },
                           decoration: InputDecoration(
                             hintText: 'Recherche',
                             hintStyle: GoogleFonts.poppins(
                               color: Colors.grey[400],
-                              fontWeight: FontWeight.w500, // Semi-bold
+                              fontWeight: FontWeight.w500,
+
                             ),
                             border: InputBorder.none,
                           ),
@@ -240,7 +250,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 )
               // Rest of the body content (chat list, etc.)
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Expanded(
               child: _buildChatList(),
             ),
@@ -464,7 +474,7 @@ class _ChatListPageState extends State<ChatListPage> {
         if (documents.isEmpty) {
           return Center(
               child: Text(
-                  'Vous n''avez aucune Conversation.',
+                  'Vous n\'avez aucune Conversation.',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -473,12 +483,13 @@ class _ChatListPageState extends State<ChatListPage> {
               )
           );
         }
+
         return ListView.builder(
           itemCount: documents.length,
           itemBuilder: (context, index) {
             final document = documents[index];
             return FutureBuilder<Widget>(
-              future: _buildChatListItem(document),
+              future:  _buildChatListItem(document),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Text('Error loading chat: ${snapshot.error}');

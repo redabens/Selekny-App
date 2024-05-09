@@ -1,4 +1,3 @@
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -368,13 +367,15 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       ),
 */
-      home: const AllSignalementsPage(),
+      
+      home: const LoginPage(),
       routes: {
         "/PublierDemandePage": (context) => const NotifDemande(),
         "/AccepteParArtisan": (context) => const DemandeAccepteePage(),
         "/ConfirmeParClient": (context) => const ActiviteToday(),
       },
     );
+
   }
   void checkifbloque() async{
     try{

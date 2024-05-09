@@ -14,6 +14,8 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Container(
         decoration: const BoxDecoration(
@@ -32,10 +34,10 @@ class Body extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Service à domicile',
+                    'Services à domicile',
                     style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
-                  const SizedBox(width: 96), // Espace entre les deux textes
+              SizedBox(width: screenWidth*0.14), // Espace entre les deux textes
                   GestureDetector(
                     onTap: () {
                       Navigator.push(

@@ -59,7 +59,7 @@ class Heure extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 30),
+              const SizedBox(width: 10),
               Text(
                 'Selectionner l\'heure qui vous convient ',
                 style: GoogleFonts.poppins(

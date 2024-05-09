@@ -97,7 +97,7 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
           'Profil',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
-            fontSize: screenWidth * 0.08, // Taille proportionnelle
+            fontSize: screenWidth * 0.07, // Taille proportionnelle
           ),
         ),
         centerTitle: true,

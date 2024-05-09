@@ -16,6 +16,7 @@ class UserModel {
   final int nbsignalement;
   final String token;
 
+
   UserModel({
     required this.id,
     required this.nom,
@@ -50,20 +51,20 @@ class UserModel {
         token = '';
   static UserModel fromJson(Map<String, dynamic> json) {
     return UserModel(
-        id: json['id'] ?? '',
-        nom: json['nom'] ?? '',
-        numTel: json['numTel'] ?? '',
-        adresse: json['adresse'] ?? '',
-        email: json['email'] ?? '',
-        motDePasse: json['motDePasse'] ?? '',
-        role: json['role'] ?? '',
-        pathImage: json['pathImage'] ?? '',
-        latitude: json['latitude'],
-        longitude: json['longitude'],
-        vehicule: json['vehicule'],
-        bloque:json['bloque'],
-        nbsignalement: json['nbsignalement'],
-        token: json['token'],);
+      id: json['id'] ?? '',
+      nom: json['nom'] ?? '',
+      numTel: json['numTel'] ?? '',
+      adresse: json['adresse'] ?? '',
+      email: json['email'] ?? '',
+      motDePasse: json['motDePasse'] ?? '',
+      role: json['role'] ?? '',
+      pathImage: json['pathImage'] ?? '',
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      vehicule: json['vehicule'],
+      bloque:json['bloque'],
+      nbsignalement: json['nbsignalement'],
+      token: json['token'],);
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +80,7 @@ class UserModel {
       'longitude': longitude,
       'vehicule': vehicule,
       'bloque': bloque,
+      'nbsignalement':nbsignalement,
       'token': token
     };
   }
@@ -98,41 +100,41 @@ class UserModel {
         int? nbsignalement,
         String? token}) {
     return UserModel(
-        id: id ?? id,
-        nom: nom ?? this.nom,
-        numTel: numTel ?? this.numTel,
-        adresse: adresse ?? this.adresse,
-        email: email ?? this.email,
-        motDePasse: motDePasse ?? this.motDePasse,
-        role: role ?? this.role,
-        pathImage: pathImage ?? this.pathImage,
-        latitude: latitude ?? this.latitude,
-        longitude: longitude ?? this.longitude,
-        vehicule: vehicule ?? this.vehicule,
-        bloque: bloque ?? this.bloque,
-        nbsignalement: nbsignalement ?? this.nbsignalement,
-        token: token ?? this.token, );
+      id: id ?? id,
+      nom: nom ?? this.nom,
+      numTel: numTel ?? this.numTel,
+      adresse: adresse ?? this.adresse,
+      email: email ?? this.email,
+      motDePasse: motDePasse ?? this.motDePasse,
+      role: role ?? this.role,
+      pathImage: pathImage ?? this.pathImage,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      vehicule: vehicule ?? this.vehicule,
+      bloque: bloque ?? this.bloque,
+      nbsignalement: nbsignalement ?? this.nbsignalement,
+      token: token ?? this.token, );
   }
 
   factory UserModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return UserModel(
-        id: document.id,
-        nom: data['nom'],
-        numTel: data['numTel'],
-        adresse: data['adresse'],
-        email: data['email'],
-        motDePasse: data['motdepasse'],
-        role: data['role'],
-        pathImage: data['pathImage'],
-        latitude: data['latitude'],
-        longitude: data['longitude'],
-        vehicule: data['vehicule'],
-        bloque:data['bloque'],
-        nbsignalement: data['nbsignalement'],
-        token: data['token'],
-        );
+      id: document.id,
+      nom: data['nom'],
+      numTel: data['numTel'],
+      adresse: data['adresse'],
+      email: data['email'],
+      motDePasse: data['motdepasse'],
+      role: data['role'],
+      pathImage: data['pathImage'],
+      latitude: data['latitude'],
+      longitude: data['longitude'],
+      vehicule: data['vehicule'],
+      bloque:data['bloque'],
+      nbsignalement: data['nbsignalement'],
+      token: data['token'],
+    );
   }
 }
 
@@ -157,7 +159,7 @@ class ClientModel extends UserModel {
 class ArtisanModel extends UserModel {
   final bool statut;
   final String domaine;
-  int rating = 4;
+ double rating = 4.1;
   int workcount = 0;
   List<String> prestations = [];
 
@@ -196,23 +198,23 @@ class ArtisanModel extends UserModel {
 
   static ArtisanModel fromJson(Map<String, dynamic> json) {
     return ArtisanModel(
-        id: json['id'] ?? '',
-        nom: json['nom'] ?? '',
-        numTel: json['numTel'] ?? '',
-        adresse: json['adresse'] ?? '',
-        email: json['email'] ?? '',
-        motDePasse: json['motDePasse'] ?? '',
-        pathImage: json['pathImage'] ?? '',
-        latitude: json['latitude'],
-        longitude: json['longitude'],
-        statut: json['statut'],
-        domaine: json['domaine'],
-        prestations: json['prestations'],
-        rating: json['rating'],
-        vehicule: json['vehicule'],
-        bloque: json['bloque'],
-        nbsignalement: json['nbsignalement'],
-        token: json['token'],
-        workcount: json['workcount'],);
+      id: json['id'] ?? '',
+      nom: json['nom'] ?? '',
+      numTel: json['numTel'] ?? '',
+      adresse: json['adresse'] ?? '',
+      email: json['email'] ?? '',
+      motDePasse: json['motDePasse'] ?? '',
+      pathImage: json['pathImage'] ?? '',
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      statut: json['statut'],
+      domaine: json['domaine'],
+      prestations: json['prestations'],
+      rating: json['rating'],
+      vehicule: json['vehicule'],
+      bloque: json['bloque'],
+      nbsignalement: json['nbsignalement'],
+      token: json['token'],
+      workcount: json['workcount'],);
   }
 }

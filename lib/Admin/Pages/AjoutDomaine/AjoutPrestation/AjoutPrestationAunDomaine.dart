@@ -90,8 +90,9 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
                 );
               }
               // Combine prestation items with AjouterPrestation widget
-              final children = snapshot.data!.map((domainItem) => domainItem).toList();
-              children.add(Container(
+               final children = snapshot.data!.map((domainItem) => domainItem).toList();
+              children.add(
+                Container(
                   width: MediaQuery.of(context).size.width * 0.4,
                   height: 70,
                   padding: const EdgeInsets.all(10),
