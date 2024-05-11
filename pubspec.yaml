@@ -166,6 +166,7 @@ flutter:
     - icons/ajoutdomaine.png
     - icons/gestion.png
     - icons/signalement.png
+    - assets/ajoutimage.png
     - assets/add.png
     - assets/fleche.png
     - assets/condition.png
@@ -178,6 +179,7 @@ flutter:
     - assets/banni1.png
     - assets/banni2.png
     - assets/pointexclamation.png
+    - icons/Unit.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

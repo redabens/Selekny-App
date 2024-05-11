@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -5,11 +6,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Pages/GestionsUsers/gestionClients_page.dart';
+import 'package:reda/Admin/Pages/Profils/ProfilArtisanAdmin/profilArtisanAdmin.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import '../../../Pages/authentification/connexion.dart';
-import '../../../Pages/retourAuth.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
 class GestionArtisansPage extends StatefulWidget {
@@ -86,6 +87,8 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -115,7 +118,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
             title: Text(
               'Gestion des utilisateurs',
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: 19,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -126,13 +129,14 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
           Padding(
             padding: const EdgeInsets.only(top: 20.0, left: 26, right: 26),
             child: Container(
-              height: 50.0,
+              width: screenWidth*0.9 ,
+              height: 45.0,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(26),
                 border: Border.all(
                   color: Colors.grey[300] ?? Colors.grey,
-                  width: 3.0,
+                  width: 2.0,
                 ),
               ),
               child: Row(
@@ -148,10 +152,10 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                         });
                       },
                       decoration: InputDecoration(
-                        hintText: 'Recherche des utilisateurs...',
+                        hintText: 'Recherche des artisans...',
                         hintStyle: GoogleFonts.poppins(
                           color: Colors.grey[400],
-                          fontWeight: FontWeight.w600, // Semi-bold
+                          fontWeight: FontWeight.w500, // Semi-bold
                         ),
                         border: InputBorder.none,
                       ),
@@ -291,6 +295,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
           final userName = userData['nom'] as String;
           return userName.toLowerCase().contains(searchText.toLowerCase());
         }).toList();
+
         return FutureBuilder<List<Widget>>(
           future: Future.wait(filteredDocuments
               .map((document) => _buildGestionUsersItem(document))),
@@ -311,32 +316,61 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
   Future<Widget> _buildGestionUsersItem(DocumentSnapshot document) async {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     String userID = document.id;
-    String profileImage = "assets/anonyme.png"; // Default image
+    String profileImage = ""; // Default image
     String userName = "??????";
     String job = "?????";
+
     try {
       userName = await getUserName(userID);
-      print("nooooooooooooooooooom:$userName");
+      print("nom:$userName");
       job = await getUserJob(userID);
       print("le job:$job");
       profileImage = await getUserPathImage(userID);
       print("l'url :$profileImage");
     } catch (error) {
-      print('zzzzzzzzzzzzzzzz');
-      print("Error fetching user image: $error");
+      print('Error fetching user data: $error');
     }
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          DetGestionUsers(
-              userName: userName, job: job, profileImage: profileImage),
-          const SizedBox(height: 14),
-        ],
+
+    // Correction: Utiliser GestureDetector pour envelopper le Container
+    return GestureDetector(
+      onTap: () {
+        // Handle tap here (e.g., navigate to a new screen, show a dialog)
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage2CoteAdmin(
+              idartisan: document.id,
+              imageurl: profileImage,
+              nomartisan: userName,
+              phone: data['numTel'],
+              domaine: job,
+              rating: data['rating'],
+              adresse: data['adresse'],
+              workcount: data['workcount'],
+              vehicule: data['vehicule'],
+            ),
+          ),
+        );
+      },
+      child: Container(
+        // Decoration, padding, etc. can be specified here
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DetGestionUsers(
+              userName: userName,
+              job: job,
+              profileImage: profileImage,
+            ),
+            const SizedBox(height: 14),
+          ],
+        ),
       ),
     );
   }
+
 
   Widget _buildSelectionRow() {
     return Row(

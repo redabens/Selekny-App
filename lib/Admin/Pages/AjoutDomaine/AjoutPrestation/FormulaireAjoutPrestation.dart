@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'AjoutPrestationAunDomaine.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,7 +7,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 class FormulaireAjoutPrestation extends StatefulWidget {
-  const FormulaireAjoutPrestation({super.key});
+  final String iddomaine;
+  final String nomdomaine;
+  const FormulaireAjoutPrestation({super.key,
+    required this.iddomaine,
+    required this.nomdomaine});
 
   @override
   FormulaireAjoutPrestationState createState() => FormulaireAjoutPrestationState();
@@ -18,9 +21,9 @@ class FormulaireAjoutPrestation extends StatefulWidget {
 class FormulaireAjoutPrestationState extends State<FormulaireAjoutPrestation> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return const Scaffold(
         appBar: MyAppBar(),
-        body: const FormulaireScreen(),
+        body: FormulaireScreen(),
     );
   }
 }
@@ -80,7 +83,7 @@ class FormulaireScreenState extends State<FormulaireScreen> {
               Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                     SizedBox(height: 40,),
+                     const SizedBox(height: 40,),
                     Form(
                       key: _formKey, // Add this line to associate the Form with _formKey
                       child: Column(
@@ -107,7 +110,7 @@ class FormulaireScreenState extends State<FormulaireScreen> {
                             ),
 
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
 
                           TextFormField(
                             controller: _materielController,
@@ -137,21 +140,21 @@ class FormulaireScreenState extends State<FormulaireScreen> {
                               return null;
                             },
                             decoration: InputDecoration(
-                              border: UnderlineInputBorder(),
+                              border: const UnderlineInputBorder(),
                               labelText: 'Prix minimum',
                               labelStyle: TextStyle(
                                 color: textColor,
                               ),
                               suffixIcon: const Icon(Icons.attach_money, color: Color(0xFF3E69FE)),
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                             keyboardType: TextInputType.number,
                           ),
 
 
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: _pricemaxController,
                             validator: (value) {
@@ -161,19 +164,19 @@ class FormulaireScreenState extends State<FormulaireScreen> {
                               return null;
                             },
                             decoration: InputDecoration(
-                              border: UnderlineInputBorder(),
+                              border: const UnderlineInputBorder(),
                               labelText: 'Prix maximum',
                               labelStyle: TextStyle(
                                 color: textColor,
                               ),
-                              suffixIcon: Icon(Icons.attach_money, color: Color(0xFF3E69FE)),
+                              suffixIcon: const Icon(Icons.attach_money, color: Color(0xFF3E69FE)),
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                             keyboardType: TextInputType.number,
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
 
                           DropdownButtonFormField(
                             value: _selectedUnit,
@@ -188,11 +191,11 @@ class FormulaireScreenState extends State<FormulaireScreen> {
                                 _selectedUnit = value.toString();
                               });
                             },
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Unité',
                             ),
                           ),
-                          SizedBox(height: 40),
+                          const SizedBox(height: 40),
                           Text(
 
                             'La photo de la préstation:',
@@ -202,27 +205,27 @@ class FormulaireScreenState extends State<FormulaireScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Row(mainAxisAlignment: MainAxisAlignment.start,children: [
                           Container(
                             height: 45,
 
 
                             decoration: BoxDecoration(
-                              color: Color(0xFFD9D9D9), // Couleur du bouton
+                              color: const Color(0xFFD9D9D9), // Couleur du bouton
                               borderRadius: BorderRadius.circular(8), // Border radius de 8
                             ),
                             child: TextButton.icon(
                               onPressed: () {
                                 // Ajoutez ici le code à exécuter lorsque le bouton est pressé
                               },
-                              icon: Icon(Icons.file_upload, color: Color(0xFF323232)), // Icône pour importer une photo avec la couleur spécifiée
+                              icon: const Icon(Icons.file_upload, color: Color(0xFF323232)), // Icône pour importer une photo avec la couleur spécifiée
                               label: Padding(
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 child: Text(
                                   'Importer une photo',
                                   style: GoogleFonts.poppins(
-                                    color: Color(0xFF323232),
+                                    color: const Color(0xFF323232),
                                     fontWeight: FontWeight.w700,
                                     fontSize: 12,
                                   ),
@@ -238,12 +241,23 @@ class FormulaireScreenState extends State<FormulaireScreen> {
                           ),],
                           ),
 
-                          SizedBox(height: 60),
+                          const SizedBox(height: 60),
                           ElevatedButton(
                             onPressed: () => handleSubmit(),
+                            style: ButtonStyle(
+                              minimumSize: MaterialStateProperty.all<Size>(const Size(350, 47)),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(13.13),
+                                ),
+                              ),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color(0xFF3E69FE),
+                              ),
+                            ),
 
                             child: _loading?
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
@@ -259,19 +273,8 @@ class FormulaireScreenState extends State<FormulaireScreen> {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            style: ButtonStyle(
-                              minimumSize: MaterialStateProperty.all<Size>(Size(350, 47)),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(13.13),
-                                ),
-                              ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xFF3E69FE),
-                              ),
-                            ),
                           ),
-                          SizedBox(height: 40),
+                          const SizedBox(height: 40),
 
                         ],
                       ),
@@ -292,73 +295,11 @@ class FormulaireScreenState extends State<FormulaireScreen> {
   }
 }
 
-
-
-class Gestion extends StatefulWidget {
-  @override
-  GestionState createState() => GestionState();
-
-}
-
-class GestionState extends State<Gestion> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(),
-      body:
-      Column(
-        children:
-        [
-        ],
-      ),
-    );
-  }
-}
-class AjoutDomaine extends StatefulWidget {
-  @override
-  AjoutDomaineState createState() => AjoutDomaineState();
-
-}
-
-class AjoutDomaineState extends State<AjoutDomaine> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(),
-      body:
-      Column(
-        children:
-        [
-        ],
-      ),
-    );
-  }
-}
-class AjoutArtisan extends StatefulWidget {
-  @override
-  AjoutArtisanState createState() => AjoutArtisanState();
-
-}
-
-class AjoutArtisanState extends State<AjoutArtisan> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(),
-      body:
-      Column(
-        children:
-        [
-        ],
-      ),
-    );
-  }
-}
-
-
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const MyAppBar({super.key});
+
   @override
-  Size get preferredSize => Size.fromHeight(70);
+  Size get preferredSize => const Size.fromHeight(70);
 
   @override
   Widget build(BuildContext context) {
@@ -376,26 +317,23 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 height: 40, // Définissez la hauteur et la largeur pour obtenir un bouton carré
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Color(0xFFF3F3F3),
+                  color: const Color(0xFFF3F3F3),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back_ios_new_outlined,
                     color: Color(0xFF33363F),
                     size: 25,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AjoutPrestationAunDomaine(idDomaine: '', nomDomaine: '',)),
-                    );
+                    Navigator.pop(context);
 
                   },
                 ),
               ),
 
-              SizedBox(width: 40),
+              const SizedBox(width: 40),
               Center( // Centrer le texte horizontalement
                 child: Text(
                   'Ajouter une préstation',

@@ -60,10 +60,10 @@ class _ImporterState extends State<Importer> {
                           color: Colors.grey,
                           fontSize: screenWidth * 0.04,
                         ),
-                        enabledBorder: UnderlineInputBorder(
+                        enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
-                        focusedBorder: UnderlineInputBorder(
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
                       ),
@@ -80,7 +80,7 @@ class _ImporterState extends State<Importer> {
                             ),
                             child: Center(
                               child: Image.asset(
-                                'icons/ajoutimage.png',
+                                'assets/ajoutimage.png',
                                 height: screenHeight * 0.15,
                                 width: screenWidth * 0.15,
                               ),
@@ -96,7 +96,7 @@ class _ImporterState extends State<Importer> {
                             height: screenHeight * 0.05,
                             width: screenWidth * 0.4,
                             decoration: BoxDecoration(
-                              color: Color(0xFF3E69FE),
+                              color: const Color(0xFF3E69FE),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
@@ -110,7 +110,7 @@ class _ImporterState extends State<Importer> {
                                     fontSize: screenWidth * 0.035,
                                   ),
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Icon(
                                   Icons.file_upload,
                                   color: Colors.white,

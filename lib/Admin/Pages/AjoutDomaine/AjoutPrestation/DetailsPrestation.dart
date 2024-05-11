@@ -8,11 +8,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DetailsPrestation extends StatefulWidget {
   final String domaineID;
   final String prestationID;
+  final String imageUrl;
+  final String nomprestation;
+  final int prixmin;
+  final int prixmax;
+  final String unite;
+  final String materiel;
   const DetailsPrestation({
     super.key,
     required this.domaineID,
     required this.prestationID,
-
+    required this.imageUrl,
+    required this.nomprestation,
+    required this.prixmin,
+    required this.prixmax,
+    required this.unite,
+    required this.materiel,
   });
   @override
   DetailsPrestationState createState() => DetailsPrestationState();
@@ -33,67 +44,6 @@ class DetailsPrestationState extends State<DetailsPrestation> {
   bool _isEditingUnit = false;
   String _selectedUnit = 'DZD';
 
-  //l'image
- String imagePath = '';
-  String imageUrl = '';
-
-
-  //---initialisation
-  @override
-  void initState() {
-    super.initState();
-   //initialisation des controlleurs par les champs de Prestation
-   getPrestationData(widget.domaineID, widget.prestationID);
-  }
-
-//------------FONCTION TO GET PRESTATION FIELDS AND INITIALIZE THE CONTROLLERS-------------------
-  Future<void> getPrestationData(String domaineID, String prestationID) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    FirebaseStorage storage = FirebaseStorage.instance;
-    try {
-      DocumentSnapshot domaine = await firestore.collection('Domaine').doc(domaineID).get();
-      if (!domaine.exists) {
-        print('aucun domaine trouvé');
-        _controllerPrestation.text = '';
-        _controllerMateriel.text = '';
-        _controllerPrixmin.text = '';
-        _controllerPrixmax.text = '';
-        _controllerUnite.text = 'DZD';
-        imagePath = '';
-        imageUrl = '';
-
-        return;
-      }
-      DocumentSnapshot prestation = await domaine.reference.collection('Prestations').doc(prestationID).get();
-      if (!prestation.exists) {
-        print('aucune prestation trouvée');
-        _controllerPrestation.text = '';
-        _controllerMateriel.text = '';
-        _controllerPrixmin.text = '';
-        _controllerPrixmax.text = '';
-        _controllerUnite.text = '';
-        imagePath = '';
-        imageUrl = '';
-        return;
-      }
-       //initialisation des controlleur si le domaine et la prestation existent
-      _controllerPrestation.text = prestation.get('nom_prestation') ?? '';
-      _controllerMateriel.text = prestation.get('materiel')??'';
-      _controllerPrixmin.text = (prestation.get('prixmin') ?? 0).toString();
-      _controllerPrixmax.text = (prestation.get('prixmax') ?? 0).toString();
-      _controllerUnite.text =  prestation.get('unite')??'DZD';
-      imagePath = prestation.get('image');
-      imageUrl = await storage.ref(imagePath).getDownloadURL();
-
-    } catch (e) {
-      print('Erreur lors de l\'obtention de la prestation: $e');
-      _controllerPrestation.text = 'error getPrestationDtat';
-      _controllerMateriel.text = '';
-      _controllerPrixmin.text = '';
-      _controllerUnite.text = 'DZD';
-      imageUrl='';
-    }
-  }
 
   //------------FUNCTION TO MODIFY ALL PRESTATION FIELDS WITH THE CONTROLLERS CONTENT-------------------
   Future<void> updatePrestation(String domaineID, String prestationID, String  newName,String newMateriel,String newPrixmin,String newPrixmax,String newUnite) async {
@@ -206,7 +156,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                        child: RichText(
                          text: TextSpan(children: <TextSpan>[
                            TextSpan(
-                             text: _controllerPrestation.text,
+                             text: widget.nomprestation,
                              style: GoogleFonts.poppins(
                                color: const Color(0xFF3E69FE),
                                fontSize: 14,
@@ -299,7 +249,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                 child: RichText(
                   text: TextSpan(children: <TextSpan>[
                     TextSpan(
-                      text: _controllerMateriel.text,
+                      text: widget.materiel,
                       style: GoogleFonts.poppins(
                         color: const Color(0xFF6D6D6D),
                         fontSize: 14,
@@ -394,7 +344,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                             fontWeight: FontWeight.w700,
                           ),
                           decoration: const InputDecoration(
-                            hintText: 'Entrez le matériel nécessaire',
+                            hintText: 'Entrez le prix min',
                             border: InputBorder.none,
                           ),
                           keyboardType: TextInputType.number, // Clavier numérique
@@ -418,7 +368,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                           child: RichText(
                             text: TextSpan(children: <TextSpan>[
                               TextSpan(
-                                text: _controllerPrixmin.text,
+                                text: widget.prixmin.toString(),
                                 style: GoogleFonts.poppins(
                                   color: const Color(0xFF3E69FE),
                                   fontSize: 14,
@@ -480,7 +430,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                           child: RichText(
                             text: TextSpan(children: <TextSpan>[
                               TextSpan(
-                                text: _controllerPrixmax.text,
+                                text: widget.prixmax.toString(),
                                 style: GoogleFonts.poppins(
                                   color: const Color(0xFF3E69FE),
                                   fontSize: 14,
@@ -522,7 +472,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                padding: EdgeInsets.only(left: 5.0),
+                                padding: const EdgeInsets.only(left: 5.0),
                                 height: 24,
                                 width: 24,
                                 child: Image.asset(
@@ -563,7 +513,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                         padding: const EdgeInsets.only(left: 10.0),
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: DropdownButton<String>(
-                          value: _selectedUnit,
+                          value: widget.unite,
                           onChanged: (newValue) {
                             setState(() {
                               _selectedUnit = newValue!;
@@ -591,7 +541,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                         child: RichText(
                           text: TextSpan(children: <TextSpan>[
                             TextSpan(
-                              text: _controllerUnite.text,
+                              text: widget.unite,
                               style: GoogleFonts.poppins(
                                 color: const Color(0xFF3E69FE),
                                 fontSize: 14,
@@ -634,7 +584,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                   ),
                 ],
               ),
-              SizedBox(height:10),
+              const SizedBox(height:10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children:
@@ -648,7 +598,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                         // Add your tap functionality here if needed
                       },
                       child: CachedNetworkImage(
-                        imageUrl: imageUrl, // Replace with your image URL
+                        imageUrl: widget.imageUrl, // Replace with your image URL
                         placeholder: (context, url) => const CircularProgressIndicator(), // Optional
                         errorWidget: (context, url, error) => const Icon(Icons.error), // Optional
                         fit: BoxFit.cover, // Adjust the fit as necessary
@@ -656,24 +606,24 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                     ),
                   ),
 
-                  SizedBox(width:5),
+                  const SizedBox(width:5),
                   Container(
                     height: 45,
                     decoration: BoxDecoration(
-                      color: Color(0xFFD9D9D9), // Couleur du bouton
+                      color: const Color(0xFFD9D9D9), // Couleur du bouton
                       borderRadius: BorderRadius.circular(8), // Border radius de 8
                     ),
                     child: TextButton.icon(
                       onPressed: () {
 
                       },
-                      icon: Icon(Icons.file_upload, color: Color(0xFF323232)), // Icône pour importer une photo avec la couleur spécifiée
+                      icon: const Icon(Icons.file_upload, color: Color(0xFF323232)), // Icône pour importer une photo avec la couleur spécifiée
                       label: Padding(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         child: Text(
                           'modifier la photo',
                           style: GoogleFonts.poppins(
-                            color: Color(0xFF323232),
+                            color: const Color(0xFF323232),
                             fontWeight: FontWeight.w700,
                             fontSize: 12,
                           ),
@@ -690,7 +640,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                 ],
               ),
 
-              SizedBox(height: 10, width: 20),
+              const SizedBox(height: 10, width: 20),
             ],
           ),
         ),
@@ -784,11 +734,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                     size: 25,
                   ),
                   onPressed: () {
-                    /* Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AjoutPrestationAunDomaine(),)
-                    );*/
-
+                    Navigator.pop(context);
                   },
                 ),
               ),

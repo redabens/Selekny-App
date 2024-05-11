@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/AjoutDomaine/AjoutPrestation/DetailsPrestation.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/AjoutPrestation/FormulaireAjoutPrestation.dart';
 import 'package:reda/Pages/retourAuth.dart';
 import '../../../Services/Domaine_service.dart';
 
@@ -114,7 +115,7 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const RetourAuth()),
+                              MaterialPageRoute(builder: (context) => FormulaireAjoutPrestation(iddomaine: widget.idDomaine, nomdomaine: widget.nomDomaine)),
                             );
                           },
                         ),
@@ -163,7 +164,8 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
               nomprestation: data['nom_prestation'],
               imageUrl: imageUrl,
               domaineId: widget.idDomaine,
-              prestationId: document.id,
+              prestationId: document.id, prixmin: data['prixmin'],
+              prixmax: data['prixmax'], unite: data['unite'], materiel: data['materiel'] ?? '',
             ),
             const SizedBox(height: 10), // Add spacing between containers
       ],
@@ -238,11 +240,19 @@ class Prestation extends StatelessWidget {
   final String imageUrl;
   final String domaineId;
   final String prestationId;
+  final int prixmin;
+  final int prixmax;
+  final String unite;
+  final String materiel;
   const Prestation({super.key,
     required this.nomprestation,
     required this.imageUrl,
     required this.domaineId,
     required this.prestationId,
+    required this.prixmin,
+    required this.prixmax,
+    required this.unite,
+    required this.materiel,
   });
 
   @override
@@ -296,7 +306,11 @@ class Prestation extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DetailsPrestation(domaineID: domaineId, prestationID: prestationId),),
+                  MaterialPageRoute(builder: (context) => DetailsPrestation(domaineID: domaineId,
+                    prestationID: prestationId, imageUrl: imageUrl,
+                    nomprestation: nomprestation, prixmin: prixmin,
+                    prixmax: prixmax, unite: unite, materiel: materiel,),
+                  ),
                 );
               },
             ),

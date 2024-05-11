@@ -2,11 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
 import 'package:reda/Client/components/chat_bubble.dart';
-import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Services/Chat/chat_service.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color myBlueColor = Color(0xFF3E69FE);
@@ -38,10 +35,8 @@ class ChatPage extends StatefulWidget{
 }
 
 class _ChatPageState extends State<ChatPage> {
-  //final String imageUrl = await getImageUrl('Prestations/1vyrPcSqF0LTRZpaYUVy.png');
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
-  //final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   void sendMessage() async{
     if(_messageController.text.isNotEmpty){
       await _chatService.sendMessage((widget.receiverUserID), _messageController.text);
@@ -55,6 +50,8 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
   }
   Future<Widget> _buildAppBar(String otherUserId) async {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return AppBar(
       title: Row(
         children: [
@@ -106,8 +103,8 @@ class _ChatPageState extends State<ChatPage> {
                     } // Example action (replace with your desired functionality)
                   },
                   child: Container(
-                    width: 36,
-                    height: 36,
+                    width:screenWidth*0.105,
+                    height: screenWidth*0.105,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
@@ -123,14 +120,14 @@ class _ChatPageState extends State<ChatPage> {
                             50), // Ajout du BorderRadius
                         child: Image.network(
                           widget.profileImage,
-                          width: 45,
-                          height: 45,
+                          width: screenWidth*0.09,
+                          height: screenWidth*0.09,
                           fit: BoxFit.cover,
                         ),
                       )
                           : Icon(
                         Icons.account_circle,
-                        size: 45,
+                        size: 34,
                         color: Colors.grey[400],
                       ),
                     ),

@@ -44,7 +44,7 @@ class ConditionsGeneralesPage extends StatelessWidget {
             Row(
               children: [
                 Image.asset(
-                  'asset/important.png', // Chemin vers l'image
+                  'assets/important.png', // Chemin vers l'image
                   width: 30, // Largeur de l'image
                   height: 50, // Hauteur de l'image
                 ),
