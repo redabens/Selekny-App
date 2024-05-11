@@ -68,10 +68,20 @@ class DetGestionUsers extends StatelessWidget {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50.0),
-                      child: buildUserProfileImage(
-                          profileImage), // Using the function here
+                    child: profileImage != ''
+                        ? ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          60), // Ajout du BorderRadius
+                      child: Image.network(
+                        profileImage,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    ): Icon(
+                      Icons.account_circle,
+                      size:50,
+                      color: Colors.grey[400],
                     ),
                   ),
                   const SizedBox(width: 20),

@@ -77,7 +77,7 @@ class FirebaseAuthService {
       return credential.user;
     } on FirebaseAuthException catch (error) {
       Fluttertoast.showToast(
-          msg: error?.message ?? "un error occured",
+          msg: error.message ?? "un error occured",
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red);
       return null;

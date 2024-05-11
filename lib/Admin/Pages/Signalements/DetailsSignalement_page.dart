@@ -115,7 +115,7 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                   const SizedBox(height: 4),
                   Container(
                     child: Text(
-                      'Cet utilisateur a été signalé ${widget.nbsignalement} fois.',  // Utilisation du paramètre
+                      'Cet utilisateur a été signalé ${widget.nbsignalement -1} fois.',  // Utilisation du paramètre
                       style: GoogleFonts.poppins(
                         color: Colors.red,
                         fontSize: 12,

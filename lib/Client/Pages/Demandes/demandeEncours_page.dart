@@ -112,6 +112,8 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
     final Timestamp timestamp = demandeDoc.data()!['timestamp'];
     final DateTime timeDemande = timestamp.toDate();
     final DateTime now = DateTime.now();
+    print('$timeDemande');
+    print('$now');
     Duration difference = now.difference(timeDemande);
     if (difference.inDays > 0) {
       return 'il y a ${difference.inDays} jr';

@@ -15,7 +15,6 @@ import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
-import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 import 'firebase_options.dart';
@@ -355,13 +354,13 @@ class HomeScreenState extends State<HomeScreen> {
                         semanticsLabel:
                             'Custom Loading', // Balise sémantique pour l'accessibilité
                       )*/
-          const LoginPage()
+          const WelcomePage()
               : !isLogin
               ? const WelcomePage()
               : admin ?
-              const AllSignalementsPage()
+          const AllSignalementsPage()
               : isbloqued ?
-                const Banni()
+          const Banni()
               :(role == 'client')
               ? const HomePage()
               : const ActiviteToday(),
@@ -384,7 +383,6 @@ class HomeScreenState extends State<HomeScreen> {
       setState(() {
         isbloqued = data['bloque'];
       });
-      await Future.delayed(const Duration(milliseconds: 2000));
     }
     catch(e){
       print("error : $e");
@@ -406,7 +404,7 @@ class HomeScreenState extends State<HomeScreen> {
   void checkifadmin(){
     if(FirebaseAuth.instance.currentUser != null) {
       if (FirebaseAuth.instance.currentUser!.uid ==
-          '1kZ4ZrXf1BYiDtpmWnuxWsmcQQ32') {
+          'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
         setState(() {
           admin = true;
         });

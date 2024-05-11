@@ -130,7 +130,7 @@ class ProfileBody extends StatelessWidget {
           child: Row(
             children: [
               Image.asset(
-                'asset/Car.png',
+                'assets/Car.png',
                 width: screenWidth * 0.07,
                 height: screenWidth * 0.07,
               ),

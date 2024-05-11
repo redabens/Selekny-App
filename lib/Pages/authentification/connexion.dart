@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/auth.dart';
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuthService _auth = FirebaseAuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
   void authenticateWithGoogle() async {
     try {
       await _auth.signInWithGoogle();
@@ -100,14 +100,15 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       // Save the form data
       final email = _emailController.value.text;
+      print(email);
       final password = _passwordController.value.text;
       setState(() => _loading = true);
 
       //  Authentification's functions
       void signin() async {
         try {
-          User? user = await _auth.signInwithEmailAndPassword(email, password);
-          if(user!.uid != '1kZ4ZrXf1BYiDtpmWnuxWsmcQQ32') {
+          User? user = await _firebaseAuthService.signInwithEmailAndPassword(email, password);
+          if(user!.uid != 'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
             final userdoc = await FirebaseFirestore.instance.collection('users')
                 .doc(user.uid)
                 .get();
@@ -121,6 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
               if (role == selectedRole) {
                 print("User connection success");
                 if (role == 'client') {
+                  setState(() => _loading = false);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -129,11 +131,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 }
                 else if (role == 'artisan') {
+                  setState(() => _loading = false);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                        const ActiviteAvenir()),
+                        const ActiviteToday()),
                   );
                 }
                 //rediriger vers la page d acceuil
@@ -144,6 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
               }
             }
             else {
+              setState(() => _loading = false);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -153,6 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           }
           else{
+            setState(() => _loading = false);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -172,8 +177,6 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       signin();
-
-      setState(() => _loading = false);
     }
   }
 
