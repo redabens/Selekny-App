@@ -271,7 +271,8 @@ class MyAppState extends State<MyApp> {
             );
           }
         },
-        child: const HomeScreen(), // Ajoutez un widget enfant pour le OfflineBuilder
+        child:
+        const HomeScreen(), // Ajoutez un widget enfant pour le OfflineBuilder
       ),
     );
   }
@@ -299,8 +300,8 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   var admin;
-  var isLogin;
-  var isbloqued;
+  var isLogin ;
+  var isbloqued ;
   var auth = FirebaseAuth.instance;
   late Future<String> roleFuture;
   late String role = '';
@@ -329,7 +330,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    checkIfLogin();// Appel de la méthode pour vérifier l'état de connexion
+    checkIfLogin(); // Appel de la méthode pour vérifier l'état de connexion
     checkifadmin();
     checkifbloque();
   }
@@ -342,7 +343,7 @@ class HomeScreenState extends State<HomeScreen> {
         Get.put(UserRepository());
       }),
 
-     /* home: Container(
+      home: Container(
         color: Colors.white, // Couleur de l'arrière-plan de la page
         child: Center(
           child: isLogin == null
@@ -357,40 +358,41 @@ class HomeScreenState extends State<HomeScreen> {
           const LoginPage()
               : !isLogin
               ? const WelcomePage()
-              : admin ?
-          const AllSignalementsPage()
-              : isbloqued ?
-          const Banni()
-              :(role == 'client')
+              : admin
+              ? const AllSignalementsPage()
+              : isbloqued
+              ? const Banni()
+              : (role == 'client')
               ? const HomePage()
               : const ActiviteToday(),
         ),
       ),
-*/
-      
-      home: const LoginPage(),
+
+      //home: const CreationArtisanPage(),
       routes: {
         "/PublierDemandePage": (context) => const NotifDemande(),
         "/AccepteParArtisan": (context) => const DemandeAccepteePage(),
         "/ConfirmeParClient": (context) => const ActiviteToday(),
       },
     );
-
   }
-  void checkifbloque() async{
-    try{
-      final userdoc = await FirebaseFirestore.instance.collection('users').doc(
-          FirebaseAuth.instance.currentUser!.uid).get();
+
+  void checkifbloque() async {
+    try {
+      final userdoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
       Map<String, dynamic> data = userdoc.data() as Map<String, dynamic>;
       setState(() {
         isbloqued = data['bloque'];
       });
       await Future.delayed(const Duration(milliseconds: 2000));
-    }
-    catch(e){
+    } catch (e) {
       print("error : $e");
     }
   }
+
   void checkIfLogin() async {
     auth.authStateChanges().listen((User? user) async {
       final useremail = auth.currentUser?.email;
@@ -404,15 +406,15 @@ class HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-  void checkifadmin(){
-    if(FirebaseAuth.instance.currentUser != null) {
+
+  void checkifadmin() {
+    if (FirebaseAuth.instance.currentUser != null) {
       if (FirebaseAuth.instance.currentUser!.uid ==
-          '1kZ4ZrXf1BYiDtpmWnuxWsmcQQ32') {
+          'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
         setState(() {
           admin = true;
         });
-      }
-      else {
+      } else {
         setState(() {
           admin = false;
         });

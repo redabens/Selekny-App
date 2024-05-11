@@ -10,7 +10,7 @@ class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
 
   @override
-  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+  _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
@@ -145,13 +145,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         adresse: newAdress == '' ? adresse : newAdress,
         email: newEmail == '' ? email1 : newEmail,
         role: userModel.role,
-        motDePasse: newPassword == '' ? password : newPassword,
+        motDePasse: newPassword == '' ? oldPassword : newPassword,
         pathImage: fileName,
         latitude: userModel.latitude,
         longitude: userModel.longitude,
         token: userModel.token,
         vehicule: userModel.vehicule,
-        nbsignalement: userModel.nbsignalement, bloque: userModel.bloque,);
+        nbsignalement: userModel.nbsignalement,
+        bloque: false);
 
     try {
       await userRepository.updateUser(updatedUser);
@@ -206,13 +207,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 adresse: newAdress == '' ? adresse : newAdress,
                 email: newEmail == '' ? email1 : newEmail,
                 role: userModel.role,
-                motDePasse: newPassword == '' ? password : newPassword,
+                motDePasse: newPassword == '' ? oldPassword : newPassword,
                 pathImage: newUrlImg,
                 latitude: userModel.latitude,
                 longitude: userModel.longitude,
                 token: userModel.token,
                 vehicule: userModel.vehicule,
-                nbsignalement: userModel.nbsignalement, bloque: userModel.bloque,);
+                nbsignalement: userModel.nbsignalement,
+                bloque: false);
             Navigator.pop(context, updatedUser);
           },
           icon: Container(
@@ -448,11 +450,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               await FirebaseAuth.instance.currentUser
                                   ?.reauthenticateWithCredential(
                                   credential);
-                              print("avant updater");
 
-                              // Old password matches, proceed with further actions
-                              await saveChanges(); // Call the function to update user data
-                              print("Donnes mis a jour avec success");
+                              if (password == oldPassword) {
+                                print("avant updater");
+                                if (newPassword != '') {
+                                  await FirebaseAuth.instance.currentUser
+                                      ?.updatePassword(newPassword);
+                                }
+
+                                // Old password matches, proceed with further actions
+                                await saveChanges(); // Call the function to update user data
+                                print("Donnes mis a jour avec success");
+                              }
                             } catch (e) {
                               // Handle re-authentication error
                               print('Erreur de réauthentification : $e');
@@ -511,4 +520,3 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 }
-

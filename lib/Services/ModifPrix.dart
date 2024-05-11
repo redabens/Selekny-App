@@ -84,6 +84,7 @@ class ModifPrixService extends ChangeNotifier {
     }
       else{
         return "$prixmin-$prixmax $unite";
+
       }
   }
 }

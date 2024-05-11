@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 Widget buildUserProfileImage(String? profileImage) {
   //si url valide => crached net
-  if (profileImage != null &&
-      (profileImage.startsWith('http') || profileImage.startsWith('https'))) {
+  if (profileImage != null){
+     if (profileImage.startsWith('http') || profileImage.startsWith('https')) {
     return CachedNetworkImage(
       imageUrl: profileImage,
       placeholder: (context, url) => const CircularProgressIndicator(),
@@ -16,7 +16,14 @@ Widget buildUserProfileImage(String? profileImage) {
         color: Colors.grey[400],
       ),
     );
-  } else {
+  }else{
+       return Icon(
+         Icons.account_circle,
+         size: 50,
+         color: Colors.grey[400],
+       );
+     }
+     }else {
     // if url nexiste pas ou null => assets
     return Icon(
       Icons.account_circle,

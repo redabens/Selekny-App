@@ -100,8 +100,8 @@ class DetChatList extends StatelessWidget {
                       } // Example action (replace with your desired functionality)
                     },
                     child: Container(
-                      width: screenWidth*0.14, // Adjust as needed
-                      height: screenWidth*0.14, // Adjust as needed
+                      width: screenWidth*0.15, // Adjust as needed
+                      height: screenWidth*0.15, // Adjust as needed
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -110,21 +110,21 @@ class DetChatList extends StatelessWidget {
                         ),
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50.0),
+                        borderRadius: BorderRadius.circular(24.0),
                         child: profileImage != ''
                             ? ClipRRect(
                           borderRadius: BorderRadius.circular(
                               54), // Ajout du BorderRadius
                           child: Image.network(
                             profileImage,
-                            width: screenWidth*0.14,
-                            height: screenWidth*0.14,
+                            width: screenWidth*0.15,
+                            height: screenWidth*0.15,
                             fit: BoxFit.cover,
                           ),
                         )
                             : Icon(
                           Icons.account_circle,
-                          size: 54,
+                          size: screenWidth*0.13,
                           color: Colors.grey[400],
                         ),
                       ),

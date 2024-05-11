@@ -55,6 +55,8 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
   }
   Future<Widget> _buildAppBar(String otherUserId) async {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return AppBar(
       title: Row(
         children: [
@@ -106,8 +108,8 @@ class _ChatPageState extends State<ChatPage> {
                     } // Example action (replace with your desired functionality)
                   },
                   child: Container(
-                    width: 36,
-                    height: 36,
+                    width:screenWidth*0.105,
+                    height: screenWidth*0.105,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
@@ -123,14 +125,14 @@ class _ChatPageState extends State<ChatPage> {
                             50), // Ajout du BorderRadius
                         child: Image.network(
                           widget.profileImage,
-                          width: 45,
-                          height: 45,
+                          width: screenWidth*0.09,
+                          height: screenWidth*0.09,
                           fit: BoxFit.cover,
                         ),
                       )
                           : Icon(
                         Icons.account_circle,
-                        size: 45,
+                        size: 34,
                         color: Colors.grey[400],
                       ),
                     ),

@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
       void signin() async {
         try {
           User? user = await _auth.signInwithEmailAndPassword(email, password);
-          if(user!.uid != '1kZ4ZrXf1BYiDtpmWnuxWsmcQQ32') {
+          if(user!.uid != 'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
             final userdoc = await FirebaseFirestore.instance.collection('users')
                 .doc(user.uid)
                 .get();

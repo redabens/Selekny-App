@@ -332,6 +332,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
     final String domaineName = await getDomaineDemande(domaineID);
     final String prestation = await getPrestationDemande(domaineID,prestationID);
     final String prix = await _modifPrixService.getPrixPrestation(domaineID, prestationID);
+    print(')))))=================================$prix');
     final String date = data['date_debut'];
     final String heure = '${data['heure_debut']} - ${data['heure_fin']}';
     final String sync = await getSyncDemande(demandeID);
