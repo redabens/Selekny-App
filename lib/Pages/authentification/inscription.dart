@@ -86,9 +86,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
           if (user != null) {
             print("User successfully created");
             UserRepository userRepository = UserRepository();
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const WelcomePage()),
+              MaterialPageRoute(builder: (context) => const LoginPage()),
             );
             try {
               await FirebaseFirestore.instance

@@ -40,8 +40,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _showPassword = false;
-
-  bool _loading = false;
   String selectedRole = 'client';
   int selectedindex = 0;
 
@@ -96,18 +94,19 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void handleSubmit() async {
+  Future<void> handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       // Save the form data
       final email = _emailController.value.text;
       print(email);
       final password = _passwordController.value.text;
-      setState(() => _loading = true);
-
+      bool admin = false;
+      bool bloquer = false;
       //  Authentification's functions
-      void signin() async {
+      Future<void> signin() async {
         try {
           User? user = await _firebaseAuthService.signInwithEmailAndPassword(email, password);
+          await Future.delayed(const Duration(milliseconds: 500));
           if(user!.uid != 'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
             final userdoc = await FirebaseFirestore.instance.collection('users')
                 .doc(user.uid)
@@ -121,24 +120,6 @@ class _LoginScreenState extends State<LoginScreen> {
               print("Role : " + role);
               if (role == selectedRole) {
                 print("User connection success");
-                if (role == 'client') {
-                  setState(() => _loading = false);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        const HomePage()),
-                  );
-                }
-                else if (role == 'artisan') {
-                  setState(() => _loading = false);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        const ActiviteToday()),
-                  );
-                }
                 //rediriger vers la page d acceuil
               } else {
                 print(
@@ -147,23 +128,11 @@ class _LoginScreenState extends State<LoginScreen> {
               }
             }
             else {
-              setState(() => _loading = false);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                    const Banni()),
-              );
+              bloquer = true;
             }
           }
           else{
-            setState(() => _loading = false);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                  const AllSignalementsPage()),
-            );
+            admin =true;
           }
         } on FirebaseAuthException catch (e) {
           if (e.code == 'user-not-found') {
@@ -176,10 +145,49 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
 
-      signin();
+      await signin();
+      if(admin){
+        navigueadmin();
+      }
+      else if (bloquer){
+        naviguebloquer();
+      }
+      else if (role == 'client'){
+        navigueclient();
+      }
+      else if (role == 'artisan'){
+        navigueartisan();
+      }
     }
   }
-
+  void navigueadmin(){
+    print("adminn");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const AllSignalementsPage(),),
+    );
+  }
+  void naviguebloquer(){
+    print("bloqueeeerr");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const Banni(),),
+    );
+  }
+  void navigueclient(){
+    print("clientttt");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage(),),
+    );
+  }
+  void navigueartisan(){
+    print("artisannnn");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ActiviteToday(),),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     var isDark = Theme.of(context).brightness == Brightness.dark;
@@ -327,7 +335,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 20),
 // Login button
                           ElevatedButton(
-                            onPressed: () => handleSubmit(),
+                            onPressed: (){
+                              handleSubmit();
+                              },
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(
                                   const Size(216, 37)),
@@ -341,16 +351,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const Color(0xFF3E69FE),
                               ),
                             ),
-                            child: _loading
-                                ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.black,
-                                strokeWidth: 2,
-                              ),
-                            )
-                                : const Text(
+                            child: const Text(
                               'Se connecter',
                               style: TextStyle(
                                 color: Colors.white,

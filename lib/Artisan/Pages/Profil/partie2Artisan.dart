@@ -181,10 +181,10 @@ class SettingsArtisanSection extends StatelessWidget {
                           onPressed: () async {
                             // Déconnexion de l'utilisateur
                             await FirebaseAuth.instance.signOut();
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
+                                builder: (BuildContext context) =>
                                 const LoginPage(),
                               ),
                             );

@@ -298,9 +298,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  var admin;
-  var isLogin;
-  var isbloqued;
+  var admin = false;
+  var isLogin=false;
+  var isbloqued=false;
   var auth = FirebaseAuth.instance;
   late Future<String> roleFuture;
   late String role = '';
@@ -345,7 +345,7 @@ class HomeScreenState extends State<HomeScreen> {
       home: Container(
         color: Colors.white, // Couleur de l'arrière-plan de la page
         child: Center(
-          child: isLogin == null
+          child: /*isLogin == null
               ? /*const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Color(
                             0xFF3E69FE)), // Couleur de remplissage de l'indicateur de chargement
@@ -355,7 +355,7 @@ class HomeScreenState extends State<HomeScreen> {
                             'Custom Loading', // Balise sémantique pour l'accessibilité
                       )*/
           const WelcomePage()
-              : !isLogin
+              : */!isLogin
               ? const WelcomePage()
               : admin ?
           const AllSignalementsPage()
