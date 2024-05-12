@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
-import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Admin/components/signalements_component.dart';
 import 'package:intl/intl.dart';
 import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
+import 'package:reda/Pages/authentification/connexion2.dart';
 
 
 class AllSignalementsPage extends StatefulWidget {
@@ -134,7 +134,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const LoginPage()),
+                    const LoginPage2()),
               );
             },
               icon: Image.asset(
@@ -223,7 +223,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),),
                 );
 
               },

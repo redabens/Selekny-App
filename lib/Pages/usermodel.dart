@@ -79,6 +79,7 @@ class UserModel {
       'longitude': longitude,
       'vehicule': vehicule,
       'bloque': bloque,
+      'nbsignalement':nbsignalement,
       'token': token
     };
   }
@@ -157,7 +158,7 @@ class ClientModel extends UserModel {
 class ArtisanModel extends UserModel {
   final bool statut;
   final String domaine;
-  int rating = 4;
+  double rating = 3.5;
   int workcount = 0;
   List<String> prestations = [];
 

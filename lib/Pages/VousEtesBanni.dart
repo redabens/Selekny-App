@@ -43,7 +43,7 @@ class BanniState extends State<Banni>{
                 // Navigate to another page
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const InscriptionPage()),
+                  MaterialPageRoute(builder: (context) => const InscriptionPage(type: 2,)),
                 );
               },
               child: Container(

@@ -8,7 +8,6 @@ import 'package:reda/Services/ConvertAdr.dart';
 import 'package:reda/Services/notifications.dart';
 import '../../Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
 import '../../Admin/Pages/Signalements/AllSignalements_page.dart';
-import '../WelcomeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -25,7 +24,8 @@ Future<void> getToken() async {
 }
 
 class CreationArtisanPage extends StatelessWidget {
-  const CreationArtisanPage({super.key});
+  final String domaine;
+  const CreationArtisanPage({super.key, required this.domaine});
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +33,16 @@ class CreationArtisanPage extends StatelessWidget {
       title: 'Inscription Page',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const Scaffold(
-        body: CreationArtisanScreen(),
+      home: Scaffold(
+        body: CreationArtisanScreen(domaine: domaine,),
       ),
     );
   }
 }
 
 class CreationArtisanScreen extends StatefulWidget {
-  const CreationArtisanScreen({super.key});
+  final String domaine;
+  const CreationArtisanScreen({super.key, required this.domaine});
 
   @override
   State<CreationArtisanScreen> createState() => _CreationArtisanScreenState();
@@ -110,7 +111,8 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   @override
   void initState() {
     super.initState();
-    selectedDomaine = ValueNotifier<String>('');
+    selectedPrestations.clear();
+    selectedDomaine = ValueNotifier<String>(widget.domaine);
     fetchDomaines().then((domainesList) {
       setState(() {
         domaines = domainesList;
@@ -119,13 +121,14 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
     });
 
     selectedDomaine.addListener(() {
-      fetchPrestationsByDomaine(selectedDomaine.value); // Call on change
+      fetchPrestationsByDomaine(widget.domaine); // Call on change
     });
   }
 
   @override
   void dispose() {
     selectedDomaine.dispose();
+    selectedPrestations.clear();
     super.dispose();
   }
 
@@ -180,10 +183,10 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
           latitude: position['latitude'],
           longitude: position['longitude'],
           statut: true,
-          domaine: selectedDomaine.value,
+          domaine: widget.domaine,
           prestations: selectedPrestations,
           token: '',
-          rating: 4,
+          rating: 3.5,
           vehicule: false,
           bloque: false,
           nbsignalement: 0,
@@ -194,7 +197,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
         UserRepository userRepository = UserRepository();
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const WelcomePage()),
+          MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité')),
         );
         try {
           await FirebaseFirestore.instance
@@ -331,7 +334,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         ),
                         const SizedBox(height: 10),
                         DropdownButtonFormField<String>(
-                          value: selectedDomaine.value,
+                          value: widget.domaine,
                           icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 24,
                           elevation: 16,
@@ -343,6 +346,10 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             border: const UnderlineInputBorder(),
                           ),
                           onChanged: (String? newValue) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => CreationArtisanPage(domaine: newValue!),),
+                            );
                             setState(() {
                               selectedDomaine.value = newValue ?? '';
                               fetchPrestationsByDomaine(newValue ?? '');
@@ -606,7 +613,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 });
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),),
                 );
 
               },

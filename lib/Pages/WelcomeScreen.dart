@@ -58,7 +58,7 @@ class WelcomeScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
                       );
                     },
                     style: ButtonStyle(
@@ -91,7 +91,7 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => InscriptionPage()),
+                            builder: (context) => const InscriptionPage(type: 1,)),
                       );
                     },
                     style: ButtonStyle(

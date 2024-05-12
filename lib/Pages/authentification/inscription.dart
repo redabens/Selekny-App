@@ -8,8 +8,11 @@ import 'connexion.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'connexion2.dart';
+
 class InscriptionPage extends StatelessWidget {
-  const InscriptionPage({super.key});
+  final int type;
+  const InscriptionPage({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +22,16 @@ class InscriptionPage extends StatelessWidget {
       theme: ThemeData.light(), // Use light theme by default
       darkTheme: ThemeData.dark(),
 
-      home: const Scaffold(
-        body: InscriptionScreen(),
+      home: Scaffold(
+        body: InscriptionScreen(type: type,),
       ),
     );
   }
 }
 
 class InscriptionScreen extends StatefulWidget {
-  const InscriptionScreen({super.key});
+  final int type;
+  const InscriptionScreen({super.key, required this.type});
 
   @override
   _InscriptionScreenState createState() => _InscriptionScreenState();
@@ -86,10 +90,15 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
           if (user != null) {
             print("User successfully created");
             UserRepository userRepository = UserRepository();
+            widget.type == 1 ?
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const LoginPage()),
+            ):  Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage2()),
             );
+
             try {
               await FirebaseFirestore.instance
                   .collection("users")
@@ -388,10 +397,13 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                           onPressed: () {
                             // Action when "Se connecter" is pressed
                             // go to the LogIn page
-                            Navigator.push(
+                            widget.type == 1 ?
+                            Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginPage()),
+                              MaterialPageRoute(builder: (context) => const LoginPage()),
+                            ):  Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => const LoginPage2()),
                             );
                           },
                           child: Text(

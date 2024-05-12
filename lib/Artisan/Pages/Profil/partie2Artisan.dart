@@ -6,7 +6,7 @@ import 'package:reda/Client/Pages/Demandes/HistoriqueArtisanPage.dart';
 import 'package:reda/Client/profile/update_profile_screen.dart';
 import 'package:reda/Pages/conditongeneral.dart';
 import 'package:reda/Pages/contacter.dart';
-import '../../../Pages/authentification/connexion.dart';
+import '../../../Pages/authentification/connexion2.dart';
 import '../../../Pages/help.dart';
 
 class SettingsArtisanSection extends StatelessWidget {
@@ -185,7 +185,7 @@ class SettingsArtisanSection extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                const LoginPage(),
+                                const LoginPage2(),
                               ),
                             );
                           },

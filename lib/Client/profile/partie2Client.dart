@@ -6,7 +6,7 @@ import 'package:reda/Client/profile/update_profile_screen.dart';
 import 'package:reda/Pages/conditongeneral.dart';
 import 'package:reda/Pages/contacter.dart';
 import '../../../Pages/help.dart';
-import '../../Pages/authentification/connexion.dart';
+import '../../Pages/authentification/connexion2.dart';
 import '../Pages/Demandes/HistoriqueClientPage.dart';
 
 class SettingsClientSection extends StatelessWidget {
@@ -177,7 +177,7 @@ class SettingsClientSection extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                const LoginPage(),
+                                const LoginPage2(),
                               ),
                             );
                           },

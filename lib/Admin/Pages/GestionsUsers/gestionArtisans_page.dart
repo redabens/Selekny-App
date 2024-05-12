@@ -10,8 +10,8 @@ import 'package:reda/Admin/Pages/Profils/ProfilArtisanAdmin/profilArtisanAdmin.d
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
-import '../../../Pages/authentification/connexion.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
+import '../../../Pages/authentification/connexion2.dart';
 
 class GestionArtisansPage extends StatefulWidget {
   const GestionArtisansPage({
@@ -103,7 +103,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const LoginPage()),
+                    const LoginPage2()),
               );
             },
               icon: Image.asset(
@@ -238,7 +238,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreationArtisanPage(),
+                    builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),
                   ),
                 );
               },

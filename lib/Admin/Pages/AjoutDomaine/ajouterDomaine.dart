@@ -9,8 +9,7 @@ import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Admin/Services/Domaine_service.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
-
-import '../../../Pages/authentification/connexion.dart';
+import '../../../Pages/authentification/connexion2.dart';
 import 'ajouterbox.dart';
 import 'detaildubox.dart';
 import 'importerphoto.dart';
@@ -50,7 +49,7 @@ class DomainServicePageState extends State<DomainServicePage> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                const LoginPage()),
+                const LoginPage2()),
           );
         },
           icon: Image.asset(
@@ -151,7 +150,7 @@ class DomainServicePageState extends State<DomainServicePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreationArtisanPage(),
+                    builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),
                   ),
                 );
               },

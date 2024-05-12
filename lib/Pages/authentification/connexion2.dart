@@ -15,21 +15,21 @@ enum Role { client, artisan }
 
 String errorMessage = '';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginPage2 extends StatefulWidget {
+  const LoginPage2({super.key});
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPage2> createState() => _LoginPage2State();
 }
 
-class _LoginPageState extends State<LoginPage>{
-@override
+class _LoginPage2State extends State<LoginPage2>{
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Welcome Page',
       theme: ThemeData.light(), // Use light theme by default
       darkTheme: ThemeData.dark(), // Define dark theme
       home: const Scaffold(
-        body: LoginScreen(),
+        body: LoginScreen2(),
       ),
       routes: {
         "client": (context) => const HomePage(),
@@ -41,14 +41,14 @@ class _LoginPageState extends State<LoginPage>{
   }
 }
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen2 extends StatefulWidget {
+  const LoginScreen2({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen2> createState() => _LoginScreen2State();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreen2State extends State<LoginScreen2> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _showPassword = false;
   String selectedRole = 'client';
@@ -108,6 +108,39 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> signin(String email, String password) async {
     try {
       User? user = await _firebaseAuthService.signInwithEmailAndPassword(email, password);
+      if(user!.uid != 'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
+        final userdoc = await FirebaseFirestore.instance.collection('users')
+            .doc(user.uid)
+            .get();
+        print(user.uid);
+        Map<String, dynamic> data = userdoc.data() as Map<String, dynamic>;
+        final bloque = data['bloque'];
+        print('$bloque');
+        if (!bloque) {
+          await getUserRole(email);
+          print("Role : " + role);
+          if (role == selectedRole) {
+            print("User connection success");
+            //rediriger vers la page d acceuil
+            if (role == 'client'){
+              navigueclient();
+            }
+            else if (role == 'artisan'){
+              navigueartisan();
+            }
+          } else {
+            print(
+                "User don t match , user's email not found with that email");
+            // afficher une erreur dans le UI  'cet utilisateur n existe pas'
+          }
+        }
+        else {
+          naviguebloquer();
+        }
+      }
+      else{
+        navigueadmin();
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         // Afficher a l utilisateur une erreur lui indiquant que cet utlisateur n existe pas
@@ -129,6 +162,34 @@ class _LoginScreenState extends State<LoginScreen> {
       await signin(email,password);
     }
     await Future.value(null);
+  }
+  void navigueadmin(){
+    print("adminn");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const AllSignalementsPage(),),
+    );
+  }
+  void naviguebloquer(){
+    print("bloqueeeerr");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const Banni(),),
+    );
+  }
+  void navigueclient(){
+    print("clientttt");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage(),),
+    );
+  }
+  void navigueartisan(){
+    print("artisannnn");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ActiviteToday(),),
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -286,7 +347,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 case 3:navigueclient();
                                 case 4:navigueartisan();
                               }*/
-                              },
+                            },
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(
                                   const Size(216, 37)),
@@ -369,7 +430,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const ForgotPasswordPage(type: 1,)),
+                                        const ForgotPasswordPage(type: 2,)),
                                   );
 //Action here
                                 },
@@ -390,7 +451,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const InscriptionPage(type: 1,)),
+                                        const InscriptionPage(type: 2,)),
                                   );
                                 },
                                 child: Text(

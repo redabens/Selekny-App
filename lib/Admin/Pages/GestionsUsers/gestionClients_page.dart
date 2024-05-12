@@ -8,7 +8,7 @@ import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
-import '../../../Pages/authentification/connexion.dart';
+import '../../../Pages/authentification/connexion2.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
@@ -111,7 +111,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const LoginPage()),
+                    const LoginPage2()),
               );
             },
               icon: Image.asset(
@@ -242,7 +242,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreationArtisanPage(),
+                    builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),
                   ),
                 );
               },

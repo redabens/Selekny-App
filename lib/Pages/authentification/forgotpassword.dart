@@ -3,22 +3,24 @@ import 'inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
-  const ForgotPasswordPage({super.key});
+  final int type;
+  const ForgotPasswordPage({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const Scaffold(
-        body: ForgotPasswordScreen(),
+      home: Scaffold(
+        body: ForgotPasswordScreen(type: type,),
       ),
     );
   }
 }
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+  final int type;
+  const ForgotPasswordScreen({super.key, required this.type});
 
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
@@ -170,7 +172,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const InscriptionPage()),
+                                  builder: (context) => InscriptionPage(type: widget.type,)),
                             );
                           },
                           child: Text(

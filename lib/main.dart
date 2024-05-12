@@ -19,96 +19,6 @@ import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 import 'firebase_options.dart';
 import 'dart:convert';
-import 'dart:math';
-import 'package:connectivity/connectivity.dart' as connectivity;
-
-/*class ConnectivityProvider extends ChangeNotifier {
-  ConnectivityResult _connectivityResult = ConnectivityResult.none;
-
-  ConnectivityProvider() {
-    _initConnectivity();
-  }
-
-  ConnectivityResult get connectivityResult => _connectivityResult;
-
-  void _initConnectivity() async {
-    try {
-      ConnectivityResult result = await Connectivity().checkConnectivity();
-      _updateConnectivityStatus(result);
-    } catch (e) {
-      print("Error checking connectivity : $e");
-    }
-
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      _updateConnectivityStatus(result);
-    });
-  }
-
-  void _updateConnectivityStatus(ConnectivityResult result) {
-    _connectivityResult = result;
-    notifyListeners();
-  }
-}
-
-class ConnectivityWidget extends StatelessWidget {
-  final Widget child;
-
-  const ConnectivityWidget({super.key, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<ConnectivityProvider>(
-      builder: (context, connectivityProvider, child) {
-        final connectivityResult = connectivityProvider.connectivityResult;
-
-        if (connectivityResult == ConnectivityResult.none) {
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 80,
-                    color: Color(0xFF3E69FE),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Erreur de connexion",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Vérifiez votre connexion Internet et réessayez.",
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            ),
-          );
-        }
-
-        return child!;
-      },
-    );
-  }
-}*/
-
-double radians(double degrees) => degrees * pi / 180;
-double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
-  const earthRadius = 6371.01; // Rayon de la Terre en km
-
-  double dLat = radians(lat2 - lat1);
-  double dLon = radians(lon2 - lon1);
-
-  double a = sin(dLat / 2) * sin(dLat / 2) +
-      cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon / 2) * sin(dLon / 2);
-  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-
-  return earthRadius * c; // Distance en km
-}
-
 User? currentUser = FirebaseAuth.instance.currentUser;
 
 final navigatorkey = GlobalKey<NavigatorState>();
@@ -376,17 +286,21 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
   void checkifbloque() async{
-    try{
-      final userdoc = await FirebaseFirestore.instance.collection('users').doc(
-          FirebaseAuth.instance.currentUser!.uid).get();
-      Map<String, dynamic> data = userdoc.data() as Map<String, dynamic>;
-      setState(() {
-        isbloqued = data['bloque'];
-      });
-    }
-    catch(e){
-      print("error : $e");
-    }
+    auth.authStateChanges().listen((User? user) async {
+      try {
+        final userdoc = await FirebaseFirestore.instance.collection('users')
+            .doc(
+            user!.uid)
+            .get();
+        Map<String, dynamic> data = userdoc.data() as Map<String, dynamic>;
+        setState(() {
+          isbloqued = data['bloque'];
+        });
+      }
+      catch (e) {
+        print("error : $e");
+      }
+    });
   }
   void checkIfLogin() async {
     auth.authStateChanges().listen((User? user) async {
@@ -402,19 +316,14 @@ class HomeScreenState extends State<HomeScreen> {
     });
   }
   void checkifadmin(){
-    if(FirebaseAuth.instance.currentUser != null) {
-      if (FirebaseAuth.instance.currentUser!.uid ==
-          'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
+    auth.authStateChanges().listen((User? user) async {
+      //if(FirebaseAuth.instance.currentUser != null) {
+      if (user!.uid == 'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
         setState(() {
           admin = true;
         });
       }
-      else {
-        setState(() {
-          admin = false;
-        });
-      }
-    }
+    });
   }
 }
 

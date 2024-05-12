@@ -35,7 +35,7 @@ class Artisan extends StatelessWidget {
                 // Navigate to another page
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreationArtisanPage()),
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité',)),
                 );
               },
               child: Container(
