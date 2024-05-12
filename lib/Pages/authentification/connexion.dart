@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/auth.dart';
@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage>{
       ),
       routes: {
         "client": (context) => const HomePage(),
-        "artisan": (context) => const ActiviteToday(),
+        "artisan": (context) => const ActiviteaujourPage(),
         "admin" : (context) => const AllSignalementsPage(),
         "bloquer" : (context) => const Banni(),
       },
@@ -279,13 +279,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: (){
                               handleSubmit();
                               const HomeScreen();
-                              /*print(type);
-                              switch (type){
-                                case 1: navigueadmin();
-                                case 2:naviguebloquer();
-                                case 3:navigueclient();
-                                case 4:navigueartisan();
-                              }*/
                               },
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(

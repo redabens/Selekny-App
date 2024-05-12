@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
@@ -146,7 +146,7 @@ class NotifDemandeState extends State<NotifDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
+                  MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
                 );
 
               },

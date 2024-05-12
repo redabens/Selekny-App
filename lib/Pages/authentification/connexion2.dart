@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/auth.dart';
@@ -33,7 +33,7 @@ class _LoginPage2State extends State<LoginPage2>{
       ),
       routes: {
         "client": (context) => const HomePage(),
-        "artisan": (context) => const ActiviteToday(),
+        "artisan": (context) => const ActiviteaujourPage(),
         "admin" : (context) => const AllSignalementsPage(),
         "bloquer" : (context) => const Banni(),
       },
@@ -188,7 +188,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
     print("artisannnn");
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const ActiviteToday(),),
+      MaterialPageRoute(builder: (context) => const ActiviteaujourPage(),),
     );
   }
   @override

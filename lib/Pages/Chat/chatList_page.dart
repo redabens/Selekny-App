@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
@@ -11,7 +11,6 @@ import 'package:reda/Services/chat/chatList_service.dart';
 import 'package:intl/intl.dart';
 import 'package:reda/Pages/Chat/chat_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../Artisan/Pages/Profil/profileArtisan.dart';
 import '../../Client/profile/profileClient.dart';
 
@@ -363,7 +362,7 @@ class _ChatListPageState extends State<ChatListPage> {
                   });
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const ActiviteAvenir(),),
+                    MaterialPageRoute(builder: (context) => const ActiviteaujourPage(),),
                   );
 
                 },

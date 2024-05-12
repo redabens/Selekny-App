@@ -202,7 +202,10 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
               SizedBox(height: screenHeight * 0.05), // Espacement proportionnel
               GestureDetector(
                 onTap: () {
-                  Navigator.pop(context); // Retour à l'accueil
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );// Retour à l'accueil
                 },
                 child: Container(
                   width: screenWidth * 0.5, // Largeur proportionnelle

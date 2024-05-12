@@ -193,6 +193,11 @@ flutter:
     - assets/retour.png
     - assets/ajouterdomaine.png
     - assets/important.png
+    - assets/aujour.png
+    - assets/time.png
+    - assets/future.png
+    - assets/adresse.png
+    - assets/calendar.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Pages/Profil/partie1Artisan.dart';
 import 'package:reda/Artisan/Pages/Profil/partie2Artisan.dart';
@@ -126,7 +126,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-             const Color(0xFF3E69FE).withOpacity(0.1)!, // Gris clair en haut
+             const Color(0xFF3E69FE).withOpacity(0.1), // Gris clair en haut
               Colors.white, // Blanc en bas
             ],
             stops: const [0.5, 0.5], // Transition nette
@@ -191,7 +191,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteToday()),
+                  MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
                 );
 
               },

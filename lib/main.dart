@@ -8,7 +8,7 @@ import 'package:flutter_offline/flutter_offline.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
@@ -260,7 +260,7 @@ class HomeScreenState extends State<HomeScreen> {
           const Banni()
               :(role == 'client')
               ? const HomePage()
-              : const ActiviteToday(),
+              : const ActiviteaujourPage(),
         ),
       ),
 
@@ -268,7 +268,7 @@ class HomeScreenState extends State<HomeScreen> {
       routes: {
         "/PublierDemandePage": (context) => const NotifDemande(),
         "/AccepteParArtisan": (context) => const DemandeAccepteePage(),
-        "/ConfirmeParClient": (context) => const ActiviteToday(),
+        "/ConfirmeParClient": (context) => const ActiviteaujourPage(),
       },
     );
   }

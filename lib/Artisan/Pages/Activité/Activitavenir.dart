@@ -2,40 +2,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/ActiviteWidget/JobsAndComments.dart';
-import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
-import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
-import 'package:reda/Pages/Chat/chatList_page.dart';
-
+import '../../../Client/Services/demande publication/RendezVous_Service.dart';
+import '../../../Pages/Chat/chatList_page.dart';
 import '../Profil/profileArtisan.dart';
-
-class ActiviteToday extends StatefulWidget {
-  const ActiviteToday({super.key});
-
+import 'Infoboxavenir.dart';
+import 'activiteaujour.dart';
+class ActivitAvenirPage extends StatefulWidget {
+  const ActivitAvenirPage({
+    super.key,
+  });
   @override
-  ActiviteTodayState createState() => ActiviteTodayState();
-
+  State<ActivitAvenirPage> createState() => _ActivitAvenirPageState();
 }
-
-class ActiviteTodayState extends State<ActiviteToday> {
-  int _currentIndex = 0;
+class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
+  int _currentIndex = 1;
+  bool isAvenir = true;
   final RendezVousService _rendezVousService = RendezVousService();
   DateTime now = DateTime.now();
-  int counter = 0;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  void _onItemTap(bool isAvenir) {
     setState(() {
-
+      isAvenir = isAvenir;
     });
   }
-
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
     DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
@@ -121,20 +113,33 @@ class ActiviteTodayState extends State<ActiviteToday> {
   }
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const MyAppBar(),
-      body: Column(
+      body:Column(
           children: [
-            const SizedBox(height: 18,),
-            _buildTitleAndDescription(),
-            const SizedBox(height: 10,),
-            const Buttons(),
-            const SizedBox(width: 20, height: 20),
+            AppBar(
+              elevation: 0.0,
+              backgroundColor: Colors.white,
+              title: Text(
+                'Activité',
+                style: GoogleFonts.poppins(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+            ),
+            _buildDescription(),
+            const SizedBox(height: 20),
+            _buildSelectionRow(),
             Expanded(child: _buildRendezVousList(),)
           ],
         ),
       bottomNavigationBar: BottomNavigationBar(
+
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -148,14 +153,13 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
+                  MaterialPageRoute(builder: (context) => const ActiviteaujourPage(),),
                 );
-
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.09,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -170,15 +174,15 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const NotifUrgente()),
+                  MaterialPageRoute(builder: (context) => const NotifUrgente(),),
                 );
 
 
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.09,
                 child: Image.asset(
                   'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -193,14 +197,14 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
-                );
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,),),
+                  );
 
               },
               child: Container(
-                height: 40,
+                height:screenHeight *0.09,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -215,14 +219,14 @@ class ActiviteTodayState extends State<ActiviteToday> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
+                Navigator.pushReplacement(
+                   context,
+                  MaterialPageRoute(builder: (context) => const ProfilArtisanPage(),),
                 );
 
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.09,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -252,13 +256,12 @@ class ActiviteTodayState extends State<ActiviteToday> {
         // Filter documents based on urgency (urgence == false)
         final nonUrgentDocuments = documents.where((doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          return data['datedebut'] == formattedDate;
+          return data['datedebut'] != formattedDate;
         });
 
         // Print details of each non-urgent document (optional)
         for (var doc in nonUrgentDocuments) {
           print("Document Data (non-urgent): ${doc.data()}");
-          counter++;
         }
 
         return FutureBuilder<List<Widget>>(
@@ -295,12 +298,8 @@ class ActiviteTodayState extends State<ActiviteToday> {
   // build message item
   Future<Widget> _buildRendezVousItem(DocumentSnapshot document) async {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    print('${data['idclient']} et ${data['idprestation']} et ${data['iddomaine']}');
     String image = await getUserPathImage(data['idclient']);
-    print("l'url:$image");
-    String nomprestation = await getNomPrestation(
-        data['idprestation'], data['iddomaine']);
-    print(nomprestation);
+    String nomprestation = await getNomPrestation(data['idprestation'], data['iddomaine']);
     String nomClient = await getNameUser(data['idclient']);
     String phone = await getPhoneUser(data['idclient']);
     bool vehicule = await getVehiculeUser(data['idclient']);
@@ -311,30 +310,114 @@ class ActiviteTodayState extends State<ActiviteToday> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BoxDemande(
-            datedebut: data['datedebut'],
-            heuredebut: data['heuredebut'],
+          InfoBoxavenir(datedebut: data['datedebut'],
+            datefin: data['datefin'],
+            prestation: nomprestation,
+            heureDebut: data['heuredebut'],
+            heureFin: data['heurefin'],
             adresse: data['adresse'],
+            photoUrl: image,
             iddomaine: data['iddomaine'],
             idprestation: data['idprestation'],
             idclient: data['idclient'],
             urgence: data['urgence'],
             timestamp: data['timestamp'],
-            nomprestation: nomprestation,
-            imageUrl: image, datefin: data['datefin'],
-            heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type1: 2, type2: 1,
-            nomclient: nomClient, phone: phone,
-            demandeid: document.id, sync: sync,
+            latitude: data['latitude'],
+            longitude: data['longitude'],
+            nomclient: nomClient,
+            phone: phone,
+            demandeid: document.id,
+            sync: sync,
             nomArtisan: nomArtisan,
             idartisan: FirebaseAuth.instance.currentUser!.uid,
-            vehicule: vehicule, ),
+            vehicule: vehicule,),
           const SizedBox(height: 10,),
         ],
       ),
     );
   }
-  Widget _buildTitleAndDescription() {
+
+//---------------------------------------------------------------------------------------------------
+  Widget _buildSelectionRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              _onItemTap(false);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
+              );
+            },
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/aujour.png',
+                      color: !isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                    ),
+                    const SizedBox(width: 7), // Espacement entre l'image et le texte
+                    Text(
+                      'Aujourd\'hui',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        color: !isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  height: !isAvenir ? 4: 1,
+                  color: !isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => _onItemTap(true),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/future.png',
+                      color: isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                    ),
+                    // Espacement entre l'image et le texte
+                    Text(
+                      'A venir',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        color: isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  height: isAvenir ? 4 : 1,
+                  color: isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildDescription() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -351,9 +434,13 @@ class ActiviteTodayState extends State<ActiviteToday> {
                     color: Colors.black,
                   ),
                 ),
-                const TextSpan(
+                TextSpan(
                   text:
-                  ' Vous pouvez ici consulter vos Activtées, cela represente les jobs à faire aujourd''huit.',
+                  ' Vous pouvez ici consulter vos Activtées, cela represente les jobs à faire dans les jours à venir.',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    fontSize:12,
+                    color: Colors.black,),
                 ),
               ],
             ),
@@ -363,208 +450,3 @@ class ActiviteTodayState extends State<ActiviteToday> {
     );
   }
 }
-
-
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MyAppBar({super.key});
-
-  @override
-  Size get preferredSize => const Size.fromHeight(90);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AppBar(
-          automaticallyImplyLeading: false, // Désactiver la flèche de retour en arrière
-          backgroundColor: Colors.white,
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const SizedBox(height: 30,),
-              Center( // Centrer le texte horizontalement
-                child: Text(
-                  'Activité',
-                  style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w600,
-
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class Buttons extends StatelessWidget {
-  const Buttons({super.key});
-
-  @override
-
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width ,
-      height: 60,
-      color: Colors.white,
-      child: const Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TodayButton(),
-          AvenirButton(),
-        ],
-      ),
-
-    );
-
-  }
-}
-class TodayButton extends StatelessWidget {
-  const TodayButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: 40,
-      child: GestureDetector(
-        onTap: (){},
-        child: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.zero, // Pas de coin arrondi
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0xFFF5A529),
-                width: 2,
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:
-            [
-
-              Row(
-                children:
-                [
-                  Container(
-                    height: 20,
-                    width:20,
-                    child: const ImageIcon(
-                      AssetImage('assets/auj.png'),
-                      color: Color(0xFFF5C443),
-                    ),),
-
-
-                  Text(
-                    'Aujourd\'hui',
-                    style: GoogleFonts.poppins(
-                      color: const Color(0xFFF5A529),
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-
-                    ),
-                  ),
-
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-}
-class AvenirButton extends StatelessWidget {
-  const AvenirButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: 40,
-      child: GestureDetector(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
-        ),
-
-        child: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.zero, // Pas de coin arrondi
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0xFFC4C4C4),
-                width: 2,
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:
-            [
-              Row(
-
-                children:
-                [
-                  Container(
-                    height: 15,
-                    width:15,
-                    child: const ImageIcon(
-                      AssetImage('assets/heure.png'),
-                      color: Color(0xFFC4C4C4),
-                    ),),
-
-                  const SizedBox(width: 5),
-                  Text(
-                    'À venir',
-                    style: GoogleFonts.poppins(
-                      color: const Color(0xFFC4C4C4),
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-}
-/*
-class Salut extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      width: 325,
-      child:
-          Container(
-            height: 30,
-          child:Text(
-            'Bonjour Yousra , vous avez 2 jobs à faire aujourd\'hui , vous commencez à 14h',
-            style: GoogleFonts.poppins(
-              color: Colors.black,
-              fontSize: 11,
-              fontWeight: FontWeight.w400,
-
-            ),
-          ),
-
-      ),
-
-
-    );
-  }
-}*/
-
-
