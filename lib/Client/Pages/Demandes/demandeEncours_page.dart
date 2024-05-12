@@ -139,12 +139,12 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // espace fo9 titre de la page
-          const SizedBox(height: 20.0),
           AppBar(
             elevation: 0.0,
             // Remove default shadow
@@ -158,11 +158,11 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
             ),
             centerTitle: true,
           ),
-          const SizedBox(height: 18),
+          SizedBox(height:screenHeight*0.02),
           _buildTitleAndDescription(), // le petit texte du début
-          const SizedBox(height: 10),
+          SizedBox(height:screenHeight*0.01),
           _buildSelectionRow(),
-          const SizedBox(height: 2),
+          SizedBox(height: screenHeight*0.02),
           Expanded(
             child: _buildDemandeEncoursList(),
           ),

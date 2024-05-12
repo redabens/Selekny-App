@@ -81,12 +81,12 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
   //-----------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // espace fo9 titre de la page
-          const SizedBox(height: 20.0),
           AppBar(
             elevation: 0.0,
             // Remove default shadow
@@ -106,10 +106,9 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
             ),
             centerTitle: true,
           ),
-          const SizedBox(height: 18),
+          SizedBox(height:screenHeight*0.02),
           _buildTitleAndDescription(), // le petit texte du début
-          const SizedBox(height: 10),
-          const SizedBox(height: 2),
+          SizedBox(height:screenHeight*0.01),
           Expanded(
             child: _buildRendezVousList(),
           ),
@@ -163,6 +162,7 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
   }
 
   Future<Widget> _buildRendezVousItem(DocumentSnapshot document) async {
+    final screenHeight = MediaQuery.of(context).size.height;
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
       String demandeID = document.id;
@@ -186,21 +186,29 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
       String datefin = data['datefin'];
       String heureDebut = data['heuredebut'];
       String heureFin = data['heurefin'];
-      return HistoriqueArtisan(domaine: domaine,
-          location: location,
-          date: date,
-          heure: heure,
-          prix: prix,
-          prestation: prestation,
-          imageUrl: imageUrl,
-          nomClient: nomClient,
-          phone: phone,
-          urgence: urgence,
-          idclient: clientID,
-          datefin: datefin,
-          heuredebut: heureDebut,
-          heurefin: heureFin,
-          vehicule: vehicule);
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            HistoriqueArtisan(
+                domaine: domaine,
+                location: location,
+                date: date,
+                heure: heure,
+                prix: prix,
+                prestation: prestation,
+                imageUrl: imageUrl,
+                nomClient: nomClient,
+                phone: phone,
+                urgence: urgence,
+                idclient: clientID,
+                datefin: datefin,
+                heuredebut: heureDebut,
+                heurefin: heureFin,
+                vehicule: vehicule),
+            SizedBox(height: screenHeight*0.015,),
+          ]
+      );
     } else {
       // Handle the case where the document is null
       print('Error: Document is null for document ID: ${document.id}');

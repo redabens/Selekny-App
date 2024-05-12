@@ -180,6 +180,19 @@ flutter:
     - assets/banni2.png
     - assets/pointexclamation.png
     - icons/Unit.png
+    - assets/aide.png
+    - assets/shape.png
+    - assets/facebook.png
+    - assets/twitter.png
+    - assets/insta.png
+    - assets/linkdin.png
+    - assets/rdv.jpg
+    - assets/commentn.png
+    - assets/pourquoi.png
+    - assets/pay.jpg
+    - assets/retour.png
+    - assets/ajouterdomaine.png
+    - assets/important.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

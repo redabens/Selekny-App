@@ -85,8 +85,6 @@ class _RendezVousPageState extends State<RendezVousPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // espace fo9 titre de la page
-          const SizedBox(height: 20.0),
           AppBar(
             elevation: 0.0,
             // Remove default shadow
@@ -106,10 +104,9 @@ class _RendezVousPageState extends State<RendezVousPage> {
             ),
             centerTitle: true,
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 15),
           _buildTitleAndDescription(), // le petit texte du début
-          const SizedBox(height: 10),
-          const SizedBox(height: 2),
+          const SizedBox(height: 8,),
           Expanded(
             child: _buildRendezVousList(),
           ),
@@ -163,6 +160,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
   }
 
   Future<Widget> _buildRendezVousItem(DocumentSnapshot document) async {
+    final screenHeight = MediaQuery.of(context).size.height;
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
       String demandeID = document.id;
@@ -193,7 +191,9 @@ class _RendezVousPageState extends State<RendezVousPage> {
       double latitude = data['latitude'];
       double longitude = data['longitude'];
       Timestamp timestamp = data['timestamp'];
-      return Column( // Wrap in a Column for vertical spacing
+      return Column(// Wrap in a Column for vertical spacing
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
         RendezVousClient(
         domaine: domaine,
@@ -222,7 +222,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
         workcount: workcount,
         vehicule: vehicule,
       ),
-          const SizedBox(height: 10), // Add spacing between containers
+          SizedBox(height: screenHeight*0.02,), // Add spacing between containers
         ],
       );
     } else {

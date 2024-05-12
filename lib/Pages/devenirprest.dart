@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import'package:google_fonts/google_fonts.dart';
 class DevenirPrestataire extends StatefulWidget {
+  const DevenirPrestataire({super.key});
+
   @override
   DevenirPrestataireState createState() => DevenirPrestataireState();
 }
@@ -9,19 +11,19 @@ class DevenirPrestataireState extends State<DevenirPrestataire> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: const MyAppBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch, // Ajustement
           children: [
             Container(
               color: Colors.white, // Ajout de la couleur de fond
-              child: Comment(),
+              child: const Comment(),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.04),
             Container(
               color: Colors.white, // Ajout de la couleur de fond
-              child: Pourquoi(),
+              child: const Pourquoi(),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.04),
           ],
@@ -32,16 +34,18 @@ class DevenirPrestataireState extends State<DevenirPrestataire> {
 }
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const MyAppBar({super.key});
+
   @override
-  Size get preferredSize => Size.fromHeight(110);
+  Size get preferredSize => const Size.fromHeight(110);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      title: Text('Devenir prestataire'),
+      title: const Text('Devenir prestataire'),
       leading: IconButton(
-        icon: Image.asset('icons/retour.png'), // Remplacez 'icons/retour.png' par le chemin de votre image
+        icon: Image.asset('assets/retour.png'), // Remplacez 'icons/retour.png' par le chemin de votre image
         onPressed: () {
           Navigator.of(context).pop(); // Revenir à la page précédente lorsque l'image est cliquée
         },
@@ -51,6 +55,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class Comment extends StatelessWidget {
+  const Comment({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,7 +80,7 @@ class Comment extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.all(15.0),
                           child: Text(
                             'Comment Devenir un prestataire?',
                             style: GoogleFonts.poppins(
@@ -87,8 +93,8 @@ class Comment extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.only(top: 8.0),
-                          child: Image.asset('asset/commentn.png'),
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Image.asset('assets/commentn.png'),
                         ),
                       ),
                     ],
@@ -96,7 +102,7 @@ class Comment extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.all(18.0),
                     child: Text(
                       'Si vous êtes intéressé à rejoindre notre application en tant que prestataire, '
                           'veuillez soumettre votre candidature en personne à notre bureau administratif situé à ...  \n'
@@ -123,6 +129,8 @@ class Comment extends StatelessWidget {
 }
 
 class Pourquoi extends StatelessWidget {
+  const Pourquoi({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -130,7 +138,7 @@ class Pourquoi extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 10.0),
+            margin: const EdgeInsets.only(top: 10.0),
             height: MediaQuery.of(context).size.height * 0.55,
             width: MediaQuery.of(context).size.width * 0.9,
             decoration: BoxDecoration(
@@ -148,7 +156,7 @@ class Pourquoi extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.all(15.0),
                           child: Text(
                             'Pourquoi nous rejoindre en tant que prestataire ?',
                             style: GoogleFonts.poppins(
@@ -161,8 +169,8 @@ class Pourquoi extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.all(5.0),
-                          child: Image.asset('asset/pourquoi.png'),
+                          padding: const EdgeInsets.all(5.0),
+                          child: Image.asset('assets/pourquoi.png'),
                         ),
                       ),
                     ],
@@ -170,7 +178,7 @@ class Pourquoi extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(11.0),
+                    padding: const EdgeInsets.all(11.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -185,7 +193,7 @@ class Pourquoi extends StatelessWidget {
                             fontSize: MediaQuery.of(context).size.width * 0.032,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           'Rejoignez-nous dès aujourd\'hui pour faire partie de notre communauté d\'artisans de confiance !',
                           textAlign: TextAlign.center,

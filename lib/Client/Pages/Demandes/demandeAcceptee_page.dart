@@ -106,8 +106,6 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // espace fo9 titre de la page
-          const SizedBox(height: 20.0),
           AppBar(
             elevation: 0.0,
             // Remove default shadow
@@ -279,6 +277,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
   }
 
   Future<Widget> _buildDemandeAccepteeItem(DocumentSnapshot document) async {
+    final screenHeight = MediaQuery.of(context).size.height;
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
@@ -316,32 +315,39 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
       double longitude = data['longitude'];
       Timestamp timestamp = data['timestamp'];
       // ... rest of your code using the extracted values
-      return DetDemandeAcceptee(
-        domaine: domaine,
-        location: location,
-        date: date,
-        heure: heure,
-        prix: prix,
-        prestation: prestation,
-        imageUrl: imageUrl,
-        nomArtisan: nomArtisan,
-        rating: rating,
-        phone: phone,
-        urgence: urgence,
-        datedebut: date,
-        datefin: datefin,
-        iddomaine: domaineID,
-        idprestation: PrestationID,
-        idclient: userID,
-        heuredebut: heureDebut,
-        heurefin: heureFin,
-        latitude: latitude,
-        longitude: longitude,
-        idartisan: artisanID,
-        timestamp: timestamp,
-        adresseartisan: adresseartisan,
-        workcount: workcount,
-        vehicule: vehicule,
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          DetDemandeAcceptee(
+            domaine: domaine,
+            location: location,
+            date: date,
+            heure: heure,
+            prix: prix,
+            prestation: prestation,
+            imageUrl: imageUrl,
+            nomArtisan: nomArtisan,
+            rating: rating,
+            phone: phone,
+            urgence: urgence,
+            datedebut: date,
+            datefin: datefin,
+            iddomaine: domaineID,
+            idprestation: PrestationID,
+            idclient: userID,
+            heuredebut: heureDebut,
+            heurefin: heureFin,
+            latitude: latitude,
+            longitude: longitude,
+            idartisan: artisanID,
+            timestamp: timestamp,
+            adresseartisan: adresseartisan,
+            workcount: workcount,
+            vehicule: vehicule,
+          ),
+          SizedBox(height: screenHeight*0.015,),
+        ]
       );
     } else {
       // Handle the case where the document is null
@@ -355,7 +361,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 color: Colors.grey[600],
               )
           )
-      );; // or some placeholder widget
+      ); // or some placeholder widget
     }
   }
 

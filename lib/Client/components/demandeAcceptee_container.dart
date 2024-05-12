@@ -217,7 +217,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  width: 1.0,
+                                  width: 0.1,
                                 ),
                               ),
                               child: widget.imageUrl != ''
@@ -233,7 +233,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               )
                                   : Icon(
                                 Icons.account_circle,
-                                size: 54,
+                                size: 56,
                                 color: Colors.grey[400],
                               ),
                             ),

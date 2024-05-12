@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import'package:google_fonts/google_fonts.dart';
-
 import 'contacter.dart';
 class PageServiceIndisponible extends StatelessWidget {
   const PageServiceIndisponible({super.key});
@@ -19,15 +18,15 @@ class PageServiceIndisponible extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Un service n\'est pas disponible?',
+          'Un service n''est pas disponible?',
 
           style: GoogleFonts.poppins(color: Colors.black, fontSize: screenWidth * 0.055, fontWeight: FontWeight.w700), // Couleur du texte de l'AppBar
         ),
         backgroundColor: Colors.white, // Fond de l'AppBar en blanc
         leading: IconButton(
-          icon: Image.asset('icons/retour.png'), // Remplacez 'assets/back_arrow.png' par le chemin de votre image
+          icon: Image.asset('assets/retour.png'), // Remplacez 'assets/back_arrow.png' par le chemin de votre image
           onPressed: () {
-            Navigator.of(context).pop(); // Revenir à la page précédente lorsque l'image est cliquée
+            Navigator.pop(context); // Revenir à la page précédente lorsque l'image est cliquée
           },
         ),
       ),
@@ -58,10 +57,10 @@ class PageServiceIndisponible extends StatelessWidget {
                 children: [ Text(
                   'Vous pouvez vérifier la liste de tout les domaines à partir de :\n'
                       '\n'
-                      '- Accédez à la page d\'accueil dans la barre de navigation.\n'
-                      '- Sélectionnez dans la partie <Service à domicile> l\'option <Voir tout>\n'
+                      '- Accédez à la page d''accueil dans la barre de navigation.\n'
+                      '- Sélectionnez dans la partie <Service à domicile> l''option <Voir tout>\n'
                       '\n'
-                      'Si vous n\'avez pas trouvé le service ou le domaine que vous recherchez, veuillez envoyer un message à l\'administration de "Selekny" pour leur suggérer de l\'ajouter s\'il y a des opportunités.',
+                      'Si vous n''avez pas trouvé le service ou le domaine que vous recherchez, veuillez envoyer un message à l\'administration de "Selekny" pour leur suggérer de l\'ajouter s\'il y a des opportunités.',
                   style: GoogleFonts.poppins(
                       fontSize: 14, fontWeight: FontWeight.w500),
                 ),
@@ -87,7 +86,7 @@ class PageServiceIndisponible extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            Image.asset('asset/service.jpg', width: screenWidth*0.9, height:screenHeight*0.3),
+            Image.asset('assets/ajouterdomaine.png', width: screenWidth*0.9, height:screenHeight*0.3),
           ],
         ),
       ),
