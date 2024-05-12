@@ -14,6 +14,8 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Container(
         decoration: const BoxDecoration(
@@ -25,9 +27,9 @@ class Body extends StatelessWidget {
             const SizedBox(
               child: Services(),
             ),
-            const SizedBox(height: 20),
+             SizedBox(height:screenHeight*0.020),
             Padding(
-              padding: const EdgeInsets.only(left: 26,top:10),
+              padding: const EdgeInsets.only(left: 24,top:10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -35,7 +37,7 @@ class Body extends StatelessWidget {
                     'Service à domicile',
                     style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
-                  const SizedBox(width: 96), // Espace entre les deux textes
+                   SizedBox(width:screenWidth*0.24), // Espace entre les deux textes
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -56,19 +58,19 @@ class Body extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 8), // Espace entre les sections
+             SizedBox(height:screenHeight*0.01), // Espace entre les sections
             Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 9),
                   child: ImageList2(type: type,),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 9),
                   child: ImageList(type: type,),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 9),
                   child: const Servicepop(),
                 ),
               ],

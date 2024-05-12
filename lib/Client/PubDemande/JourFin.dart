@@ -21,9 +21,11 @@ class JourFinState extends State<JourFin> {
   int jourfin = 0; // Variable pour stocker le jour sélectionné
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: 30,
-      width: 73,
+      height: screenHeight*0.035,
+      width: screenWidth*0.18,
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS
@@ -44,7 +46,7 @@ class JourFinState extends State<JourFin> {
           textAlign: TextAlign.center,
           style: GoogleFonts.poppins(
             color: const Color(0xFF6D6D6D),
-            fontSize: 10,
+            fontSize: screenWidth*0.026,
             fontWeight: FontWeight.w700,
           ), // Afficher le texte du jour sélectionné ou "Jour"
         ),

@@ -12,17 +12,24 @@ class NomPrestation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       child: Row(
           children: [
-            const SizedBox(width: 30,height: 30,),
+             SizedBox(width: screenWidth*0.08,height: screenHeight*0.02,),
+            Expanded(child:
             Text(
               nomprestation,
               style: GoogleFonts.poppins(
                 color: const Color(0xFF3E69FE),
-                fontSize: 16,
+                fontSize:screenWidth*0.05,
                 fontWeight: FontWeight.w500,
               ),
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              maxLines: 2,
+            ),
             ),
           ]
       ),

@@ -100,6 +100,8 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -119,11 +121,11 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
             ),
             centerTitle: true,
           ),
-          const SizedBox(height: 18),
+           SizedBox(height:screenHeight*0.02),
           _buildTitleAndDescription(), // le petit texte du début
-          const SizedBox(height: 10),
+           SizedBox(height:screenHeight*0.01),
           _buildSelectionRow(),
-          const SizedBox(height: 2),
+          SizedBox(height: screenHeight*0.02),
           Expanded(
             child: _buildDemandeAccepteeList(),
           ),

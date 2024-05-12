@@ -6,8 +6,10 @@ class Servicepop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 5, 15, 0), // Ajouter un padding uniforme à gauche et à droite
+      padding: const EdgeInsets.fromLTRB(20, 5, 19, 0), // Ajouter un padding uniforme à gauche et à droite
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -17,6 +19,7 @@ class Servicepop extends StatelessWidget {
           ),
           const SizedBox(height: 10), // Espace entre le texte et les images
           Row(
+
             children: [
               Expanded(
                 child: Column(
@@ -33,8 +36,8 @@ class Servicepop extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             'assets/robinet.jpg',
-                            height: 100,
-                            width: double.infinity,
+                            height: screenHeight*0.12,
+                            width: screenWidth*0.5,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -64,8 +67,8 @@ class Servicepop extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             'assets/chaudiere.jpg',
-                            height: 100,
-                            width: double.infinity,
+                            height: screenHeight*0.12,
+                            width: screenWidth*0.5,
                             fit: BoxFit.cover,
                           ),
                         ),

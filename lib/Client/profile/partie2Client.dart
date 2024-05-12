@@ -8,12 +8,10 @@ import 'package:reda/Pages/contacter.dart';
 import '../../../Pages/help.dart';
 import '../../Pages/authentification/connexion2.dart';
 import '../Pages/Demandes/HistoriqueClientPage.dart';
-
 class SettingsClientSection extends StatelessWidget {
   final bool vehicule;
   const SettingsClientSection({super.key,
     required this.vehicule,});
-
   @override
   Widget build(BuildContext context) {
     // Obtenir les dimensions de l'écran
@@ -138,11 +136,7 @@ class SettingsClientSection extends StatelessWidget {
                 hasSwitch: true,
                 initialSwitchState: vehicule,
               ),
-              const SettingsItem(
-                imagePath: 'assets/sombre.png',
-                text: 'Mode sombre',
-                hasSwitch: true,
-              ),
+
               SettingsItem(
                 imagePath: 'assets/deconexion.png',
                 text: 'Déconnexion',

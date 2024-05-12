@@ -118,7 +118,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
         ),
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.grey[150],
+        backgroundColor: Color(0xFF3E69FE).withOpacity(0.1),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -126,7 +126,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.grey[100]!, // Gris clair en haut
+             const Color(0xFF3E69FE).withOpacity(0.1)!, // Gris clair en haut
               Colors.white, // Blanc en bas
             ],
             stops: const [0.5, 0.5], // Transition nette

@@ -13,6 +13,8 @@ class ImageList2 extends StatelessWidget {
     "assets/electricite.png",
     "assets/macon.png",
     "assets/femme de menage.png",
+
+
   ];
 
   final List<String> texts = [
@@ -20,17 +22,21 @@ class ImageList2 extends StatelessWidget {
     "Electricité",
     "Maçonnerie",
     "Ménage",
+
+
   ];
   final List<String> ID = [
     "ajEON4X1fduQVsdVoqFJ",
     "KYsR4cj4mdVoDlrbyZbB",
     "s5Nry8HGyjjAgFsAxoum",
     "ynoP8TEQxtGUdTY0Ffld",
+
+
   ];
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only( top:10, left:2), // Ajout de padding au haut de la liste
+      padding: const EdgeInsets.only( top:10, left:1), // Ajout de padding au haut de la liste
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -59,7 +65,7 @@ class ImageList2 extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Text(
                       texts[index],
-                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],

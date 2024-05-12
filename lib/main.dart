@@ -20,7 +20,6 @@ import 'package:reda/Services/notifications.dart';
 import 'firebase_options.dart';
 import 'dart:convert';
 User? currentUser = FirebaseAuth.instance.currentUser;
-
 final navigatorkey = GlobalKey<NavigatorState>();
 NotificationServices notificationServices = NotificationServices();
 
@@ -85,20 +84,8 @@ void main() async {
   }
 
   await fetchPrestations();
-  /*runApp(ChangeNotifierProvider.value(
-    value: connectivityProvider,
-    child: MaterialApp(
-      home: ConnectivityWidget(
-        child: MyApp(),
-      ),
-    ),
-  ));*/
-
   runApp(const MyApp());
 }
-/*void main() {
-  runApp(const MyApp());
-}*/
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

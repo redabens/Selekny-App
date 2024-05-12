@@ -18,9 +18,11 @@ class Heure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: 133,
-      width: MediaQuery.of(context).size.width * 0.8,
+      height: screenHeight*0.15,
+      width: screenWidth*0.85,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -44,41 +46,41 @@ class Heure extends StatelessWidget {
                   // Assurez-vous de fournir le chemin correct vers votre image
                 ),
               ),
-              const SizedBox(width: 10),
+               SizedBox(width:screenWidth*0.03),
               Text(
                 'L\'Heure',
                 style: GoogleFonts.poppins(
                   color: Colors.black,
-                  fontSize: 13,
+                  fontSize:screenWidth*0.03,
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
+           SizedBox(height: screenHeight*0.01),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 30),
+               SizedBox(width: screenWidth*0.07),
               Text(
                 'Selectionner l\'heure qui vous convient ',
                 style: GoogleFonts.poppins(
                   color: const Color(0xFF6D6D6D),
-                  fontSize: 11,
+                  fontSize: screenWidth*0.03,
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ],
           ),
-          const SizedBox(width: 25, height: 10,),
+           SizedBox(width: screenWidth*0.06, height: screenHeight*0.01,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 33),
+              SizedBox(width: screenWidth*0.06),
               De(demande: demande,),
-              const SizedBox(width: 10),
+               SizedBox(width: screenWidth*0.03),
               Jusqua(demande: demande),
 
             ],

@@ -1,46 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
-class ContactUsApp extends StatelessWidget {
-  const ContactUsApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: ContactUsPage(),
-    );
-  }
-}
 
 class ContactUsPage extends StatelessWidget {
   const ContactUsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
+        title: Text(
           'Contactez-nous',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+          style: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
         ),
+        automaticallyImplyLeading: true,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 15, top: 10),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 10),
             child: Text(
               'Email:',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w500,
                 fontSize: 18,
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: screenHeight*0.01),
           Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Container(
@@ -48,7 +41,7 @@ class ContactUsPage extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
@@ -58,30 +51,30 @@ class ContactUsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.email),
-                  SizedBox(width: 10),
+                  const Icon(Icons.email),
+                  SizedBox(width: screenWidth*0.01),
                   Text(
                     'example@example.com',
-                    style: TextStyle(fontSize: 16),
+                    style: GoogleFonts.poppins(fontSize: 16),
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.only(left: 15),
+          SizedBox(height: screenHeight*0.04),
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
             child: Text(
               'Numéro de téléphone:',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w500,
                 fontSize: 18,
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height:screenHeight*0.01),
           Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Container(
@@ -89,7 +82,7 @@ class ContactUsPage extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
@@ -103,20 +96,20 @@ class ContactUsPage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      _callNumber('+2134567890'); // Remplacez le numéro par votre numéro de téléphone
+                      //_callNumber('+2134567890'); // Remplacez le numéro par votre numéro de téléphone
                     },
-                    child: Icon(Icons.phone),
+                    child: const Icon(Icons.phone),
                   ),
-                  const SizedBox(width: 10),
-                  const Text(
+                  SizedBox(width: screenWidth*0.01),
+                  Text(
                     '+2134567890',
-                    style: TextStyle(fontSize: 16),
+                    style: GoogleFonts.poppins(fontSize: 16),
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 250),
+          SizedBox(height:screenHeight*0.32),
           // Visiter notre site web
           Center(
             child: Column(
@@ -131,11 +124,11 @@ class ContactUsPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    _launchURL('https://www.selekny.com');
+                    //_launchURL('https://www.selekny.com');
                   },
-                  child: const Text(
+                  child: Text(
                     'www.selekny.com',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: Colors.blue,
@@ -146,7 +139,7 @@ class ContactUsPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: screenHeight*0.02),
         ],
       ),
       bottomNavigationBar: Stack(
@@ -157,7 +150,7 @@ class ContactUsPage extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Positioned(
-            top: 70,
+            top:45,
             left: 0,
             right: 0,
             child: Row(
@@ -165,39 +158,41 @@ class ContactUsPage extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    launchUrlString('https://www.facebook.com');
+                    launchUrlString('https://www.facebook.com/profile.php?id=61559784200255&mibextid=ZbWKwL');
                   },
-                  child: Image.asset('assets/facebook.png', width: 50, height: 50),
+                  child: Image.asset('assets/facebook.png', width:screenWidth*0.15, height:screenHeight*0.15),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    launchUrlString('https://www.instagram.com/selek_ny/');
+                  },
+                  child: Image.asset('assets/insta.png', width:screenWidth*0.15, height:screenHeight*0.15,),
                 ),
                 GestureDetector(
                   onTap: () {
                     launchUrlString('https://www.instagram.com/lynaberkoun/');
                   },
-                  child: Image.asset('assets/insta.png', width: 50, height: 50),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    launchUrlString('https://www.instagram.com/lynaberkoun/');
-                  },
-                  child: Image.asset('assets/twitter.png', width: 50, height: 50),
+                  child: Image.asset('assets/twitter.png', width:screenWidth*0.15, height:screenHeight*0.15),
                 ),
                 GestureDetector(
                   onTap: () {
                     launchUrlString('https://www.linkedin.com/in/berkoun-lyna-860935268/');
                   },
-                  child: Image.asset('assets/linkdin.png', width: 50, height: 50),
+                  child: Image.asset('assets/linkdin.png', width:screenWidth*0.15, height:screenHeight*0.15),
                 ),
               ],
             ),
           ),
-          const Positioned(
-            top: 16,
+          Positioned(
+            top: 19,
             left: 0,
             right: 0,
             child: Center(
               child: Text(
                 'Contactez nous',
-                style: TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -211,7 +206,7 @@ class ContactUsPage extends StatelessWidget {
     if (await canLaunchUrlString(url)) {
       await launchUrlString(url);
     } else {
-      throw 'Impossible d\'ouvrir $url';
+      throw 'Impossible d''ouvrir $url';
     }
   }
 
@@ -222,7 +217,7 @@ class ContactUsPage extends StatelessWidget {
     if (await canLaunchUrlString(url)) {
       await launchUrlString(url);
     } else {
-      throw 'Impossible de lancer l\'appel pour $phoneNumber';
+      throw 'Impossible de lancer l''appel pour $phoneNumber';
     }
   }
 }

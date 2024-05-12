@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeEncours_service.dart';
 import 'package:reda/Client/components/demandeEncours_container.dart';
@@ -21,7 +20,6 @@ class DemandeEncoursPage extends StatefulWidget {
 class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
   late String currentUserID;
   int _currentIndex = 1;
-  @override
   void _onItemTap(bool isEnCours) {
     setState(() {
       isEnCoursSelected = isEnCours;
@@ -30,8 +28,6 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
   bool isEnCoursSelected = true;
 
   //---------------LES FONCTION GETTERS---------------------------------------------------
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final DemandeEncoursService _DemandeEncoursService = DemandeEncoursService();
   final ModifPrixService _modifPrixService = ModifPrixService();
   // get id domaine de la demande (general)
@@ -114,7 +110,8 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
     final DateTime now = DateTime.now();
     print('$timeDemande');
     print('$now');
-    Duration difference = now.difference(timeDemande);
+    Duration diff = now.difference(timeDemande);
+    Duration difference = diff - const Duration(hours: 1);
     if (difference.inDays > 0) {
       return 'il y a ${difference.inDays} jr';
     } else if (difference.inHours > 0) {

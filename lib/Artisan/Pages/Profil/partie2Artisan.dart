@@ -146,11 +146,7 @@ class SettingsArtisanSection extends StatelessWidget {
                 hasSwitch: true,
                 initialSwitchState: vehicule,
               ),
-              const SettingsItem(
-                imagePath: 'assets/sombre.png',
-                text: 'Mode sombre',
-                hasSwitch: true,
-              ),
+
               SettingsItem(
                 imagePath: 'assets/deconexion.png',
                 text: 'Déconnexion',

@@ -101,7 +101,7 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.grey[100],
+         backgroundColor: const Color(0xFF3E69FE).withOpacity(0.1),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -109,7 +109,7 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.grey[100]!, // Gris clair en haut
+              const Color(0xFF3E69FE).withOpacity(0.1)!, // Gris clair en haut
               Colors.white, // Blanc en bas
             ],
             stops: const [0.5, 0.5], // Transition nette

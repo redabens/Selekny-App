@@ -32,7 +32,7 @@ class ImageList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only( top:10, left:2), // Ajout de padding au haut de la liste
+      padding: const EdgeInsets.only( top:10, left:1), // Ajout de padding au haut de la liste
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -61,7 +61,7 @@ class ImageList extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Text(
                       texts[index],
-                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],

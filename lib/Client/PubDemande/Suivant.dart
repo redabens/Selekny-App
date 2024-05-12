@@ -23,11 +23,13 @@ class Suivant extends StatelessWidget {
  // final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       child: Row(
         children:
             [
-              const SizedBox(width: 220,),
+              SizedBox(width:screenWidth*0.60,),
 
       ElevatedButton(
 
@@ -62,7 +64,7 @@ class Suivant extends StatelessWidget {
             'Suivant',
             style: GoogleFonts.poppins(
               color: Colors.white,
-              fontSize: 13,
+              fontSize: screenWidth*0.037,
               fontWeight: FontWeight.w700,
             ),
           ),
