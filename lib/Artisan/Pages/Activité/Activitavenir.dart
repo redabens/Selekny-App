@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,6 +10,7 @@ import '../../../Pages/Chat/chatList_page.dart';
 import '../Profil/profileArtisan.dart';
 import 'Infoboxavenir.dart';
 import 'activiteaujour.dart';
+
 class ActivitAvenirPage extends StatefulWidget {
   const ActivitAvenirPage({
     super.key,
@@ -19,7 +19,7 @@ class ActivitAvenirPage extends StatefulWidget {
   State<ActivitAvenirPage> createState() => _ActivitAvenirPageState();
 }
 class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
   bool isAvenir = true;
   final RendezVousService _rendezVousService = RendezVousService();
   DateTime now = DateTime.now();
@@ -111,6 +111,20 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
       return ''; // Return empty string on error
     }
   }
+  bool hasPassedDate(String dateString) {
+    // Parse the date string from Firestore
+    try {
+      final formatter = DateFormat('dd MMMM yyyy');
+      final parsedDate = formatter.parse(dateString);
+      // Obtenir la date d'aujourd'hui à minuit
+      final midnightToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      return parsedDate.isBefore(midnightToday); // Retourne vrai si la date est avant aujourd'hui à minuit
+    } on FormatException catch (e) {
+      print('Error parsing date string: $e');
+      // Gérer l'erreur de formatage de manière élégante (par exemple, retourner faux ou lancer une exception)
+      return false;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -118,28 +132,28 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body:Column(
-          children: [
-            AppBar(
-              elevation: 0.0,
-              backgroundColor: Colors.white,
-              title: Text(
-                'Activité',
-                style: GoogleFonts.poppins(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                ),
+        children: [
+          SizedBox(height: screenHeight*0.02),
+          AppBar(
+            elevation: 0.0,
+            backgroundColor: Colors.white,
+            title: Text(
+              'Activité',
+              style: GoogleFonts.poppins(
+                fontSize: screenWidth*0.07,
+                fontWeight: FontWeight.w700,
               ),
-              automaticallyImplyLeading: false,
-              centerTitle: true,
             ),
-            _buildDescription(),
-            const SizedBox(height: 20),
-            _buildSelectionRow(),
-            Expanded(child: _buildRendezVousList(),)
-          ],
-        ),
+            automaticallyImplyLeading: false,
+            centerTitle: true,
+          ),
+          _buildDescription(),
+          SizedBox(height: screenHeight*0.02),
+          _buildSelectionRow(),
+          Expanded(child: _buildRendezVousList(),)
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
-
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -153,13 +167,14 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteaujourPage(),),
+                  MaterialPageRoute(builder: (context) => const ActivitAvenirPage()),
                 );
+
               },
               child: Container(
-                height: screenHeight*0.09,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -174,15 +189,15 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NotifUrgente(),),
+                  MaterialPageRoute(builder: (context) => const NotifUrgente()),
                 );
 
 
               },
               child: Container(
-                height:screenHeight*0.09,
+                height: screenHeight*0.035,
                 child: Image.asset(
                   'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -197,14 +212,14 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,),),
-                  );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
+                );
 
               },
               child: Container(
-                height:screenHeight *0.09,
+                height:screenHeight*0.04,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -219,14 +234,14 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.pushReplacement(
-                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilArtisanPage(),),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
                 );
 
               },
               child: Container(
-                height:screenHeight*0.09,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -254,11 +269,21 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
         final documents = snapshot.data!.docs;
         String formattedDate = DateFormat('dd MMMM yyyy').format(now);
         // Filter documents based on urgency (urgence == false)
-        final nonUrgentDocuments = documents.where((doc) {
+        final filteredDocuments = documents.where((doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          return data['datedebut'] != formattedDate;
-        });
+          return !hasPassedDate(data['datedebut']);
+        }).toList();
+        final nonUrgentDocuments = filteredDocuments.where((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
+          return data['datedebut'] != formattedDate;
+        }).toList();
+        for (var document in documents) {
+          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+          if (hasPassedDate(data['datedebut'])) {
+            _rendezVousService.deleteRendezVousID(document.id);
+          }
+        }
         // Print details of each non-urgent document (optional)
         for (var doc in nonUrgentDocuments) {
           print("Document Data (non-urgent): ${doc.data()}");
@@ -331,7 +356,7 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
             nomArtisan: nomArtisan,
             idartisan: FirebaseAuth.instance.currentUser!.uid,
             vehicule: vehicule,),
-          const SizedBox(height: 10,),
+          const SizedBox(height:10),
         ],
       ),
     );
@@ -390,10 +415,10 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/future.png',
+                      'assets/time.png',
                       color: isAvenir ? const Color(0xFFF5A529) : Colors.grey,
                     ),
-                    // Espacement entre l'image et le texte
+                    SizedBox(width:5),// Espacement entre l'image et le texte
                     Text(
                       'A venir',
                       textAlign: TextAlign.center,

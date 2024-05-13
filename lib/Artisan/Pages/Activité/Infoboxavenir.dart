@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../Client/Services/demande publication/HistoriqueServices.dart';
-import '../../../Client/Services/demande publication/RendezVous_Service.dart';
+import '../../../../Client/Services/demande publication/RendezVous_Service.dart';
 import '../ProfilClient/profilclient.dart';
+
+
 
 
 class InfoBoxavenir extends StatefulWidget {
@@ -60,7 +60,6 @@ class InfoBoxavenir extends StatefulWidget {
 
 class InfoBoxavenirState extends State<InfoBoxavenir> {
   final RendezVousService _rendezVousService = RendezVousService();
-  final HistoriqueService _historiqueService = HistoriqueService();
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -92,14 +91,14 @@ class InfoBoxavenirState extends State<InfoBoxavenir> {
                 children: [
                   Row(
                     children: [
-                      const SizedBox(width: 6),
+                      SizedBox(width: screenWidth*0.03),
                       Image.asset('assets/cle.png', width: screenWidth*0.07, height:screenHeight*0.07),
-                      SizedBox(width: screenWidth*0.02),
+                      SizedBox(width: screenWidth*0.03),
                       Expanded(
                         child: Text(
                           widget.prestation,
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
+                            fontSize: screenWidth*0.045,
                             fontWeight: FontWeight.w600,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -138,16 +137,16 @@ class InfoBoxavenirState extends State<InfoBoxavenir> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  SizedBox(height: screenHeight*0.01),
                   Row(
                     children: [
                       Image.asset('assets/adresse.png', width: 20, height: 20),
-                      const SizedBox(width: 5),
+                      SizedBox(width: screenWidth *0.01),
                       Expanded(
                         child: Text(
                           " ${widget.adresse}",
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
+                            fontSize: screenWidth*0.035,
                             fontWeight: FontWeight.w500,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -157,33 +156,33 @@ class InfoBoxavenirState extends State<InfoBoxavenir> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  SizedBox(height: screenHeight*0.01),
                   Row(
                     children: [
                       Image.asset('assets/calendar.png', width: 20, height: 20),
-                      const SizedBox(width: 5),
+                      SizedBox(width: screenWidth *0.01),
                       Text(
                         "Le: ${widget.datedebut}",
                         style: GoogleFonts.poppins(
-                          fontSize: 14,
+                          fontSize: screenWidth*0.035,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  SizedBox(height: screenHeight*0.01),
                   Row(
                     children: [
                       Image.asset('assets/time.png', width: 20, height: 20),
-                      const SizedBox(width: 5),
+                      SizedBox(width: screenWidth *0.01),
                       Text(
                         "De: ${widget.heureDebut} à ${widget.heureFin}",
                         style: GoogleFonts.poppins(
-                          fontSize: 14,
+                          fontSize: screenWidth*0.035,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const SizedBox(width:110),
+                      SizedBox(width:screenWidth*0.34),
                       if (widget.urgence) // Ajout du widget "Urgent" s'il est urgent
                         Container(
 
@@ -196,7 +195,7 @@ class InfoBoxavenirState extends State<InfoBoxavenir> {
                           child: Text(
                             'Urgent',
                             style: GoogleFonts.poppins(
-                              fontSize: 12,
+                              fontSize: screenWidth*0.035,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -204,45 +203,45 @@ class InfoBoxavenirState extends State<InfoBoxavenir> {
                         ),
                     ],
                   ),
-                  const SizedBox(height: 10,),
+                  SizedBox(height: screenHeight*0.01),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        width: 85,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity((0.1)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextButton(
-                          onPressed: () async {
-                            _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-                            _rendezVousService.deleteRendezVous(widget.timestamp, widget.idclient);
-                            print('annuler avec success');
-                            await Future.delayed(const Duration(milliseconds: 100));
-                          }, // hna lazm quand on annule la classe Box Demande troh completement
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Annuler',
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: screenWidth*0.25,
+                          height: screenHeight*0.04,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity((0.1)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextButton(
+                            onPressed: () async {
+                              _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+                              _rendezVousService.deleteRendezVous(widget.timestamp, widget.idclient);
+                              print('annuler avec success');
+                              await Future.delayed(const Duration(milliseconds: 100));
+                            }, // hna lazm quand on annule la classe Box Demande troh completement
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Annuler',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: screenWidth*0.03,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 5),
-                              const Icon(
-                                Icons.close,
-                                color: Colors.black,
-                                size: 20,
-                              ),
-                            ],
+                                const SizedBox(width: 5),
+                                const Icon(
+                                  Icons.close,
+                                  color: Colors.black,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
                       ]
                   ),
                 ],

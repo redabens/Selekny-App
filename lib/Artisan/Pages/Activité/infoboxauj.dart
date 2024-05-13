@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../Client/Services/demande publication/HistoriqueServices.dart';
-import '../../../Client/Services/demande publication/RendezVous_Service.dart';
+import '../../../../Client/Services/demande publication/HistoriqueServices.dart';
+import '../../../../Client/Services/demande publication/RendezVous_Service.dart';
 import '../ProfilClient/profilclient.dart';
+
 
 
 class InfoBoxaujour extends StatefulWidget {
@@ -90,14 +91,14 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                 children: [
                   Row(
                     children: [
-                      const SizedBox(width: 6),
+                      SizedBox(width: screenWidth*0.04),
                       Image.asset('assets/cle.png', width: screenWidth*0.07, height:screenHeight*0.07),
-                      SizedBox(width: screenWidth*0.05),
+                      SizedBox(width: screenWidth*0.03),
                       Expanded(
                         child: Text(
                           widget.prestation,
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
+                            fontSize: screenWidth*0.045,
                             fontWeight: FontWeight.w600,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -106,37 +107,37 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                         ),
                       ),
                       GestureDetector(
-                          onTap: (){
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => ProfilePage1(image: widget.photoUrl, nomClient: widget.nomclient, phone: widget.phone, adress: widget.adresse, idclient: widget.idclient, isVehicled: widget.vehicule,),),
-                            );
-                          }, // Wrap the widget with GestureDetector
-                          child: Container(
-                                      width: 48,
-                                      height: 48,
-                                      //color: Colors.yellow,
-                                      child: widget.photoUrl != ''
-                                          ? ClipRRect(borderRadius: BorderRadius.circular(
-                                                    48), // Ajout du BorderRadius
-                                            child: Image.network(
-                                              widget.photoUrl,
-                                                width: 48,
-                                                height: 48,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          )
-                                          : Icon(
-                                          Icons.account_circle,
-                                            size: 50,
-                                            color: Colors.grey[400],
-                                        ),
-                            //inserer la photode profil hna ki tjibha m bdd
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ProfilePage1(image: widget.photoUrl, nomClient: widget.nomclient, phone: widget.phone, adress: widget.adresse, idclient: widget.idclient, isVehicled: widget.vehicule,),),
+                          );
+                        }, // Wrap the widget with GestureDetector
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          //color: Colors.yellow,
+                          child: widget.photoUrl != ''
+                              ? ClipRRect(borderRadius: BorderRadius.circular(
+                              48), // Ajout du BorderRadius
+                            child: Image.network(
+                              widget.photoUrl,
+                              width: 48,
+                              height: 48,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                              : Icon(
+                            Icons.account_circle,
+                            size: 50,
+                            color: Colors.grey[400],
                           ),
+                          //inserer la photode profil hna ki tjibha m bdd
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  SizedBox(height: screenHeight*0.005),
                   Row(
                     children: [
                       Image.asset('assets/adresse.png', width:20, height:20),
@@ -145,8 +146,9 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                         child: Text(
                           " ${widget.adresse}",
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
+                            fontSize: screenWidth*0.035,
                             fontWeight: FontWeight.w500,
+                            color: Colors.black.withOpacity(0.8),
                           ),
                           overflow: TextOverflow.ellipsis,
                           softWrap: true,
@@ -155,19 +157,19 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  SizedBox(height:screenHeight*0.005),
                   Row(
                     children: [
                       Image.asset('assets/time.png', width: 20, height: 20),
-                      const SizedBox(width: 5),
+                      SizedBox(width: screenHeight*0.01),
                       Text(
-                        "De: ${widget.heureDebut} à ${widget.heureFin}",
+                        "À: ${widget.heureDebut}",
                         style: GoogleFonts.poppins(
-                          fontSize: 14,
+                          fontSize: screenWidth*0.035,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const SizedBox(width:110),
+                      SizedBox(width:screenWidth*0.3),
                       if (widget.urgence) // Ajout du widget "Urgent" s'il est urgent
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -179,7 +181,7 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                           child: Text(
                             'Urgent',
                             style: GoogleFonts.poppins(
-                              fontSize: 12,
+                              fontSize: screenWidth*0.035,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -187,83 +189,83 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                         ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height:screenHeight*0.008),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
-                        width: 85,
-                        height: 30,
+                        width: screenWidth*0.25,
+                        height: screenHeight*0.04,
                         decoration: BoxDecoration(
                           color: const Color(0xFF24CC53),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextButton(
-                              onPressed:() async {
-                              _historiqueService.sendHistorique(widget.datedebut, widget.datefin, widget.heureDebut,
-                              widget.heureFin, widget.adresse, widget.iddomaine,
-                              widget.idprestation, widget.idclient, widget.idartisan,
-                              widget.urgence, widget.latitude, widget.longitude,widget.idartisan);
-                              _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-                              print('Traite avec success');
-                              await Future.delayed(const Duration(milliseconds: 100));
-                              },
-                              child:Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                  'Traité',
-                                  style: GoogleFonts.poppins(
+                          onPressed:() async {
+                            _historiqueService.sendHistorique(widget.datedebut, widget.datefin, widget.heureDebut,
+                                widget.heureFin, widget.adresse, widget.iddomaine,
+                                widget.idprestation, widget.idclient, widget.idartisan,
+                                widget.urgence, widget.latitude, widget.longitude,widget.idartisan);
+                            _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+                            print('Traite avec success');
+                            await Future.delayed(const Duration(milliseconds: 100));
+                          },
+                          child:Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Traité',
+                                style: GoogleFonts.poppins(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  ),
+                                  fontSize: screenWidth*0.03,
                                 ),
-                                  const SizedBox(width: 1),
-                                  const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: 20,
-                                  ),
-                                ],
                               ),
+                              const SizedBox(width: 1),
+                              const Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 16,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(width: 5),
                       Container(
-                        width: 85,
-                        height: 30,
+                        width: screenWidth*0.25,
+                        height: screenHeight*0.04,
                         decoration: BoxDecoration(
                           color: Colors.grey.withOpacity((0.1)),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextButton(
-                                  onPressed: () async {
-                                    _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-                                    _rendezVousService.deleteRendezVous(widget.timestamp, widget.idclient);
-                                    print('annuler avec success');
-                                    await Future.delayed(const Duration(milliseconds: 100));
-                                    }, // hna lazm quand on annule la classe Box Demande troh completement
+                          onPressed: () async {
+                            _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+                            _rendezVousService.deleteRendezVous(widget.timestamp, widget.idclient);
+                            print('annuler avec success');
+                            await Future.delayed(const Duration(milliseconds: 100));
+                          }, // hna lazm quand on annule la classe Box Demande troh completement
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                  Text(
-                              'Annuler',
-                              style: GoogleFonts.poppins(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Annuler',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: screenWidth*0.03,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 5),
-                            const Icon(
-                              Icons.close,
-                              color: Colors.black,
-                              size: 20,
-                            ),
-                          ],
+
+                              const Icon(
+                                Icons.close,
+                                color: Colors.black,
+                                size: 16,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                       ),
                     ],
                   ),

@@ -151,7 +151,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         longitude: userModel.longitude,
         token: userModel.token,
         vehicule: userModel.vehicule,
-        nbsignalement: userModel.nbsignalement, bloque: userModel.bloque,);
+        nbsignalement: userModel.nbsignalement,
+        bloque: userModel.bloque,);
 
     try {
       await userRepository.updateUser(updatedUser);
@@ -176,10 +177,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         // update user image record
         final uri = Uri.parse(imageUrl);
         fileName = uri.pathSegments.last;
-        print("FILE NAME : ${fileName}");
+        print("FILE NAME : $fileName");
         setState(() {
           newUrlImg = imageUrl.toString();
-          print("Url img : ${newUrlImg}");
+          print("Url img : $newUrlImg");
         });
       }
     } catch (e) {
@@ -212,7 +213,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 longitude: userModel.longitude,
                 token: userModel.token,
                 vehicule: userModel.vehicule,
-                nbsignalement: userModel.nbsignalement, bloque: userModel.bloque,);
+                nbsignalement: userModel.nbsignalement,
+              bloque: userModel.bloque,);
             Navigator.pop(context, updatedUser);
           },
           icon: Container(
@@ -448,11 +450,17 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               await FirebaseAuth.instance.currentUser
                                   ?.reauthenticateWithCredential(
                                   credential);
-                              print("avant updater");
+                              if (password == oldPassword) {
+                                print("avant updater");
+                                if (newPassword != '') {
+                                  await FirebaseAuth.instance.currentUser
+                                      ?.updatePassword(newPassword);
+                                }
 
-                              // Old password matches, proceed with further actions
-                              await saveChanges(); // Call the function to update user data
-                              print("Donnes mis a jour avec success");
+                                // Old password matches, proceed with further actions
+                                await saveChanges(); // Call the function to update user data
+                                print("Donnes mis a jour avec success");
+                              }
                             } catch (e) {
                               // Handle re-authentication error
                               print('Erreur de réauthentification : $e');

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeEncours_service.dart';
 import 'package:reda/Client/components/demandeEncours_container.dart';
@@ -133,6 +134,20 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
     }else{
      return false;
    }
+  }
+  bool hasPassedDate(String dateString) {
+    // Parse the date string from Firestore
+    try {
+      final formatter = DateFormat('dd MMMM yyyy');
+      final parsedDate = formatter.parse(dateString);
+      // Obtenir la date d'aujourd'hui à minuit
+      final midnightToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      return parsedDate.isBefore(midnightToday); // Retourne vrai si la date est avant aujourd'hui à minuit
+    } on FormatException catch (e) {
+      print('Error parsing date string: $e');
+      // Gérer l'erreur de formatage de manière élégante (par exemple, retourner faux ou lancer une exception)
+      return false;
+    }
   }
 
   //--------------------------------------------------------------------------------------
@@ -283,13 +298,23 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
           return const Text('Loading..');
         }
         final documents = snapshot.data!.docs;
-
+        final filteredDocuments = documents.where((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          return !hasPassedDate(data['date_debut']);
+        }).toList();
+        for (var document in documents) {
+          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+          if (hasPassedDate(data['date_debut'])) {
+            _DemandeEncoursService.deleteDemande(document.id);
+            print('suprimer');
+          }
+        }
         // Print details of each document
-        for (var doc in documents) {
+        for (var doc in filteredDocuments) {
           print("Document Data: ${doc.data()}");
         }
         return FutureBuilder<List<Widget>>(
-            future: Future.wait(snapshot.data!.docs.map((document) => _buildDemandeEncoursItem(document))),
+            future: Future.wait(filteredDocuments.map((document) => _buildDemandeEncoursItem(document))),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(child: Text('Error loading demandes encours:  ${snapshot.error}'));

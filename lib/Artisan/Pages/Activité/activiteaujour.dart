@@ -5,11 +5,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activitavenir.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Pages/Profil/profileArtisan.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import '../../../Client/Services/demande publication/RendezVous_Service.dart';
-import 'Activitavenir.dart';
 import 'infoboxauj.dart';
 class ActiviteaujourPage extends StatefulWidget {
   const ActiviteaujourPage({super.key});
@@ -104,10 +104,25 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
       final prestationsCollection = domainDocument.collection('Prestations');
       final prestationDocument = prestationsCollection.doc(idPrestation);
       final nomPrestation = await prestationDocument.get().then((snapshot) => snapshot.data()?['nom_prestation']);
+      print(nomPrestation);
       return nomPrestation ?? ''; // Return empty string if not found
     } catch (error) {
       print('Error fetching nomPrestation: $error');
       return ''; // Return empty string on error
+    }
+  }
+  bool hasPassedDate(String dateString) {
+    // Parse the date string from Firestore
+    try {
+      final formatter = DateFormat('dd MMMM yyyy');
+      final parsedDate = formatter.parse(dateString);
+      // Obtenir la date d'aujourd'hui à minuit
+      final midnightToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      return parsedDate.isBefore(midnightToday); // Retourne vrai si la date est avant aujourd'hui à minuit
+    } on FormatException catch (e) {
+      print('Error parsing date string: $e');
+      // Gérer l'erreur de formatage de manière élégante (par exemple, retourner faux ou lancer une exception)
+      return false;
     }
   }
   @override
@@ -118,7 +133,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
       backgroundColor: Colors.white,
       body: Column(
           children: [
-            //SizedBox(height: screenHeight*0.02),
+            SizedBox(height: screenHeight*0.02),
             AppBar(
               elevation: 0.0,
               backgroundColor: Colors.white,
@@ -133,13 +148,11 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
               centerTitle: true,
             ),
             _buildDescription(),
-           SizedBox(height:screenHeight*0.02),
+            SizedBox(height:screenHeight*0.02),
             _buildSelectionRow(),
-            SizedBox(height:screenHeight*0.01),
-            Expanded(
-              child: _buildRendezVousList(),
-            )
-        ]
+
+            Expanded(child: _buildRendezVousList(),)
+          ]
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFF8F8F8),
@@ -162,7 +175,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -185,7 +198,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -202,12 +215,12 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2)),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
 
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.04,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -229,7 +242,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -256,20 +269,29 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
 
         final documents = snapshot.data!.docs;
         String formattedDate = DateFormat('dd MMMM yyyy').format(now);
-        // Filter documents based on urgency (urgence == false)
-        final UrgentDocuments = documents.where((doc) {
+        final filteredDocuments = documents.where((doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          return data['datedebut'] == formattedDate;
-        });
+          return !hasPassedDate(data['datedebut']);
+        }).toList();
+        final urgentDocuments = filteredDocuments.where((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
+          return data['datedebut'] == formattedDate;
+        }).toList();
+        for (var document in documents) {
+          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+          if (hasPassedDate(data['datedebut'])) {
+            _rendezVousService.deleteRendezVousID(document.id);
+          }
+        }
         // Print details of each non-urgent document (optional)
-        for (var doc in UrgentDocuments) {
+        for (var doc in urgentDocuments) {
           print("Document Data (non-urgent): ${doc.data()}");
         }
 
         return FutureBuilder<List<Widget>>(
           future: Future.wait(
-            UrgentDocuments.map((document) => _buildRendezVousItem(document)),
+            urgentDocuments.map((document) => _buildRendezVousItem(document)),
           ),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
@@ -301,8 +323,12 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
   // build message item
   Future<Widget> _buildRendezVousItem(DocumentSnapshot document) async {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    print('${data['idclient']} et ${data['idprestation']} et ${data['iddomaine']}');
     String image = await getUserPathImage(data['idclient']);
-    String nomprestation = await getNomPrestation(data['idprestation'], data['iddomaine']);
+    print("l'url:$image");
+    String nomprestation = await getNomPrestation(
+        data['idprestation'], data['iddomaine']);
+    print(nomprestation);
     String nomClient = await getNameUser(data['idclient']);
     String phone = await getPhoneUser(data['idclient']);
     bool vehicule = await getVehiculeUser(data['idclient']);
@@ -336,13 +362,13 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
             idartisan: FirebaseAuth.instance.currentUser!.uid,
             vehicule: vehicule,
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(height: 2,),
         ],
       ),
     );
   }
 
-Widget _buildSelectionRow() {
+  Widget _buildSelectionRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -357,16 +383,16 @@ Widget _buildSelectionRow() {
                     Image.asset('assets/aujour.png', color: isAujourdhui ? const Color(0xFFF5A529) : Colors.grey),
                     const SizedBox(width:5),
                     Text(
-                  'Aujourd\'hui',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                    color: isAujourdhui ? const Color(0xFFF5A529) : Colors.grey,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
+                      'Aujourd\'hui',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        color: isAujourdhui ? const Color(0xFFF5A529) : Colors.grey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
-            ],
-          ),
 
                 const SizedBox(height: 10), // Espace entre le texte et la ligne
                 Container(
@@ -388,18 +414,18 @@ Widget _buildSelectionRow() {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children:[
-                    Image.asset('assets/future.png', color: isAujourdhui ? Colors.grey : const Color(0xFFF5A529) ),
+                    Image.asset('assets/time.png', color: isAujourdhui ? Colors.grey : const Color(0xFFF5A529) ),
+                    SizedBox(width:5),
+                    Text(textAlign: TextAlign.center,
+                      'A venir',
 
-                Text(textAlign: TextAlign.center,
-                  'A venir',
-
-                  style: GoogleFonts.poppins(
-                    color: !isAujourdhui ? const Color(0xFFF5A529) : Colors.grey,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-    ],
+                      style: GoogleFonts.poppins(
+                        color: !isAujourdhui ? const Color(0xFFF5A529) : Colors.grey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16), // Espace entre le texte et la ligne
                 Container(

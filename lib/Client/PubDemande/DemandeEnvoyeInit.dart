@@ -49,11 +49,13 @@ class DemandeEnvoye extends StatefulWidget {
   final String prestationID;
   final String domaineId;
   final Demande demande;
+  final int rayon;
   const DemandeEnvoye({
     super.key,
     required this.prestationID,
     required this.domaineId,
     required this.demande,
+    required this.rayon,
   });
 
   @override
@@ -67,6 +69,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
   @override
   void initState() {
     super.initState();
+    print('${widget.rayon}');
     _checkArtisansForLatestDemande();
   }
   Future<void> _checkArtisansForLatestDemande() async {
@@ -112,7 +115,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
         final artisanDomaine = artisanData['domaine'];
         if( artisanDomaine == domainenom){
           final distance = haversineDistance(demandeLat, demandeLong, artisanLat, artisanLong);
-          if (distance <= 30.0) {
+          if (distance <= widget.rayon) {
             print(artisansSnapshot.docs[i].id);
             _demandeArtisanService.sendDemandeArtisan(demandeData['date_debut'], demandeData['date_fin'],
                 demandeData['heure_debut'], demandeData['heure_fin'],
@@ -147,14 +150,8 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
   }
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final double screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.white,

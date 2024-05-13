@@ -44,12 +44,49 @@ class DomainServicePageState extends State<DomainServicePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () {
-          FirebaseAuth.instance.signOut();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                const LoginPage2()),
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text("SE DECONNECTER"),
+              content: const Text(
+                "Êtes-vous sûr de vouloir vous déconnecter ?",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    // Fermer le dialogue
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "NON",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    // Déconnexion de l'utilisateur
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                        const LoginPage2(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "OUI",
+                    style: TextStyle(
+                      color: Colors.blue[800],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         },
           icon: Image.asset(

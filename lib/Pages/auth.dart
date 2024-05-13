@@ -84,9 +84,51 @@ class FirebaseAuthService {
     }
   }
 
+  Future<String> getPasswordFromFirestore(String email) async {
+    Map<String, dynamic> userData = {};
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .limit(1)
+        .get();
+    if (querySnapshot.docs.isNotEmpty) {
+      userData = querySnapshot.docs.first.data();
+    } else {
+      print('No user found for email: $email');
+    }
+    print("Password recupere de firestore : ${userData['motDePasse']} ");
+    return userData['motDePasse'];
+  }
+
+  Future<void> setPasswordInFirestore(String email, String password) async {
+    print("Dans set nouveau pwd dans firestore");
+
+    try {
+      final userQuery = await FirebaseFirestore.instance
+          .collection("users")
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (userQuery.docs.isNotEmpty) {
+        final userDoc = userQuery.docs.first;
+        await userDoc.reference.update({'motDePasse': password});
+        print("New password entered: $password");
+      } else {
+        print("Aucun utilisateur trouvé avec l'email: $email");
+      }
+    } catch (e) {
+      print("Erreur lors de la mise à jour du mot de passe : $e");
+    }
+  }
+
   Future<User?> signInwithEmailAndPassword(
       String email, String password) async {
     bool emailExists = await checkEmailExists(email);
+    String mdp = await getPasswordFromFirestore(email);
+    if (mdp != password) {
+      setPasswordInFirestore(email, password);
+    }
     if (!emailExists) {
       print("Cet email n'existe pas");
       Fluttertoast.showToast(

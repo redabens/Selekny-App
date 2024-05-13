@@ -90,7 +90,8 @@ class NotifUrgenteState extends State<NotifUrgente> {
   Future<String> getSyncDemande(Timestamp timestamp) async {
     final DateTime timeDemande = timestamp.toDate();
     final DateTime now = DateTime.now();
-    Duration difference = now.difference(timeDemande);
+    Duration diff = now.difference(timeDemande);
+    Duration difference = diff - const Duration(hours: 1);
     if (difference.inDays > 0) {
       return 'Envoyé il y''a ${difference.inDays} jr';
     } else if (difference.inHours > 0) {
