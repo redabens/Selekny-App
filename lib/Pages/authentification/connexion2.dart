@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activitaujour.dart';
-
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:reda/main.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import '../../Artisan/Pages/Activité/Activitaujour.dart';
 import 'forgotpassword.dart';
 import 'inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';

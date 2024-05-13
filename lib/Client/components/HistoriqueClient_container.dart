@@ -91,7 +91,7 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                         children: [
                           Text(
                             widget.domaine,
-                            style: const TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -105,33 +105,32 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             'Date du rendez-vous :',
                             style: GoogleFonts.poppins(
-                              fontSize: 14,
+                              fontSize: 12,
                             ),
                           ),
-
                           Row(
                             children: [
                               Image.asset('icons/calendrier.png',
-                                width: 20,
-                                height: 20,
+                                width: 15,
+                                height: 15,
                                 fit: BoxFit.cover,
                               ),
-                              const SizedBox(width: 6),
+                               SizedBox(width: screenWidth*0.02),
                               Text(
                                 widget.date,
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   color: Colors.black,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             widget.prix,
                             style: GoogleFonts.poppins(
@@ -143,7 +142,7 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                         ],
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width:20),
                     Expanded(
                       flex: 2,
                       child: Column(
@@ -161,7 +160,7 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               ); // Example navigation
                             },
                             child: Container(
-                              width: 50, // Adjust as needed
+                              width: 50, // Ajustez selon vos besoins
                               height: 50,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -171,28 +170,31 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               ),
                               child: widget.imageUrl != ''
                                   ? Container(
-                                width: 54,
-                                height: 54,
+                                width: 50, // Assurez-vous que c'est la même valeur que la largeur et la hauteur du conteneur parent
+                                height: 50,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
-                                child: Image.network(
-                                  widget.imageUrl,
-                                  width: 54,
-                                  height: 54,
-                                  fit: BoxFit.cover,
+                                child: ClipOval(
+                                  child: Image.network(
+                                    widget.imageUrl,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               )
                                   : Icon(
                                 Icons.account_circle,
-                                size: 54,
+                                size: 48,
                                 color: Colors.grey[400],
-                              ),
+                              ), // Gestion du cas où imageUrl est vide
                             ),
                           ),
-                          const SizedBox(height: 8,),
+                           SizedBox(height:screenHeight*0.005,),
+                          Expanded(child:
                           Container(
-                            width: 80,
+                            width: screenWidth*0.3,
                             child: Text(
                                 widget.nomArtisan,
                                 style: GoogleFonts.poppins(
@@ -200,7 +202,9 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+
+                              ),
+                          SizedBox(height: screenHeight*0.010),
                           Row(
                             children: [
                               const Icon(Icons.phone, size: 18),

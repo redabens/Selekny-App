@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:reda/Pages/auth.dart';
 import 'inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+FirebaseAuthService auth = FirebaseAuthService();
 
 class ForgotPasswordPage extends StatelessWidget {
   final int type;
@@ -20,39 +24,17 @@ class ForgotPasswordPage extends StatelessWidget {
 
 class ForgotPasswordScreen extends StatefulWidget {
   final int type;
-  const ForgotPasswordScreen({super.key, required this.type});
+  const ForgotPasswordScreen({super.key, required this.type,});
 
   @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  void resetPassword(BuildContext context) async {
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(
-        email: _emailController.text.trim(),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email de réinitialisation envoyé.'),
-        ),
-      );
-    } catch (e) {
-      print('Error sending reset email: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content:
-          Text('Erreur lors de l\'envoi de l\'email de réinitialisation.'),
-        ),
-      );
-    }
-  }
-
   final _formKey = GlobalKey<FormState>();
-  final bool _loading = false;
+  bool _loading = false;
 
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -122,9 +104,38 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                     const SizedBox(height: 5),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final email = _emailController.text.trim();
+                        print("Email : $email");
+                        final emailexist = await auth.checkEmailExists(email);
+                        if (!emailexist) {
+                          Fluttertoast.showToast(
+                            msg: "Cet email n'existe pas, Veuillez réessayer.",
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor: Colors.red,
+                          );
+                        } else {
+                          try {
+                            await FirebaseAuth.instance
+                                .sendPasswordResetEmail(email: email);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                Text('Email de réinitialisation envoyé.'),
+                              ),
+                            );
+                          } catch (e) {
+                            print('Error sending reset email: $e');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Erreur lors de l\'envoi de l\'email de réinitialisation.'),
+                              ),
+                            );
+                          }
+                        }
+                      },
                       style: ButtonStyle(
-                        // minimumSize: MaterialStateProperty.all<Size>(Size(330, 52)),
                         shape:
                         MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
@@ -172,7 +183,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => InscriptionPage(type: widget.type,)),
+                                builder: (context) => InscriptionPage(type: widget.type,),
+                              ),
                             );
                           },
                           child: Text(

@@ -122,6 +122,8 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -169,7 +171,8 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        currentIndex:
+        _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
         iconSize: 30,
         items: [
           BottomNavigationBarItem(
@@ -180,11 +183,13 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AllSignalementsPage(),),
+                  MaterialPageRoute(
+                    builder: (context) => const AllSignalementsPage(),
+                  ),
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/signalement.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -201,16 +206,18 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
+                  MaterialPageRoute(
+                    builder: (context) => const GestionArtisansPage(),
+                  ),
                 );
-
-
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/gestion.png',
-                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 1
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -224,12 +231,13 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),),
+                  MaterialPageRoute(
+                    builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),
+                  ),
                 );
-
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -246,12 +254,12 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const DomainServicePage(),)
-                );
-
+                    MaterialPageRoute(
+                      builder: (context) => const DomainServicePage(),
+                    ));
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,

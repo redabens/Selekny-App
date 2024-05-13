@@ -1,11 +1,12 @@
+
 import 'package:flutter/material.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activitaujour.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:reda/main.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import '../../Artisan/Pages/Activité/Activitaujour.dart';
 import 'forgotpassword.dart';
 import 'inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -279,13 +280,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: (){
                               handleSubmit();
                               const HomeScreen();
-                              /*print(type);
-                              switch (type){
-                                case 1: navigueadmin();
-                                case 2:naviguebloquer();
-                                case 3:navigueclient();
-                                case 4:navigueartisan();
-                              }*/
                             },
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(

@@ -200,12 +200,10 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/signalement.png',
-                  color: _currentIndex == 0
-                      ? const Color(0xFF3E69FE)
-                      : Colors.black,
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
             ),
@@ -225,10 +223,12 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/gestion.png',
-                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 1
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -248,7 +248,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 );
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -270,7 +270,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                     ));
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,

@@ -46,6 +46,7 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
         left: 22,
@@ -88,7 +89,7 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: screenHeight*0.01),
                           Row(
                             children: [
                               const Icon(Icons.location_on, size: 21),
@@ -137,7 +138,7 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                           SizedBox(height:screenHeight*0.010),
                           Text(
                             widget.urgence ? "Urgente" : widget.heure,
                             style: GoogleFonts.poppins(
@@ -146,7 +147,7 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               color: widget.urgence ? Colors.red : null,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             widget.prix,
                             style: GoogleFonts.poppins(
@@ -204,14 +205,14 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               fontSize: 12,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Row(
                             children: [
-                              const Icon(Icons.phone, size: 20),
+                              const Icon(Icons.phone, size: 18),
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

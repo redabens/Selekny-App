@@ -5,18 +5,34 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Pages/Profil/settingitem.dart';
 import 'package:reda/Client/Pages/Demandes/HistoriqueArtisanPage.dart';
 import 'package:reda/Client/profile/update_profile_screen.dart';
+import 'package:reda/Pages/Commentaires/Afficher_commentaire_page.dart';
 import 'package:reda/Pages/conditongeneral.dart';
 import 'package:reda/Pages/contacter.dart';
+import 'package:reda/main.dart';
 import '../../../Pages/authentification/connexion2.dart';
 import '../../../Pages/help.dart';
 
-class SettingsArtisanSection extends StatelessWidget {
+class SettingsArtisanSection extends StatefulWidget {
   final bool vehicule;
   final bool statut;
+  final String userID;
+
   const SettingsArtisanSection({super.key,
     required this.vehicule,
-    required this.statut});
+    required this.statut,
+  required this.userID});
 
+  @override
+  State<SettingsArtisanSection> createState() => _SettingsArtisanSectionState();
+}
+  class _SettingsArtisanSectionState extends State<SettingsArtisanSection> {
+
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     // Obtenir les dimensions de l'écran
@@ -69,6 +85,19 @@ class SettingsArtisanSection extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const HistoriqueArtisanPage(),
+                    ),
+                  );
+                },
+              ),
+              SettingsItem(
+                imagePath: 'assets/commentaire.png',
+                text: 'Commentaire',
+                isClickable: true,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>  AfficherCommentairePage(artisanID: widget.userID),
                     ),
                   );
                 },
@@ -139,13 +168,13 @@ class SettingsArtisanSection extends StatelessWidget {
                 imagePath: 'assets/statut.png',
                 text: 'Statut',
                 hasSwitch: true,
-                initialSwitchState: statut,
+                initialSwitchState: widget.statut,
               ),
               SettingsItem(
                 imagePath: 'assets/Car.png',
                 text: 'Véhiculé',
                 hasSwitch: true,
-                initialSwitchState: vehicule,
+                initialSwitchState: widget.vehicule,
               ),
 
               SettingsItem(

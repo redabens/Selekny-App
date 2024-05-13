@@ -20,6 +20,7 @@ class ProfilArtisanPage extends StatefulWidget {
 
 class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
   int _currentIndex = 3;
+  String userID = FirebaseAuth.instance.currentUser!.uid ;
   String email = FirebaseAuth.instance.currentUser!.email ?? '';
   String? nomartisan = '';
   String? domaine = '';
@@ -157,7 +158,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                           domaine: profileData.domaine,
                         ),
                         SizedBox(height: screenHeight * 0.02),
-                        SettingsArtisanSection(vehicule: profileData.vehicule, statut: profileData.statut,),
+                        SettingsArtisanSection(vehicule: profileData.vehicule, statut: profileData.statut, userID: userID,),
                       ],
                     );
                   }
