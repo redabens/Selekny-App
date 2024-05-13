@@ -11,6 +11,9 @@ import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 
 class DetDemandeAcceptee extends StatefulWidget {
+  final String tokenClient;
+  final String nomClient;
+  final String tokenArtisan;
   final String domaine;
   final String location;
   final String date;
@@ -63,7 +66,7 @@ class DetDemandeAcceptee extends StatefulWidget {
     required this.heurefin,
     required this.idartisan,
     required this.timestamp,
-    required this.adresseartisan, required this.workcount, required this.vehicule,
+    required this.adresseartisan, required this.workcount, required this.vehicule, required this.nomClient, required this.tokenArtisan, required this.tokenClient,
   });
   @override
   State<DetDemandeAcceptee> createState() => _DetDemandeAccepteeState();
@@ -206,7 +209,9 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
+                                  phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresseartisan,
+                                  workcount: widget.workcount, vehicule: widget.vehicule,nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
+                                  tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,), // Navigation to ContactPage
                                 ),
                               );
                               await Future.delayed(const Duration(milliseconds: 800));// Example navigation
@@ -289,7 +294,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                         await getNomPrestationById(widget.iddomaine, widget.idprestation);
 
                         NotificationServices.sendPushNotification(
-                            token,
+                            token,"ConfirmeParClient",
                             "Votre demande a été confirmé",
                             "Service demandé : $nomPrestation");
                         _rendezVousService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan,widget.idartisan);

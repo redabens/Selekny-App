@@ -10,6 +10,9 @@ import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.da
 import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 
 class RendezVousClient extends StatefulWidget {
+  final String tokenClient;
+  final String nomClient;
+  final String tokenArtisan;
   final String domaine;
   final String location;
   final String date;
@@ -64,7 +67,8 @@ class RendezVousClient extends StatefulWidget {
     required this.timestamp,
     required this.adresseartisan,
     required this.workcount,
-    required this.vehicule,
+    required this.vehicule, required this.nomClient,
+    required this.tokenArtisan, required this.tokenClient,
   });
   @override
   State<RendezVousClient> createState() => _RendezVousClientState();
@@ -207,8 +211,10 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
-                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
+                                   phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
+                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,
+                                  nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
+                                  tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,), // Navigation to ContactPage
                               ),
                               ); // Example navigation
                             },

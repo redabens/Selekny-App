@@ -138,7 +138,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
 
             print("Voici le service publie : $nomPrestation");
             NotificationServices.sendPushNotification(
-                token, "Offre d'un service $typeService", nomPrestation);
+                token,"PublieDemande", "Offre d'un service $typeService", nomPrestation);
           }
         }
       }

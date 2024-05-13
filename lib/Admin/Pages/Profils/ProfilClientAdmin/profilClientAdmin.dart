@@ -14,7 +14,8 @@ class ProfilePage1CoteAdmin extends StatelessWidget {
   final bool isVehicled;
   const ProfilePage1CoteAdmin({super.key, required this.image,
     required this.nomClient, required this.phone,
-    required this.adress, required this.idclient, required this.isVehicled});
+    required this.adress, required this.idclient,
+    required this.isVehicled,});
 
   @override
   Widget build(BuildContext context) {
@@ -38,20 +39,14 @@ class ProfilePage1CoteAdmin extends StatelessWidget {
           address: adress, // Direct address value
           isVehicled: isVehicled, // Indicates if the person has a vehicle
           onContact: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChatPage(receiverUserID: idclient, currentUserId:FirebaseAuth.instance.currentUser!.uid,
-                  type: 2, userName: nomClient,
-                  profileImage: image, otheruserId: idclient, phone: phone, adresse: adress, domaine: 'domaine', rating: 4, workcount: 0, vehicule: isVehicled,), // Navigation to ContactPage
-              ),
-            );
+
           },
           onReport: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BloquerClient(idclient: idclient, image: image, nomClient: nomClient, phone: phone, adress: adress, isVehicled: isVehicled)
+                builder: (context) => BloquerClient(idclient: idclient, image: image, nomClient: nomClient,
+                    phone: phone, adress: adress, isVehicled: isVehicled,)
               ),
             );
           },

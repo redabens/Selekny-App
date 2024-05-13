@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
 
 class HistoriqueArtisan extends StatefulWidget {
+  final String tokenClient;
+  final String nomArtisan;
+  final String tokenArtisan;
   final String domaine;
   final String location;
   final String date;
@@ -37,6 +40,9 @@ class HistoriqueArtisan extends StatefulWidget {
     required this.heuredebut,
     required this.heurefin,
     required this.vehicule,
+    required this.tokenClient,
+    required this.nomArtisan,
+    required this.tokenArtisan,
   });
   @override
   State<HistoriqueArtisan> createState() => _HistoriqueArtisanState();
@@ -168,7 +174,8 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage1(image: widget.imageUrl, nomClient: widget.nomClient,
-                                  phone: widget.phone, adress: widget.location, idclient: widget.idclient, isVehicled: widget.vehicule),
+                                  phone: widget.phone, adress: widget.location, idclient: widget.idclient, isVehicled: widget.vehicule,nomArtisan: widget.nomArtisan,
+                                  tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,),
                               ),); // Example navigation
                             },
                             child: Container(
@@ -207,7 +214,7 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                           const SizedBox(height: 10),
                           Row(
                             children: [
-                              const Icon(Icons.phone, size: 20),
+                              const Icon(Icons.phone, size: 12),
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(

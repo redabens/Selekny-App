@@ -10,6 +10,7 @@ import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 
 
 class Bloquer extends StatefulWidget {
+  final String tokenClient;
   final String adresse;
   final String idartisan;
   final String imageurl;
@@ -20,7 +21,9 @@ class Bloquer extends StatefulWidget {
   final int workcount;
   final bool vehicule;
 
-  const Bloquer({Key? key, required this.adresse, required this.idartisan, required this.imageurl, required this.nomartisan, required this.phone, required this.domaine, required this.rating, required this.workcount, required this.vehicule,}) : super(key: key);
+  const Bloquer({super.key, required this.adresse, required this.idartisan, required this.imageurl,
+    required this.nomartisan, required this.phone, required this.domaine, required this.rating,
+    required this.workcount, required this.vehicule, required this.tokenClient,});
 
   @override
   _BloquerState createState() => _BloquerState();
@@ -62,9 +65,10 @@ class _BloquerState extends State<Bloquer> {
         },
         child: Stack(
           children: [
-             ProfilePage2CoteAdmin(idartisan: widget.idartisan, imageurl: widget.imageurl, nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse, workcount: widget.workcount, vehicule: widget.vehicule,), // Background page
+             ProfilePage2CoteAdmin(idartisan: widget.idartisan, imageurl: widget.imageurl, nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
+               adresse: widget.adresse, workcount: widget.workcount, vehicule: widget.vehicule,), // Background page
             Container(
-              color: Color.fromRGBO(128, 128, 128, 0.7), // Semi-transparent gray overlay
+              color: const Color.fromRGBO(128, 128, 128, 0.7), // Semi-transparent gray overlay
               width: double.infinity,
               height: double.infinity,
             ),

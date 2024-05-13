@@ -152,6 +152,8 @@ class FirebaseAuthService {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+      print('credential');
+      print('here id credential :${credential.user?.uid}');
       return credential.user;
     } on FirebaseAuthException catch (error) {
       Fluttertoast.showToast(

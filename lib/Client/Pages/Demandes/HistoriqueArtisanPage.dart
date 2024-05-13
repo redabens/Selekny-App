@@ -78,6 +78,29 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
       return '';
     }
   }
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : ${token}");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
+  }
   //-----------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
@@ -186,6 +209,9 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
       String datefin = data['datefin'];
       String heureDebut = data['heuredebut'];
       String heureFin = data['heurefin'];
+      String tokenArtisan = await getTokenById(data['idartisan']);
+      String tokenClient = await getTokenById(data['idclient']);
+      String nomArtisan = await getUserPathImage(data['idartisan']);
       return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -205,7 +231,8 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
                 datefin: datefin,
                 heuredebut: heureDebut,
                 heurefin: heureFin,
-                vehicule: vehicule),
+                vehicule: vehicule, tokenClient: tokenClient,
+              tokenArtisan: tokenArtisan,nomArtisan: nomArtisan,),
             SizedBox(height: screenHeight*0.015,),
           ]
       );

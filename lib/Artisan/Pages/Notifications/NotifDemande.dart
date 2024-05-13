@@ -114,6 +114,29 @@ class NotifDemandeState extends State<NotifDemande> {
       return ''; // Return empty string on error
     }
   }
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : ${token}");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -299,6 +322,7 @@ class NotifDemandeState extends State<NotifDemande> {
     bool vehicule = await getVehiculeUser(data['idclient']);
     final String sync = await getSyncDemande(data['timestamp']);
     String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
+    String tokenClient = await getTokenById(data['idclient']);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -321,7 +345,8 @@ class NotifDemandeState extends State<NotifDemande> {
             demandeid: data['demandeid'], sync: sync,
             nomArtisan: nomArtisan,
             idartisan: FirebaseAuth.instance.currentUser!.uid,
-            vehicule: vehicule,),
+            vehicule: vehicule,
+            tokenClient: tokenClient,),
           const SizedBox(height: 10,),
         ],
       ),

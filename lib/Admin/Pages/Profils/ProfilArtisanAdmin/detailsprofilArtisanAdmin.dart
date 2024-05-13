@@ -300,7 +300,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                  Bloquer( adresse: adresse, idartisan: userID, imageurl: photoPath, nomartisan: name, phone: phone, domaine: domaine, rating: rating, workcount: workCount, vehicule: isVehicled,)),
+                  Bloquer( adresse: adresse, idartisan: userID, imageurl: photoPath, nomartisan: name, phone: phone, domaine: domaine, rating: rating, workcount: workCount, vehicule: isVehicled, tokenClient: '',)),
                   );
                 },
                 child: Container(

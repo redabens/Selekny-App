@@ -13,6 +13,7 @@ import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/user_repository.dart';
@@ -201,6 +202,7 @@ class HomeScreenState extends State<HomeScreen> {
   var auth = FirebaseAuth.instance;
   late Future<String> roleFuture;
   late String role = '';
+  late int type;
   Future<String> getUserRole(String email) async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -212,6 +214,13 @@ class HomeScreenState extends State<HomeScreen> {
 
       if (querySnapshot.docs.isNotEmpty) {
         Map<String, dynamic> userData = querySnapshot.docs.first.data();
+        if(userData['role']== 'client'){
+          type = 1;
+        }
+        else if(userData['role']== 'artisan')  {
+          type = 0;
+        }
+
         return userData['role'] ?? '';
       } else {
         print('No user found for email: $email');
@@ -259,7 +268,7 @@ class HomeScreenState extends State<HomeScreen> {
               : isbloqued ?
           const Banni()
               :(role == 'client')
-              ? const HomePage()
+              ?  const HomePage()
               : const ActiviteaujourPage(),
         ),
       ),
@@ -269,6 +278,7 @@ class HomeScreenState extends State<HomeScreen> {
         "/PublierDemandePage": (context) => const NotifDemande(),
         "/AccepteParArtisan": (context) => const DemandeAccepteePage(),
         "/ConfirmeParClient": (context) => const ActiviteaujourPage(),
+        "/Message" : (context) => ChatListPage(type: type),
       },
     );
   }

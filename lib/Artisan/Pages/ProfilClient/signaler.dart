@@ -5,6 +5,9 @@ import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
 
 class Signaler extends StatefulWidget {
+  final String tokenArtisan;
+  final String nomArtisan;
+  final String tokenClient;
   final String idclient;
   final String image;
   final String nomClient;
@@ -15,7 +18,9 @@ class Signaler extends StatefulWidget {
     required this.image,
     required this.nomClient,
     required this.phone,
-    required this.adress, required this.idclient, required this.isVehicled,
+    required this.adress, required this.idclient,
+    required this.isVehicled, required this.nomArtisan,
+    required this.tokenClient, required this.tokenArtisan,
   });
 
   @override
@@ -59,7 +64,9 @@ class _SignalerState extends State<Signaler> {
         },
         child:Stack(
           children: [
-            ProfilePage1(image: widget.image, nomClient: widget.nomClient, phone: widget.phone, adress: widget.adress, idclient: widget.idclient, isVehicled: widget.isVehicled,), // Page de profil en arrière-plan
+            ProfilePage1(image: widget.image, nomClient: widget.nomClient, phone: widget.phone,
+              adress: widget.adress, idclient: widget.idclient, isVehicled: widget.isVehicled,
+              nomArtisan: widget.nomArtisan,tokenClient: widget.tokenClient, tokenArtisan: widget.tokenArtisan,), // Page de profil en arrière-plan
             Container(
               color: const Color.fromRGBO(128, 128, 128, 0.7), // Couleur grise semi-transparente
               width: double.infinity,
@@ -122,7 +129,9 @@ class _SignalerState extends State<Signaler> {
                         GestureDetector(
                           onTap:() {
                             _signalementsService.sendSignalement(_commentController.value.text.toString(), widget.idclient, FirebaseAuth.instance.currentUser!.uid);
-                            Navigator.pop(context, MaterialPageRoute(builder: (context)=>ProfilePage1(image: widget.image, nomClient: widget.nomClient, phone: widget.phone, adress: widget.adress, idclient: widget.idclient, isVehicled: widget.isVehicled,)),);  // Revenir à ProfilePage2
+                            Navigator.pop(context, MaterialPageRoute(builder: (context)=>ProfilePage1(image: widget.image, nomClient: widget.nomClient, phone: widget.phone,
+                              adress: widget.adress, idclient: widget.idclient, isVehicled: widget.isVehicled,
+                              nomArtisan: widget.nomArtisan,tokenClient: widget.tokenClient, tokenArtisan: widget.tokenArtisan,)),);  // Revenir à ProfilePage2
                           },
                           child: Container(
                             decoration: BoxDecoration(

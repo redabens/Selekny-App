@@ -28,6 +28,8 @@ class InfoBoxaujour extends StatefulWidget {
   final String sync;  // c bon
   final String idartisan; // c bon
   final String nomArtisan;  // c bon
+  final String tokenClient;
+  final String tokenArtisan;
   final bool vehicule; // c bon
   final Timestamp timestamp; // c bon
   const InfoBoxaujour({
@@ -52,7 +54,7 @@ class InfoBoxaujour extends StatefulWidget {
     required this.idartisan,
     required this.nomArtisan,
     required this.vehicule,
-    required this.timestamp,
+    required this.timestamp, required this.tokenClient, required this.tokenArtisan,
   });
   @override
   State<InfoBoxaujour> createState() => InfoBoxaujourState();
@@ -110,7 +112,9 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                         onTap: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ProfilePage1(image: widget.photoUrl, nomClient: widget.nomclient, phone: widget.phone, adress: widget.adresse, idclient: widget.idclient, isVehicled: widget.vehicule,),),
+                            MaterialPageRoute(builder: (context) => ProfilePage1(image: widget.photoUrl, nomClient: widget.nomclient, phone: widget.phone, adress: widget.adresse,
+                              idclient: widget.idclient, isVehicled: widget.vehicule,nomArtisan: widget.nomArtisan,
+                              tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,),),
                           );
                         }, // Wrap the widget with GestureDetector
                         child: Container(

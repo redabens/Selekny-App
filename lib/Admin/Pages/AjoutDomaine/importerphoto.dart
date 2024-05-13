@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:reda/Pages/user_repository.dart';
+import '../../Services/Domaine_service.dart';
 import 'ajouterDomaine.dart';
 
 class Importer extends StatefulWidget {
   const Importer({super.key});
 
   @override
-  _ImporterState createState() => _ImporterState();
+  State<Importer> createState() => _ImporterState();
 }
 
 class _ImporterState extends State<Importer> {
   final TextEditingController _textController = TextEditingController();
+  final DomainesService _domainesService = DomainesService();
+
+  @override
+  void initState(){
+    super.initState();
+    userRepository = UserRepository();
+  }
 
   @override
   void dispose() {
@@ -18,6 +28,33 @@ class _ImporterState extends State<Importer> {
     super.dispose();
   }
 
+  String fileName = '';
+  String newUrlImg = '';
+  late UserRepository userRepository;
+
+  Future<void> uploadDomainePicture() async {
+    try {
+      final image = await ImagePicker().pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 70);
+      if (image != null) {
+        final imageUrl = await userRepository.uploadImage("Domaines/", image);
+        // update user image record
+        final uri = Uri.parse(imageUrl);
+        print(uri);
+        fileName = uri.pathSegments.last;
+        print(fileName);
+        print("FILE NAME : $fileName");
+        setState(() {
+          newUrlImg = imageUrl;
+          print("Url img : $newUrlImg");
+        });
+      }
+    } catch (e) {
+      print("There is an error in uploading image in profile : $e");
+      // afficher l erreur dans le front
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -79,11 +116,14 @@ class _ImporterState extends State<Importer> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Center(
-                              child: Image.asset(
+                              child: !newUrlImg.isNotEmpty ?  Image.asset(
                                 'assets/ajoutimage.png',
                                 height: screenHeight * 0.15,
                                 width: screenWidth * 0.15,
-                              ),
+                              ) : Image.network(newUrlImg,
+                                fit: BoxFit.cover,
+                                height: screenHeight * 0.15,
+                                width: screenWidth * 0.279,),
                             ),
                           ),
                         ),
@@ -91,6 +131,7 @@ class _ImporterState extends State<Importer> {
                         GestureDetector(
                           onTap: () {
                             // Action à effectuer lors de l'importation d'une image
+                            uploadDomainePicture();
                           },
                           child: Container(
                             height: screenHeight * 0.05,
@@ -122,17 +163,21 @@ class _ImporterState extends State<Importer> {
                         ),
                       ],
                     ),
-                    Spacer(), // Ajouter de l'espace
+                    const Spacer(), // Ajouter de l'espace
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context); // Retour à la page précédente
+                        if(fileName!='' && _textController.value.text != ''){
+                         _domainesService.ajouterDomaine(_textController.value.text, fileName);
+                         Navigator.pop(context);
+                        }
                       },
                       child: Container(
                         height: screenHeight * 0.05,
                         width: screenWidth * 0.25,
                         decoration: BoxDecoration(
-                          color: Color(0xFF3E69FE),
-                          borderRadius: BorderRadius.circular(screenWidth * 0.03),
+                          color: const Color(0xFF3E69FE),
+                          borderRadius:
+                          BorderRadius.circular(screenWidth * 0.03),
                         ),
                         child: Center(
                           child: Text(
@@ -156,3 +201,4 @@ class _ImporterState extends State<Importer> {
     );
   }
 }
+

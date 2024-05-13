@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +9,10 @@ import 'package:reda/Client/ProfilArtisan/profil.dart';
 const Color myBlueColor = Color(0xFF3E69FE);
 
 class DetChatList extends StatelessWidget {
+  final String nomArtisan;
+  final String tokenClient;
+  final String nomClient;
+  final String tokenArtisan;
   final String userName;
   final String lastMsg;
   final String profileImage;
@@ -33,7 +37,10 @@ class DetChatList extends StatelessWidget {
     required this.phone,
     required this.adresse,
     required this.domaine,
-    required this.rating, required this.workcount, required this.vehicule,
+    required this.rating,
+    required this.workcount, required this.vehicule,
+    required this.nomClient, required this.tokenArtisan,
+    required this.nomArtisan, required this.tokenClient,
   });
 
   String getFormattedTime(Timestamp timestamp) {
@@ -50,13 +57,13 @@ class DetChatList extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
-        left: 22,
-        right: 22,
+        left: 14,
+        right: 14,
       ),
       child: Stack(
         children: [
           Container(
-            height:80,
+            height:screenHeight*0.102,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
@@ -85,16 +92,18 @@ class DetChatList extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(    //otherUserId
-                            builder: (context) => ProfilePage2(idartisan: otheruserId, imageurl: profileImage,
-                              nomartisan: userName, phone: phone,
-                              domaine: domaine, rating: rating, adresse: adresse, workcount: workcount, vehicule: vehicule,),
+                            builder: (context) => ProfilePage2(idartisan: otheruserId, imageurl: profileImage, phone: phone,
+                                domaine: domaine, rating: rating, adresse: adresse, workcount: workcount, vehicule: vehicule, nomArtisan: nomArtisan,nomClient: nomClient,
+                              tokenArtisan: tokenArtisan,tokenClient: tokenClient,),
                           ),
                         );
                       }else{
                         Navigator.push(
                           context,
                           MaterialPageRoute(    //otherUserId
-                              builder: (context) => ProfilePage1(image: profileImage, nomClient: userName, phone: phone, adress: adresse, idclient: otheruserId, isVehicled: vehicule,),
+                            builder: (context) => ProfilePage1(image: profileImage, nomClient: nomClient, phone: phone, adress: adresse,
+                              idclient: otheruserId, isVehicled: vehicule,nomArtisan: nomArtisan,
+                              tokenArtisan: tokenArtisan,tokenClient: tokenClient,),
                           ),
                         );
                       } // Example action (replace with your desired functionality)
@@ -110,14 +119,15 @@ class DetChatList extends StatelessWidget {
                         ),
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50.0),
+                        borderRadius: BorderRadius.circular(24.0),
                         child: profileImage != ''
                             ? ClipRRect(
-                              borderRadius: BorderRadius.circular(24.0), // Ajout du BorderRadius
-                              child: Image.network(
+                          borderRadius: BorderRadius.circular(
+                              20), // Ajout du BorderRadius
+                          child: Image.network(
                             profileImage,
-                                width: screenWidth*0.15,
-                                height: screenWidth*0.15,
+                            width: screenWidth*0.1,
+                            height: screenWidth*0.1,
                             fit: BoxFit.cover,
                           ),
                         )
@@ -137,12 +147,17 @@ class DetChatList extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              userName,
-                              style: GoogleFonts.poppins(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child:Text(
+                                userName,
+                                maxLines: 1, // Limit to a single line
+                                overflow: TextOverflow.ellipsis, // Show '...' if overflow
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ],

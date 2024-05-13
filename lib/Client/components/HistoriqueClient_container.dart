@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
 
 class HistoriqueClient extends StatefulWidget {
+  final String tokenClient;
+  final String nomClient;
+  final String tokenArtisan;
   final String domaine;
   final String date;
   final String heure;
@@ -41,7 +44,7 @@ class HistoriqueClient extends StatefulWidget {
     required this.idartisan,
     required this.adresseartisan,
     required this.workcount,
-    required this.vehicule,
+    required this.vehicule, required this.nomClient, required this.tokenArtisan, required this.tokenClient,
   });
   @override
   State<HistoriqueClient> createState() => _HistoriqueClientState();
@@ -153,8 +156,10 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
-                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
+                                  phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
+                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,
+                                  nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
+                                  tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,), // Navigation to ContactPage
                                ),
                               ); // Example navigation
                             },

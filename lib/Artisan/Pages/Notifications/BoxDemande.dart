@@ -30,6 +30,7 @@ class BoxDemande extends StatelessWidget {
   final int type2;
   final String idartisan;
   final String nomArtisan;
+  final String tokenClient;
   final bool vehicule;
   const BoxDemande({
     super.key, required this.datedebut,required this.datefin,
@@ -41,7 +42,7 @@ class BoxDemande extends StatelessWidget {
     required this.nomprestation, required this.imageUrl,
     required this.type1, required this.type2,
     required this.nomclient, required this.phone, required this.demandeid,
-    required this.sync, required this.nomArtisan, required this.idartisan, required this.vehicule,});
+    required this.sync, required this.nomArtisan, required this.idartisan, required this.vehicule, required this.tokenClient,});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,8 @@ class BoxDemande extends StatelessWidget {
             Pdpanddetails(nomprestation: nomprestation, idClient: idclient,
               datedebut: datedebut,heuredebut: heuredebut,
               adresse: adresse, imageUrl: imageUrl, type: type1,
-              urgence: urgence, nomclient: nomclient, phone: phone, isvehiculed: vehicule,),
+              urgence: urgence, nomclient: nomclient, phone: phone, isvehiculed: vehicule,
+              nomArtisan: nomArtisan,tokenClient: tokenClient,),
             Detailsbottom(datedebut: datedebut, datefin: datefin,
               heuredebut: heuredebut, heurefin: heurefin,
               adresse: adresse, iddomaine: iddomaine,
@@ -78,6 +80,8 @@ class BoxDemande extends StatelessWidget {
   }
 }
 class Pdpanddetails extends StatelessWidget {
+  final String nomArtisan;
+  final String tokenClient;
   final String imageUrl;
   final String idClient;
   final String nomprestation;
@@ -91,7 +95,9 @@ class Pdpanddetails extends StatelessWidget {
   final bool urgence;
   const Pdpanddetails({super.key, required this.nomprestation, required this.idClient,
     required this.datedebut, required this.heuredebut, required this.adresse,
-    required this.imageUrl, required this.type, required this.urgence, required this.nomclient, required this.phone, required this.isvehiculed,});
+    required this.imageUrl, required this.type, required this.urgence,
+    required this.nomclient, required this.phone, required this.isvehiculed,
+    required this.nomArtisan, required this.tokenClient,});
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +112,9 @@ class Pdpanddetails extends StatelessWidget {
           children:
           [
             const SizedBox(width: 4,),
-            Pdp(imageUrl: imageUrl, adresse:adresse, phone: phone, nomclient: nomclient, idclient: idClient, isvehiculed: isvehiculed,),
+            Pdp(imageUrl: imageUrl, adresse:adresse, phone: phone, nomclient: nomclient,
+              idclient: idClient, isvehiculed: isvehiculed,
+              nomArtisan: nomArtisan,tokenClient: tokenClient, tokenArtisan: '',),
             Details(nomprestation: nomprestation, adresse: adresse,
               datedebut: datedebut, heuredebut: heuredebut,type: type, urgence: urgence,),
           ]
@@ -120,6 +128,9 @@ class Pdpanddetails extends StatelessWidget {
 
 
 class Pdp extends StatelessWidget {
+  final String tokenArtisan;
+  final String nomArtisan;
+  final String tokenClient;
   final String idclient;
   final String imageUrl;
   final String adresse;
@@ -128,14 +139,16 @@ class Pdp extends StatelessWidget {
   final bool isvehiculed;
   const Pdp({super.key, required this.imageUrl,
     required this.adresse, required this.phone,
-    required this.nomclient, required this.idclient, required this.isvehiculed,});
+    required this.nomclient, required this.idclient, required this.isvehiculed,
+    required this.nomArtisan, required this.tokenClient, required this.tokenArtisan,});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProfilePage1(image: imageUrl, nomClient: nomclient, phone: phone, adress: adresse, idclient: idclient, isVehicled: isvehiculed,),),
+          MaterialPageRoute(builder: (context) => ProfilePage1(image: imageUrl, nomClient: nomclient, phone: phone, adress: adresse, idclient: idclient, isVehicled: isvehiculed,nomArtisan: nomArtisan,
+            tokenArtisan: tokenArtisan,tokenClient: tokenClient,),),
         );
       }, // Wrap the widget with GestureDetector
       child: Container(

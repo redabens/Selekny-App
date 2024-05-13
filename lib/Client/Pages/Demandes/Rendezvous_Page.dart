@@ -22,7 +22,6 @@ class _RendezVousPageState extends State<RendezVousPage> {
   final DemandeClientService _DemandeAccepteeService = DemandeClientService();
   final RendezVousService _rendezVousService = RendezVousService();
   final ModifPrixService _modifPrixService = ModifPrixService();
-
   // get le nom domaine de la demande acceptee
   Future<String> getDomaineDemande(String domaineID) async {
     final firestore = FirebaseFirestore.instance;
@@ -94,6 +93,29 @@ class _RendezVousPageState extends State<RendezVousPage> {
       // Gérer l'erreur de formatage de manière élégante (par exemple, retourner faux ou lancer une exception)
       return false;
     }
+  }
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : ${token}");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
   }
   //-----------------------------------------------------------------------------------
   @override
@@ -217,6 +239,9 @@ class _RendezVousPageState extends State<RendezVousPage> {
       double latitude = data['latitude'];
       double longitude = data['longitude'];
       Timestamp timestamp = data['timestamp'];
+      String tokenArtisan = await getTokenById(data['idartisan']);
+      String tokenClient = await getTokenById(data['idclient']);
+      String nomClient = await getUserPathImage(data['idclient']);
       return Column(// Wrap in a Column for vertical spacing
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -246,7 +271,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
         timestamp: timestamp,
         adresseartisan: adresseartisan,
         workcount: workcount,
-        vehicule: vehicule,
+        vehicule: vehicule, nomClient: nomClient,tokenArtisan: tokenArtisan,tokenClient: tokenClient,
       ),
           SizedBox(height: screenHeight*0.02,), // Add spacing between containers
         ],

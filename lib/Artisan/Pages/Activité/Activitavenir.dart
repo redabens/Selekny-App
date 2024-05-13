@@ -125,6 +125,29 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
       return false;
     }
   }
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : ${token}");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -133,7 +156,6 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
       backgroundColor: Colors.white,
       body:Column(
         children: [
-          SizedBox(height: screenHeight*0.02),
           AppBar(
             elevation: 0.0,
             backgroundColor: Colors.white,
@@ -330,6 +352,8 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
     bool vehicule = await getVehiculeUser(data['idclient']);
     final String sync = await getSyncDemande(data['timestamp']);
     String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
+    String tokenClient = await getTokenById(data['idclient']);
+    String tokenArtisan = await getTokenById(data['idartisan']);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -355,7 +379,7 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
             sync: sync,
             nomArtisan: nomArtisan,
             idartisan: FirebaseAuth.instance.currentUser!.uid,
-            vehicule: vehicule,),
+            vehicule: vehicule, tokenClient: tokenClient, tokenArtisan: tokenArtisan,),
           const SizedBox(height:10),
         ],
       ),

@@ -4,15 +4,17 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:firebase_messaging/firebase_messaging.dart";
 import 'package:app_settings/app_settings.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:reda/Pages/auth.dart';
-import 'package:reda/main.dart';
 import 'package:http/http.dart';
+
+final navigatorkey = GlobalKey<NavigatorState>();
 
 class NotificationServices {
   static final FirebaseMessaging messaging = FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
   void requestNotificationPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
@@ -37,7 +39,7 @@ class NotificationServices {
 
   static Future initLocalNotifications() async {
     const androidInitializationSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosInitializationSettings = DarwinInitializationSettings();
 
     const initializationSettings = InitializationSettings(
@@ -49,7 +51,7 @@ class NotificationServices {
 
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()!
+        AndroidFlutterLocalNotificationsPlugin>()!
         .requestNotificationsPermission();
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
@@ -58,8 +60,33 @@ class NotificationServices {
   }
 
   static void onNotificationTap(NotificationResponse notificationResponse) {
-    navigatorkey.currentState!
-        .pushNamed("/message", arguments: notificationResponse);
+    final notificationType = notificationResponse.notificationResponseType;
+
+    // Exemple de logique de redirection en fonction du type de notification
+
+    switch (notificationType) {
+      case 'PublieDemande':
+        navigatorkey.currentState!
+            .pushNamed("/PublierDemandePage", arguments: notificationResponse);
+        break;
+      case 'AccepteParArtisan':
+        navigatorkey.currentState!
+            .pushNamed("/AccepteParArtisan", arguments: notificationResponse);
+        break;
+    // Ajoutez d'autres cas pour d'autres types de notifications si nécessaire
+      case 'ConfirmeParClient':
+      // Par défaut, redirigez l'utilisateur vers une page générique
+        navigatorkey.currentState!
+            .pushNamed("/ConfirmeParClient", arguments: notificationResponse);
+        break;
+
+      case 'Message' :
+        navigatorkey.currentState!.pushNamed("Messagerie" , arguments : notificationResponse);
+
+        break;
+      default:
+        break;
+    }
   }
 
   /*void firebaseInit(BuildContext context) {
@@ -130,34 +157,38 @@ class NotificationServices {
     required String payload,
   }) async {
     const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails('your channel id', 'Selekny',
-            channelDescription: 'your channel description',
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker');
+    AndroidNotificationDetails('your channel id', 'Selekny',
+        channelDescription: 'your channel description',
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: 'ticker');
 
     const NotificationDetails notificationDetails =
-        NotificationDetails(android: androidNotificationDetails);
+    NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin
         .show(0, title, body, notificationDetails, payload: payload);
   }
 
-  static Future<void> sendPushNotification(
-      String token, String title, String content) async {
+  static Future<void> sendPushNotification(String token, String title,
+      String content, String notificationType) async {
     try {
       final body = {
         "to": token,
-        "notification": {"title": title, "body": content}
+        "notification": {
+          "title": title,
+          "body": content,
+          "type": notificationType
+        }
       };
 
       var response =
-          await post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
-              headers: {
-                HttpHeaders.contentTypeHeader: 'application/json',
-                HttpHeaders.authorizationHeader:
-                    'key=AAAA0S8eygg:APA91bFuZSbeV48FXJ7V0PWAc4Sl61-rlgzLvtdFzl7vZxL77eTwN1--iG5OLFB4Ppsm9OoFrZFV97mB-k_y3Er1OpZHQlsi5VzHqP6fM9xXf7rgJCvbLbUgsCvmRrgEcSeoLC5a3DYt'
-              },
-              body: jsonEncode(body));
+      await post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader:
+            'key=AAAA0S8eygg:APA91bFuZSbeV48FXJ7V0PWAc4Sl61-rlgzLvtdFzl7vZxL77eTwN1--iG5OLFB4Ppsm9OoFrZFV97mB-k_y3Er1OpZHQlsi5VzHqP6fM9xXf7rgJCvbLbUgsCvmRrgEcSeoLC5a3DYt'
+          },
+          body: jsonEncode(body));
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
     } catch (e) {

@@ -70,7 +70,7 @@ class ButtonaccepterState extends State<Buttonaccepter> {
           await getNomPrestationById(widget.iddomaine, widget.idprestation);
 
           NotificationServices.sendPushNotification(
-              token,
+              token,"AccepteParArtisan",
               "Votre demande a été accepté par ${widget.nomArtisan}",
               "Service demandé : $nomPrestation",);
         _demandeClientService.sendDemandeClient(widget.datedebut, widget.datefin,

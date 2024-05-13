@@ -110,6 +110,29 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
       return false;
     }
   }
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : ${token}");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
+  }
   //-----------------------------------------------------------------------------------
 
   @override
@@ -337,6 +360,9 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
       double latitude = data['latitude'];
       double longitude = data['longitude'];
       Timestamp timestamp = data['timestamp'];
+      String tokenArtisan = await getTokenById(data['idartisan']);
+      String tokenClient = await getTokenById(data['idclient']);
+      String nomClient = await getUserPathImage(data['idclient']);
       // ... rest of your code using the extracted values
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -367,7 +393,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
             timestamp: timestamp,
             adresseartisan: adresseartisan,
             workcount: workcount,
-            vehicule: vehicule,
+            vehicule: vehicule,nomClient: nomClient,tokenClient: tokenClient,tokenArtisan: tokenArtisan,
           ),
           SizedBox(height: screenHeight*0.015,),
         ]
