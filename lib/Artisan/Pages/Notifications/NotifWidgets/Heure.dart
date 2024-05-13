@@ -10,15 +10,16 @@ class Heure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      width: MediaQuery.of(context).size.width*0.7,
-      height: 20,
+      width: screenWidth*0.72,
      // color: Colors.yellow,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.start, // Align items to the start
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(width: 5),
+          SizedBox(width:screenWidth*0.01),
           Container(
             height: 17,
             width: 17,
@@ -28,12 +29,12 @@ class Heure extends StatelessWidget {
               // Assurez-vous de fournir le chemin correct vers votre image
             ),
           ),
-          const SizedBox(width: 7),
+          SizedBox(width:screenWidth*0.013),
           Text(
             heuredebut,
             style: GoogleFonts.poppins(
               color: const Color(0xFF757575),
-              fontSize: 12,
+              fontSize: screenWidth*0.03,
               fontWeight: FontWeight.w500,
             ),
           ),

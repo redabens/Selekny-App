@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
+import 'package:reda/Admin/Pages/deconnexion.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Admin/components/signalements_component.dart';
@@ -134,7 +135,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const LoginPage2()),
+                    const Deconnecter()),
               );
             },
               icon: Image.asset(
@@ -149,7 +150,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
             title: Text(
               'Signalements',
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.w800,
               ),
             ),

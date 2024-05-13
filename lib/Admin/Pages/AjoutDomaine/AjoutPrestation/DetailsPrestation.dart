@@ -66,9 +66,6 @@ class DetailsPrestationState extends State<DetailsPrestation> {
       print('Erreur lors de la mise à jour de la prestation : $e');
     }
   }
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,11 +125,11 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10, width: 20),
+                        const SizedBox(height: 3, width: 20),
                         _isEditingNom
                             ? Container(
                           padding: const EdgeInsets.only(left: 10.0),
-                          height: 50,
+                          //height: 50,
                           width: MediaQuery.of(context).size.width * 0.7, // Adjust width based on your needs
                           child: TextFormField(
                             controller: _controllerPrestation,
@@ -221,7 +218,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 3),
                         _isEditingMateriel
                             ? Container(
                           padding: const EdgeInsets.only(left: 10.0),
@@ -245,7 +242,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                             : Container(
                           padding: const EdgeInsets.only(left: 10.0),
                           width: MediaQuery.of(context).size.width * 0.7,
-                          height: 40,
+                         // height: 40,
                           child: RichText(
                             text: TextSpan(children: <TextSpan>[
                               TextSpan(
@@ -330,12 +327,14 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                             _isEditingPrix
                                 ? Container(
                               padding: const EdgeInsets.only(left: 10.0),
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery.of(context).size.width * 0.45,
 
                               child:Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children:
                                 [
                                   const SizedBox(height: 20,),
+
                                   TextFormField(
                                     controller: _controllerPrixmin,
                                     style: GoogleFonts.poppins(
@@ -355,7 +354,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                             )
                                 : Container(
                               padding: const EdgeInsets.only(left: 10.0),
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery.of(context).size.width * 0.45,
                               height: 30,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -384,6 +383,7 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                           ],
                         ),
                         Row(
+                          //crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               '  Prix max :',
@@ -397,27 +397,38 @@ class DetailsPrestationState extends State<DetailsPrestation> {
                             _isEditingPrix
                                 ? Container(
                               padding: const EdgeInsets.only(left: 10.0),
-                              width: MediaQuery.of(context).size.width * 0.6, // Adjust width based on your needs
+                              width: MediaQuery.of(context).size.width * 0.45,
                               child: Center(
-                                child:TextFormField(
+                                child: TextFormField(
                                   controller: _controllerPrixmax,
                                   style: GoogleFonts.poppins(
                                     color: const Color(0xFF6D6D6D),
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
                                   ),
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     hintText: 'Entrez le prix max',
                                     border: InputBorder.none,
+                                    // Centrer le texte verticalement dans le champ de texte
+                                    contentPadding: EdgeInsets.zero,
+                                    hintStyle: TextStyle(
+                                      color: const Color(0xFF6D6D6D),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      height: 1.5, // Ajuster la hauteur du texte pour centrer verticalement
+                                    ),
+                                    alignLabelWithHint: true, // Aligner le texte avec le hint
                                   ),
-                                  keyboardType: TextInputType.number, // Clavier numérique
-                                  maxLength: 5, // Limite de 5 chiffres
+                                  keyboardType: TextInputType.number,
+                                  maxLength: 5,
+                                  textAlignVertical: TextAlignVertical.center, // Centrer verticalement le texte
                                 ),
                               ),
                             )
-                                : Container(
+
+                      : Container(
                               padding: const EdgeInsets.only(left: 10.0),
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery.of(context).size.width * 0.45,
                               height: 30,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -738,14 +749,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                 ),
               ),
-
-              const SizedBox(width: 40),
+              const SizedBox(width: 30),
               Center(
                 child: Text(
                   'Détails de la Préstation',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
                 ),

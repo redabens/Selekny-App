@@ -12,6 +12,7 @@ import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart'
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import '../../../Pages/authentification/connexion2.dart';
+import '../deconnexion.dart';
 
 class GestionArtisansPage extends StatefulWidget {
   const GestionArtisansPage({
@@ -103,7 +104,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const LoginPage2()),
+                    const Deconnecter()),
               );
             },
               icon: Image.asset(

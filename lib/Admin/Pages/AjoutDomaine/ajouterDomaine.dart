@@ -10,6 +10,7 @@ import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Admin/Services/Domaine_service.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import '../../../Pages/authentification/connexion2.dart';
+import '../deconnexion.dart';
 import 'ajouterbox.dart';
 import 'detaildubox.dart';
 import 'importerphoto.dart';
@@ -49,7 +50,7 @@ class DomainServicePageState extends State<DomainServicePage> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                const LoginPage2()),
+                const Deconnecter()),
           );
         },
           icon: Image.asset(

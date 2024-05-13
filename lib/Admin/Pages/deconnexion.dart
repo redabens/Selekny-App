@@ -105,7 +105,7 @@ fontSize: 14,
 SizedBox(width: screenWidth * 0.06),
 GestureDetector(
 onTap: () {
-Navigator.pop(context); // Return to the previous page when "NON" is clicked
+Navigator.pop(context);
 },
 child: Container(
 decoration: BoxDecoration(

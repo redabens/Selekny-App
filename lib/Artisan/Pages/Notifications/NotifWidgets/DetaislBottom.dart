@@ -39,7 +39,7 @@ class Detailsbottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width * 0.85,
+        width: MediaQuery.of(context).size.width * 0.9,
         //height: 35,
         child: type1 == 1 ? Row(
           children: [
@@ -60,7 +60,7 @@ class Detailsbottom extends StatelessWidget {
             Envoyerilya(timestamp: timestamp, sync: sync,),
             const Spacer(),
             Buttonrefuser(timestamp: timestamp, type: 2, idclient: idclient, demandeid: demandeid,), //hado bouton accepter refuser
-            const SizedBox(width: 8,),
+
           ],
         ): Row(
             mainAxisAlignment: MainAxisAlignment.end,

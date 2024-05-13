@@ -32,7 +32,7 @@ class Buttonaccruf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 200,
+        width: 201,
         height: 30,
         //color: Colors.black,
         child:Row(

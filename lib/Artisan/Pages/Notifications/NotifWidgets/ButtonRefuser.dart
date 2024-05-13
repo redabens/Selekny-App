@@ -26,9 +26,11 @@ class ButtonrefuserState extends State<Buttonrefuser> {
   final RendezVousService _rendezVousService = RendezVousService();
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      width: 90,
-      height: 30,
+        width: screenWidth*0.25,
+        height: screenHeight*0.07,
       decoration: BoxDecoration(
         color: const Color(0xFFF6F6F6),
         borderRadius: BorderRadius.circular(10),
@@ -47,11 +49,11 @@ class ButtonrefuserState extends State<Buttonrefuser> {
               'refuser',
               style: GoogleFonts.poppins(
                 color: Colors.black,
-                fontSize: 10,
+                fontSize: screenWidth*0.027,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(width: 5),
+            SizedBox(width:screenWidth*0.01),
             Container(
               height: 14,
               width: 14,
@@ -76,11 +78,11 @@ class ButtonrefuserState extends State<Buttonrefuser> {
               'annuler',
               style: GoogleFonts.poppins(
                 color: Colors.black,
-                fontSize: 10,
+                fontSize: screenWidth*0.027,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(width: 5),
+            SizedBox(width:screenWidth*0.01),
             Container(
               height: 14,
               width: 14,

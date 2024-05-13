@@ -9,6 +9,7 @@ import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import '../../../Pages/authentification/connexion2.dart';
+import '../deconnexion.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
@@ -111,7 +112,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const LoginPage2()),
+                    const Deconnecter()),
               );
             },
               icon: Image.asset(

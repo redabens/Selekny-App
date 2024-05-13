@@ -8,7 +8,7 @@ class Lieu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.71,
+      width: MediaQuery.of(context).size.width * 0.72,
       //height: MediaQuery.of(context).size.height * 0.03,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start, // Align content to the left

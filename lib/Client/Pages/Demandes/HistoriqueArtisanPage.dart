@@ -108,12 +108,12 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
           ),
           const SizedBox(height: 18),
           _buildTitleAndDescription(), // le petit texte du début
-          const SizedBox(height: 10),
-          const SizedBox(height: 2),
+          const SizedBox(height: 5),
+
           Expanded(
             child: _buildRendezVousList(),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 20),
         ],
       ),
     );
@@ -157,6 +157,7 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
                 );
               }
               return ListView(children: snapshot.data!);
+
             });
       },
     );

@@ -8,7 +8,6 @@ import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
-
 import '../Profil/profileArtisan.dart';
 
 class NotifDemande extends StatefulWidget {
@@ -18,7 +17,6 @@ class NotifDemande extends StatefulWidget {
   NotifDemandeState createState() => NotifDemandeState();
 
 }
-
 class NotifDemandeState extends State<NotifDemande> {
   int _currentIndex = 1;
   final DemandeArtisanService _demandeArtisanService =DemandeArtisanService();
@@ -77,7 +75,9 @@ class NotifDemandeState extends State<NotifDemande> {
   Future<String> getSyncDemande(Timestamp timestamp) async {
     final DateTime timeDemande = timestamp.toDate();
     final DateTime now = DateTime.now();
-    Duration difference = now.difference(timeDemande);
+    Duration diff = now.difference(timeDemande);
+    Duration difference = diff - const Duration(hours: 1);
+
     if (difference.inDays > 0) {
       return 'Envoyé il y''a ${difference.inDays} jr';
     } else if (difference.inHours > 0) {
@@ -115,6 +115,8 @@ class NotifDemandeState extends State<NotifDemande> {
   }
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(),
@@ -148,7 +150,7 @@ class NotifDemandeState extends State<NotifDemande> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -171,7 +173,7 @@ class NotifDemandeState extends State<NotifDemande> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.035                                                                                                                                      ,
                 child: Image.asset(
                   'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -193,7 +195,7 @@ class NotifDemandeState extends State<NotifDemande> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -215,7 +217,7 @@ class NotifDemandeState extends State<NotifDemande> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -337,7 +339,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Stack(
       children: [
         AppBar(
-          automaticallyImplyLeading: false, // Désactiver la flèche de retour en arrière
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,// Désactiver la flèche de retour en arrière
           //backgroundColor: Colors.blue,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -347,7 +350,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   'Mes Notifications',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
 
                   ),
@@ -391,7 +394,7 @@ class UrgentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 205,
+      width: 180,
       height: 55,
       child: GestureDetector(
         onTap: () =>   Navigator.push(
@@ -405,7 +408,7 @@ class UrgentButton extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 color: Color(0xFFC4C4C4),
-                width: 2,
+                width: 1,
               ),
             ),
           ),
@@ -415,8 +418,8 @@ class UrgentButton extends StatelessWidget {
               'Urgentes',
               style: GoogleFonts.poppins(
                 color: const Color(0xFFC4C4C4),
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
 
               ),
             ),
@@ -435,7 +438,7 @@ class demandeButton extends StatelessWidget {
 @override
 Widget build(BuildContext context) {
   return SizedBox(
-    width: 205,
+    width: 180,
     height: 55,
     child: GestureDetector(
       onTap: () => Navigator.push(
@@ -449,7 +452,7 @@ Widget build(BuildContext context) {
           border: Border(
             bottom: BorderSide(
               color: Color(0xFFF5A529),
-              width: 2,
+              width: 4,
             ),
           ),
         ),
@@ -459,8 +462,8 @@ Widget build(BuildContext context) {
             'Demandes',
             style: GoogleFonts.poppins(
               color: const Color(0xFFF5A529),
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
 
             ),
           ),

@@ -98,14 +98,12 @@ class Pdpanddetails extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
     double screenHeight = MediaQuery.of(context).size.height; // Hauteur de l'écran
     return Container(
-      width: screenWidth * 0.89,
-      height: 95,
+      width: screenWidth * 0.9,
       // color: Colors.green,
-
       child: Row(
           children:
           [
-            const SizedBox(width: 4,),
+            SizedBox(width:screenHeight*0.02,),
             Pdp(imageUrl: imageUrl, adresse:adresse, phone: phone, nomclient: nomclient, idclient: idClient, isvehiculed: isvehiculed,),
             Details(nomprestation: nomprestation, adresse: adresse,
               datedebut: datedebut, heuredebut: heuredebut,type: type, urgence: urgence,),
@@ -131,6 +129,8 @@ class Pdp extends StatelessWidget {
     required this.nomclient, required this.idclient, required this.isvehiculed,});
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+    double screenHeight = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: (){
         Navigator.push(
@@ -139,8 +139,8 @@ class Pdp extends StatelessWidget {
         );
       }, // Wrap the widget with GestureDetector
       child: Container(
-        width: 60,
-        height: 60,
+        width: screenWidth*0.15,
+        height: screenHeight*0.07,
         //color: Colors.yellow,
         child: imageUrl != ''
             ? ClipRRect(
@@ -148,8 +148,8 @@ class Pdp extends StatelessWidget {
               50), // Ajout du BorderRadius
           child: Image.network(
             imageUrl,
-            width: 60,
-            height: 60,
+            width: screenWidth*0.15,
+            height: screenHeight*0.07,
             fit: BoxFit.cover,
           ),
         )
@@ -179,15 +179,18 @@ class Details extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
     double screenHeight = MediaQuery.of(context).size.height; // Hauteur de l'écran
     return Container(
-        width: MediaQuery.of(context).size.width * 0.71,
-        //height: 140,
+        width: MediaQuery.of(context).size.width * 0.6,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
             children:
             [
+              SizedBox(height:screenHeight*0.01),
               NomPrestation(nomprestation: nomprestation,),
+              SizedBox(height:screenHeight*0.01),
               Lieu(adresse: adresse,),
+              SizedBox(height:screenHeight*0.005),
               Heure(heuredebut: heuredebut, type: type, urgence: urgence,),
+              SizedBox(height:screenHeight*0.005),
               Date(datedebut: datedebut, type: type, urgence: urgence,),
             ]
         )

@@ -312,6 +312,7 @@ class Prestation extends StatelessWidget {
                     nomprestation: nomprestation, prixmin: prixmin,
                     prixmax: prixmax, unite: unite, materiel: materiel,),
                   ),
+
                 );
               },
             ),
