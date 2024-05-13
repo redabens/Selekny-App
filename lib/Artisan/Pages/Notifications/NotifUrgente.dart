@@ -146,7 +146,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
+                  MaterialPageRoute(builder: (context) => const ActivitAvenirPage()),
                 );
               },
               child: Container(

@@ -264,7 +264,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

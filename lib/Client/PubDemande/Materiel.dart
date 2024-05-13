@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -7,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Materiel extends StatelessWidget {
   final String materiel;
+
   const Materiel({
     super.key,
     required this.materiel,
@@ -14,12 +17,16 @@ class Materiel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-  double screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Container(
-      //height: 92.17,
-      width: MediaQuery.of(context).size.width * 0.8,
-
+      width: screenWidth * 0.85,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -29,10 +36,12 @@ class Materiel extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Align children to the start
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // Align children to the start
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start, // Align items to the start
+            mainAxisAlignment: MainAxisAlignment.start,
+            // Align items to the start
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
@@ -48,35 +57,33 @@ class Materiel extends StatelessWidget {
                 'Le matériel nécessaire :',
                 style: GoogleFonts.poppins(
                   color: Colors.black,
-                  fontSize: 13,
+                  fontSize: screenWidth * 0.035,
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: screenHeight * 0.01),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 10),
+               SizedBox(width:screenWidth*0.090),
               Expanded(
-              child: Text(
-                     materiel,
-                    style: GoogleFonts.poppins(
-                      color: const Color(0xFF6D6D6D),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                    ),
-                overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                maxLines: 2,
+                child: Text(
+                  materiel,
+                  style: GoogleFonts.poppins(
+                    color: const Color(0xFF6D6D6D),
+                    fontSize: screenWidth * 0.028,
+                    fontWeight: FontWeight.w700,
                   ),
-
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  maxLines: 5,
+                ),
               ),
             ],
           ),
-
           // Ajoutez plus de widgets Text ici pour les éléments supplémentaires
         ],
       ),

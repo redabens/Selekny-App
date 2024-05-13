@@ -20,11 +20,11 @@ class MoisDebutState extends State<MoisDebut> {
   int moisdebut = 0; // Variable pour stocker le mois sélectionné
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: screenHeight*0.04,
-      width: screenWidth*0.23,
+      height: screenHeight*0.035,
+      width: screenWidth*0.24,
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS
@@ -44,7 +44,7 @@ class MoisDebutState extends State<MoisDebut> {
           textAlign: TextAlign.center,
           style: GoogleFonts.poppins(
             color: const Color(0xFF6D6D6D),
-            fontSize: 9,
+            fontSize: screenWidth*0.028,
             fontWeight: FontWeight.w700,
           ), // Afficher le texte du mois sélectionné ou "Mois"
         ),

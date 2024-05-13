@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _SettingsItemState extends State<SettingsItem> {
   void initState() {
     super.initState();
     setState(() { switchState = widget.initialSwitchState;// Définir l'état initial
-      });
+    });
   }
 
   @override

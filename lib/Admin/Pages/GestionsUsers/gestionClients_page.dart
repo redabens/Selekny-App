@@ -1,4 +1,5 @@
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,7 @@ import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
-import '../../../Pages/authentification/connexion.dart';
-import '../../../Pages/retourAuth.dart';
+import '../../../Pages/authentification/connexion2.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
@@ -68,14 +68,28 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> getUserPathImage(String userID) async {
-    DocumentSnapshot userDoc =
-    await _firestore.collection('users').doc(userID).get();
+    // Récupérer le document utilisateur
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
+        'users').doc(userID).get();
+
+    // Vérifier si le document existe
     if (userDoc.exists) {
+      // Extraire le PathImage
+      print('here');
       String pathImage = userDoc['pathImage'];
+      print(pathImage);
+      // Retourner le PathImage
       final reference = FirebaseStorage.instance.ref().child(pathImage);
-      final url = await reference.getDownloadURL();
-      return url;
+      try {
+        // Get the download URL for the user image
+        final downloadUrl = await reference.getDownloadURL();
+        return downloadUrl;
+      } catch (error) {
+        print("Error fetching user image URL: $error");
+        return ''; // Default image on error
+      }
     } else {
+      // Retourner une valeur par défaut si l'utilisateur n'existe pas
       return '';
     }
   }
@@ -97,7 +111,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const LoginPage()),
+                    const LoginPage2()),
               );
             },
               icon: Image.asset(
@@ -228,7 +242,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreationArtisanPage(),
+                    builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),
                   ),
                 );
               },
@@ -319,12 +333,12 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
       print("Error fetching user image: $error");
     }
     return GestureDetector(
-        onTap: () {
-          // Handle tap here (e.g., navigate to a new screen, show a dialog)
+      onTap: () {
+        // Handle tap here (e.g., navigate to a new screen, show a dialog)
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
+        Navigator.push(
+          context,
+          MaterialPageRoute(
               builder: (context) => ProfilePage1CoteAdmin(
                   image: profileImage,
                   nomClient: userName,
@@ -332,20 +346,20 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                   adress: data['adresse'],
                   idclient: userID,
                   isVehicled: data['vehicule'])
-            ),
-          );
-        },
-   child:Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          DetGestionUsers(
-              userName: userName, job: job, profileImage: profileImage),
-          const SizedBox(height: 14),
-        ],
+          ),
+        );
+      },
+      child:Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DetGestionUsers(
+                userName: userName, job: job, profileImage: profileImage),
+            const SizedBox(height: 14),
+          ],
+        ),
       ),
-    ),
     );
   }
 

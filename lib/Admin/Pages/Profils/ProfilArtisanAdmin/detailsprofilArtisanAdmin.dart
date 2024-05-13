@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'BloquerArtisan.dart';
 
 class ProfileBody2CoteAdmin extends StatelessWidget {
@@ -275,7 +273,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GestureDetector(
+             /* GestureDetector(
                 onTap: onContact,
                 child: Container(
                   decoration: BoxDecoration(
@@ -292,7 +290,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: screenWidth * 0.06),
+              SizedBox(width: screenWidth * 0.06),*/
               GestureDetector(
                 onTap: () {
                   // FirebaseAuth.instance.signOut();

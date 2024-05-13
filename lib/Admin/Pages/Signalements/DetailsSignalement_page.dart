@@ -48,6 +48,8 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: MyAppBar(),
       body: SingleChildScrollView(
@@ -86,9 +88,8 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  // UserSignaler
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
+                    width: screenWidth * 0.9,
                     height: 100,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -112,10 +113,10 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 20),
                   Container(
                     child: Text(
-                      'Cet utilisateur a été signalé ${widget.nbsignalement} fois.',  // Utilisation du paramètre
+                      'Cet utilisateur a été signalé ${widget.nbsignalement-1} fois.',  // Utilisation du paramètre
                       style: GoogleFonts.poppins(
                         color: Colors.red,
                         fontSize: 12,
@@ -295,6 +296,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Stack(
       children: [
         AppBar(
@@ -317,18 +320,18 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AllSignalementsPage()),
+                      MaterialPageRoute(builder: (context) => const AllSignalementsPage()),
                     );
                   },
                 ),
               ),
-              const SizedBox(width: 40),
+            SizedBox(width: screenWidth*0.08),
               Center(
                 child: Text(
                   'Détails du signalement',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
-                    fontSize: 20,
+                    fontSize: screenWidth*0.048,
                     fontWeight: FontWeight.w800,
                   ),
                 ),

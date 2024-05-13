@@ -16,7 +16,6 @@ class UserModel {
   final int nbsignalement;
   final String token;
 
-
   UserModel({
     required this.id,
     required this.nom,
@@ -159,7 +158,7 @@ class ClientModel extends UserModel {
 class ArtisanModel extends UserModel {
   final bool statut;
   final String domaine;
- double rating = 4.1;
+  double rating = 3.5;
   int workcount = 0;
   List<String> prestations = [];
 

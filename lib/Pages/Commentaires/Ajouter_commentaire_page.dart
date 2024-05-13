@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Services/Commentaires/commentaires_service.dart';
 
@@ -114,7 +115,7 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.all(10),
                                 ),
-                                style: const TextStyle(
+                                style: GoogleFonts.poppins(
                                     fontSize: 15,
                                     height: 1.0, // Augmenter l'espace entre les lignes
 

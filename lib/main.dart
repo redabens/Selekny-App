@@ -1,3 +1,4 @@
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,108 +8,17 @@ import 'package:flutter_offline/flutter_offline.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 import 'package:reda/Client/Pages/Demandes/demandeAcceptee_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
-import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
+import 'Artisan/Pages/Activité/Activitaujour.dart';
 import 'firebase_options.dart';
 import 'dart:convert';
-import 'dart:math';
-import 'package:connectivity/connectivity.dart' as connectivity;
-
-/*class ConnectivityProvider extends ChangeNotifier {
-  ConnectivityResult _connectivityResult = ConnectivityResult.none;
-
-  ConnectivityProvider() {
-    _initConnectivity();
-  }
-
-  ConnectivityResult get connectivityResult => _connectivityResult;
-
-  void _initConnectivity() async {
-    try {
-      ConnectivityResult result = await Connectivity().checkConnectivity();
-      _updateConnectivityStatus(result);
-    } catch (e) {
-      print("Error checking connectivity : $e");
-    }
-
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      _updateConnectivityStatus(result);
-    });
-  }
-
-  void _updateConnectivityStatus(ConnectivityResult result) {
-    _connectivityResult = result;
-    notifyListeners();
-  }
-}
-
-class ConnectivityWidget extends StatelessWidget {
-  final Widget child;
-
-  const ConnectivityWidget({super.key, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<ConnectivityProvider>(
-      builder: (context, connectivityProvider, child) {
-        final connectivityResult = connectivityProvider.connectivityResult;
-
-        if (connectivityResult == ConnectivityResult.none) {
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 80,
-                    color: Color(0xFF3E69FE),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Erreur de connexion",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Vérifiez votre connexion Internet et réessayez.",
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            ),
-          );
-        }
-
-        return child!;
-      },
-    );
-  }
-}*/
-
-double radians(double degrees) => degrees * pi / 180;
-double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
-  const earthRadius = 6371.01; // Rayon de la Terre en km
-
-  double dLat = radians(lat2 - lat1);
-  double dLon = radians(lon2 - lon1);
-
-  double a = sin(dLat / 2) * sin(dLat / 2) +
-      cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon / 2) * sin(dLon / 2);
-  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-
-  return earthRadius * c; // Distance en km
-}
-
 User? currentUser = FirebaseAuth.instance.currentUser;
 
 final navigatorkey = GlobalKey<NavigatorState>();
@@ -271,8 +181,7 @@ class MyAppState extends State<MyApp> {
             );
           }
         },
-        child:
-        const HomeScreen(), // Ajoutez un widget enfant pour le OfflineBuilder
+        child: const HomeScreen(), // Ajoutez un widget enfant pour le OfflineBuilder
       ),
     );
   }
@@ -299,9 +208,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  var admin;
-  var isLogin ;
-  var isbloqued ;
+  var admin = false;
+  var isLogin=false;
+  var isbloqued=false;
   var auth = FirebaseAuth.instance;
   late Future<String> roleFuture;
   late String role = '';
@@ -330,7 +239,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    checkIfLogin(); // Appel de la méthode pour vérifier l'état de connexion
+    checkIfLogin();// Appel de la méthode pour vérifier l'état de connexion
     checkifadmin();
     checkifbloque();
   }
@@ -346,7 +255,7 @@ class HomeScreenState extends State<HomeScreen> {
       home: Container(
         color: Colors.white, // Couleur de l'arrière-plan de la page
         child: Center(
-          child: isLogin == null
+          child: /*isLogin == null
               ? /*const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Color(
                             0xFF3E69FE)), // Couleur de remplissage de l'indicateur de chargement
@@ -355,16 +264,16 @@ class HomeScreenState extends State<HomeScreen> {
                         semanticsLabel:
                             'Custom Loading', // Balise sémantique pour l'accessibilité
                       )*/
-          const LoginPage()
-              : !isLogin
+          const WelcomePage()
+              : */!isLogin
               ? const WelcomePage()
-              : admin
-              ? const AllSignalementsPage()
-              : isbloqued
-              ? const Banni()
-              : (role == 'client')
+              : admin ?
+          const AllSignalementsPage()
+              : isbloqued ?
+          const Banni()
+              :(role == 'client')
               ? const HomePage()
-              : const ActiviteToday(),
+              : const ActiviteaujourPage(),
         ),
       ),
 
@@ -372,27 +281,27 @@ class HomeScreenState extends State<HomeScreen> {
       routes: {
         "/PublierDemandePage": (context) => const NotifDemande(),
         "/AccepteParArtisan": (context) => const DemandeAccepteePage(),
-        "/ConfirmeParClient": (context) => const ActiviteToday(),
+        "/ConfirmeParClient": (context) => const ActiviteaujourPage(),
       },
     );
   }
-
-  void checkifbloque() async {
-    try {
-      final userdoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get();
-      Map<String, dynamic> data = userdoc.data() as Map<String, dynamic>;
-      setState(() {
-        isbloqued = data['bloque'];
-      });
-      await Future.delayed(const Duration(milliseconds: 2000));
-    } catch (e) {
-      print("error : $e");
-    }
+  void checkifbloque() async{
+    auth.authStateChanges().listen((User? user) async {
+      try {
+        final userdoc = await FirebaseFirestore.instance.collection('users')
+            .doc(
+            user!.uid)
+            .get();
+        Map<String, dynamic> data = userdoc.data() as Map<String, dynamic>;
+        setState(() {
+          isbloqued = data['bloque'];
+        });
+      }
+      catch (e) {
+        print("error : $e");
+      }
+    });
   }
-
   void checkIfLogin() async {
     auth.authStateChanges().listen((User? user) async {
       final useremail = auth.currentUser?.email;
@@ -406,20 +315,15 @@ class HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-
-  void checkifadmin() {
-    if (FirebaseAuth.instance.currentUser != null) {
-      if (FirebaseAuth.instance.currentUser!.uid ==
-          'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
+  void checkifadmin(){
+    auth.authStateChanges().listen((User? user) async {
+      //if(FirebaseAuth.instance.currentUser != null) {
+      if (user!.uid == 'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
         setState(() {
           admin = true;
         });
-      } else {
-        setState(() {
-          admin = false;
-        });
       }
-    }
+    });
   }
 }
 

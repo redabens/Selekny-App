@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/Services/demande%20publication/getMateriel.dart';
@@ -36,9 +37,9 @@ class DetailsDemandeState extends State<DetailsDemande> {
   String? materiel; // Declare materiel as nullable String
   String? prix;
   late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: false, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
-   Date datedebut = Date();
+  Date datedebut = Date();
   final ModifPrixService _modifPrixService = ModifPrixService();
-   Date datefin =Date();
+  Date datefin =Date();
   bool urgence = false;
   @override
   void initState() {
@@ -63,30 +64,31 @@ class DetailsDemandeState extends State<DetailsDemande> {
   }
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: MyAppBar(domaineID: widget.domaineID,),
       body:
       SingleChildScrollView(
-          child: Column(
-            children: [
-              NomPrestation(nomprestation: widget.nomprestation,),
-              const SizedBox(width: 50, height: 25,),
-              Materiel(materiel: materiel ?? 'rien',),
-              const SizedBox(width: 50, height: 25,),
-              Prix(prix: prix ?? 'prix',),
-              const SizedBox(width: 50, height: 25,),
-              Urgence(domaineID: widget.domaineID,prestationID: widget.prestationID,nomprestation: widget.nomprestation,demande: demandeinit, urgence: urgence,),
-              const SizedBox(width: 50, height: 25,),
-              Dates(datedebut: datedebut,datefin: datefin,),
-              const SizedBox(width: 50, height: 25,),
-              Heure(demande: demandeinit,),
-              const SizedBox(width: 50, height: 25,),
-              Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datefin, domaineId: widget.domaineID,),
-              const SizedBox(height: 50),
-            ],
-
-          ),
-          ),
+        child: Column(
+          children: [
+            NomPrestation(nomprestation: widget.nomprestation,),
+            const SizedBox(width: 50, height: 25,),
+            Materiel(materiel: materiel ?? 'rien',),
+            const SizedBox(width: 50, height: 25,),
+            Prix(prix: prix ?? 'prix',),
+            const SizedBox(width: 50, height: 25,),
+            Urgence(domaineID: widget.domaineID,prestationID: widget.prestationID,nomprestation: widget.nomprestation,demande: demandeinit, urgence: urgence,),
+            const SizedBox(width: 50, height: 25,),
+            Dates(datedebut: datedebut,datefin: datefin,),
+            const SizedBox(width: 50, height: 25,),
+            Heure(demande: demandeinit,),
+            const SizedBox(width: 50, height: 25,),
+            Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datefin, domaineId: widget.domaineID,),
+            const SizedBox(width: 50, height: 40,),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -103,19 +105,23 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Stack(
       children: [
         AppBar(
           automaticallyImplyLeading: false, // Désactiver la flèche de retour en arrière
           //backgroundColor: Colors.blue,
           title: Row(
-           // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
 
               //SizedBox(width: 0),
               Container( // Enveloppez l'icône dans un Container pour créer un bouton carré
-                height: 40, // Définissez la hauteur et la largeur pour obtenir un bouton carré
-                width: 40,
+                height:screenHeight* 0.05, // Définissez la hauteur et la largeur pour obtenir un bouton carré
+                width:screenWidth*0.1,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF3F3F3),
                   borderRadius: BorderRadius.circular(15),
@@ -137,14 +143,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
 
-             const SizedBox(width: 30),
+              SizedBox(width:screenWidth*0.1),
               Center( // Centrer le texte horizontalement
                 child: Text(
                   'Détails de la demande',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 18,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
 
                   ),
                 ),

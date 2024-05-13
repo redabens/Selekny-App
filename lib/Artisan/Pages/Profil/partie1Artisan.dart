@@ -23,20 +23,20 @@ class ProfileArtisanSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           imageUrl.isNotEmpty
-                ? ClipRRect(
-              borderRadius: BorderRadius.circular(
-                  50), // Ajout du BorderRadius
-              child: Image.network(
-                imageUrl,
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
-            ): Icon(
-              Icons.account_circle,
-              size: 150,
-              color: Colors.grey[400],
+              ? ClipRRect(
+            borderRadius: BorderRadius.circular(
+                50), // Ajout du BorderRadius
+            child: Image.network(
+              imageUrl,
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
             ),
+          ): Icon(
+            Icons.account_circle,
+            size: 150,
+            color: Colors.grey[400],
+          ),
           SizedBox(height: screenHeight * 0.02), // Espacement proportionnel
           Text(
             nom,

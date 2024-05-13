@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
-import 'package:reda/Pages/authentification/connexion.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
-import 'package:reda/Pages/retourAuth.dart';
 import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Admin/components/signalements_component.dart';
 import 'package:intl/intl.dart';
 import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
-import 'package:reda/Admin/Pages/deconnexion.dart';
+import 'package:reda/Pages/authentification/connexion2.dart';
 
 
 class AllSignalementsPage extends StatefulWidget {
@@ -52,15 +50,29 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
 
   Future<String> getUserPathImage(String userID) async {
-    DocumentSnapshot userDoc = await _firestore.collection('users').doc(userID).get();
+    // Récupérer le document utilisateur
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
+        'users').doc(userID).get();
+
+    // Vérifier si le document existe
     if (userDoc.exists) {
+      // Extraire le PathImage
+      print('here');
       String pathImage = userDoc['pathImage'];
+      print(pathImage);
+      // Retourner le PathImage
       final reference = FirebaseStorage.instance.ref().child(pathImage);
-      final url = await reference.getDownloadURL();
-      return url;
+      try {
+        // Get the download URL for the user image
+        final downloadUrl = await reference.getDownloadURL();
+        return downloadUrl;
+      } catch (error) {
+        print("Error fetching user image URL: $error");
+        return ''; // Default image on error
+      }
     } else {
-      print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXSSS');
-      return "";
+      // Retourner une valeur par défaut si l'utilisateur n'existe pas
+      return '';
     }
   }
 
@@ -117,12 +129,12 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
           AppBar(
             leading: IconButton(onPressed: () {
-             // FirebaseAuth.instance.signOut();
+              FirebaseAuth.instance.signOut();
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const Deconnecter( )),
+                    const LoginPage2()),
               );
             },
               icon: Image.asset(
@@ -137,7 +149,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
             title: Text(
               'Signalements',
               style: GoogleFonts.poppins(
-                fontSize: 21,
+                fontSize: 24,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -211,7 +223,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),),
                 );
 
               },
@@ -305,15 +317,15 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
     String raison = data['raison'];
     Timestamp timestamp = data['timestamp'];
 
-    final String signaleurUrl = await getUserPathImage(signaleurID);
-    final String signalantUrl = await getUserPathImage(signalantID);
-    final String signaleurName = await getNameUser(signaleurID);
-    final String signalantName =  await getNameUser(signalantID);
-    final String date = await getFormattedDate(timestamp);
-    final String heure = await getFormattedTime(timestamp);
-    final String signalantJob = await getUserJob(signalantID);
-    final String signaleurJob = await getUserJob(signaleurID);
-    final int nbsignalement = await getNbSignalementUser(signalantID);
+    String signaleurUrl = await getUserPathImage(signaleurID);
+    String signalantUrl = await getUserPathImage(signalantID);
+    String signaleurName = await getNameUser(signaleurID);
+    String signalantName =  await getNameUser(signalantID);
+    String date = getFormattedDate(timestamp);
+    String heure = getFormattedTime(timestamp);
+    String signalantJob = await getUserJob(signalantID);
+    String signaleurJob = await getUserJob(signaleurID);
+    int nbsignalement = await getNbSignalementUser(signalantID);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

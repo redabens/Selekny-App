@@ -13,6 +13,8 @@ class ImageList2 extends StatelessWidget {
     "assets/electricite.png",
     "assets/macon.png",
     "assets/femme de menage.png",
+
+
   ];
 
   final List<String> texts = [
@@ -20,19 +22,21 @@ class ImageList2 extends StatelessWidget {
     "Electricité",
     "Maçonnerie",
     "Ménage",
+
+
   ];
   final List<String> ID = [
     "ajEON4X1fduQVsdVoqFJ",
     "KYsR4cj4mdVoDlrbyZbB",
     "s5Nry8HGyjjAgFsAxoum",
     "ynoP8TEQxtGUdTY0Ffld",
+
+
   ];
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
-      padding: const EdgeInsets.only( top:10, left:2), // Ajout de padding au haut de la liste
+      padding: const EdgeInsets.only( top:10, left:1), // Ajout de padding au haut de la liste
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -43,7 +47,6 @@ class ImageList2 extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => PrestationPage(domaineID: ID[index],indexe: 2, type: type,)),
                 );
-
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,17 +55,17 @@ class ImageList2 extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     child: Image.asset(
                       imagePaths[index],
-                      width: screenWidth*0.2,
-                      height: screenWidth*0.2,
+                      width: 79,
+                      height: 79,
                       fit: BoxFit.cover,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal:   8),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Text(
                       texts[index],
-                      style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],

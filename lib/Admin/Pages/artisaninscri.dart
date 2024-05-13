@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
@@ -35,7 +36,7 @@ class Artisan extends StatelessWidget {
                 // Navigate to another page
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreationArtisanPage()),
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité',)),
                 );
               },
               child: Container(

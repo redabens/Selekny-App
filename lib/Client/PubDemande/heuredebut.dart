@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/components/Demande.dart';
@@ -14,6 +15,8 @@ class De extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,19 +24,19 @@ class De extends StatelessWidget {
           [
             Row(
               children: [
-                const SizedBox(width: 10,),
-                  Text(
-                     'De :',
-                    style: GoogleFonts.poppins(
-                     color: const Color(0xFF6D6D6D),
-                     fontSize: 9,
-                      fontWeight: FontWeight.w700,
-                     ),
+                SizedBox(width:screenWidth*0.01,),
+                Text(
+                  'De :',
+                  style: GoogleFonts.poppins(
+                    color: const Color(0xFF6D6D6D),
+                    fontSize: screenWidth*0.022,
+                    fontWeight: FontWeight.w700,
                   ),
+                ),
               ],
             ),
 
-            const SizedBox(height: 5,),
+            SizedBox(height:screenHeight*0.004),
             HeureDebut(demande: demande,),
           ]
       ),
@@ -53,14 +56,16 @@ class HeureDebut extends StatefulWidget {
 }
 
 class _HeureDebutState extends State<HeureDebut> {
+
   String _selectedTimeText = 'Heure';
   TimeOfDay heuredebut = const TimeOfDay(hour: 0, minute: 0); // Initial time
   @override
   Widget build(BuildContext context) {
-
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: 30,
-      width: 80, // Adjust width for better time display
+      height: screenHeight*0.035,
+      width: screenWidth*0.22, // Adjust width for better time display
       child: ElevatedButton(
         onPressed: () {
           _showTimePicker(context);

@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +7,7 @@ import 'package:reda/Client/Pages/Demandes/HistoriqueArtisanPage.dart';
 import 'package:reda/Client/profile/update_profile_screen.dart';
 import 'package:reda/Pages/conditongeneral.dart';
 import 'package:reda/Pages/contacter.dart';
-import '../../../Pages/authentification/connexion.dart';
+import '../../../Pages/authentification/connexion2.dart';
 import '../../../Pages/help.dart';
 
 class SettingsArtisanSection extends StatelessWidget {
@@ -146,11 +147,7 @@ class SettingsArtisanSection extends StatelessWidget {
                 hasSwitch: true,
                 initialSwitchState: vehicule,
               ),
-              const SettingsItem(
-                imagePath: 'assets/sombre.png',
-                text: 'Mode sombre',
-                hasSwitch: true,
-              ),
+
               SettingsItem(
                 imagePath: 'assets/deconexion.png',
                 text: 'Déconnexion',
@@ -181,11 +178,11 @@ class SettingsArtisanSection extends StatelessWidget {
                           onPressed: () async {
                             // Déconnexion de l'utilisateur
                             await FirebaseAuth.instance.signOut();
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                const LoginPage(),
+                                builder: (BuildContext context) =>
+                                const LoginPage2(),
                               ),
                             );
                           },

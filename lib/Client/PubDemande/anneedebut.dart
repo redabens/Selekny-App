@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,9 +23,11 @@ class AnneeDebutState extends State<AnneeDebut> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: 30,
-      width: 80,
+      height: screenHeight*0.035,
+      width: screenWidth*0.23,
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS
@@ -44,7 +47,7 @@ class AnneeDebutState extends State<AnneeDebut> {
           textAlign: TextAlign.center,
           style: GoogleFonts.poppins(
             color: const Color(0xFF6D6D6D),
-            fontSize: 9,
+            fontSize: screenWidth*0.026,
             fontWeight: FontWeight.w700,
           ), // Afficher le texte de l'année sélectionnée ou "Année"
         ),
@@ -88,5 +91,3 @@ class AnneeDebutState extends State<AnneeDebut> {
     });
   }
 }
-
-

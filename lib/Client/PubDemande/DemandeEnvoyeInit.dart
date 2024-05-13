@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/components/Demande.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
+
 late String nomPrestation;
 
 Future<void> getNomPrestationById(String idDomaine, String idPrestation) async {
@@ -129,7 +131,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
             print("Token de l'artisan $i : $token");
 
             await getNomPrestationById(
-            demandeData['id_Domaine'], demandeData['id_Prestation']);
+                demandeData['id_Domaine'], demandeData['id_Prestation']);
 
             print("Voici le service publie : $nomPrestation");
             NotificationServices.sendPushNotification(
@@ -145,58 +147,84 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
   }
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                'assets/envoye.png', // corrected asset name
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Votre demande a été envoyée',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Veuillez patienter pendant que nous trouvons .',
-              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
-            ),
-            const Text(
-              'un artisan disponible pour vous',
-              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
-            ),
-            const SizedBox(height: 50),
-            GestureDetector(
-              onTap: () {
-                // Navigate to another page
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
-              },
-              child: Container(
-                width: 200,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF3E69FE),
-                  borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+          // Espace relatif
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                // Rayon proportionnel
+                child: Image.asset(
+                  'assets/envoye.png', // Chemin de l'image
+                  width: screenWidth * 0.4, // Largeur proportionnelle
+                  height: screenHeight * 0.25, // Hauteur proportionnelle
+                  fit: BoxFit.cover,
                 ),
-                child: const Center(
-                  child: Text(
-                    'Retour à l\'accueil',
-                    style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+              SizedBox(height: screenHeight * 0.02), // Espacement proportionnel
+              Text(
+                'Votre demande a été envoyée',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: screenWidth * 0.05, // Taille proportionnelle
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.01), // Espacement proportionnel
+              Text(
+                'Veuillez patienter pendant que nous trouvons',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                  fontSize: screenWidth * 0.032, // Taille proportionnelle
+                ),
+              ),
+              Text(
+                'un artisan disponible pour vous.',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                  fontSize: screenWidth * 0.032, // Taille proportionnelle
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.05), // Espacement proportionnel
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context); // Retour à l'accueil
+                },
+                child: Container(
+                  width: screenWidth * 0.5, // Largeur proportionnelle
+                  height: screenHeight * 0.05, // Hauteur proportionnelle
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF3E69FE),
+                    borderRadius: BorderRadius.circular(
+                        10), // Rayon proportionnel
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Retour à l\'accueil',
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: screenWidth * 0.04, // Taille proportionnelle
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

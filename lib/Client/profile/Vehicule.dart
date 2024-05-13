@@ -53,7 +53,7 @@ class _VehiculeState extends State<Vehicule> {
             mainAxisAlignment: MainAxisAlignment.start, // Align items to the start
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.car_crash_outlined,
                 size: 20, // You can adjust the size as needed
                 color: Colors.blueAccent, // Specify the color if needed

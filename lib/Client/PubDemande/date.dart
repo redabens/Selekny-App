@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/components/Date.dart';
@@ -23,11 +24,11 @@ class Dates extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: screenHeight*0.3,
-      width: screenWidth* 0.8,
+      height: screenHeight*0.25,
+      width: screenWidth* 0.85,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -56,7 +57,7 @@ class Dates extends StatelessWidget {
                 'Date',
                 style: GoogleFonts.poppins(
                   color: Colors.black,
-                  fontSize: 13,
+                  fontSize:screenWidth*0.035,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -67,33 +68,28 @@ class Dates extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 10),
-            Expanded(
-             child: Text(
-                'Selectionner la date de début et la fin de la prestation ',
+              const SizedBox(width: 30),
+              Text(
+                'Selectionner la date de début et la fin de la \n prestation ',
                 style: GoogleFonts.poppins(
                   color: const Color(0xFF6D6D6D),
-                  fontSize: 11,
+                  fontSize: screenWidth*0.03,
                   fontWeight: FontWeight.w700,
-                ),overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                maxLines: 2,
+                ),
               ),
-    ),
-
             ],
           ),
-          const SizedBox(width: 25, height: 10,),
+          SizedBox(width:screenWidth*0.15, height:screenHeight*0.012),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 10),
+              const SizedBox(width: 33),
               Text(
-                'Début :',
+                'Début',
                 style: GoogleFonts.poppins(
                   color: const Color(0xFF6D6D6D),
-                  fontSize: 9,
+                  fontSize: screenWidth*0.022,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -101,31 +97,32 @@ class Dates extends StatelessWidget {
 
 
           ),
-          const SizedBox( height: 5,),
-           Row(
+          SizedBox(width:screenWidth*0.15, height:screenHeight*0.005,),
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 10),
+              SizedBox(width:screenWidth*0.06),
               JourDebut(datedebut: datedebut,),
-              SizedBox(width: screenWidth*0.02),
+              SizedBox(width:screenWidth*0.02),
               MoisDebut(datedebut: datedebut,),
-              SizedBox(width: screenWidth*0.02),
+              SizedBox(width:screenWidth*0.02),
               AnneeDebut(datedebut: datedebut,),
             ],
 
+
           ),
-          const SizedBox(width: 10, height: 10,),
+          SizedBox(width:screenWidth*0.15, height:screenHeight*0.01),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-               const SizedBox(width: 10),
+              const SizedBox(width: 33),
               Text(
-                'Fin :',
+                'Fin',
                 style: GoogleFonts.poppins(
                   color: const Color(0xFF6D6D6D),
-                  fontSize: 9,
+                  fontSize: screenWidth*0.022,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -133,16 +130,16 @@ class Dates extends StatelessWidget {
 
 
           ),
-          const SizedBox( height: 5,),
+          SizedBox(width:screenWidth*0.15, height:screenHeight*0.005,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 10),
+              SizedBox(width:screenWidth*0.06),
               JourFin(datefin: datefin,),
-              SizedBox(width: screenWidth*0.02),
+              SizedBox(width:screenWidth*0.02),
               MoisFin(datefin: datefin,),
-              SizedBox(width: screenWidth*0.02),
+              SizedBox(width:screenWidth*0.02),
               AnneeFin(datefin: datefin,),
             ],
 

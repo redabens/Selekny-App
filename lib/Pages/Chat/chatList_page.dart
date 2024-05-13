@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:reda/Pages/Chat/chat_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Artisan/Pages/Activité/Activitaujour.dart';
 import '../../Artisan/Pages/Profil/profileArtisan.dart';
 import '../../Client/profile/profileClient.dart';
 
@@ -257,205 +258,206 @@ class _ChatListPageState extends State<ChatListPage> {
             const SizedBox(height: 10), // espace between les chat box
           ],
         ),
-        bottomNavigationBar: widget.type == 1 ? BottomNavigationBar(
+      bottomNavigationBar: widget.type == 1 ? BottomNavigationBar(
 
-          backgroundColor: const Color(0xFFF8F8F8),
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
-          iconSize: 30,
-          items: [
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 0;
-                  });
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage(),),
-                  );
+        backgroundColor: const Color(0xFFF8F8F8),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        iconSize: 30,
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage(),),
+                );
 
-                },
-                child: SizedBox(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/accueil.png',
-                    color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
+              },
+              child: SizedBox(
+                height: 40,
+                child: Image.asset(
+                  'assets/accueil.png',
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
-              label: '',
             ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 1;
-                  });
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
-                  );
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
+                );
 
 
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/demandes.png',
-                    color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'assets/demandes.png',
+                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
-              label: '',
             ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 2;
-                  });
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ChatListPage( type: 1,),),
-                  );
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatListPage( type: 1,),),
+                );
 
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/messages.png',
-                    color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'assets/messages.png',
+                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
-              label: '',
             ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 3;
-                  });
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ProfilClientPage(),),
-                  );
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfilClientPage(),),
+                );
 
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/profile.png',
-                    color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
+              },
+              child: Container(
+                height: 40,
+                child: Image.asset(
+                  'assets/profile.png',
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
-              label: '',
             ),
-          ],
-        ) : BottomNavigationBar(
+            label: '',
+          ),
+        ],
+      ) :
+      //-------------------------ARTISANNNN  NAVBAAAAAAAAAAAAR-----------------------------
+      BottomNavigationBar(
+        backgroundColor: const Color(0xFFF8F8F8),
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        iconSize: 30,
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
+                );
 
-          backgroundColor: const Color(0xFFF8F8F8),
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
-          iconSize: 30,
-          items: [
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 0;
-                  });
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ActiviteAvenir(),),
-                  );
-
-                },
-                child: SizedBox(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/accueil.png',
-                    color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
+              },
+              child: Container(
+                height: screenHeight*0.03,
+                child: Image.asset(
+                  'assets/accueil.png',
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
-              label: '',
             ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 1;
-                  });
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NotifUrgente(),),
-                  );
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NotifUrgente()),
+                );
 
 
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/Ademandes.png',
-                    color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
+              },
+              child: Container(
+                height: screenHeight*0.035,
+                child: Image.asset(
+                  'assets/Ademandes.png',
+                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
-              label: '',
             ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 2;
-                  });
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,),),
-                  );
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
+                );
 
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/messages.png',
-                    color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
+              },
+              child: Container(
+                height:screenHeight*0.04,
+                child: Image.asset(
+                  'assets/messages.png',
+                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
-              label: '',
             ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentIndex = 3;
-                  });
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ProfilArtisanPage(),),
-                  );
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
+                );
 
-                },
-                child: Container(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/profile.png',
-                    color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
-                  ),
+              },
+              child: Container(
+                height: screenHeight*0.03,
+                child: Image.asset(
+                  'assets/profile.png',
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
-              label: '',
             ),
-          ],
-        )
+            label: '',
+          ),
+        ],
+      ),
 
     );
 

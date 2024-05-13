@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -32,10 +33,11 @@ class DetailsDemandeUrgente extends StatefulWidget {
 }
 
 class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
-  String? materiel; // Declare materiel as nullable String
+  String? materiel=''; // Declare materiel as nullable String
   String? prix = '';
   Date datedebut = Date();
   bool urgence = true;
+  int _rayonRecherche = 5; // Valeur initiale du rayon de recherche
   final ModifPrixService _modifPrixService = ModifPrixService();
   late Demande demandeinit = Demande(
       id_Client: "",
@@ -84,6 +86,34 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
             const SizedBox(width: 50, height: 25,),
             Urgence(domaineID: widget.domaineID,prestationID: widget.prestationID,nomprestation: widget.nomprestation,demande: demandeinit, urgence: urgence,),
             const SizedBox(width: 50, height: 25,),
+            /*Container(
+              width: double.infinity, // Prendre la largeur maximale disponible
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                  const Text('Rayon de recherche:'),
+              DropdownButton<int>(
+                  value: _rayonRecherche,
+                  items: [
+                  for (int i in [5, 10, 15, 20, 25, 30]) // Boucle pour générer les options
+                DropdownMenuItem(
+                  value: i,
+                  child: Text('$i km'),
+            ),
+          ],
+          onChanged: (int? nouveauRayon) {
+            if (nouveauRayon != null) {
+              setState(() {
+                _rayonRecherche = nouveauRayon;
+              });
+            }
+          },
+        ),
+        ],
+      ),
+    ),
+            const SizedBox(width: 50, height: 25,),*/
             Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datedebut, domaineId: widget.domaineID,),
           ],
         ),
@@ -103,6 +133,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Stack(
       children: [
         AppBar(
@@ -114,8 +146,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
               //SizedBox(width: 0),
               Container( // Enveloppez l'icône dans un Container pour créer un bouton carré
-                height: 40, // Définissez la hauteur et la largeur pour obtenir un bouton carré
-                width: 40,
+                height:screenHeight* 0.05, // Définissez la hauteur et la largeur pour obtenir un bouton carré
+                width:screenWidth*0.1,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF3F3F3),
                   borderRadius: BorderRadius.circular(15),
@@ -137,14 +169,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
 
-              const SizedBox(width: 30),
+              SizedBox(width:screenWidth*0.12),
               Center( // Centrer le texte horizontalement
                 child: Text(
                   'Détails de la demande',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 18,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
 
                   ),
                 ),

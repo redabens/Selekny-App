@@ -1,5 +1,6 @@
 
 
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 class Prix extends StatelessWidget {
@@ -11,9 +12,11 @@ class Prix extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: 75.02,
-      width: MediaQuery.of(context).size.width * 0.8,
+      height: screenHeight*0.09,
+      width: screenWidth*0.85,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -48,7 +51,7 @@ class Prix extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          SizedBox(height:screenHeight*0.01),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,

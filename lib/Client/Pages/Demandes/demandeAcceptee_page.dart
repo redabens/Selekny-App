@@ -100,6 +100,8 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -149,9 +151,10 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage(),),
                 );
+
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -173,8 +176,8 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/demandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -195,8 +198,8 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 );
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.040,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -218,7 +221,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -242,9 +245,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
         if(snapshot.connectionState == ConnectionState.waiting){
           return const Text('Loading..');
         }
-
         final documents = snapshot.data!.docs;
-
         // Print details of each document
         for (var doc in documents) {
           print("Document Data: ${doc.data()}");
@@ -314,7 +315,8 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
       double longitude = data['longitude'];
       Timestamp timestamp = data['timestamp'];
       // ... rest of your code using the extracted values
-      return DetDemandeAcceptee(
+      return Column( children:[
+        DetDemandeAcceptee(
         domaine: domaine,
         location: location,
         date: date,
@@ -340,7 +342,10 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
         adresseartisan: adresseartisan,
         workcount: workcount,
         vehicule: vehicule,
-      );
+      ),
+       const SizedBox(height: 20,),
+      ]
+    );
     } else {
       // Handle the case where the document is null
       print('Error: Document is null for document ID: ${document.id}');
@@ -353,7 +358,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 color: Colors.grey[600],
               )
           )
-      );; // or some placeholder widget
+      ); // or some placeholder widget
     }
   }
 

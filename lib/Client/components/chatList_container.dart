@@ -50,8 +50,8 @@ class DetChatList extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
-        left: 22,
-        right: 22,
+        left: 14,
+        right: 14,
       ),
       child: Stack(
         children: [
@@ -114,11 +114,11 @@ class DetChatList extends StatelessWidget {
                         child: profileImage != ''
                             ? ClipRRect(
                           borderRadius: BorderRadius.circular(
-                              54), // Ajout du BorderRadius
+                              20), // Ajout du BorderRadius
                           child: Image.network(
                             profileImage,
-                            width: screenWidth*0.15,
-                            height: screenWidth*0.15,
+                            width: screenWidth*0.1,
+                            height: screenWidth*0.1,
                             fit: BoxFit.cover,
                           ),
                         )
@@ -138,13 +138,18 @@ class DetChatList extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                            child:Text(
                               userName,
+                              maxLines: 1, // Limit to a single line
+                              overflow: TextOverflow.ellipsis, // Show '...' if overflow
                               style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
                                 color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
                               ),
+                            ),
                             ),
                           ],
                         ),

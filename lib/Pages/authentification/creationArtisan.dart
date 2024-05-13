@@ -8,12 +8,9 @@ import 'package:reda/Services/ConvertAdr.dart';
 import 'package:reda/Services/notifications.dart';
 import '../../Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
 import '../../Admin/Pages/Signalements/AllSignalements_page.dart';
-import '../WelcomeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-
-import '../retourAuth.dart';
 
 NotificationServices notificationServices = NotificationServices();
 late String token;
@@ -27,7 +24,8 @@ Future<void> getToken() async {
 }
 
 class CreationArtisanPage extends StatelessWidget {
-  const CreationArtisanPage({super.key});
+  final String domaine;
+  const CreationArtisanPage({super.key, required this.domaine});
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +33,16 @@ class CreationArtisanPage extends StatelessWidget {
       title: 'Inscription Page',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const Scaffold(
-        body: CreationArtisanScreen(),
+      home: Scaffold(
+        body: CreationArtisanScreen(domaine: domaine,),
       ),
     );
   }
 }
 
 class CreationArtisanScreen extends StatefulWidget {
-  const CreationArtisanScreen({super.key});
+  final String domaine;
+  const CreationArtisanScreen({super.key, required this.domaine});
 
   @override
   State<CreationArtisanScreen> createState() => _CreationArtisanScreenState();
@@ -112,7 +111,8 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   @override
   void initState() {
     super.initState();
-    selectedDomaine = ValueNotifier<String>('');
+    selectedPrestations.clear();
+    selectedDomaine = ValueNotifier<String>(widget.domaine);
     fetchDomaines().then((domainesList) {
       setState(() {
         domaines = domainesList;
@@ -121,13 +121,14 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
     });
 
     selectedDomaine.addListener(() {
-      fetchPrestationsByDomaine(selectedDomaine.value); // Call on change
+      fetchPrestationsByDomaine(widget.domaine); // Call on change
     });
   }
 
   @override
   void dispose() {
     selectedDomaine.dispose();
+    selectedPrestations.clear();
     super.dispose();
   }
 
@@ -182,10 +183,10 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
           latitude: position['latitude'],
           longitude: position['longitude'],
           statut: true,
-          domaine: selectedDomaine.value,
+          domaine: widget.domaine,
           prestations: selectedPrestations,
           token: '',
-          rating: 4,
+          rating: 3.5,
           vehicule: false,
           bloque: false,
           nbsignalement: 0,
@@ -196,7 +197,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
         UserRepository userRepository = UserRepository();
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const WelcomePage()),
+          MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité')),
         );
         try {
           await FirebaseFirestore.instance
@@ -233,320 +234,324 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
         toolbarHeight: 20,
         backgroundColor: Colors.white,),
       body:SingleChildScrollView(
-       child: Padding(
-        padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/logo.png',
-                    width: 85,
-                    height: 90,
-                  ),
-                  const SizedBox(height: 3),
-                  const Text(
-                    'Creation compte Artisan',
-                    style: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/logo.png',
+                      width: 85,
+                      height: 90,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 3),
+                    const Text(
+                      'Creation compte Artisan',
+                      style: TextStyle(
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 0, top: 60),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 85),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _nameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez saisir le nom';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Nom',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: const UnderlineInputBorder(),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextFormField(
-                          controller: _adresseController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Veuillez saisir l'adresse";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Adresse',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: const UnderlineInputBorder(),
-                            suffixIcon: const Icon(Icons.location_pin),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextFormField(
-                          controller: _numController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Numero obligatoire';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            border: const UnderlineInputBorder(),
-                            suffixIcon: const Icon(Icons.phone),
-                            prefixIcon: CountryCodePicker(
-                              onChanged: (CountryCode? code) {
-                                print(code);
-                              },
-                              initialSelection: 'DZ',
-                              favorite: const ['DZ'],
-                              showCountryOnly: true,
-                              showOnlyCountryWhenClosed: true,
-                              alignLeft: false,
-                            ),
-                          ),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          keyboardType: TextInputType.phone,
-                        ),
-                        const SizedBox(height: 10),
-                        DropdownButtonFormField<String>(
-                          value: selectedDomaine.value,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 24,
-                          elevation: 16,
-                          decoration: InputDecoration(
-                            labelText: 'Domaine',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: const UnderlineInputBorder(),
-                          ),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedDomaine.value = newValue ?? '';
-                              fetchPrestationsByDomaine(newValue ?? '');
-                              selectedPrestations.clear();
-                            });
-                          },
-                          items: domaines.map<DropdownMenuItem<String>>(
-                                (String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            },
-                          ).toList(),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Veuillez sélectionner un domaine";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        TextFormField(
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Veuillez saisir l'email";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: const UnderlineInputBorder(),
-                            suffixIcon: const Icon(Icons.alternate_email),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextFormField(
-                          controller: _passwordController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez saisir le mot de passe';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Créer mot de passe',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: const UnderlineInputBorder(),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _showPassword
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _showPassword = !_showPassword;
-                                });
-                              },
-                            ),
-                          ),
-                          obscureText: !_showPassword,
-                        ),
-                        const SizedBox(height: 6),
-                        TextFormField(
-                          controller: _confirmPasswordController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez confirmer le mot de passe';
-                            } else {
-                              if (value != _passwordController.value.text) {
-                                return 'Les mots de passe ne correspondent pas';
+              Padding(
+                padding: const EdgeInsets.only(left: 0, top: 60),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 85),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _nameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez saisir le nom';
                               }
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Confirmer mot de passe',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            border: const UnderlineInputBorder(),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _showPassword
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Nom',
+                              labelStyle: TextStyle(
+                                color: textColor,
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  _showPassword = !_showPassword;
-                                });
-                              },
+                              border: const UnderlineInputBorder(),
                             ),
                           ),
-                          obscureText: !_showPassword,
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _adresseController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Veuillez saisir l'adresse";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Adresse',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: const UnderlineInputBorder(),
+                              suffixIcon: const Icon(Icons.location_pin),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _numController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Numero obligatoire';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              border: const UnderlineInputBorder(),
+                              suffixIcon: const Icon(Icons.phone),
+                              prefixIcon: CountryCodePicker(
+                                onChanged: (CountryCode? code) {
+                                  print(code);
+                                },
+                                initialSelection: 'DZ',
+                                favorite: const ['DZ'],
+                                showCountryOnly: true,
+                                showOnlyCountryWhenClosed: true,
+                                alignLeft: false,
+                              ),
+                            ),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            keyboardType: TextInputType.phone,
+                          ),
+                          const SizedBox(height: 10),
+                          DropdownButtonFormField<String>(
+                            value: widget.domaine,
+                            icon: const Icon(Icons.arrow_drop_down),
+                            iconSize: 24,
+                            elevation: 16,
+                            decoration: InputDecoration(
+                              labelText: 'Domaine',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: const UnderlineInputBorder(),
+                            ),
+                            onChanged: (String? newValue) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => CreationArtisanPage(domaine: newValue!),),
+                              );
+                              setState(() {
+                                selectedDomaine.value = newValue ?? '';
+                                fetchPrestationsByDomaine(newValue ?? '');
+                                selectedPrestations.clear();
+                              });
+                            },
+                            items: domaines.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              },
+                            ).toList(),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Veuillez sélectionner un domaine";
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Veuillez saisir l'email";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: const UnderlineInputBorder(),
+                              suffixIcon: const Icon(Icons.alternate_email),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _passwordController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez saisir le mot de passe';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Créer mot de passe',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: const UnderlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _showPassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showPassword = !_showPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            obscureText: !_showPassword,
+                          ),
+                          const SizedBox(height: 6),
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Veuillez confirmer le mot de passe';
+                              } else {
+                                if (value != _passwordController.value.text) {
+                                  return 'Les mots de passe ne correspondent pas';
+                                }
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Confirmer mot de passe',
+                              labelStyle: TextStyle(
+                                color: textColor,
+                              ),
+                              border: const UnderlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _showPassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showPassword = !_showPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            obscureText: !_showPassword,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    DropdownButtonFormField<String>(
+                      value: null,
+                      hint: const Text('Sélectionner les prestations'),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          if (newValue != null && newValue == 'Tout') {
+                            selectedPrestations = List.from(allPrestations);
+                          } else {
+                            if (selectedPrestations.contains('Tout')) {
+                              selectedPrestations.remove('Tout');
+                            }
+                            if (selectedPrestations.contains(newValue)) {
+                              selectedPrestations.remove(newValue);
+                            } else {
+                              selectedPrestations.add(newValue!);
+                            }
+                          }
+                        });
+                      },
+                      items: [
+                        const DropdownMenuItem<String>(
+                          value: 'Tout',
+                          child: Text('Sélectionner tout'),
                         ),
+                        ...allPrestations.map<DropdownMenuItem<String>>(
+                              (prestation) {
+                            return DropdownMenuItem<String>(
+                              value: prestation,
+                              child: Text(prestation),
+                            );
+                          },
+                        ).toList(),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  DropdownButtonFormField<String>(
-                    value: null,
-                    hint: const Text('Sélectionner les prestations'),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        if (newValue != null && newValue == 'Tout') {
-                          selectedPrestations = List.from(allPrestations);
-                        } else {
-                          if (selectedPrestations.contains('Tout')) {
-                            selectedPrestations.remove('Tout');
-                          }
-                          if (selectedPrestations.contains(newValue)) {
-                            selectedPrestations.remove(newValue);
-                          } else {
-                            selectedPrestations.add(newValue!);
-                          }
-                        }
-                      });
-                    },
-                    items: [
-                      const DropdownMenuItem<String>(
-                        value: 'Tout',
-                        child: Text('Sélectionner tout'),
-                      ),
-                      ...allPrestations.map<DropdownMenuItem<String>>(
-                            (prestation) {
-                          return DropdownMenuItem<String>(
-                            value: prestation,
-                            child: Text(prestation),
-                          );
-                        },
-                      ).toList(),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 8.0,
-                    runSpacing: 4.0,
-                    children: selectedPrestations.map((prestation) {
-                      return Chip(
-                        label: Text(prestation),
-                        onDeleted: () {
-                          setState(() {
-                            selectedPrestations.remove(prestation);
-                          });
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 25),
-                  ElevatedButton(
-                    onPressed: () async {
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 4.0,
+                      children: selectedPrestations.map((prestation) {
+                        return Chip(
+                          label: Text(prestation),
+                          onDeleted: () {
+                            setState(() {
+                              selectedPrestations.remove(prestation);
+                            });
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 25),
+                    ElevatedButton(
+                      onPressed: () async {
                         await handleSubmit();
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const Artisan(),),
                         );
                       },
-                    style: ButtonStyle(
-                      minimumSize:
-                      MaterialStateProperty.all<Size>(const Size(350, 47)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13.13),
+                      style: ButtonStyle(
+                        minimumSize:
+                        MaterialStateProperty.all<Size>(const Size(350, 47)),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13.13),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xFF3E69FE),
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFF3E69FE),
+                      child: _loading
+                          ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                          strokeWidth: 2,
+                        ),
+                      )
+                          : const Text(
+                        "Créer compte artisan",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        ),
                       ),
                     ),
-                    child: _loading
-                        ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.black,
-                        strokeWidth: 2,
-                      ),
-                    )
-                        : const Text(
-                      "Créer compte artisan",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                ],
+                    const SizedBox(height: 10),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFF8F8F8),
@@ -608,7 +613,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 });
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(),),
+                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),),
                 );
 
               },

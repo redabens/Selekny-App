@@ -82,6 +82,7 @@ dependencies:
   firebase_performance: ^0.9.3+17
   url_launcher: ^6.2.6
   flutter_offline: ^3.0.1
+  fluttertoast: ^8.2.5
 
 dev_dependencies:
   flutter_test:
@@ -177,6 +178,12 @@ flutter:
     - assets/banni1.png
     - assets/banni2.png
     - assets/pointexclamation.png
+    - assets/clee.png
+    - assets/adresse.png
+    - assets/aujour.png
+    - assets/time.png
+    - assets/nettoyagesol.jpg
+    - assets/calendar.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

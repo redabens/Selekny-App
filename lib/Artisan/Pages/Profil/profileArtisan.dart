@@ -1,14 +1,16 @@
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Today.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Pages/Profil/partie1Artisan.dart';
 import 'package:reda/Artisan/Pages/Profil/partie2Artisan.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
+
+import '../Activité/Activitaujour.dart';
 class ProfilArtisanPage extends StatefulWidget {
   const ProfilArtisanPage({super.key});
 
@@ -118,7 +120,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
         ),
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.grey[150],
+        backgroundColor: Color(0xFF3E69FE).withOpacity(0.1),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -126,7 +128,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.grey[100]!, // Gris clair en haut
+              const Color(0xFF3E69FE).withOpacity(0.1), // Gris clair en haut
               Colors.white, // Blanc en bas
             ],
             stops: const [0.5, 0.5], // Transition nette
@@ -175,7 +177,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -191,12 +193,12 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteToday()),
+                  MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
                 );
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -219,9 +221,9 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.035,
                 child: Image.asset(
-                  'assets/demandes.png',
+                  'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
@@ -236,12 +238,12 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2)),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
 
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.04,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -263,7 +265,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -286,4 +288,3 @@ class ProfileData {
   final bool statut;
   ProfileData(this.nomartisan, this.email, this.imageUrl, this.domaine, this.vehicule, this.statut);
 }
-

@@ -58,12 +58,12 @@ class WelcomeScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
                       );
                     },
                     style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all<Size>(const Size(330, 52)),
+                      MaterialStateProperty.all<Size>(const Size(330, 52)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(13.13),
@@ -74,7 +74,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       elevation: MaterialStateProperty.all<double>(5),
                       shadowColor:
-                          MaterialStateProperty.all<Color>(const Color(0xFF3E69FE)),
+                      MaterialStateProperty.all<Color>(const Color(0xFF3E69FE)),
                     ),
                     child: const Text(
                       'Se connecter',
@@ -91,12 +91,12 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => InscriptionPage()),
+                            builder: (context) => const InscriptionPage(type: 1,)),
                       );
                     },
                     style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all<Size>(const Size(330, 52)),
+                      MaterialStateProperty.all<Size>(const Size(330, 52)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.12),
@@ -107,7 +107,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       elevation: MaterialStateProperty.all<double>(7),
                       shadowColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
+                      MaterialStateProperty.all<Color>(Colors.black),
                     ),
                     child: const Text(
                       "S'inscrire",
@@ -131,7 +131,7 @@ class WelcomeScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const HomeDefaultPage()), //to home page not login
+                        const HomeDefaultPage()), //to home page not login
                   );
                 },
                 child: Row(

@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,14 +19,15 @@ class JourDebut extends StatefulWidget {
 }
 
 class JourDebutState extends State<JourDebut> {
+
   String _selectedDayText = 'Jour'; // Variable pour stocker le texte du jour sélectionné
   int jourdebut = 0; // Variable pour stocker le jour sélectionné
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: screenHeight*0.04,
+      height: screenHeight*0.035,
       width: screenWidth*0.2,
       child: ElevatedButton(
         onPressed: () {
@@ -47,12 +49,11 @@ class JourDebutState extends State<JourDebut> {
           textAlign: TextAlign.center,
           style: GoogleFonts.poppins(
             color: const Color(0xFF6D6D6D),
-            fontSize: 10,
+            fontSize: screenWidth*0.026,
             fontWeight: FontWeight.w700,
           ), // Afficher le texte du jour sélectionné ou "Jour"
         ),
       ),
-
 
     );
   }

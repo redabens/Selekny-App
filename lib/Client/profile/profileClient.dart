@@ -1,4 +1,5 @@
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -97,11 +98,11 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
           'Profil',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
-            fontSize: screenWidth * 0.07, // Taille proportionnelle
+            fontSize: screenWidth * 0.08, // Taille proportionnelle
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.grey[100],
+        backgroundColor: const Color(0xFF3E69FE).withOpacity(0.1),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -109,7 +110,7 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.grey[100]!, // Gris clair en haut
+              const Color(0xFF3E69FE).withOpacity(0.1)!, // Gris clair en haut
               Colors.white, // Blanc en bas
             ],
             stops: const [0.5, 0.5], // Transition nette
@@ -266,4 +267,3 @@ class ProfileData {
   final bool vehicule;
   ProfileData(this.nomartisan, this.email, this.imageUrl, this.vehicule);
 }
-

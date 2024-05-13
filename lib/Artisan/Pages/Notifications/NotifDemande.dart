@@ -143,7 +143,7 @@ class NotifDemandeState extends State<NotifDemande> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteAvenir()),
+                  MaterialPageRoute(builder: (context) => const ActivitAvenirPage()),
                 );
 
               },

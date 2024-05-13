@@ -1,37 +1,33 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget buildUserProfileImage(String? profileImage) {
-  //si url valide => crached net
-  if (profileImage != null){
-     if (profileImage.startsWith('http') || profileImage.startsWith('https')) {
-    return CachedNetworkImage(
-      imageUrl: profileImage,
-      placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Icon(
-        Icons.account_circle,
-        size: 50,
-        color: Colors.grey[400],
-      ),
-    );
-  }else{
-       return Icon(
-         Icons.account_circle,
-         size: 50,
-         color: Colors.grey[400],
-       );
-     }
-     }else {
-    // if url nexiste pas ou null => assets
-    return Icon(
-      Icons.account_circle,
-      size: 50,
-      color: Colors.grey[400],
-    );
+Future<String> getUserPathImage(String userID) async {
+
+  DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
+      'users').doc(userID).get();
+  if (userDoc.exists) {
+    print('here');
+    String pathImage = userDoc['pathImage'];
+    print(pathImage);
+    // Retourner le PathImage
+    final reference = FirebaseStorage.instance.ref().child(pathImage);
+    try {
+      // Get the download URL for the user image
+      final downloadUrl = await reference.getDownloadURL();
+      return downloadUrl;
+    } catch (error) {
+      print("Error fetching user image URL: $error");
+      return ''; // Default image on error
+    }
+  } else {
+    return '';
   }
 }
+
 
 class DetGestionUsers extends StatelessWidget {
   final String userName;
@@ -51,14 +47,14 @@ class DetGestionUsers extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
-        left: 16,
-        right: 16,
+        left: 8,
+        right: 8,
       ),
       child: Stack(
         children: [
           Container(
-            height: screenHeight*0.086,
-            width: screenWidth*0.9,
+
+            width: screenWidth*1,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
@@ -78,14 +74,23 @@ class DetGestionUsers extends StatelessWidget {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50.0),
-                      child: buildUserProfileImage(
-                          profileImage), // Using the function here
+                    child: profileImage != ''
+                        ? ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          60), // Ajout du BorderRadius
+                      child: Image.network(
+                        profileImage,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    ): Icon(
+                      Icons.account_circle,
+                      size:50,
+                      color: Colors.grey[400],
                     ),
                   ),
                   const SizedBox(width: 20),
-                  //espace entre container image et text
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,6 +98,7 @@ class DetGestionUsers extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Expanded(child:
                             Text(
                               userName,
                               style: GoogleFonts.poppins(
@@ -100,8 +106,11 @@ class DetGestionUsers extends StatelessWidget {
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
                               ),
+                              overflow: TextOverflow.ellipsis,
+
                             ),
-                          ],
+                              ),
+                        ],
                         ),
                         const SizedBox(height: 1),
                         Container(

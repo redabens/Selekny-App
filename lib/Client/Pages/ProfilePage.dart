@@ -37,13 +37,15 @@ class ProfilePagesState extends State<ProfilePages> {
   @override
 
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading: false, // Désactiver la flèche de retour en arrière
           title: const Text('Profile')),
       body: const Center(child: Text('Profile Page')),
 
-      bottomNavigationBar: BottomNavigationBar(
+       bottomNavigationBar: BottomNavigationBar(
 
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,

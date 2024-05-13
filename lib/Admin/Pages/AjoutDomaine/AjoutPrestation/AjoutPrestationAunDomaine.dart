@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/AjoutPrestation/DetailsPrestation.dart';
+import 'package:reda/Admin/Pages/AjoutDomaine/AjoutPrestation/FormulaireAjoutPrestation.dart';
 import 'package:reda/Pages/retourAuth.dart';
-
 import '../../../Services/Domaine_service.dart';
 
 class AjoutPrestationAunDomaine extends StatefulWidget {
@@ -39,15 +40,15 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
     return Scaffold(
       appBar: MyAppBar(nomdomaine: widget.nomDomaine,),
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 15,),
-            Expanded(
-              child: _buildPrestationList(),
-            ),
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 15,),
+          Expanded(
+            child: _buildPrestationList(),
+          ),
 
-          ],
+        ],
       ),
     );
   }
@@ -90,64 +91,63 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
                 );
               }
               // Combine prestation items with AjouterPrestation widget
-               final children = snapshot.data!.map((domainItem) => domainItem).toList();
-              children.add(
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  height: 70,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: const Color(0xFFD9D9D9),
-                      width: 3.0,
-                    ),
+              final children = snapshot.data!.map((domainItem) => domainItem).toList();
+              children.add(Container(
+                width: MediaQuery.of(context).size.width * 0.4,
+                height: 70,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: const Color(0xFFD9D9D9),
+                    width: 3.0,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        child: IconButton(
-                          icon: Image.asset('assets/add.png'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const RetourAuth()),
-                            );
-                          },
-                        ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      child: IconButton(
+                        icon: Image.asset('assets/add.png'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => FormulaireAjoutPrestation(iddomaine: widget.idDomaine, nomdomaine: widget.nomDomaine)),
+                          );
+                        },
                       ),
-                      const SizedBox(width: 8),
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: RichText(
-                                text: TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Ajouter une prestation',
-                                      style: GoogleFonts.poppins(
-                                        color: const Color(0xFFC4C4C4),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: RichText(
+                              text: TextSpan(
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Ajouter une prestation',
+                                    style: GoogleFonts.poppins(
+                                      color: const Color(0xFFC4C4C4),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ), // Encapsulez le contenu dynamique dans une méthode
-                ),
+                    ),
+                  ],
+                ), // Encapsulez le contenu dynamique dans une méthode
+              ),
               );
               children.add(const SizedBox(height: 10,),);
               return ListView(children: children);
@@ -160,11 +160,14 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
     String imageUrl = await getPrestationPathImage(data['image']);
     return Column( // Wrap in a Column for vertical spacing
       children: [
-            Prestation(
-              nomprestation: data['nom_prestation'],
-              imageUrl: imageUrl,
-            ),
-            const SizedBox(height: 10), // Add spacing between containers
+        Prestation(
+          nomprestation: data['nom_prestation'],
+          imageUrl: imageUrl,
+          domaineId: widget.idDomaine,
+          prestationId: document.id, prixmin: data['prixmin'],
+          prixmax: data['prixmax'], unite: data['unite'], materiel: data['materiel'] ?? '',
+        ),
+        const SizedBox(height: 10), // Add spacing between containers
       ],
     );
 
@@ -232,12 +235,25 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+
 class Prestation extends StatelessWidget {
   final String nomprestation;
   final String imageUrl;
+  final String domaineId;
+  final String prestationId;
+  final int prixmin;
+  final int prixmax;
+  final String unite;
+  final String materiel;
   const Prestation({super.key,
     required this.nomprestation,
     required this.imageUrl,
+    required this.domaineId,
+    required this.prestationId,
+    required this.prixmin,
+    required this.prixmax,
+    required this.unite,
+    required this.materiel,
   });
 
   @override
@@ -291,7 +307,11 @@ class Prestation extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RetourAuth(),),
+                  MaterialPageRoute(builder: (context) => DetailsPrestation(domaineID: domaineId,
+                    prestationID: prestationId, imageUrl: imageUrl,
+                    nomprestation: nomprestation, prixmin: prixmin,
+                    prixmax: prixmax, unite: unite, materiel: materiel,),
+                  ),
                 );
               },
             ),
@@ -395,5 +415,3 @@ class AjouterPrestation extends StatelessWidget {
     );
   }
 }
-
-

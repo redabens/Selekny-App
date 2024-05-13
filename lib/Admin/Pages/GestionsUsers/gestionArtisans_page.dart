@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,8 @@ import 'package:reda/Admin/Pages/Profils/ProfilArtisanAdmin/profilArtisanAdmin.d
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
-import '../../../Client/ProfilArtisan/profil.dart';
-import '../../../Pages/authentification/connexion.dart';
-import '../../../Pages/retourAuth.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
+import '../../../Pages/authentification/connexion2.dart';
 
 class GestionArtisansPage extends StatefulWidget {
   const GestionArtisansPage({
@@ -39,16 +38,28 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
 
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
-    DocumentSnapshot userDoc =
-    await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(
+        'users').doc(userID).get();
+
+    // Vérifier si le document existe
     if (userDoc.exists) {
+      // Extraire le PathImage
+      print('here');
       String pathImage = userDoc['pathImage'];
+      print(pathImage);
       // Retourner le PathImage
       final reference = FirebaseStorage.instance.ref().child(pathImage);
-      final url = await reference.getDownloadURL();
-      return url;
+      try {
+        // Get the download URL for the user image
+        final downloadUrl = await reference.getDownloadURL();
+        return downloadUrl;
+      } catch (error) {
+        print("Error fetching user image URL: $error");
+        return ''; // Default image on error
+      }
     } else {
-      return "";
+      // Retourner une valeur par défaut si l'utilisateur n'existe pas
+      return '';
     }
   }
 
@@ -92,7 +103,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                    const LoginPage()),
+                    const LoginPage2()),
               );
             },
               icon: Image.asset(
@@ -227,7 +238,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreationArtisanPage(),
+                    builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),
                   ),
                 );
               },
@@ -325,22 +336,22 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
       onTap: () {
         // Handle tap here (e.g., navigate to a new screen, show a dialog)
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProfilePage2CoteAdmin(
-                idartisan: document.id,
-                imageurl: profileImage,
-                nomartisan: userName,
-                phone: data['numTel'],
-                domaine: job,
-                rating: data['rating'],
-                adresse: data['adresse'],
-                workcount: data['workcount'],
-                vehicule: data['vehicule'],
-              ),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage2CoteAdmin(
+              idartisan: document.id,
+              imageurl: profileImage,
+              nomartisan: userName,
+              phone: data['numTel'],
+              domaine: job,
+              rating: data['rating'],
+              adresse: data['adresse'],
+              workcount: data['workcount'],
+              vehicule: data['vehicule'],
             ),
-          );
+          ),
+        );
       },
       child: Container(
         // Decoration, padding, etc. can be specified here

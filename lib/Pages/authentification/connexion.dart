@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/Activitaujour.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/auth.dart';
+import 'package:reda/main.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'forgotpassword.dart';
 import 'inscription.dart';
@@ -14,9 +15,13 @@ enum Role { client, artisan }
 
 String errorMessage = '';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage>{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,6 +31,12 @@ class LoginPage extends StatelessWidget {
       home: const Scaffold(
         body: LoginScreen(),
       ),
+      routes: {
+        "client": (context) => const HomePage(),
+        "artisan": (context) => const ActiviteaujourPage(),
+        "admin" : (context) => const AllSignalementsPage(),
+        "bloquer" : (context) => const Banni(),
+      },
     );
   }
 }
@@ -34,21 +45,20 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _showPassword = false;
-
-  bool _loading = false;
   String selectedRole = 'client';
+  late int type = 0;
   int selectedindex = 0;
 
   final FirebaseAuthService _auth = FirebaseAuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
   void authenticateWithGoogle() async {
     try {
       await _auth.signInWithGoogle();
@@ -95,92 +105,34 @@ class _LoginScreenState extends State<LoginScreen> {
       role = ''; // Réinitialiser le rôle en cas d'erreur
     }
   }
-
-  void handleSubmit() async {
+  Future<void> signin(String email, String password) async {
+    try {
+      User? user = await _firebaseAuthService.signInwithEmailAndPassword(email, password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        // Afficher a l utilisateur une erreur lui indiquant que cet utlisateur n existe pas
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        // aussi avertir l utilisateur que le mot de passe entre est faux et ne coincide pas avec celui entre lors de l inscription
+      }
+    }
+    await Future.value(null);
+  }
+  Future<void> handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       // Save the form data
       final email = _emailController.value.text;
+      print(email);
       final password = _passwordController.value.text;
-      setState(() => _loading = true);
-
       //  Authentification's functions
-      void signin() async {
-        try {
-          User? user = await _auth.signInwithEmailAndPassword(email, password);
-          if(user!.uid != 'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
-            final userdoc = await FirebaseFirestore.instance.collection('users')
-                .doc(user.uid)
-                .get();
-            print(user.uid);
-            Map<String, dynamic> data = userdoc.data() as Map<String, dynamic>;
-            final bloque = data['bloque'];
-            print('$bloque');
-            if (!bloque) {
-              await getUserRole(email);
-              print("Role : " + role);
-              if (role == selectedRole) {
-                print("User connection success");
-                if (role == 'client') {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        const HomePage()),
-                  );
-                }
-                else if (role == 'artisan') {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        const ActiviteAvenir()),
-                  );
-                }
-                //rediriger vers la page d acceuil
-              } else {
-                print(
-                    "User don t match , user's email not found with that email");
-                // afficher une erreur dans le UI  'cet utilisateur n existe pas'
-              }
-            }
-            else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                    const Banni()),
-              );
-            }
-          }
-          else{
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                  const AllSignalementsPage()),
-            );
-          }
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'user-not-found') {
-            // Afficher a l utilisateur une erreur lui indiquant que cet utlisateur n existe pas
-            print('No user found for that email.');
-          } else if (e.code == 'wrong-password') {
-            print('Wrong password provided for that user.');
-            // aussi avertir l utilisateur que le mot de passe entre est faux et ne coincide pas avec celui entre lors de l inscription
-          }
-        }
-      }
-
-      signin();
-
-      setState(() => _loading = false);
+      await signin(email,password);
     }
+    await Future.value(null);
   }
-
   @override
   Widget build(BuildContext context) {
     var isDark = Theme.of(context).brightness == Brightness.dark;
-    var textColor = isDark ? Colors.white : Colors.black;
 
     return SingleChildScrollView(
       child: Center(
@@ -324,7 +276,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 20),
 // Login button
                           ElevatedButton(
-                            onPressed: () => handleSubmit(),
+                            onPressed: (){
+                              handleSubmit();
+                              const HomeScreen();
+                              /*print(type);
+                              switch (type){
+                                case 1: navigueadmin();
+                                case 2:naviguebloquer();
+                                case 3:navigueclient();
+                                case 4:navigueartisan();
+                              }*/
+                            },
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(
                                   const Size(216, 37)),
@@ -338,16 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const Color(0xFF3E69FE),
                               ),
                             ),
-                            child: _loading
-                                ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.black,
-                                strokeWidth: 2,
-                              ),
-                            )
-                                : const Text(
+                            child: const Text(
                               'Se connecter',
                               style: TextStyle(
                                 color: Colors.white,
@@ -416,7 +369,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const ForgotPasswordPage()),
+                                        const ForgotPasswordPage(type: 1,)),
                                   );
 //Action here
                                 },
@@ -437,7 +390,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const InscriptionPage()),
+                                        const InscriptionPage(type: 1,)),
                                   );
                                 },
                                 child: Text(
