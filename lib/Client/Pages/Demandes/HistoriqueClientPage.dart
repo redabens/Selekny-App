@@ -156,8 +156,10 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
                     )
                 );
               }
+
               return ListView(children: snapshot.data!);
             });
+
       },
     );
   }
@@ -188,7 +190,8 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
       String datefin = data['datefin'];
       String heureDebut = data['heuredebut'];
       String heureFin = data['heurefin'];
-      return HistoriqueClient(domaine: domaine,
+      return Column(children:[
+        HistoriqueClient(domaine: domaine,
           date: date,
           heure: heure,
           prix: prix,
@@ -204,8 +207,13 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
           idartisan: artisanID,
           adresseartisan: adresseartisan,
           workcount: workcount,
-          vehicule: vehicule);
-    } else {
+          vehicule: vehicule,
+      ),
+    SizedBox(height:20),
+    ],
+    );
+    }
+    else {
       // Handle the case where the document is null
       print('Error: Document is null for document ID: ${document.id}');
       return Center(
@@ -217,7 +225,8 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
                 color: Colors.grey[600],
               )
           )
-      ); // or some placeholder widget
+      );
+      // or some placeholder widget
     }
   }
 

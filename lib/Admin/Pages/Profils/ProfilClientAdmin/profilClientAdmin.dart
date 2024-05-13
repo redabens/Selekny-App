@@ -32,11 +32,12 @@ class ProfilePage1CoteAdmin extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: ProfileBodyClientCoteAdmin(
-          photoPath: image, // Direct photo path
-          name: nomClient, // Direct name value
-          phone: phone, // Direct phone value
-          address: adress, // Direct address value
-          isVehicled: isVehicled, // Indicates if the person has a vehicle
+          userID: idclient,
+          photoPath: image,
+          name: nomClient,
+          phone: phone,
+          address: adress,
+          isVehicled: isVehicled,
           onContact: () {
             Navigator.push(
               context,

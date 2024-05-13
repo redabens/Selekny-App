@@ -187,7 +187,9 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
       String datefin = data['datefin'];
       String heureDebut = data['heuredebut'];
       String heureFin = data['heurefin'];
-      return HistoriqueArtisan(domaine: domaine,
+
+      return Column(children:[
+        HistoriqueArtisan(domaine: domaine,
           location: location,
           date: date,
           heure: heure,
@@ -201,7 +203,11 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
           datefin: datefin,
           heuredebut: heureDebut,
           heurefin: heureFin,
-          vehicule: vehicule);
+          vehicule: vehicule
+      ),
+    SizedBox(height:20),
+    ],
+    );
     } else {
       // Handle the case where the document is null
       print('Error: Document is null for document ID: ${document.id}');

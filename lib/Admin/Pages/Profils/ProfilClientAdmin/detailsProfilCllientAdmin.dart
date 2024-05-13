@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProfileBodyClientCoteAdmin extends StatelessWidget {
+import '../../GestionsUsers/gestionClients_page.dart';
+import 'BloquerClient.dart';
+
+class ProfileBodyClientCoteAdmin extends StatefulWidget {
+  final String userID;
   final String photoPath;
   final String name;
   final String phone;
@@ -17,8 +22,49 @@ class ProfileBodyClientCoteAdmin extends StatelessWidget {
     required this.address,
     required this.isVehicled,
     required this.onContact,
-    required this.onReport,
+    required this.onReport, required this.userID,
   });
+  @override
+  _ProfileBodyClientCoteAdminState createState() => _ProfileBodyClientCoteAdminState();
+}
+class _ProfileBodyClientCoteAdminState extends State<ProfileBodyClientCoteAdmin> {
+  late bool bloque = false ;
+  Future<void> getBloqueStatut(String userID) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      DocumentSnapshot userDoc = await firestore.collection('users').doc(userID).get();
+      if (userDoc.exists) {
+        setState(() {
+          bloque = userDoc.get('bloque');
+        });
+      } else {
+        print("User not found");
+      }
+    } catch (e) {
+      print("Error fetching bloqued status: $e");
+    }
+    await Future.value(Null);
+  }
+  Future<void> bloqueDebloque(String userID) async {
+
+    DocumentReference userRef =
+    FirebaseFirestore.instance.collection('users').doc(userID);
+    DocumentSnapshot userSnapshot = await userRef.get();
+
+    if (userSnapshot.exists) {
+      bool currentBloque = userSnapshot['bloque'] ?? false;
+
+      await userRef.update({'bloque': !currentBloque});
+    } else {
+      throw Exception('User document not found');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getBloqueStatut(widget.userID);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +80,12 @@ class ProfileBodyClientCoteAdmin extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        photoPath != ''
+        widget.photoPath != ''
             ? ClipRRect(
           borderRadius: BorderRadius.circular(
               50), // Ajout du BorderRadius
           child: Image.network(
-            photoPath,
+            widget.photoPath,
             width: 60,
             height: 60,
             fit: BoxFit.cover,
@@ -52,7 +98,7 @@ class ProfileBodyClientCoteAdmin extends StatelessWidget {
         ),
         SizedBox(height: screenHeight * 0.04),
         Text(
-          name,
+          widget.name,
           style: GoogleFonts.poppins(
             fontSize: screenWidth * 0.05,
             fontWeight: FontWeight.bold,
@@ -76,7 +122,7 @@ class ProfileBodyClientCoteAdmin extends StatelessWidget {
               ),
               SizedBox(width: screenWidth * 0.03),
               Text(
-                phone,
+                widget.phone,
                 style: GoogleFonts.poppins(
                   fontSize: screenWidth * 0.04,
                   fontWeight: FontWeight.w500,
@@ -104,7 +150,7 @@ class ProfileBodyClientCoteAdmin extends StatelessWidget {
               SizedBox(width: screenWidth * 0.03),
               Expanded(
                 child: Text(
-                  address,
+                  widget.address,
                   style: GoogleFonts.poppins(
                     fontSize: screenWidth * 0.04,
                     fontWeight: FontWeight.w500,
@@ -125,7 +171,7 @@ class ProfileBodyClientCoteAdmin extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(screenWidth * 0.05),
             border: Border.all(color: Colors.blue),
-            color: isVehicled ? const Color(0xFF7CF6A5) : Colors.white,
+            color: widget.isVehicled ? const Color(0xFF7CF6A5) : Colors.white,
           ),
           child: Row(
             children: [
@@ -149,8 +195,8 @@ class ProfileBodyClientCoteAdmin extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GestureDetector(
-              onTap: onContact,
+            /*GestureDetector(
+              onTap: widget.onContact,
               child: Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFF3E69FE),
@@ -167,18 +213,35 @@ class ProfileBodyClientCoteAdmin extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+            ),*/
             SizedBox(width: screenWidth * 0.05),
             GestureDetector(
-              onTap: onReport,
+              onTap: () {
+                if (bloque) {
+                  bloqueDebloque(widget.userID);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GestionClientsPage(),
+                    ),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BloquerClient(idclient: widget.userID, image: widget.photoPath, nomClient: widget.name, phone: widget.phone, adress: widget.address, isVehicled: widget.isVehicled,),
+                    ),
+                  );
+                }
+              },
               child: Container(
                 decoration: BoxDecoration(
-                  color:  const Color(0xFFFF0000).withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                  color: bloque ? Colors.green : const Color(0xFFFF0000), // Vert pour débloquer, Rouge pour bloquer
+                  borderRadius: BorderRadius.circular(screenWidth * 0.06),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08, vertical: screenWidth * 0.04),
                 child: Text(
-                  'Bloquer',
+                  bloque ? 'Débloquer' : 'Bloquer', // Texte change selon l'état de blocage
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,

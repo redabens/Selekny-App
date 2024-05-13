@@ -159,6 +159,7 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -172,14 +173,14 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage(),),
                 );
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -194,15 +195,15 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const DemandeEncoursPage()),
+                  MaterialPageRoute(builder: (context) => const DemandeEncoursPage(),),
                 );
 
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/demandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -217,14 +218,14 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 1)),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 1,),),
                 );
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.040,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -239,14 +240,14 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilClientPage()),
+                  MaterialPageRoute(builder: (context) => const ProfilClientPage(),),
                 );
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -260,6 +261,7 @@ class _ProfilClientPageState extends State<ProfilClientPage> {
     );
   }
 }
+
 class ProfileData {
   final String nomartisan;
   final String email;

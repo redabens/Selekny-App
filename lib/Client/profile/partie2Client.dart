@@ -21,8 +21,10 @@ class SettingsClientSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(0),
       child: Container(
+        height:screenHeight*0.6,
         decoration: BoxDecoration(
           color: Colors.white,
+
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(screenWidth * 0.1),
             topRight: Radius.circular(screenWidth * 0.1),

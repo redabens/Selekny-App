@@ -51,6 +51,7 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
         left: 22,
@@ -58,6 +59,7 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
       ),
       child: Stack(
         children: [
+
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -94,11 +96,11 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 8,),
+                           SizedBox(height: screenHeight*0.01),
                           Text(
                             widget.prestation,
                             style: GoogleFonts.poppins(
-                              fontSize: 14,
+                              fontSize: screenWidth*0.035,
                               fontWeight: FontWeight.w500,
                               color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
                             ),
@@ -159,8 +161,8 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               ); // Example navigation
                             },
                             child: Container(
-                              width: 55, // Adjust as needed
-                              height: 55,
+                              width: 50, // Adjust as needed
+                              height: 50,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -168,9 +170,12 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                                 ),
                               ),
                               child: widget.imageUrl != ''
-                                  ? ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    50), // Ajout du BorderRadius
+                                  ? Container(
+                                width: 54,
+                                height: 54,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
                                 child: Image.network(
                                   widget.imageUrl,
                                   width: 54,
@@ -198,11 +203,11 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                           const SizedBox(height: 10),
                           Row(
                             children: [
-                              const Icon(Icons.phone, size: 20),
+                              const Icon(Icons.phone, size: 18),
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

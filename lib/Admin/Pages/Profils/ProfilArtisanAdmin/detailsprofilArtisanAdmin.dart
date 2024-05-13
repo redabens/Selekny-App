@@ -36,22 +36,22 @@ class ProfileBody2CoteAdmin extends StatefulWidget {
   @override
   _ProfileBody2CoteAdminState createState() => _ProfileBody2CoteAdminState();
 }
-  class _ProfileBody2CoteAdminState extends State<ProfileBody2CoteAdmin> {
+class _ProfileBody2CoteAdminState extends State<ProfileBody2CoteAdmin> {
   late bool bloque = false ;
   Future<void> getBloqueStatut(String userID) async {
-      try {
-        FirebaseFirestore firestore = FirebaseFirestore.instance;
-        DocumentSnapshot userDoc = await firestore.collection('users').doc(userID).get();
-        if (userDoc.exists) {
-          setState(() {
-            bloque = userDoc.get('bloque');
-          });
-        } else {
-          print("User not found");
-        }
-      } catch (e) {
-        print("Error fetching bloqued status: $e");
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      DocumentSnapshot userDoc = await firestore.collection('users').doc(userID).get();
+      if (userDoc.exists) {
+        setState(() {
+          bloque = userDoc.get('bloque');
+        });
+      } else {
+        print("User not found");
       }
+    } catch (e) {
+      print("Error fetching bloqued status: $e");
+    }
     await Future.value(Null);
   }
   Future<void> bloqueDebloque(String userID) async {
@@ -74,6 +74,7 @@ class ProfileBody2CoteAdmin extends StatefulWidget {
     super.initState();
     getBloqueStatut(widget.userID);
   }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
