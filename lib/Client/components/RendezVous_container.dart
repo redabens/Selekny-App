@@ -81,6 +81,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
         left: 22,
@@ -123,7 +124,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                           SizedBox(height:screenHeight*0.010),
                           Row(
                             children: [
                               const Icon(Icons.location_on, size: 21),
@@ -146,7 +147,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             'Date du rendez-vous :',
                             style: GoogleFonts.poppins(
@@ -161,7 +162,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                                 height: 20,
                                 fit: BoxFit.cover,
                               ),
-                              const SizedBox(width: 6),
+                              SizedBox(width:screenWidth*0.02),
                               Text(
                                 widget.date,
                                 style: GoogleFonts.poppins(
@@ -172,7 +173,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             widget.urgence ? "Urgente" : widget.heure,
                             style: GoogleFonts.poppins(
@@ -181,7 +182,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               color: widget.urgence ? Colors.red : null,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             widget.prix,
                             style: GoogleFonts.poppins(
@@ -251,7 +252,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               fontSize: 12,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Row(
                             children: [
                               const Icon(Icons.star, color: Colors.yellow, size: 20),
@@ -283,7 +284,6 @@ class _RendezVousClientState extends State<RendezVousClient> {
                   ],
                 ),
                 const SizedBox() ,
-
                 // !confirmed && cancelled ?
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -319,7 +319,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width:screenWidth*0.03),
                     OutlinedButton(
                       onPressed: () async{
                         _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);

@@ -66,9 +66,21 @@ class Detcommentaire extends StatelessWidget {
           // Première ligne avec la photo de profil
           Row(
             children: [
-              const CircleAvatar(
-                backgroundImage: AssetImage('assets/peintre.png'),
-                radius: 20,
+              profileImage != ''
+                  ? ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                    50), // Ajout du BorderRadius
+                    child: Image.network(
+                  profileImage,
+                  width: 54,
+                  height: 54,
+                  fit: BoxFit.cover,
+                ),
+              )
+                  : Icon(
+                Icons.account_circle,
+                size: 56,
+                color: Colors.grey[400],
               ),
               SizedBox(width: screenWidth * 0.02),
               // Colonne avec le nom de l'utilisateur et le nom de la prestation
