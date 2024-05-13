@@ -213,7 +213,7 @@ class InfoBoxavenirState extends State<InfoBoxavenir> {
                       children: [
                         Container(
                           width: screenWidth*0.25,
-                          height: screenHeight*0.04,
+                          height: screenHeight*0.043,
                           decoration: BoxDecoration(
                             color: Colors.grey.withOpacity((0.1)),
                             borderRadius: BorderRadius.circular(10),

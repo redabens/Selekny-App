@@ -49,7 +49,7 @@ class BoxDemande extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height; // Hauteur de l'écran
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.2,
+      //height: MediaQuery.of(context).size.height * 0.2,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
@@ -150,8 +150,8 @@ class Pdp extends StatelessWidget {
         );
       }, // Wrap the widget with GestureDetector
       child: Container(
-        width: screenWidth*0.15,
-        height: screenHeight*0.07,
+        width: 60,
+        height: 60,
         //color: Colors.yellow,
         child: imageUrl != ''
             ? ClipRRect(
@@ -159,14 +159,14 @@ class Pdp extends StatelessWidget {
               50), // Ajout du BorderRadius
           child: Image.network(
             imageUrl,
-            width: screenWidth*0.15,
-            height: screenHeight*0.07,
+            width: 55,
+            height: 55,
             fit: BoxFit.cover,
           ),
         )
             : Icon(
           Icons.account_circle,
-          size: 65,
+          size: 50,
           color: Colors.grey[400],
         ),
         //inserer la photode profil hna ki tjibha m bdd

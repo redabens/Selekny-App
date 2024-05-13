@@ -109,7 +109,7 @@ class ContactUsPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height:screenHeight*0.32),
+          SizedBox(height:screenHeight*0.27),
           // Visiter notre site web
           Center(
             child: Column(

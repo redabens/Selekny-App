@@ -199,7 +199,7 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                     children: [
                       Container(
                         width: screenWidth*0.25,
-                        height: screenHeight*0.04,
+                        height: screenHeight*0.043,
                         decoration: BoxDecoration(
                           color: const Color(0xFF24CC53),
                           borderRadius: BorderRadius.circular(10),
@@ -238,7 +238,7 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                       const SizedBox(width: 5),
                       Container(
                         width: screenWidth*0.25,
-                        height: screenHeight*0.04,
+                        height: screenHeight*0.043,
                         decoration: BoxDecoration(
                           color: Colors.grey.withOpacity((0.1)),
                           borderRadius: BorderRadius.circular(10),

@@ -21,7 +21,7 @@ class Heure extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: screenHeight*0.15,
+      //height: screenHeight*0.15,
       width: screenWidth*0.85,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),

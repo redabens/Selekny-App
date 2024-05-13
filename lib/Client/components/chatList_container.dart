@@ -63,7 +63,7 @@ class DetChatList extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            height:screenHeight*0.102,
+            //height:screenHeight*0.102,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),

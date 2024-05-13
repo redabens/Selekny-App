@@ -196,7 +196,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -219,9 +219,9 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.035,
                 child: Image.asset(
-                  'assets/demandes.png',
+                  'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
@@ -236,12 +236,12 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2)),
+                  MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
 
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.04,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -263,7 +263,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,

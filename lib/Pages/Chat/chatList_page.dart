@@ -635,21 +635,26 @@ class _ChatListPageState extends State<ChatListPage> {
                 ),
               );
             },
-            child: DetChatList(
-              userName: userName,
-              lastMsg: lastMsg,
-              profileImage: profileImage,
-              timestamp: lastMsgTime,
-              type: widget.type,
-              otheruserId: otherUserId,
-              phone: phone, adresse: adresse,
-              domaine: domaine, rating: rating,
-              workcount: workcount, vehicule: vehicule,
-              nomClient: nomClient, tokenArtisan: tokenArtisan,
-              nomArtisan: nomArtisan, tokenClient: tokenClient,
-            ),
+            child: Column(
+              children:  [
+                DetChatList(
+                  userName: userName,
+                  lastMsg: lastMsg,
+                  profileImage: profileImage,
+                  timestamp: lastMsgTime,
+                  type: widget.type,
+                  otheruserId: otherUserId,
+                  phone: phone, adresse: adresse,
+                  domaine: domaine, rating: rating,
+                  workcount: workcount, vehicule: vehicule,
+                  nomClient: nomClient, tokenArtisan: tokenArtisan,
+                  nomArtisan: nomArtisan, tokenClient: tokenClient,
+                ),
+                const SizedBox(height: 8,),
+            ],
           ),
-        ],
+          ),
+        ]
       ),
     );
   }

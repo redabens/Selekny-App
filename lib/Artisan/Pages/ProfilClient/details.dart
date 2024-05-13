@@ -10,7 +10,7 @@ class ProfileBody extends StatelessWidget {
   final VoidCallback onContact;
   final VoidCallback onReport;
 
-  ProfileBody({
+  const ProfileBody({super.key,
     required this.photoPath,
     required this.name,
     required this.phone,
@@ -37,17 +37,17 @@ class ProfileBody extends StatelessWidget {
         photoPath != ''
             ? ClipRRect(
           borderRadius: BorderRadius.circular(
-              50), // Ajout du BorderRadius
+              60), // Ajout du BorderRadius
           child: Image.network(
             photoPath,
-            width: 60,
-            height: 60,
+            width: 110,
+            height:110,
             fit: BoxFit.cover,
           ),
         )
             : Icon(
           Icons.account_circle,
-          size: 65,
+          size: 100,
           color: Colors.grey[400],
         ),
         SizedBox(height: screenHeight * 0.04),
@@ -61,7 +61,7 @@ class ProfileBody extends StatelessWidget {
         SizedBox(height: screenHeight * 0.1),
         Container(
           width: screenWidth * 0.9,
-          height: screenHeight * 0.055,
+          //height: screenHeight * 0.055,
           padding: EdgeInsets.all(screenWidth * 0.03),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(screenWidth * 0.05),
@@ -120,7 +120,7 @@ class ProfileBody extends StatelessWidget {
         SizedBox(height: screenHeight * 0.04),
         Container(
           width: screenWidth * 0.9,
-          height: screenHeight * 0.055,
+          //height: screenHeight * 0.055,
           padding: EdgeInsets.all(screenWidth * 0.03),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(screenWidth * 0.05),
