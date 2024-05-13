@@ -1,14 +1,15 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
-
 import '../Profil/profileArtisan.dart';
 
 class NotifDemande extends StatefulWidget {
@@ -18,7 +19,6 @@ class NotifDemande extends StatefulWidget {
   NotifDemandeState createState() => NotifDemandeState();
 
 }
-
 class NotifDemandeState extends State<NotifDemande> {
   int _currentIndex = 1;
   final DemandeArtisanService _demandeArtisanService =DemandeArtisanService();
@@ -79,6 +79,7 @@ class NotifDemandeState extends State<NotifDemande> {
     final DateTime now = DateTime.now();
     Duration diff = now.difference(timeDemande);
     Duration difference = diff - const Duration(hours: 1);
+
     if (difference.inDays > 0) {
       return 'Envoyé il y''a ${difference.inDays} jr';
     } else if (difference.inHours > 0) {
@@ -114,6 +115,20 @@ class NotifDemandeState extends State<NotifDemande> {
       return ''; // Return empty string on error
     }
   }
+  bool hasPassedDate(String dateString) {
+    // Parse the date string from Firestore
+    try {
+      final formatter = DateFormat('dd MMMM yyyy');
+      final parsedDate = formatter.parse(dateString);
+      // Obtenir la date d'aujourd'hui à minuit
+      final midnightToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      return parsedDate.isBefore(midnightToday); // Retourne vrai si la date est avant aujourd'hui à minuit
+    } on FormatException catch (e) {
+      print('Error parsing date string: $e');
+      // Gérer l'erreur de formatage de manière élégante (par exemple, retourner faux ou lancer une exception)
+      return false;
+    }
+  }
   Future<String> getTokenById(String id) async {
     late String? token;
     Map<String, dynamic> userData = {};
@@ -124,7 +139,7 @@ class NotifDemandeState extends State<NotifDemande> {
       if (documentSnapshot.exists) {
         userData = documentSnapshot.data()!;
         token = userData['token'];
-        print("Get token by id : ${token}");
+        print("Get token by id : $token");
       }
       if (token != null) {
         return token;
@@ -139,21 +154,20 @@ class NotifDemandeState extends State<NotifDemande> {
   }
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(),
       body: Column(
-          children: [
-            const SizedBox(height: 18,),
-            _buildTitleAndDescription(),
-            const SizedBox(height: 10,),
-            const Buttons(),
-            const SizedBox(width: 20, height: 20),
-            Expanded(
-              child: _buildDemandeArtisanList(),
-            ),
-          ],
-        ),
+        children: [
+          const Buttons(),
+          const SizedBox(width: 20, height: 20),
+          Expanded(
+            child: _buildDemandeArtisanList(),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
@@ -175,7 +189,7 @@ class NotifDemandeState extends State<NotifDemande> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -198,7 +212,7 @@ class NotifDemandeState extends State<NotifDemande> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.035                                                                                                                                      ,
                 child: Image.asset(
                   'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -220,7 +234,7 @@ class NotifDemandeState extends State<NotifDemande> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -242,7 +256,7 @@ class NotifDemandeState extends State<NotifDemande> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -267,13 +281,21 @@ class NotifDemandeState extends State<NotifDemande> {
         }
 
         final documents = snapshot.data!.docs;
-
-        // Filter documents based on urgency (urgence == false)
-        final nonUrgentDocuments = documents.where((doc) {
+        final filteredDocuments = documents.where((doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            return !data['urgence'];
+          return !hasPassedDate(data['datedebut']);
+        }).toList();
+        // Filter documents based on urgency (urgence == false)
+        final nonUrgentDocuments = filteredDocuments.where((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          return !data['urgence'];
         });
-
+        for (var document in documents) {
+          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+          if (hasPassedDate(data['datedebut'])) {
+            _demandeArtisanService.deleteDemandeArtisan(data['timestamp'], FirebaseAuth.instance.currentUser!.uid);
+          }
+        }
         // Print details of each non-urgent document (optional)
         for (var doc in nonUrgentDocuments) {
           print("Document Data (non-urgent): ${doc.data()}");
@@ -314,15 +336,16 @@ class NotifDemandeState extends State<NotifDemande> {
   Future<Widget> _buildCommentaireItem(DocumentSnapshot document) async {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     String image = await getUserPathImage(data['idclient']);
-      print("l'url:$image");
+    print("l'url:$image");
     String nomprestation = await getNomPrestation(data['idprestation'], data['iddomaine']);
-      print(nomprestation);
+    print(nomprestation);
     String nomClient = await getNameUser(data['idclient']);
     String phone = await getPhoneUser(data['idclient']);
     bool vehicule = await getVehiculeUser(data['idclient']);
     final String sync = await getSyncDemande(data['timestamp']);
     String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
     String tokenClient = await getTokenById(data['idclient']);
+    String tokenArtisan = await getTokenById(data['idartisan']);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -340,44 +363,15 @@ class NotifDemandeState extends State<NotifDemande> {
             nomprestation: nomprestation,
             imageUrl: image, datefin: data['datefin'],
             heurefin: data['heurefin'], latitude: data['latitude'],
-            longitude: data['longitude'], type1: 1, type2: 1,
+            longitude: data['longitude'],
             nomclient: nomClient, phone: phone,
             demandeid: data['demandeid'], sync: sync,
             nomArtisan: nomArtisan,
             idartisan: FirebaseAuth.instance.currentUser!.uid,
-            vehicule: vehicule,
-            tokenClient: tokenClient,),
+            vehicule: vehicule, tokenClient: tokenClient, tokenArtisan: tokenArtisan,),
           const SizedBox(height: 10,),
         ],
       ),
-    );
-  }
-  Widget _buildTitleAndDescription() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 0),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: '• ',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const TextSpan(
-                  text:
-                  ' Vous pouvez ici consulter vos demandes Urgente, une fois accepter vous proposerai votre service au client.',
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -394,7 +388,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Stack(
       children: [
         AppBar(
-          automaticallyImplyLeading: false, // Désactiver la flèche de retour en arrière
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,// Désactiver la flèche de retour en arrière
           //backgroundColor: Colors.blue,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -404,7 +399,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   'Mes Notifications',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
 
                   ),
@@ -448,7 +443,7 @@ class UrgentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 205,
+      width: 180,
       height: 55,
       child: GestureDetector(
         onTap: () =>   Navigator.push(
@@ -462,7 +457,7 @@ class UrgentButton extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 color: Color(0xFFC4C4C4),
-                width: 2,
+                width: 1,
               ),
             ),
           ),
@@ -472,8 +467,8 @@ class UrgentButton extends StatelessWidget {
               'Urgentes',
               style: GoogleFonts.poppins(
                 color: const Color(0xFFC4C4C4),
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
 
               ),
             ),
@@ -489,49 +484,41 @@ class UrgentButton extends StatelessWidget {
 class demandeButton extends StatelessWidget {
   const demandeButton({super.key});
 
-@override
-Widget build(BuildContext context) {
-  return SizedBox(
-    width: 205,
-    height: 55,
-    child: GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const NotifDemande()),
-      ),
-
-      child: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.zero, // Pas de coin arrondi
-          border: Border(
-            bottom: BorderSide(
-              color: Color(0xFFF5A529),
-              width: 2,
-            ),
-          ),
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 180,
+      height: 55,
+      child: GestureDetector(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NotifDemande()),
         ),
+
         child: Container(
-          alignment: Alignment.center,
-          child: Text(
-            'Demandes',
-            style: GoogleFonts.poppins(
-              color: const Color(0xFFF5A529),
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.zero, // Pas de coin arrondi
+            border: Border(
+              bottom: BorderSide(
+                color: Color(0xFFF5A529),
+                width: 4,
+              ),
+            ),
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            child: Text(
+              'Demandes',
+              style: GoogleFonts.poppins(
+                color: const Color(0xFFF5A529),
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
 
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
-}
-
-
-
-
-
-
-
-

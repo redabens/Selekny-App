@@ -178,16 +178,6 @@ class MyAppState extends State<MyApp> {
 // si user est deja connecte on le redirige directement vers la page d acceuil
 // This widget is the root of your application.
 
-// const CreationArtisanPage(),
-//const ChatListPage(currentUserID:'hskvyxfATXnpgG8vsZlc'),
-//const PrestationPage(domaineID: "FhihjpW4MAKVi7oVUtZq"),
-//const PubDemandePage(),
-//const LoginScreen(),
-//const HomePage(),
-//const AfficherCommentairePage(artisanID: "kzChUvel32DSmy3ERjKI"),
-//const AjouterCommentairePage(nomPrestataire:"Reda" ,artisanID: "kzChUvel32DSmy3ERjKI"),
-//const ChatPage(receiverUserEmail:"ms_iratni@esi.dz", receiverUserID: "eOILQzRtIQlxwCGKhFMy"),
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 

@@ -1,3 +1,4 @@
+
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,9 +54,11 @@ class ButtonaccepterState extends State<Buttonaccepter> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      width: 90,
-      height: 30,
+      width: screenWidth*0.25,
+      height: screenHeight*0.07,
       decoration: BoxDecoration(
         color: _buttonColor,
         borderRadius: BorderRadius.circular(10),
@@ -70,17 +73,17 @@ class ButtonaccepterState extends State<Buttonaccepter> {
           await getNomPrestationById(widget.iddomaine, widget.idprestation);
 
           NotificationServices.sendPushNotification(
-              token,"AccepteParArtisan",
-              "Votre demande a été accepté par ${widget.nomArtisan}",
-              "Service demandé : $nomPrestation",);
-        _demandeClientService.sendDemandeClient(widget.datedebut, widget.datefin,
+            token,"AccepteParArtisan",
+            "Votre demande a été accepté par ${widget.nomArtisan}",
+            "Service demandé : $nomPrestation",);
+          _demandeClientService.sendDemandeClient(widget.datedebut, widget.datefin,
             widget.heuredebut, widget.heurefin,
             widget.adresse, widget.iddomaine,
             widget.idprestation, widget.idclient, FirebaseAuth.instance.currentUser!.uid,
             widget.urgence, widget.latitude, widget.longitude,);
-        _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-        _demandeEncoursService.deleteDemande(widget.demandeid);
-        await Future.delayed(const Duration(milliseconds: 100));
+          _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+          _demandeEncoursService.deleteDemande(widget.demandeid);
+          await Future.delayed(const Duration(milliseconds: 100));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -89,11 +92,11 @@ class ButtonaccepterState extends State<Buttonaccepter> {
               'accepter',
               style: GoogleFonts.poppins(
                 color: _textColor,
-                fontSize: 10,
+                fontSize: screenWidth*0.027,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(width: 5),
+            SizedBox(width:screenWidth*0.01),
             Container(
               height: 14,
               width: 14,

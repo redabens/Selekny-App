@@ -1,15 +1,17 @@
+
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
+import 'package:intl/intl.dart';
 import 'package:reda/Artisan/Pages/Notifications/BoxDemande.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 
+import '../Activité/Activitavenir.dart';
 import '../Profil/profileArtisan.dart';
 
 class NotifUrgente extends StatefulWidget {
@@ -22,6 +24,7 @@ class NotifUrgente extends StatefulWidget {
 
 class NotifUrgenteState extends State<NotifUrgente> {
   int _currentIndex = 1;
+  bool isurgentSelected= true;
   final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
 
   @override
@@ -116,6 +119,20 @@ class NotifUrgenteState extends State<NotifUrgente> {
       return ''; // Return empty string on error
     }
   }
+  bool hasPassedDate(String dateString) {
+    // Parse the date string from Firestore
+    try {
+      final formatter = DateFormat('dd MMMM yyyy');
+      final parsedDate = formatter.parse(dateString);
+      // Obtenir la date d'aujourd'hui à minuit
+      final midnightToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      return parsedDate.isBefore(midnightToday); // Retourne vrai si la date est avant aujourd'hui à minuit
+    } on FormatException catch (e) {
+      print('Error parsing date string: $e');
+      // Gérer l'erreur de formatage de manière élégante (par exemple, retourner faux ou lancer une exception)
+      return false;
+    }
+  }
   Future<String> getTokenById(String id) async {
     late String? token;
     Map<String, dynamic> userData = {};
@@ -126,7 +143,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
       if (documentSnapshot.exists) {
         userData = documentSnapshot.data()!;
         token = userData['token'];
-        print("Get token by id : ${token}");
+        print("Get token by id : $token");
       }
       if (token != null) {
         return token;
@@ -141,14 +158,14 @@ class NotifUrgenteState extends State<NotifUrgente> {
   }
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const MyAppBar(),
+      appBar:
+      const MyAppBar(),
       body: Column(
         children: [
-          const SizedBox(height: 18,),
-          _buildTitleAndDescription(),
-          const SizedBox(height: 10,),
           const Buttons(),
           const SizedBox(width: 20, height: 20),
           Expanded(
@@ -173,11 +190,11 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
+                  MaterialPageRoute(builder: (context) => const ActivitAvenirPage()),
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors
@@ -199,7 +216,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.035,
                 child: Image.asset(
                   'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors
@@ -221,7 +238,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors
@@ -243,7 +260,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors
@@ -272,21 +289,24 @@ class NotifUrgenteState extends State<NotifUrgente> {
         }
 
         final documents = snapshot.data!.docs;
-
+        final filteredDocuments = documents.where((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          return !hasPassedDate(data['datedebut']);
+        }).toList();
         // Filter documents based on urgency (urgence == false)
-        final UrgentDocuments = documents.where((doc) {
+        final urgentDocuments = filteredDocuments.where((doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           return data['urgence'] == true;
         });
 
         // Print details of each non-urgent document (optional)
-        for (var doc in UrgentDocuments) {
+        for (var doc in urgentDocuments) {
           print("Document Data (non-urgent): ${doc.data()}");
         }
 
         return FutureBuilder<List<Widget>>(
           future: Future.wait(
-            UrgentDocuments.map((document) => _buildCommentaireItem(document)),
+            urgentDocuments.map((document) => _buildCommentaireItem(document)),
           ),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
@@ -333,6 +353,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
     final String sync = await getSyncDemande(data['timestamp']);
     String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
     String tokenClient = await getTokenById(data['idclient']);
+    String tokenArtisan = await getTokenById(data['idartisan']);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -351,42 +372,13 @@ class NotifUrgenteState extends State<NotifUrgente> {
             imageUrl: image, datefin: data['datefin'],
             heurefin: data['heurefin'], latitude: data['latitude'],
             longitude: data['longitude'],
-            type1: 1, type2: 1,
             nomclient: nomClient, phone: phone,
             demandeid: data['demandeid'], sync: sync,
             nomArtisan: nomArtisan, idartisan: idartisan,
-            vehicule: vehicule, tokenClient: tokenClient,),
+            vehicule: vehicule, tokenClient: tokenClient, tokenArtisan: tokenArtisan,),
           const SizedBox(height: 10,),
         ],
       ),
-    );
-  }
-  Widget _buildTitleAndDescription() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 0),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: '• ',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const TextSpan(
-                  text:
-                  ' Vous pouvez ici consulter vos demandes Urgente, une fois accepter vous proposerai votre service au client.',
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -407,12 +399,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Center( // Centrer le texte horizontalement
+              Center(
+                // Centrer le texte horizontalement
                 child: Text(
                   'Mes Notifications',
                   style: GoogleFonts.poppins(
                     color: Colors.black,
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
 
                   ),
@@ -420,6 +413,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ],
           ),
+          backgroundColor: Colors.white,
         ),
       ],
     );
@@ -433,10 +427,9 @@ class Buttons extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: 60,
       color: Colors.white,
-      child: const Row(
-        crossAxisAlignment: CrossAxisAlignment.start, // Align children to the start
+      child:const Row(
         children: [
           UrgentButton(),
           demandeButton(),
@@ -447,16 +440,13 @@ class Buttons extends StatelessWidget {
 
   }
 }
-
-
-
 class UrgentButton extends StatelessWidget {
   const UrgentButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 205,
+      width: 180,
       height: 55,
       child: GestureDetector(
         onTap: () => Navigator.push(
@@ -469,8 +459,8 @@ class UrgentButton extends StatelessWidget {
             borderRadius: BorderRadius.zero, // Pas de coin arrondi
             border: Border(
               bottom: BorderSide(
-                color: Color(0xFFF5A529),
-                width: 2,
+                  color: Color(0xFFF5A529),
+                  width: 4
               ),
             ),
           ),
@@ -480,8 +470,8 @@ class UrgentButton extends StatelessWidget {
               'Urgentes',
               style: GoogleFonts.poppins(
                 color: Color(0xFFF5A529),
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
 
               ),
             ),
@@ -499,7 +489,7 @@ class demandeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 205,
+      width: 180,
       height: 55,
       child: GestureDetector(
         onTap: () => Navigator.push(
@@ -511,20 +501,22 @@ class demandeButton extends StatelessWidget {
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.zero, // Pas de coin arrondi
             border: Border(
+
               bottom: BorderSide(
                 color: Color(0xFFC4C4C4),
-                width: 2,
+                width: 1,
               ),
             ),
           ),
           child: Container(
             alignment: Alignment.center,
-            child: Text(
+            child:
+            Text(
               'Demandes',
               style: GoogleFonts.poppins(
                 color: const Color(0xFFC4C4C4),
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
 
               ),
             ),
@@ -533,9 +525,5 @@ class demandeButton extends StatelessWidget {
       ),
     );
   }
+
 }
-
-
-
-
-
