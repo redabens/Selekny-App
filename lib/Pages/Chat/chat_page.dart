@@ -284,6 +284,7 @@ class _ChatPageState extends State<ChatPage> {
                NotificationServices.sendPushNotification(widget.tokenArtisan,widget.nomClient ,_messageController.value.text,"Message");
               }
               else{
+                print(widget.nomArtisan);
                 NotificationServices.sendPushNotification(widget.tokenClient,widget.nomArtisan ,_messageController.value.text,"Message");
               }
             },

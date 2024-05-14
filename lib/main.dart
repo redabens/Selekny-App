@@ -201,7 +201,7 @@ class HomeScreenState extends State<HomeScreen> {
           type = 1;
         }
         else if(userData['role']== 'artisan')  {
-          type = 0;
+          type = 2;
         }
 
         return userData['role'] ?? '';

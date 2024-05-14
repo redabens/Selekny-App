@@ -80,7 +80,7 @@ class NotificationServices {
         break;
 
       case 'Message' :
-        navigatorkey.currentState!.pushNamed("Messagerie" , arguments : notificationResponse);
+        navigatorkey.currentState!.pushNamed("/Message" , arguments : notificationResponse);
 
         break;
       default:

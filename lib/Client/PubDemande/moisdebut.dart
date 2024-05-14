@@ -32,7 +32,7 @@ class MoisDebutState extends State<MoisDebut> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       height: screenHeight*0.035,
-      width: screenWidth*0.24,
+      width: screenWidth*0.29,
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS

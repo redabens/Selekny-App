@@ -124,15 +124,23 @@ class _AjouterCommentairePageState extends State<AjouterCommentairePage> {
                             IconButton(
                                 icon: const Icon(Icons.send),
                                 onPressed: () async {
-                                  await _commentaireService.sendCommentaire(widget.artisanID, _commentController.text,_lastStarIndex,widget.nomprestation);
-                                  await _commentaireService.updateRating(widget.artisanID, _lastStarIndex);
-                                  // clear the text controller after sending the message
-                                  _commentController.clear();
-                                  await Future.delayed(const Duration(milliseconds: 100));
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const HomePage()),
-                                  );
+                                  if(_lastStarIndex !=0) {
+                                    await _commentaireService.sendCommentaire(
+                                        widget.artisanID,
+                                        _commentController.text, _lastStarIndex,
+                                        widget.nomprestation);
+                                    await _commentaireService.updateRating(
+                                        widget.artisanID, _lastStarIndex);
+                                    // clear the text controller after sending the message
+                                    _commentController.clear();
+                                    await Future.delayed(
+                                        const Duration(milliseconds: 100));
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (
+                                          context) => const HomePage()),
+                                    );
+                                  }
                                 }
                             ),
                           ],

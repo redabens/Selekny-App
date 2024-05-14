@@ -52,10 +52,19 @@ android {
         multiDexEnabled true // Activer le support multidex
     }
     namespace 'com.example.reda'
-
+    signingConfigs {
+        release {
+            keyAlias 'mykeyalias'
+            keyPassword 'rrrsyl19'
+            storeFile file('myapp.keystore')
+            storePassword 'rrrsyl19'
+        }
+    }
     buildTypes {
         release {
             signingConfig signingConfigs.debug // Note: Cela utilise la configuration de signature de débogage, vous devrez la remplacer pour les versions de production
+            minifyEnabled false
+            shrinkResources false
         }
     }
 

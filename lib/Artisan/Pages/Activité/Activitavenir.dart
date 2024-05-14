@@ -380,7 +380,7 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
             nomArtisan: nomArtisan,
             idartisan: FirebaseAuth.instance.currentUser!.uid,
             vehicule: vehicule, tokenClient: tokenClient, tokenArtisan: tokenArtisan,),
-          const SizedBox(height:10),
+          //const SizedBox(height:10),
         ],
       ),
     );
