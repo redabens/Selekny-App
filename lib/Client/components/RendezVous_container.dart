@@ -159,8 +159,8 @@ class _RendezVousClientState extends State<RendezVousClient> {
                           Row(
                             children: [
                               Image.asset('icons/calendrier.png',
-                                width: 20,
-                                height: 20,
+                                width: 15,
+                                height: 15,
                                 fit: BoxFit.cover,
                               ),
                               SizedBox(width:screenWidth*0.02),
@@ -221,8 +221,8 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               ); // Example navigation
                             },
                             child: Container(
-                              width: 54, // Adjust as needed
-                              height: 54, // Adjust as needed
+                             // Adjust as needed
+                              height:screenHeight*0.059, // Adjust as needed
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -232,17 +232,17 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               child: widget.imageUrl != ''
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
-                                    50), // Ajout du BorderRadius
+                                    40), // Ajout du BorderRadius
                                 child: Image.network(
                                   widget.imageUrl,
-                                  width: 54,
-                                  height: 54,
+                                  width: 55,
+                                  height: 55,
                                   fit: BoxFit.cover,
                                 ),
                               )
                                   : Icon(
                                 Icons.account_circle,
-                                size: 54,
+                                size: 55,
                                 color: Colors.grey[400],
                               ),
                             ),
@@ -267,13 +267,14 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               ),
                             ],
                           ),
+                          SizedBox(height:screenHeight*0.010),
                           Row(
                             children: [
-                              const Icon(Icons.phone, size: 20),
+                              const Icon(Icons.phone, size: 18),
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -305,7 +306,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(const Color(0xFF3E69FE)),
                         minimumSize: MaterialStateProperty.all(const Size(22, 6)),
-                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 8, vertical: 8)), // Ajoutez du padding si nécessaire
+                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 22, vertical: 7)), // Ajoutez du padding si nécessaire
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
