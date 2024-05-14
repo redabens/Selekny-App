@@ -124,7 +124,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                           SizedBox(height:screenHeight*0.010),
+                          SizedBox(height:screenHeight*0.010),
                           Row(
                             children: [
                               const Icon(Icons.location_on, size: 21),
@@ -158,8 +158,8 @@ class _RendezVousClientState extends State<RendezVousClient> {
                           Row(
                             children: [
                               Image.asset('icons/calendrier.png',
-                                width: 20,
-                                height: 20,
+                                width: 15,
+                                height: 15,
                                 fit: BoxFit.cover,
                               ),
                               SizedBox(width:screenWidth*0.02),
@@ -212,7 +212,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                   phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
+                                  phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
                                   adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,
                                   nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
                                   tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,), // Navigation to ContactPage
@@ -220,28 +220,22 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               ); // Example navigation
                             },
                             child: Container(
-                              width: 54, // Adjust as needed
-                              height: 54, // Adjust as needed
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 1.0,
-                                ),
-                              ),
+                              // Adjust as needed
+                              //height:screenHeight*0.059, // Adjust as needed
                               child: widget.imageUrl != ''
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                     50), // Ajout du BorderRadius
-                                    child: Image.network(
-                                      widget.imageUrl,
-                                      width: 54,
-                                      height: 54,
-                                      fit: BoxFit.cover,
+                                child: Image.network(
+                                  widget.imageUrl,
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
                                 ),
                               )
                                   : Icon(
                                 Icons.account_circle,
-                                size: 54,
+                                size: 55,
                                 color: Colors.grey[400],
                               ),
                             ),
@@ -266,13 +260,14 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               ),
                             ],
                           ),
+                          SizedBox(height:screenHeight*0.010),
                           Row(
                             children: [
-                              const Icon(Icons.phone, size: 20),
+                              const Icon(Icons.phone, size: 18),
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -297,14 +292,14 @@ class _RendezVousClientState extends State<RendezVousClient> {
                         _DemandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
                         await Future.delayed(const Duration(milliseconds: 100));
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan, nomprestation: widget.prestation,),
-                        ),
+                          MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan, nomprestation: widget.prestation,),
+                          ),
                         );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(const Color(0xFF3E69FE)),
                         minimumSize: MaterialStateProperty.all(const Size(22, 6)),
-                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 8, vertical: 8)), // Ajoutez du padding si nécessaire
+                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 22, vertical: 7)), // Ajoutez du padding si nécessaire
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),

@@ -45,8 +45,6 @@ class BoxDemande extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
-    double screenHeight = MediaQuery.of(context).size.height; // Hauteur de l'écran
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
       //height: MediaQuery.of(context).size.height * 0.2,
@@ -73,6 +71,7 @@ class BoxDemande extends StatelessWidget {
               urgence: urgence, latitude: latitude, longitude: longitude,
               timestamp: timestamp, demandeid: demandeid, sync: sync,
               nomArtisan: nomArtisan, nomPrestation: nomprestation, idartisan: idartisan,),
+            const SizedBox(height: 4,),
           ]
       ),
     );
@@ -139,8 +138,6 @@ class Pdp extends StatelessWidget {
     required this.nomArtisan, required this.tokenClient, required this.tokenArtisan,});
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
-    double screenHeight = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: (){
         Navigator.push(
@@ -186,10 +183,10 @@ class Details extends StatelessWidget {
     required this.urgence});
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+// Largeur de l'écran
     double screenHeight = MediaQuery.of(context).size.height; // Hauteur de l'écran
     return Container(
-        width: MediaQuery.of(context).size.width * 0.6,
+        width: MediaQuery.of(context).size.width * 0.65,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children:

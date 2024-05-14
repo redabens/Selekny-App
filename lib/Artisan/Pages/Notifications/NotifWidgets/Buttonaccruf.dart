@@ -31,13 +31,14 @@ class Buttonaccruf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-        width: 201,
+        width: screenWidth*0.468,
         height: 30,
         //color: Colors.black,
         child:Row(
           children: [
-            const SizedBox(width: 18,),
             Buttonaccepter(datedebut: datedebut, datefin: datefin,
               heuredebut: heuredebut, heurefin: heurefin,
               adresse: adresse, iddomaine: iddomaine,
@@ -46,7 +47,7 @@ class Buttonaccruf extends StatelessWidget {
               longitude: longitude, timestamp: timestamp,
               demandeid: demandeid, nomArtisan: nomArtisan,
               nomPrestation: nomPrestation,),
-            const SizedBox(width: 2,),
+            SizedBox(width: screenWidth*0.01,),
             Buttonrefuser( timestamp: timestamp, idclient: idclient, demandeid: demandeid,),
           ],
         )

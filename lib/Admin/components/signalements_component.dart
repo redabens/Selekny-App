@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/DetailsSignalement_page.dart';
-import '';
 
 class DetSignalement extends StatelessWidget {
   final String signalementID;
@@ -46,7 +45,7 @@ class DetSignalement extends StatelessWidget {
         );
       },
       child:Container(
-        width: MediaQuery.of(context).size.width * 0.95,
+        width: MediaQuery.of(context).size.width * 0.9,
         height: 80,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(

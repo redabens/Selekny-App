@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
+import 'package:reda/Admin/Pages/deconnexion.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Admin/components/signalements_component.dart';
@@ -121,6 +122,8 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -129,49 +132,12 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
 
           AppBar(
             leading: IconButton(onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text("SE DECONNECTER"),
-                  content: const Text(
-                    "Êtes-vous sûr de vouloir vous déconnecter ?",
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        // Fermer le dialogue
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        "NON",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        // Déconnexion de l'utilisateur
-                        await FirebaseAuth.instance.signOut();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                            const LoginPage2(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "OUI",
-                        style: TextStyle(
-                          color: Colors.blue[800],
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              FirebaseAuth.instance.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                    const Deconnecter()),
               );
             },
               icon: Image.asset(
@@ -186,7 +152,7 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
             title: Text(
               'Signalements',
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -205,7 +171,8 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        currentIndex:
+        _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
         iconSize: 30,
         items: [
           BottomNavigationBarItem(
@@ -214,13 +181,15 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const AllSignalementsPage(),),
+                  MaterialPageRoute(
+                    builder: (context) => const AllSignalementsPage(),
+                  ),
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/signalement.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -235,18 +204,20 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const GestionArtisansPage(),),
+                  MaterialPageRoute(
+                    builder: (context) => const GestionArtisansPage(),
+                  ),
                 );
-
-
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/gestion.png',
-                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 1
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -258,14 +229,15 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),),
+                  MaterialPageRoute(
+                    builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),
+                  ),
                 );
-
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -280,14 +252,14 @@ class AllSignalementsPageState extends State<AllSignalementsPage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const DomainServicePage(),)
-                );
-
+                    MaterialPageRoute(
+                      builder: (context) => const DomainServicePage(),
+                    ));
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,

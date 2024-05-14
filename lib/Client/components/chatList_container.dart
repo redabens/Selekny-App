@@ -54,7 +54,6 @@ class DetChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
         left: 14,
@@ -109,31 +108,24 @@ class DetChatList extends StatelessWidget {
                       } // Example action (replace with your desired functionality)
                     },
                     child: Container(
-                      width: screenWidth*0.15, // Adjust as needed
-                      height: screenWidth*0.15, // Adjust as needed
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: myBlueColor,
-                          width: 1.0,
-                        ),
-                      ),
+                      width: 60, // Adjust as needed
+                      height: 60, // Adjust as needed
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24.0),
+                        borderRadius: BorderRadius.circular(40),
                         child: profileImage != ''
                             ? ClipRRect(
                           borderRadius: BorderRadius.circular(
                               20), // Ajout du BorderRadius
                           child: Image.network(
                             profileImage,
-                            width: screenWidth*0.1,
-                            height: screenWidth*0.1,
+                            width: 60,
+                            height: 60,
                             fit: BoxFit.cover,
                           ),
                         )
                             : Icon(
                           Icons.account_circle,
-                          size: screenWidth*0.13,
+                          size: 64,
                           color: Colors.grey[400],
                         ),
                       ),

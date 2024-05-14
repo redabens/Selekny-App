@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Pages/artisaninscri.dart';
 import 'package:reda/Pages/auth.dart';
-import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
 import 'package:reda/Services/ConvertAdr.dart';
 import 'package:reda/Services/notifications.dart';
@@ -16,8 +15,8 @@ import 'package:country_code_picker/country_code_picker.dart';
 NotificationServices notificationServices = NotificationServices();
 late String token;
 late ValueNotifier<String> selectedDomaine;
-late List<String> domaines = [];
-late List<String> allPrestations = [];
+List<String> domaines = [];
+List<String> allPrestations = [];
 List<String> selectedPrestations = [];
 
 Future<void> getToken() async {
@@ -55,13 +54,11 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
   bool _showPassword = false;
   bool _loading = false;
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-  TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _adresseController = TextEditingController();
   final TextEditingController _numController = TextEditingController();
-  final TextEditingController _jobController = TextEditingController();
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
@@ -117,22 +114,11 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
     fetchDomaines().then((domainesList) {
       setState(() {
         domaines = domainesList;
-        selectedDomaine.value = domaines.isNotEmpty ? domaines.first : '';
       });
     });
 
-    selectedDomaine.addListener(() {
-      fetchPrestationsByDomaine(widget.domaine); // Call on change
-    });
+    fetchPrestationsByDomaine(widget.domaine); // Call on change
   }
-
-  @override
-  void dispose() {
-    selectedDomaine.dispose();
-    selectedPrestations.clear();
-    super.dispose();
-  }
-
   Future<List<String>> fetchDomaines() async {
     List<String> domaines = [];
 
@@ -184,7 +170,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
           latitude: position['latitude'],
           longitude: position['longitude'],
           statut: true,
-          domaine: widget.domaine,
+          domaine: selectedDomaine.value,
           prestations: selectedPrestations,
           token: '',
           rating: 3.5,
@@ -195,7 +181,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
       if (user != null) {
         print("User successfully created");
-        UserRepository userRepository = UserRepository();
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CreationArtisanPage(domaine: 'Electricité')),
@@ -227,10 +212,12 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     var isDark = Theme.of(context).brightness == Brightness.dark;
     var textColor = isDark ? Colors.white : Colors.black.withOpacity(0.4);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 20,
         backgroundColor: Colors.white,),
@@ -250,7 +237,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                       width: 82,
                       height: 88,
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height:screenHeight*0.03),
                     Text(
                       'Creation compte artisan',
                       style: GoogleFonts.poppins(
@@ -266,11 +253,51 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 85),
+                    SizedBox(height: screenHeight*0.11),
                     Form(
                       key: _formKey,
                       child: Column(
                         children: [
+                          DropdownButtonFormField<String>(
+                            value: selectedDomaine.value,
+                            icon: const Icon(Icons.arrow_drop_down),
+                            iconSize: 24,
+                            elevation: 16,
+                            decoration: InputDecoration(
+                              labelText: 'Domaine',
+                              labelStyle: GoogleFonts.poppins(
+                                color: textColor,
+                              ),
+                              border: const UnderlineInputBorder(),
+                            ),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedPrestations.clear();
+                                selectedDomaine.value = newValue ?? '';
+                                fetchPrestationsByDomaine(newValue ?? '');
+                              });
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => CreationArtisanPage(domaine: newValue!),),
+                              );
+                            },
+
+                            items: domaines.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value,style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14)),
+                                );
+                              },
+                            ).toList(),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Veuillez sélectionner un domaine";
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height:screenHeight*0.01),
                           TextFormField(
                             controller: _nameController,
                             validator: (value) {
@@ -288,7 +315,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                               border: const UnderlineInputBorder(),
                             ),
                           ),
-                          const SizedBox(height: 2),
+                          SizedBox(height:screenHeight*0.02),
                           TextFormField(
                             controller: _adresseController,
                             validator: (value) {
@@ -307,7 +334,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                               suffixIcon: const Icon(Icons.location_pin),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           TextFormField(
                             controller: _numController,
                             validator: (value) {
@@ -335,46 +362,8 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             ),
                             keyboardType: TextInputType.phone,
                           ),
-                          const SizedBox(height: 10),
-                          DropdownButtonFormField<String>(
-                            value: widget.domaine,
-                            icon: const Icon(Icons.arrow_drop_down),
-                            iconSize: 24,
-                            elevation: 16,
-                            decoration: InputDecoration(
-                              labelText: 'Domaine',
-                              labelStyle: GoogleFonts.poppins(
-                                color: textColor,
-                              ),
-                              border: const UnderlineInputBorder(),
-                            ),
-                            onChanged: (String? newValue) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => CreationArtisanPage(domaine: newValue!),),
-                              );
-                              setState(() {
-                                selectedDomaine.value = newValue ?? '';
-                                fetchPrestationsByDomaine(newValue ?? '');
-                                selectedPrestations.clear();
-                              });
-                            },
-                            items: domaines.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value,style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14)),
-                                );
-                              },
-                            ).toList(),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Veuillez sélectionner un domaine";
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
+
                           TextFormField(
                             controller: _emailController,
                             validator: (value) {
@@ -393,7 +382,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                               suffixIcon: const Icon(Icons.alternate_email),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           TextFormField(
                             controller: _passwordController,
                             validator: (value) {
@@ -424,7 +413,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             ),
                             obscureText: !_showPassword,
                           ),
-                          const SizedBox(height: 6),
+                          SizedBox(height:screenHeight*0.008),
                           TextFormField(
                             controller: _confirmPasswordController,
                             validator: (value) {
@@ -462,12 +451,12 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height:screenHeight*0.01),
                     DropdownButtonFormField<String>(
                       value: null,
                       hint:  Text(
                         'Sélectionner les prestations',
-                        style: GoogleFonts.poppins(  fontSize: 14,
+                        style: GoogleFonts.poppins(  fontSize: 13,
                             fontWeight: FontWeight.w500),
                       ),
                       onChanged: (String? newValue) {
@@ -487,27 +476,29 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         });
                       },
                       items: [
-                        const DropdownMenuItem<String>(
+                        DropdownMenuItem<String>(
                           value: 'Tout',
-                          child: Text('Sélectionner tout',),
+                          child: Text('Sélectionner tout',style:GoogleFonts.poppins(fontSize: 14,fontWeight: FontWeight.w600)),
                         ),
                         ...allPrestations.map<DropdownMenuItem<String>>(
                               (prestation) {
                             return DropdownMenuItem<String>(
                               value: prestation,
-                              child: Text(prestation),
+                              child:Text(prestation,style: GoogleFonts.poppins(fontSize: 13),overflow:TextOverflow.ellipsis,textWidthBasis: TextWidthBasis.parent, softWrap: true, maxLines: 2),
                             );
                           },
                         ).toList(),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height:screenHeight*0.01),
                     Wrap(
-                      spacing: 8.0,
+                      spacing: 2.0,
                       runSpacing: 4.0,
                       children: selectedPrestations.map((prestation) {
                         return Chip(
-                          label: Text(prestation),
+                          label: Expanded (child:Text(prestation,style: GoogleFonts.poppins(fontSize: 13),overflow:TextOverflow.ellipsis,
+                            softWrap: true,
+                            maxLines: 2,), ),
                           onDeleted: () {
                             setState(() {
                               selectedPrestations.remove(prestation);
@@ -516,11 +507,11 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         );
                       }).toList(),
                     ),
-                    const SizedBox(height: 25),
+                    SizedBox(height:screenHeight*0.03),
                     ElevatedButton(
                       onPressed: () async {
                         await handleSubmit();
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => const Artisan(),),
                         );
@@ -538,7 +529,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         ),
                       ),
                       child: _loading
-
                           ? const SizedBox(
                         width: 20,
                         height: 20,
@@ -556,7 +546,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height:screenHeight*0.01),
                   ],
                 ),
               ),
@@ -580,11 +570,11 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 });
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => AllSignalementsPage(),),
+                  MaterialPageRoute(builder: (context) => const AllSignalementsPage(),),
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'icons/signalement.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -607,7 +597,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.04,
                 child: Image.asset(
                   'icons/gestion.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -629,7 +619,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -651,7 +641,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,

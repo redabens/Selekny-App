@@ -1,10 +1,9 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeClient.dart';
 
 class DemandeClientService extends ChangeNotifier{
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> sendDemandeClient(String datedebut,
@@ -21,7 +20,7 @@ class DemandeClientService extends ChangeNotifier{
       double longitude)async{
     Timestamp timestamp = Timestamp.now();
     DateTime dateTime = timestamp.toDate();
-    dateTime= dateTime.subtract(const Duration(hours: 1));
+    //dateTime= dateTime.subtract(const Duration(hours: 1));
     timestamp = Timestamp.fromDate(dateTime);
 
     DemandeClient newDemandeClient = DemandeClient(

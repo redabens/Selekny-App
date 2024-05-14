@@ -1,5 +1,8 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Client/PubDemande/detailsDemande.dart';
 
 class Servicepop extends StatelessWidget {
   const Servicepop({super.key});
@@ -26,6 +29,10 @@ class Servicepop extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const DetailsDemande(domaineID: 'ajEON4X1fduQVsdVoqFJ', prestationID: 'janPLX2db6cNnXcHHYF5', nomprestation: 'Installation robinet') ),
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -46,7 +53,7 @@ class Servicepop extends StatelessWidget {
                     const SizedBox(height: 10), // Espace entre l'image et le texte
                     Text(
                       'Installation de robinet',
-                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
@@ -57,6 +64,10 @@ class Servicepop extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const DetailsDemande(domaineID: 'ynoP8TEQxtGUdTY0Ffld', prestationID: '3bbkgMkE4RM52jWGuzmp', nomprestation: 'Nettoyage des sols') ),
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -66,7 +77,7 @@ class Servicepop extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
-                            'assets/chaudiere.jpg',
+                            'assets/nettoyagesol.jpg',
                             height: screenHeight*0.12,
                             width: screenWidth*0.5,
                             fit: BoxFit.cover,
@@ -76,8 +87,8 @@ class Servicepop extends StatelessWidget {
                     ),
                     const SizedBox(height: 10), // Espace entre l'image et le texte
                     Text(
-                      'Installation chaudiere',
-                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                      'Nettoyage des sols',
+                      style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),

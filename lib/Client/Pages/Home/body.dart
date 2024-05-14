@@ -34,7 +34,7 @@ class Body extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Service à domicile',
+                    'Services à domicile',
                     style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                    SizedBox(width:screenWidth*0.24), // Espace entre les deux textes

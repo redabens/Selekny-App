@@ -24,7 +24,7 @@ class Signaler extends StatefulWidget {
   });
 
   @override
-  _SignalerState createState() => _SignalerState();
+  State<Signaler> createState() => _SignalerState();
 }
 
 class _SignalerState extends State<Signaler> {

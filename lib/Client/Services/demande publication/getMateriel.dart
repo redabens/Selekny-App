@@ -18,7 +18,6 @@ Future<String> getMateriel(String domaine, String prestation) async {
           .where('nom_prestation', isEqualTo: prestation)
           .limit(1)
           .get();
-      String prestationId = prestationsSnapshot.docs[0].id;
       if (prestationsSnapshot.docs.isNotEmpty) {
         var materiel = prestationsSnapshot.docs[0].data()['materiel'] as String?;
         return materiel ?? ''; // Retourne la valeur de 'materiel' ou une chaîne vide si 'materiel' est null
@@ -51,7 +50,6 @@ Future<String> getPrix(String domaine, String prestation) async {
           .where('nom_prestation', isEqualTo: prestation)
           .limit(1)
           .get();
-      String prestationId = prestationsSnapshot.docs[0].id;
       if (prestationsSnapshot.docs.isNotEmpty) {
         var prix = prestationsSnapshot.docs[0].data()['prix'] as String?;
         return prix ?? ''; // Retourne la valeur de 'prix' ou une chaîne vide si 'prix' est null
@@ -143,13 +141,3 @@ Future<String> getuserNameByid(String userID) async{
     return ""; // Retourne une chaîne vide en cas d'erreur
   }
 }
-// code test
-/*
-// Get the materiel for a specific prestation in a specific domain
-  String materiel = await getMateriel('Nettoyage','Ponçage carrelage');
-  // Print the materiel
-  print(materiel);
-// get liste Prestation
-List<String> listeprestations = await getPrestations('Nettoyage');
-  print(listeprestations);
-*/

@@ -54,6 +54,7 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
         left: 22,
@@ -92,12 +93,12 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                         children: [
                           Text(
                             widget.domaine,
-                            style: const TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 8,),
+                          SizedBox(height: screenHeight*0.03,),
                           Text(
                             widget.prestation,
                             style: GoogleFonts.poppins(
@@ -106,33 +107,33 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           Text(
                             'Date du rendez-vous :',
                             style: GoogleFonts.poppins(
-                              fontSize: 14,
+                              fontSize: 12,
                             ),
                           ),
-
+                          SizedBox(height: screenHeight*0.005),
                           Row(
                             children: [
                               Image.asset('icons/calendrier.png',
-                                width: 20,
-                                height: 20,
+                                width: 15,
+                                height: 15,
                                 fit: BoxFit.cover,
                               ),
-                              const SizedBox(width: 6),
+                              SizedBox(width: screenWidth*0.025),
                               Text(
                                 widget.date,
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   color: Colors.black,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             widget.prix,
                             style: GoogleFonts.poppins(
@@ -160,18 +161,12 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                                   adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,
                                   nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
                                   tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,), // Navigation to ContactPage
-                               ),
+                              ),
                               ); // Example navigation
                             },
                             child: Container(
                               width: 55, // Adjust as needed
                               height: 55,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 1.0,
-                                ),
-                              ),
                               child: widget.imageUrl != ''
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
@@ -185,29 +180,29 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               )
                                   : Icon(
                                 Icons.account_circle,
-                                size: 54,
+                                size: 58,
                                 color: Colors.grey[400],
                               ),
                             ),
                           ),
-                          const SizedBox(height: 8,),
+                          SizedBox(height:screenHeight*0.02,),
                           Container(
                             width: 80,
                             child: Text(
-                                widget.nomArtisan,
-                                style: GoogleFonts.poppins(
+                              widget.nomArtisan,
+                              style: GoogleFonts.poppins(
                                 fontSize: 12,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           Row(
                             children: [
-                              const Icon(Icons.phone, size: 20),
+                              const Icon(Icons.phone, size: 16),
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

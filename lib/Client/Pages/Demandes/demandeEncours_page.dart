@@ -111,8 +111,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
     final DateTime now = DateTime.now();
     print('$timeDemande');
     print('$now');
-    Duration diff = now.difference(timeDemande);
-    Duration difference = diff - const Duration(hours: 1);
+    Duration difference = now.difference(timeDemande);
     if (difference.inDays > 0) {
       return 'il y a ${difference.inDays} jr';
     } else if (difference.inHours > 0) {
@@ -154,7 +153,6 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -204,9 +202,10 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage(),),
                 );
+
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -228,8 +227,8 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
 
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/demandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -250,8 +249,8 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
                 );
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.040,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -273,7 +272,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -325,7 +324,7 @@ class _DemandeEncoursPageState extends State<DemandeEncoursPage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                        'Vous n''avez aucune demande encours.',
+                        'Vous n\'avez aucune demande encours.',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

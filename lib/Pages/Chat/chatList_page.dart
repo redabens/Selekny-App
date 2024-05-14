@@ -228,51 +228,6 @@ class _ChatListPageState extends State<ChatListPage> {
       backgroundColor: Colors.white,
       body: Column( // Use Column to stack elements vertically
         children: [
-          Padding(
-              padding: const EdgeInsets.only(top: 16.0,
-                  left: 26,
-                  right: 26),
-              child: Container(
-                width: screenWidth*0.92 ,
-                height: 45.0,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30), // Set border radius
-                  border: Border.all(
-                    color: Colors.grey[300] ?? Colors.grey, // Set border color
-                    width: 2.0, // Set border widthS
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    const SizedBox(width: 12),
-                    Icon(Icons.search,
-                      color: Colors.grey[600],
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            searchText = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Recherche',
-                          hintStyle: GoogleFonts.poppins(
-                            color: Colors.grey[400],
-                            fontWeight: FontWeight.w500,
-
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            // Rest of the body content (chat list, etc.)
-          ),
           const SizedBox(height: 30),
           Expanded(
             child: _buildChatList(),
@@ -395,7 +350,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
                 );
@@ -417,7 +372,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const NotifUrgente()),
                 );
@@ -440,7 +395,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
@@ -462,7 +417,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
                 );
@@ -551,7 +506,7 @@ class _ChatListPageState extends State<ChatListPage> {
       if (data['user1'] == FirebaseAuth.instance.currentUser!.uid) {
         otherUserId = data['user2'];
         profileImage = await getUserPathImage(data['user2']); // get user2 si currentuser est user1
-        userName = await getUserName(data['user1']);
+        userName = await getUserName(data['user2']);
         phone = await getPhoneUser(otherUserId);
         adresse = await getAdresseUser(otherUserId);
         role = await getRoleUser(otherUserId);
@@ -573,7 +528,7 @@ class _ChatListPageState extends State<ChatListPage> {
         }
       } else {
         otherUserId = data['user1'];
-        userName = await getUserName(data['user2']);
+        userName = await getUserName(data['user1']);
         profileImage = await getUserPathImage(data['user1']);
         phone = await getPhoneUser(otherUserId);
         adresse = await getAdresseUser(otherUserId);

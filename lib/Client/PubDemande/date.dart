@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/components/Date.dart';
@@ -10,10 +11,8 @@ import 'moisFin.dart';
 import 'anneeFin.dart';
 
 
-
-
-
 class Dates extends StatelessWidget {
+
   final Date datedebut;
   final Date datefin;
   const Dates({
@@ -27,7 +26,6 @@ class Dates extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      //height: screenHeight*0.25,
       width: screenWidth* 0.85,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -102,9 +100,9 @@ class Dates extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-               SizedBox(width:screenWidth*0.06),
+              SizedBox(width:screenWidth*0.06),
               JourDebut(datedebut: datedebut,),
-               SizedBox(width:screenWidth*0.02),
+              SizedBox(width:screenWidth*0.02),
               MoisDebut(datedebut: datedebut,),
               SizedBox(width:screenWidth*0.02),
               AnneeDebut(datedebut: datedebut,),
@@ -130,7 +128,7 @@ class Dates extends StatelessWidget {
 
 
           ),
-           SizedBox(width:screenWidth*0.15, height:screenHeight*0.005,),
+          SizedBox(width:screenWidth*0.15, height:screenHeight*0.005,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,

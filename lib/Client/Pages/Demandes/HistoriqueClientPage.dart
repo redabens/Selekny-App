@@ -88,7 +88,7 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
       if (documentSnapshot.exists) {
         userData = documentSnapshot.data()!;
         token = userData['token'];
-        print("Get token by id : ${token}");
+        print("Get token by id : $token");
       }
       if (token != null) {
         return token;
@@ -96,7 +96,7 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
         return '';
       }
     } catch (e) {
-      print("Erreur lors de la recuperation du token du user : ${e}");
+      print("Erreur lors de la recuperation du token du user : $e");
     }
 
     return '';
@@ -104,7 +104,6 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
   //-----------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -169,7 +168,7 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                        'Vous n''avez aucun Historique.',
+                        'Vous n\'avez aucun Historique.',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -188,7 +187,6 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-      String demandeID = document.id;
       String userID = _firebaseAuth.currentUser!.uid;
       String domaineID = data['iddomaine'];
       String PrestationID = data['idprestation'];

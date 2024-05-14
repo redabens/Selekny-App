@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -38,17 +39,18 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyAppBar(nomdomaine: widget.nomDomaine,),
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 15,),
-            Expanded(
-              child: _buildPrestationList(),
-            ),
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 15,),
+          Expanded(
+            child: _buildPrestationList(),
+          ),
 
-          ],
+        ],
       ),
     );
   }
@@ -80,125 +82,132 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
               }
               if (snapshot.data!.isEmpty) {
                 return Center(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [Container(
-                      width: MediaQuery.of(context).size.width * 0.85,
-                      height: 70,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: const Color(0xFFD9D9D9),
-                          width: 3.0,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 50,
-                            height: 50,
-                            child: IconButton(
-                              icon: Image.asset('assets/add.png'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => FormulaireAjoutPrestation(Domaineid: widget.idDomaine,)),
-                                );
-                              },
-                            ),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 70,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: const Color(0xFFD9D9D9),
+                            width: 3.0,
                           ),
-                          const SizedBox(width: 8),
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width * 0.5,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: 'Ajouter une prestation',
-                                          style: GoogleFonts.poppins(
-                                            color: const Color(0xFFC4C4C4),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w400,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              child: IconButton(
+                                icon: Image.asset('assets/add.png'),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => FormulaireAjoutPrestation(Domaineid: widget.idDomaine,)),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: RichText(
+                                      text: TextSpan(
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: 'Ajouter une prestation',
+                                            style: GoogleFonts.poppins(
+                                              color: const Color(0xFFC4C4C4),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ), // Encapsulez le contenu dynamique dans une méthode
-                    ),
-                  ]
-                ),
+                          ],
+                        ), // Encapsulez le contenu dynamique dans une méthode
+                      ),
+                      ]
+                  ),
                 );
               }
               // Combine prestation items with AjouterPrestation widget
               final children = snapshot.data!.map((domainItem) => domainItem).toList();
-              children.add(Container(
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  height: 70,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: const Color(0xFFD9D9D9),
-                      width: 3.0,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        child: IconButton(
-                          icon: Image.asset('assets/add.png'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => FormulaireAjoutPrestation(Domaineid: widget.idDomaine,)),
-                            );
-                          },
+              children.add(
+                Center(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 70,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: const Color(0xFFD9D9D9),
+                            width: 3.0,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: RichText(
-                                text: TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Ajouter une prestation',
-                                      style: GoogleFonts.poppins(
-                                        color: const Color(0xFFC4C4C4),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400,
+                              width: 50,
+                              height: 50,
+                              child: IconButton(
+                                icon: Image.asset('assets/add.png'),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => FormulaireAjoutPrestation(Domaineid: widget.idDomaine,)),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: RichText(
+                                      text: TextSpan(
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: 'Ajouter une prestation',
+                                            style: GoogleFonts.poppins(
+                                              color: const Color(0xFFC4C4C4),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
-                        ),
+                        ), // Encapsulez le contenu dynamique dans une méthode
                       ),
-                    ],
-                  ), // Encapsulez le contenu dynamique dans une méthode
+                      ]
+                  ),
                 ),
               );
               children.add(const SizedBox(height: 10,),);
@@ -212,14 +221,14 @@ class AjoutPrestationAunDomaineState extends State<AjoutPrestationAunDomaine> {
     String imageUrl = await getPrestationPathImage(data['image']);
     return Column( // Wrap in a Column for vertical spacing
       children: [
-            Prestation(
-              nomprestation: data['nom_prestation'],
-              imageUrl: imageUrl,
-              domaineId: widget.idDomaine,
-              prestationId: document.id, prixmin: data['prixmin'],
-              prixmax: data['prixmax'], unite: data['unite'], materiel: data['materiel'] ?? '',
-            ),
-            const SizedBox(height: 10), // Add spacing between containers
+        Prestation(
+          nomprestation: data['nom_prestation'],
+          imageUrl: imageUrl,
+          domaineId: widget.idDomaine,
+          prestationId: document.id, prixmin: data['prixmin'],
+          prixmax: data['prixmax'], unite: data['unite'], materiel: data['materiel'] ?? '',
+        ),
+        const SizedBox(height: 10), // Add spacing between containers
       ],
     );
 
@@ -466,5 +475,3 @@ class AjouterPrestation extends StatelessWidget {
     );
   }
 }
-
-

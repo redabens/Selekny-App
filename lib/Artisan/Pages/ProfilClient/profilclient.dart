@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:reda/Artisan/Pages/ProfilClient/contactpage.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/details.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/signaler.dart';
 import 'package:reda/Pages/Chat/chat_page.dart'; // Ensure correct path to ProfileBody

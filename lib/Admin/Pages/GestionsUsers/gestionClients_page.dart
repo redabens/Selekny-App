@@ -8,7 +8,7 @@ import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Services/GestionsUsers/gestionUsers_service.dart';
 import 'package:reda/Admin/components/GestionsUsers/gestionUsers_container.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
-import '../../../Pages/authentification/connexion2.dart';
+import '../deconnexion.dart';
 import 'gestionArtisans_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
@@ -64,8 +64,6 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
   }
 
   final GestionUsersService _GestionUsersService = GestionUsersService();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> getUserPathImage(String userID) async {
     // Récupérer le document utilisateur
@@ -106,49 +104,12 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
           const SizedBox(height: 10.0),
           AppBar(
             leading: IconButton(onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text("SE DECONNECTER"),
-                  content: const Text(
-                    "Êtes-vous sûr de vouloir vous déconnecter ?",
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        // Fermer le dialogue
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        "NON",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        // Déconnexion de l'utilisateur
-                        await FirebaseAuth.instance.signOut();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                            const LoginPage2(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "OUI",
-                        style: TextStyle(
-                          color: Colors.blue[800],
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              FirebaseAuth.instance.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                    const Deconnecter()),
               );
             },
               icon: Image.asset(
@@ -163,7 +124,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
             title: Text(
               'Gestion des utilisateurs',
               style: GoogleFonts.poppins(
-                fontSize: 19,
+                fontSize: 18,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -228,7 +189,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const AllSignalementsPage(),
@@ -236,12 +197,10 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/signalement.png',
-                  color: _currentIndex == 0
-                      ? const Color(0xFF3E69FE)
-                      : Colors.black,
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
             ),
@@ -253,7 +212,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const GestionArtisansPage(),
@@ -261,10 +220,12 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/gestion.png',
-                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 1
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -276,7 +237,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const CreationArtisanPage(domaine: 'Electricité',),
@@ -284,7 +245,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 );
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -299,14 +260,14 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DomainServicePage(),
                     ));
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -360,8 +321,10 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
     String userName = "??????";
     String job = "?????";
     String phone = '0000';
+    String email = '';
     try {
       userName = data['nom'];
+      email = data['email'];
       job = 'Client';
       phone = data['numTel'];
       profileImage = await getUserPathImage(userID);
@@ -382,7 +345,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                   phone: phone,
                   adress: data['adresse'],
                   idclient: userID,
-                  isVehicled: data['vehicule'])
+                  isVehicled: data['vehicule'], email: email,)
           ),
         );
       },

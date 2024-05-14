@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 class ModifPrixService extends ChangeNotifier {
@@ -61,7 +60,6 @@ class ModifPrixService extends ChangeNotifier {
     }
   }
   Future<String> getPrixPrestation(String domaineId, String prestationId) async{
-    final firestore = FirebaseFirestore.instance;
     final prestationsSnapshot = await FirebaseFirestore.instance
         .collection('Domaine')
         .doc(domaineId)

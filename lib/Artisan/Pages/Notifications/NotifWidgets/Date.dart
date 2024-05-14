@@ -30,8 +30,8 @@ class Date extends StatelessWidget {
             datedebut,
             style: GoogleFonts.poppins(
               color: const Color(0xFF757575),
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],

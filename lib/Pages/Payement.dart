@@ -18,10 +18,14 @@ class PaymentArtisan extends StatelessWidget {
           style: GoogleFonts.poppins(color: Colors.black, fontSize: screenWidth * 0.055, fontWeight: FontWeight.w700),
         ),
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Image.asset('assets/retour.png'), // Remplacez 'assets/back_arrow.png' par le chemin de votre image
+        leading: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
+          icon: const Icon(
+            Icons.arrow_back_ios_new_outlined,
+            color: Color(0xFF33363F),
+            size:25,
+          ),
           onPressed: () {
-            Navigator.of(context).pop(); // Revenir à la page précédente lorsque l'image est cliquée
+            Navigator.pop(context);
           },
         ),
       ),

@@ -11,7 +11,7 @@ import 'package:reda/Artisan/Pages/Notifications/NotifDemande.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 
-import '../Activité/Activitavenir.dart';
+import '../Activité/activiteaujour.dart';
 import '../Profil/profileArtisan.dart';
 
 class NotifUrgente extends StatefulWidget {
@@ -93,8 +93,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
   Future<String> getSyncDemande(Timestamp timestamp) async {
     final DateTime timeDemande = timestamp.toDate();
     final DateTime now = DateTime.now();
-    Duration diff = now.difference(timeDemande);
-    Duration difference = diff - const Duration(hours: 1);
+    Duration difference = now.difference(timeDemande);
     if (difference.inDays > 0) {
       return 'Envoyé il y''a ${difference.inDays} jr';
     } else if (difference.inHours > 0) {
@@ -158,7 +157,6 @@ class NotifUrgenteState extends State<NotifUrgente> {
   }
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -188,9 +186,9 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActivitAvenirPage()),
+                  MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
                 );
               },
               child: Container(
@@ -210,7 +208,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const NotifUrgente()),
                 );
@@ -232,7 +230,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
@@ -254,7 +252,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
                 );
@@ -321,7 +319,7 @@ class NotifUrgenteState extends State<NotifUrgente> {
             if (snapshot.data!.isEmpty) {
               return Center(
                   child: Text(
-                      'Vous n''avez aucune demande urgente.',
+                      'Vous n\'avez aucune demande urgente.',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -445,11 +443,12 @@ class UrgentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      width: 180,
+      width: screenWidth*0.5,
       height: 55,
       child: GestureDetector(
-        onTap: () => Navigator.push(
+        onTap: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const NotifUrgente()),
         ),
@@ -484,15 +483,17 @@ class UrgentButton extends StatelessWidget {
 }
 
 class demandeButton extends StatelessWidget {
+
   const demandeButton({super.key});
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      width: 180,
+      width: screenWidth*0.5,
       height: 55,
       child: GestureDetector(
-        onTap: () => Navigator.push(
+        onTap: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const NotifDemande()),
         ),

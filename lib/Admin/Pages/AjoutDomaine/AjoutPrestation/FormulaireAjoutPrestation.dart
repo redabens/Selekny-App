@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reda/Admin/Services/Domaine_service.dart';
@@ -40,7 +40,7 @@ class FormulaireScreenState extends State<FormulaireScreen> {
   final _formKey = GlobalKey<FormState>(); // Define _formKey here
   final DomainesService _domainesService = DomainesService();
   bool _loading = false;
-  String _selectedUnit = 'DA';
+  String _selectedUnit = 'DZD';
 
   String fileName = '';
   String newUrlImg = '';
@@ -198,7 +198,7 @@ class FormulaireScreenState extends State<FormulaireScreen> {
                         const SizedBox(height: 10),
                         DropdownButtonFormField(
                           value: _selectedUnit,
-                          items: ['DA', 'DA/M', 'DA/M2', 'DA/pièce']
+                          items: ['DZD','DA/h','DA/M', 'DA/M²', 'DA/Pièce']
                               .map((unit) => DropdownMenuItem(
                             value: unit,
                             child: Text(unit),
@@ -268,7 +268,7 @@ class FormulaireScreenState extends State<FormulaireScreen> {
                           onPressed: () {
                             if(fileName !=''
                                 && _pricemaxController.value.text!=''
-                            && _priceminController.value.text!=''
+                                && _priceminController.value.text!=''
                                 && _materielController.value.text != ''
                                 && _nameController.value.text != '') {
                               _domainesService.ajouterPrestation(
@@ -338,6 +338,7 @@ class GestionState extends State<Gestion> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyAppBar(),
       body: Column(
         children: [],
@@ -357,6 +358,7 @@ class AjoutDomaineState extends State<AjoutDomaine> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyAppBar(),
       body: Column(
         children: [],
@@ -376,6 +378,7 @@ class AjoutArtisanState extends State<AjoutArtisan> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyAppBar(),
       body: Column(
         children: [],

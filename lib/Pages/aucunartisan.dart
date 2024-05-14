@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
-import 'package:reda/Pages/authentification/connexion.dart';
 class AucunArtisan extends StatefulWidget {
   const AucunArtisan({super.key});
 

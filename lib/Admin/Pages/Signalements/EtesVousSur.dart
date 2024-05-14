@@ -73,7 +73,7 @@ class EtesVousSurState extends State<EtesVousSur> {
               width: MediaQuery.of(context).size.width * 0.7,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(15),
                 border: Border.all(color: const Color(0xFFC4C4C4)),
               ),
               child: Column(
@@ -84,7 +84,7 @@ class EtesVousSurState extends State<EtesVousSur> {
                   RichText(
                     text: TextSpan(children: <TextSpan>[
 
-                      TextSpan( text:'L\'utilisateur sera supprimé definitivement de l’application.'  , style: GoogleFonts.poppins(
+                      TextSpan( text:'Cet utilisateur sera empêché d\'utiliser l\'application'  , style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -107,7 +107,7 @@ class EtesVousSurState extends State<EtesVousSur> {
                     ),
                   ),
                   const SizedBox(height:25),
-                  Buttons(userid: widget.signalantID,),
+                  Buttons(userid: widget.signalantID, signalementID: widget.signalementID,),
                 ],
               ),
             ),
@@ -120,7 +120,8 @@ class EtesVousSurState extends State<EtesVousSur> {
 
 class Buttons extends StatelessWidget {
   final String userid;
-  const Buttons({super.key, required this.userid});
+  final String signalementID;
+  const Buttons({super.key, required this.userid, required this.signalementID});
   // final VoidCallback onPressed;
 
   @override
@@ -132,7 +133,7 @@ class Buttons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children:
         [
-          Oui(userid: userid,),
+          Oui(userid: userid, signalementID: signalementID,),
           const Non(),
         ],
       ),
@@ -142,7 +143,8 @@ class Buttons extends StatelessWidget {
 }
 class Oui extends StatelessWidget {
   final String userid;
-  Oui({super.key, required this.userid});
+  final String signalementID;
+  Oui({super.key, required this.userid, required this.signalementID});
   final SignalementsService _SignalementService = SignalementsService();
   // final VoidCallback onPressed;
   void changeBloque(String userid){
@@ -159,16 +161,16 @@ class Oui extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.2,
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: const Color(0xFF3E69FE),
+        color: Colors.red,
         borderRadius: BorderRadius.circular(8),
       ),
       child: GestureDetector(
-        onTap: () async {
+        onTap: ()  {
           changeBloque(userid);
-          await  _SignalementService.deleteSignalement(userid);
+          _SignalementService.deleteSignalement(signalementID);
           Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const AllSignalementsPage()//lazm le compte se supprime
+          MaterialPageRoute(builder: (context) => const AllSignalementsPage()//lazm le signalement se supprime et le statut bloque vrai
           ),
         );
         },

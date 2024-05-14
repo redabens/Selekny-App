@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
@@ -22,7 +25,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage>{
-@override
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Welcome Page',
@@ -54,19 +57,54 @@ class _LoginScreenState extends State<LoginScreen> {
   String selectedRole = 'client';
   late int type = 0;
   int selectedindex = 0;
-
+  bool isLoading = false;
+  late UserCredential userCredential;
+  String role = ''; // Variable globale pour stocker le rôle de l'utilisateur
   final FirebaseAuthService _auth = FirebaseAuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
   void authenticateWithGoogle() async {
     try {
-      await _auth.signInWithGoogle();
-      if (context.mounted) {
-        // rediriger vers la page d acceuil
+      setState(() {
+        isLoading = true; // Démarre le chargement
+      });
+
+      userCredential = await _auth.signInWithGoogle();
+      String? email = userCredential.user?.email;
+      print('$email');
+      bool emailexist = await _auth.checkEmailExists(email!);
+      if (emailexist) {
+        await getUserRole(email);
+        if (role == 'client') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        } else if (role == 'artisan') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
+          );
+        }
+      } else {
+        print("Cette email n'existe pas");
+        Fluttertoast.showToast(
+          msg: "Cet utilisateur n'existe pas , veuillez vous inscrire.",
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const InscriptionPage(type: 1)),
+        );
       }
     } catch (e) {
       print("There is an error in sign in with google$e");
+    } finally {
+      setState(() {
+        isLoading = false; // Arrête le chargement
+      });
     }
   }
 
@@ -81,9 +119,6 @@ class _LoginScreenState extends State<LoginScreen> {
       //afficher une erreur
     }
   }
-
-  String role = ''; // Variable globale pour stocker le rôle de l'utilisateur
-
   Future<void> getUserRole(String email) async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -107,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   Future<void> signin(String email, String password) async {
     try {
-      User? user = await _firebaseAuthService.signInwithEmailAndPassword(email, password);
+      await _firebaseAuthService.signInwithEmailAndPassword(email, password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         // Afficher a l utilisateur une erreur lui indiquant que cet utlisateur n existe pas
@@ -133,6 +168,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     var isDark = Theme.of(context).brightness == Brightness.dark;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return SingleChildScrollView(
       child: Center(
@@ -148,10 +185,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 85,
                       height: 90,
                     ),
-                    const SizedBox(height: 5),
-                    const Text(
+                    SizedBox(height:screenHeight*0.04),
+                    Text(
                       'Connexion',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -170,13 +207,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 60),
+                      SizedBox(height: screenHeight*0.06),
 // Email field
                       TextFormField(
                         controller: _emailController,
                         decoration: InputDecoration(
                           labelText: 'Email',
-                          labelStyle: TextStyle(
+                          labelStyle: GoogleFonts.poppins(
                             color: isDark
                                 ? Colors.white
                                 : Colors.black.withOpacity(0.4),
@@ -191,13 +228,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: screenHeight*0.01),
 // Password field
                       TextFormField(
                         controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: 'Mot de passe',
-                          labelStyle: TextStyle(
+                          labelStyle: GoogleFonts.poppins(
                             color: isDark
                                 ? Colors.white
                                 : Colors.black.withOpacity(0.4),
@@ -224,21 +261,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 35),
-                      const SizedBox(
-                        height: 35,
-                      ),
+                      SizedBox(height:screenHeight*0.07),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 0),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 '• Choisissez votre statut :',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.bold,
                                   color: isDark
                                       ? Colors.white
@@ -248,7 +280,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height:screenHeight*0.030),
 // ToggleSwitch
                           ToggleSwitch(
                             minWidth: 170.0,
@@ -273,16 +305,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               });
                             },
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height:screenHeight*0.03),
 // Login button
                           ElevatedButton(
                             onPressed: (){
                               handleSubmit();
                               const HomeScreen();
-                              },
+                            },
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(
-                                  const Size(216, 37)),
+                                  Size(screenWidth*0.5, 37)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -293,22 +325,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const Color(0xFF3E69FE),
                               ),
                             ),
-                            child: const Text(
+                            child:  Text(
                               'Se connecter',
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
 
-                          const SizedBox(height: 20),
+                          SizedBox(height: screenHeight*0.030),
 
                           Center(
                             child: Text(
-                              '_____________________   ou   _____________________',
+                              '__________   ou   ___________',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: isDark
                                     ? Colors.white
                                     : Colors.black.withOpacity(0.35),
@@ -317,42 +349,45 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ), //
-                          const SizedBox(height: 20),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  shape: const CircleBorder(),
-                                  elevation: 8,
-                                ),
-                                child: const CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Icon(
-                                    Icons.facebook,
-                                    color: Colors.blue,
-                                  ),
+                          SizedBox(height: screenHeight*0.030),
+                          ElevatedButton(
+                            onPressed: (){
+                              authenticateWithGoogle();
+                            },
+                            style: ButtonStyle(
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                  Size(screenWidth*0.8, 37)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(13.13),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  shape: const CircleBorder(),
-                                  elevation: 8, // Add shadow
-                                ),
-                                child: const CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Icon(
-                                    Icons.telegram_outlined, // icon google
-                                    color: Colors.lightBlue,
-                                  ),
-                                ),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color(0xFFDDDDDD),
                               ),
-                            ],
+                            ),
+                            // Espacement entre l'icône et le texte
+                            child:  isLoading
+                                ? const CircularProgressIndicator() // Afficher le chargement si isLoading est vrai
+                                : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/google.png',height:18,width: 18,),
+                                const SizedBox(width:12),
+                                Text(
+                                  'Se connecter avec Google',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height:screenHeight*0.03),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -362,13 +397,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const ForgotPasswordPage(type: 1,)),
+                                        const ForgotPasswordPage(type: 1,)),
                                   );
 //Action here
                                 },
                                 child: Text(
                                   'Mot de passe oublié?',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: isDark
                                         ? Colors.white
                                         : Colors.black.withOpacity(0.5),
@@ -376,19 +411,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 42),
+                              SizedBox(width:screenWidth*0.042),
                               TextButton(
                                 onPressed: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const InscriptionPage(type: 1,)),
+                                        const InscriptionPage(type: 1,)),
                                   );
                                 },
                                 child: Text(
                                   "S'inscrire",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.bold,
                                     color: isDark
                                         ? Colors.white

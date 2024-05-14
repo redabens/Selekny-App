@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/components/Domaine_container.dart';
-import 'package:reda/Pages/homedefault.dart';
 
 class VoirtoutPage extends StatefulWidget {
   final int type;

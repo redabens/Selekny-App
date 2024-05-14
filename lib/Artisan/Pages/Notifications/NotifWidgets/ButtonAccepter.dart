@@ -57,7 +57,7 @@ class ButtonaccepterState extends State<Buttonaccepter> {
     double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
     double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      width: screenWidth*0.25,
+      width: screenWidth*0.228,
       height: screenHeight*0.07,
       decoration: BoxDecoration(
         color: _buttonColor,
@@ -92,14 +92,14 @@ class ButtonaccepterState extends State<Buttonaccepter> {
               'accepter',
               style: GoogleFonts.poppins(
                 color: _textColor,
-                fontSize: screenWidth*0.027,
+                fontSize: screenWidth*0.026,
                 fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(width:screenWidth*0.01),
             Container(
-              height: 14,
-              width: 14,
+              height: 12,
+              width: 12,
               child: ImageIcon(
                 const AssetImage('assets/done.png'),
                 color: _textColor,

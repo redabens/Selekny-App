@@ -1,4 +1,6 @@
 
+
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
@@ -52,6 +54,8 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
+    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
         left: 22,
@@ -94,7 +98,7 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: screenHeight*0.01,),
                           Row(
                             children: [
                               const Icon(Icons.location_on, size: 21),
@@ -117,42 +121,34 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           Text(
                             'Date du rendez-vous :',
                             style: GoogleFonts.poppins(
-                              fontSize: 14,
+                              fontSize: 12,
                             ),
                           ),
-
+                          SizedBox(height: screenHeight*0.005),
                           Row(
                             children: [
                               Image.asset('icons/calendrier.png',
-                                width: 20,
-                                height: 20,
+                                width: 15,
+                                height: 15,
                                 fit: BoxFit.cover,
                               ),
-                              const SizedBox(width: 6),
+                              SizedBox(width: screenWidth*0.025),
                               Text(
                                 widget.date,
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   color: Colors.black,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            widget.urgence ? "Urgente" : widget.heure,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: widget.urgence ? Colors.red : null,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
+
+                          SizedBox(height:screenHeight*0.02),
                           Text(
                             widget.prix,
                             style: GoogleFonts.poppins(
@@ -181,12 +177,6 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                             child: Container(
                               width: 54, // Adjust as needed
                               height: 54, // Adjust as needed
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 1.0,
-                                ),
-                              ),
                               child: widget.imageUrl != ''
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
@@ -200,7 +190,7 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               )
                                   : Icon(
                                 Icons.account_circle,
-                                size: 54,
+                                size: 58,
                                 color: Colors.grey[400],
                               ),
                             ),
@@ -211,14 +201,14 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               fontSize: 12,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           Row(
                             children: [
                               const Icon(Icons.phone, size: 12),
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

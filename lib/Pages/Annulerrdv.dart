@@ -19,10 +19,14 @@ class PageAnnulationRendezVous extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text('Un prestataire a annulé un rendez-vous?'),
-        leading: IconButton(
-          icon: Image.asset('assets/retour.png'), // Remplacez 'assets/back_arrow.png' par le chemin de votre image
+        leading: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
+          icon: const Icon(
+            Icons.arrow_back_ios_new_outlined,
+            color: Color(0xFF33363F),
+            size:25,
+          ),
           onPressed: () {
-            Navigator.of(context).pop(); // Revenir à la page précédente lorsque l'image est cliquée
+            Navigator.pop(context);
           },
         ),
       ),

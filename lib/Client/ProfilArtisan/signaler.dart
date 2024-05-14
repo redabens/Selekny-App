@@ -25,7 +25,7 @@ class Signaler extends StatefulWidget {
     required this.nomArtisan, required this.tokenClient});
 
   @override
-  _SignalerState createState() => _SignalerState();
+  State<Signaler> createState() => _SignalerState();
 }
 class _SignalerState extends State<Signaler> {
   final TextEditingController _commentController = TextEditingController();

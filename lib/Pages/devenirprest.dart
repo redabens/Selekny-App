@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+
+// ce n'est pas vraiment la homepage mais la page plomberie
 class DevenirPrestataire extends StatefulWidget {
   const DevenirPrestataire({super.key});
 
@@ -9,65 +12,98 @@ class DevenirPrestataire extends StatefulWidget {
 
 class DevenirPrestataireState extends State<DevenirPrestataire> {
   @override
+
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: const MyAppBar(),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch, // Ajustement
-          children: [
-            Container(
-              color: Colors.white, // Ajout de la couleur de fond
-              child: const Comment(),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-            Container(
-              color: Colors.white, // Ajout de la couleur de fond
-              child: const Pourquoi(),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-          ],
+            children: [
+              Comment(),
+              SizedBox( height:screenHeight*0.05,),
+              Pourquoi(),
+              SizedBox( height:screenHeight*0.02,),
+            ]
         ),
       ),
+
     );
   }
 }
+
+
+
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({super.key});
 
   @override
-  Size get preferredSize => const Size.fromHeight(60);
+  Size get preferredSize => const Size.fromHeight(75);
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.white,
-      title: const Text('Devenir prestataire'),
-      leading: IconButton(
-        icon: Image.asset('assets/retour.png'), // Remplacez 'icons/retour.png' par le chemin de votre image
-        onPressed: () {
-          Navigator.of(context).pop(); // Revenir à la page précédente lorsque l'image est cliquée
-        },
-      ),
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    return Stack(
+      children: [
+        AppBar(
+          //backgroundColor: Colors.blue,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                height: screenHeight*0.05,
+                width: screenHeight*0.05,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF3F3F3),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_outlined,
+                    color: Color(0xFF33363F),
+                    size:25,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+
+              SizedBox(width:screenWidth*0.080),
+              Center( // Centrer le texte horizontalement
+                child: Text(
+                  'Devenir Prestataire',
+                  style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              SizedBox(width: screenWidth*0.010),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
-
 class Comment extends StatelessWidget {
-  const Comment({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.5,
-            width: MediaQuery.of(context).size.width * 0.9,
+            height: screenHeight*0.485,
+            width: screenWidth*0.9,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(30),
               border: Border.all(
                 color: Colors.blue,
                 width: 1.0,
@@ -80,29 +116,26 @@ class Comment extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.only(left:15.0,right:15),
                           child: Text(
                             'Comment Devenir un prestataire?',
                             style: GoogleFonts.poppins(
                               color: Colors.black,
-                              fontSize: MediaQuery.of(context).size.width * 0.05,
+                              fontSize: 20,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                       ),
                       Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Image.asset('assets/commentn.png'),
-                        ),
+                        child: Image.asset('assets/commentn.png'),
                       ),
                     ],
                   ),
                 ),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
                     child: Text(
                       'Si vous êtes intéressé à rejoindre notre application en tant que prestataire, '
                           'veuillez soumettre votre candidature en personne à notre bureau administratif situé à ...  \n'
@@ -114,7 +147,7 @@ class Comment extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: GoogleFonts.poppins(
                         color: Colors.black,
-                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontSize: 12,
                       ),
                     ),
                   ),
@@ -129,39 +162,39 @@ class Comment extends StatelessWidget {
 }
 
 class Pourquoi extends StatelessWidget {
-  const Pourquoi({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 10.0),
-            height: MediaQuery.of(context).size.height * 0.55,
-            width: MediaQuery.of(context).size.width * 0.9,
+            // Ajoutez cette ligne pour ajuster la marge supérieure
+            height:screenHeight*0.6,
+            width: screenWidth*0.9,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(30),
               border: Border.all(
                 color: Colors.blue,
                 width: 1.0,
               ),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Row(
                     children: [
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.only(left:15.0,right:15),
                           child: Text(
                             'Pourquoi nous rejoindre en tant que prestataire ?',
                             style: GoogleFonts.poppins(
                               color: Colors.black,
-                              fontSize: MediaQuery.of(context).size.width * 0.04,
+                              fontSize: 17,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -171,6 +204,7 @@ class Pourquoi extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(5.0),
                           child: Image.asset('assets/pourquoi.png'),
+                          // Remplacer par votre image
                         ),
                       ),
                     ],
@@ -178,9 +212,9 @@ class Pourquoi extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.all(11.0),
+                    padding: const EdgeInsets.all(9.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      // crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
                           'En devenant prestataire sur notre plateforme, vous bénéficierez de :\n'
@@ -190,17 +224,17 @@ class Pourquoi extends StatelessWidget {
                               ' - Possibilité d\'augmenter vos revenus.\n',
                           style: GoogleFonts.poppins(
                             color: Colors.black,
-                            fontSize: MediaQuery.of(context).size.width * 0.032,
+                            fontSize: 12,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height:screenHeight*0.02), // Espace entre les textes
                         Text(
                           'Rejoignez-nous dès aujourd\'hui pour faire partie de notre communauté d\'artisans de confiance !',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             color: Colors.blue,
                             fontWeight: FontWeight.w400,
-                            fontSize: MediaQuery.of(context).size.width * 0.04,
+                            fontSize: 15,
                           ),
                         ),
                       ],

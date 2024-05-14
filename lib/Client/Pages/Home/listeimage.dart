@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:reda/Pages/pasdeprest.dart';
 import 'package:reda/Pages/prestation_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -41,7 +42,8 @@ class ImageList extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PrestationPage(domaineID: ID[index],indexe: 2, type: type,)),
+                  MaterialPageRoute(builder: (context) => const Pasdeprestation(),
+                  ),
                 );
               },
               child: Column(

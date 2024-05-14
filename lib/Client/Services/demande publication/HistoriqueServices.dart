@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reda/Client/Services/demande%20publication/Historique.dart';
 import 'package:flutter/material.dart';
 class HistoriqueService extends ChangeNotifier {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<void> sendHistorique(String datedebut,
       String datefin,
@@ -20,7 +18,7 @@ class HistoriqueService extends ChangeNotifier {
       String receiverId) async {
     Timestamp timestamp = Timestamp.now();
     DateTime dateTime = timestamp.toDate();
-    dateTime= dateTime.subtract(const Duration(hours: 1));
+    //dateTime= dateTime.subtract(const Duration(hours: 1));
     timestamp = Timestamp.fromDate(dateTime);
 
     Historique newHistorique = Historique(

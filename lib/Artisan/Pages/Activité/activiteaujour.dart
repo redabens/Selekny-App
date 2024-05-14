@@ -190,7 +190,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
                 );
@@ -212,7 +212,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const NotifUrgente()),
                 );
@@ -220,7 +220,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
 
               },
               child: Container(
-                height: screenHeight*0.04,
+                height: screenHeight*0.035,
                 child: Image.asset(
                   'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -235,7 +235,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
@@ -257,7 +257,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
                 );
@@ -327,7 +327,7 @@ class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
             if (snapshot.data!.isEmpty) {
               return Center(
                   child: Text(
-                      'Vous n''avez aucune Activité.',
+                      'Vous n\'avez aucune Activité.',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,

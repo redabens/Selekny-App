@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:reda/Client/Services/demande%20publication/Rendezvous.dart';
 
 class RendezVousService extends ChangeNotifier {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future<void> sendRendezVous(String datedebut,
       String datefin,
@@ -19,7 +18,7 @@ class RendezVousService extends ChangeNotifier {
       double longitude,String artisanId, String recieverId)async{
     Timestamp timestamp = Timestamp.now();
     DateTime dateTime = timestamp.toDate();
-    dateTime= dateTime.subtract(const Duration(hours: 1));
+    //dateTime= dateTime.subtract(const Duration(hours: 1));
     timestamp = Timestamp.fromDate(dateTime);
 
     RendezVous newDemandeArtisan = RendezVous(

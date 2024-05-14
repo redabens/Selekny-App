@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +18,6 @@ class ChatService extends ChangeNotifier {
         .limit(1)
         .get();
     String currentUserId = querySnapshot1.docs[0].id;
-    // Get current user infoo
-    //final currentUserId ='hskvyxfATXnpgG8vsZlc';
-    //    //final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
-    //final String currentUserEmail = 'mm_bensemane@esi.dz';
-    //final currentUser = _firebaseAuth.currentUser;
 
     final DateTime now = DateTime.now();
     final Timestamp timestamp = Timestamp.fromDate(now);
@@ -64,7 +60,7 @@ class ChatService extends ChangeNotifier {
         .collection('Conversations')
         .doc(chatRoomId)
         .collection('messages')
-        .orderBy('timestamp', descending: false)
+        .orderBy('timestamp', descending: true)
         .snapshots();
   }
 

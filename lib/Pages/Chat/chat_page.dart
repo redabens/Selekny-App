@@ -3,11 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
 import 'package:reda/Client/components/chat_bubble.dart';
-import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Services/Chat/chat_service.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Services/notifications.dart';
 
@@ -64,7 +61,6 @@ class _ChatPageState extends State<ChatPage> {
   }
   Future<Widget> _buildAppBar(String otherUserId) async {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     return AppBar(
       title: Row(
         children: [
@@ -222,7 +218,7 @@ class _ChatPageState extends State<ChatPage> {
           return const Text('Loading..');
         }
         return ListView(
-          reverse: false,
+          reverse: true,
           children: snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
         );
       },

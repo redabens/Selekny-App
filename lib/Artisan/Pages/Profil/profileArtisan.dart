@@ -1,14 +1,17 @@
 
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Artisan/Pages/Profil/partie1Artisan.dart';
 import 'package:reda/Artisan/Pages/Profil/partie2Artisan.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
+import '../Activité/activiteaujour.dart';
+
 class ProfilArtisanPage extends StatefulWidget {
   const ProfilArtisanPage({super.key});
 
@@ -18,6 +21,7 @@ class ProfilArtisanPage extends StatefulWidget {
 
 class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
   int _currentIndex = 3;
+  String userID = FirebaseAuth.instance.currentUser!.uid ;
   String email = FirebaseAuth.instance.currentUser!.email ?? '';
   String? nomartisan = '';
   String? domaine = '';
@@ -126,7 +130,7 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-             const Color(0xFF3E69FE).withOpacity(0.1), // Gris clair en haut
+              const Color(0xFF3E69FE).withOpacity(0.1), // Gris clair en haut
               Colors.white, // Blanc en bas
             ],
             stops: const [0.5, 0.5], // Transition nette
@@ -154,8 +158,8 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                           imageUrl: profileData.imageUrl,
                           domaine: profileData.domaine,
                         ),
-                        SizedBox(height: screenHeight * 0.02),
-                        SettingsArtisanSection(vehicule: profileData.vehicule, statut: profileData.statut,),
+                        SizedBox(height: screenHeight * 0.061),
+                        SettingsArtisanSection(vehicule: profileData.vehicule, statut: profileData.statut, userID: userID,),
                       ],
                     );
                   }
@@ -180,7 +184,8 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
+        currentIndex: _currentIndex,
+        // Assurez-vous de mettre l'index correct pour la page de profil
         iconSize: 30,
         items: [
           BottomNavigationBarItem(
@@ -189,17 +194,17 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                 setState(() {
                   _currentIndex = 0;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
                 );
-
               },
               child: Container(
                 height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
-                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors
+                      .black,
                 ),
               ),
             ),
@@ -211,18 +216,17 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const NotifUrgente()),
                 );
-
-
               },
               child: Container(
                 height: screenHeight*0.035,
                 child: Image.asset(
                   'assets/Ademandes.png',
-                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors
+                      .black,
                 ),
               ),
             ),
@@ -234,17 +238,17 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                 setState(() {
                   _currentIndex = 2;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ChatListPage(type: 2,)),
                 );
-
               },
               child: Container(
-                height:screenHeight*0.04,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/messages.png',
-                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors
+                      .black,
                 ),
               ),
             ),
@@ -256,17 +260,17 @@ class _ProfilArtisanPageState extends State<ProfilArtisanPage> {
                 setState(() {
                   _currentIndex = 3;
                 });
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilArtisanPage()),
                 );
-
               },
               child: Container(
                 height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
-                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors
+                      .black,
                 ),
               ),
             ),
@@ -286,4 +290,3 @@ class ProfileData {
   final bool statut;
   ProfileData(this.nomartisan, this.email, this.imageUrl, this.domaine, this.vehicule, this.statut);
 }
-

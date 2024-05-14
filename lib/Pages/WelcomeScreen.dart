@@ -25,6 +25,7 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -32,11 +33,11 @@ class WelcomeScreen extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  const SizedBox(height: 60),
+                  SizedBox(height: screenHeight*0.15),
                   Image.asset(
                     'assets/workersimg.png', // Replace with your image path
                     width: 336,
-                    height: 300,
+                    height: 320,
                   ),
                   Text(
                     'Gagnez Du Temps\nAvec Nous !',
@@ -53,7 +54,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 70.0),
+                  SizedBox(height: screenHeight*0.05),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -118,13 +119,13 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 170),
+                  SizedBox(height: screenHeight*0.15,)
                 ],
               ),
             ),
             Positioned(
-              right: 5.0,
-              bottom: 0.0,
+              right: 12.0,
+              bottom: 30.0,
               child: TextButton(
                 onPressed: () {
                   Navigator.pushReplacement(

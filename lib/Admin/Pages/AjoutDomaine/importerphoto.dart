@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -167,8 +168,8 @@ class _ImporterState extends State<Importer> {
                     GestureDetector(
                       onTap: () {
                         if(fileName!='' && _textController.value.text != ''){
-                         _domainesService.ajouterDomaine(_textController.value.text, fileName);
-                         Navigator.pop(context);
+                          _domainesService.ajouterDomaine(_textController.value.text, fileName);
+                          Navigator.pop(context);
                         }
                       },
                       child: Container(
@@ -201,4 +202,3 @@ class _ImporterState extends State<Importer> {
     );
   }
 }
-

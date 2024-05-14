@@ -30,13 +30,13 @@ class Heure extends StatelessWidget {
               // Assurez-vous de fournir le chemin correct vers votre image
             ),
           ),
-          SizedBox(width:screenWidth*0.013),
+          SizedBox(width:screenWidth*0.012),
           Text(
             heuredebut,
             style: GoogleFonts.poppins(
               color: const Color(0xFF757575),
-              fontSize: screenWidth*0.03,
-              fontWeight: FontWeight.w500,
+              fontSize: screenWidth*0.032,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const Spacer(),

@@ -23,11 +23,11 @@ class ProfileClientSection extends StatelessWidget {
           imageUrl.isNotEmpty
               ? ClipRRect(
             borderRadius: BorderRadius.circular(
-                50), // Ajout du BorderRadius
+                75), // Ajout du BorderRadius
             child: Image.network(
               imageUrl,
-              width: 100,
-              height: 100,
+              width: 150,
+              height: 150,
               fit: BoxFit.cover,
             ),
           ): Icon(

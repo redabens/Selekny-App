@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
 import 'package:reda/Client/PubDemande/DemandeEnvoyeInit.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
-import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
@@ -74,7 +72,6 @@ class DetDemandeAcceptee extends StatefulWidget {
 
 class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
   final DemandeClientService _DemandeClientService = DemandeClientService();
-  final DemandeArtisanService _DemandeArtisanService = DemandeArtisanService();
   final RendezVousService _rendezVousService = RendezVousService();
   @override
   Widget build(BuildContext context) {
@@ -219,12 +216,6 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                             child: Container(
                               width: 54, // Adjust as needed
                               height: 54, // Adjust as needed
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 0.1,
-                                ),
-                              ),
                               child: widget.imageUrl != ''
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
@@ -238,7 +229,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               )
                                   : Icon(
                                 Icons.account_circle,
-                                size: 56,
+                                size: 57,
                                 color: Colors.grey[400],
                               ),
                             ),

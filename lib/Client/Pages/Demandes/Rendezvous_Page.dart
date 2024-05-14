@@ -192,7 +192,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                      'Vous n''avez aucun Rendez-vous.',
+                      'Vous n\'avez aucun Rendez-vous.',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -211,7 +211,6 @@ class _RendezVousPageState extends State<RendezVousPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-      String demandeID = document.id;
       String userID = _firebaseAuth.currentUser!.uid;
       String domaineID = data['iddomaine'];
       String PrestationID = data['idprestation'];
@@ -288,7 +287,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
                 color: Colors.grey[600],
               )
           )
-      );; // or some placeholder widget
+      ); // or some placeholder widget
     }
   }
 

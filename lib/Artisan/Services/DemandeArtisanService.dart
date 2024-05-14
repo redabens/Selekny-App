@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Services/DemandeArtisan.dart';
 
 class DemandeArtisanService extends ChangeNotifier{
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> sendDemandeArtisan(String datedebut,
@@ -23,7 +21,7 @@ class DemandeArtisanService extends ChangeNotifier{
       )async{
     Timestamp timestamp = Timestamp.now();
     DateTime dateTime = timestamp.toDate();
-    dateTime= dateTime.subtract(const Duration(hours: 1));
+    //dateTime= dateTime.subtract(const Duration(hours: 1));
     timestamp = Timestamp.fromDate(dateTime);
 
     DemandeArtisan newDemandeArtisan = DemandeArtisan(

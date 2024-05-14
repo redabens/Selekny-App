@@ -1,13 +1,14 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:reda/Admin/Pages/GestionsUsers/gestionArtisans_page.dart';
 import 'BloquerArtisan.dart';
 
-class ProfileBody2CoteAdmin extends StatelessWidget {
+class ProfileBody2CoteAdmin extends StatefulWidget {
   final String userID;
   final String adresse;
   final String photoPath;
+  final String email;
   final String name;
   final String domaine;
   final String phone;
@@ -22,6 +23,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
   const ProfileBody2CoteAdmin({super.key,
     required this.photoPath,
     required this.name,
+    required this.email,
     required this.domaine,
     required this.phone,
     required this.isVehicled,
@@ -34,20 +36,61 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
   });
 
   @override
+  _ProfileBody2CoteAdminState createState() => _ProfileBody2CoteAdminState();
+}
+class _ProfileBody2CoteAdminState extends State<ProfileBody2CoteAdmin> {
+  late bool bloque = false ;
+  Future<void> getBloqueStatut(String userID) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      DocumentSnapshot userDoc = await firestore.collection('users').doc(userID).get();
+      if (userDoc.exists) {
+        setState(() {
+          bloque = userDoc.get('bloque');
+        });
+      } else {
+        print("User not found");
+      }
+    } catch (e) {
+      print("Error fetching bloqued status: $e");
+    }
+    await Future.value(Null);
+  }
+  Future<void> bloqueDebloque(String userID) async {
+
+    DocumentReference userRef =
+    FirebaseFirestore.instance.collection('users').doc(userID);
+    DocumentSnapshot userSnapshot = await userRef.get();
+
+    if (userSnapshot.exists) {
+      bool currentBloque = userSnapshot['bloque'] ?? false;
+
+      await userRef.update({'bloque': !currentBloque});
+    } else {
+      throw Exception('User document not found');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getBloqueStatut(widget.userID);
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
     double screenHeight = MediaQuery.of(context).size.height; // Hauteur de l'écran
 
-    return SingleChildScrollView( // Pour éviter le débordement si l'écran est petit
-      child: Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          photoPath != ''
+          widget.photoPath != ''
               ? ClipRRect(
             borderRadius: BorderRadius.circular(
                 50), // Ajout du BorderRadius
                child: Image.network(
-                photoPath,
+                 widget.photoPath,
                 width: 60,
                 height: 60,
                 fit: BoxFit.cover,
@@ -58,23 +101,32 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
             size: 65,
             color: Colors.grey[400],
           ),
-          SizedBox(height: screenHeight * 0.02), // Espacement proportionnel
+          SizedBox(height: screenHeight * 0.03), // Espacement proportionnel
           Text(
-            name,
+            widget.name,
             style: GoogleFonts.poppins(
-              fontSize: screenWidth * 0.05, // Taille de police proportionnelle
+              fontSize: screenWidth * 0.055, // Taille de police proportionnelle
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: screenHeight * 0.005),
+          SizedBox(height: screenHeight * 0.007),
           Text(
-            domaine,
+            widget.email,
+            style: GoogleFonts.poppins(
+                fontSize: screenWidth * 0.04,
+                fontWeight: FontWeight.w400,
+                color: Colors.black.withOpacity(0.7)
+            ),
+          ),
+          SizedBox(height: screenHeight * 0.01),
+          Text(
+            widget.domaine,
             style: GoogleFonts.poppins(
               fontSize: screenWidth * 0.04,
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: screenHeight * 0.02),
+          SizedBox(height: screenHeight * 0.026),
           // Nouvelle section avec dimensionnement proportionnel
           Container(
             width: screenWidth * 0.9,
@@ -91,7 +143,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
                         children: [
                           Icon(Icons.star, color: Colors.yellow, size: screenWidth * 0.1),
                           Text(
-                            rating.toString(),
+                            widget.rating.toString(),
                             style: GoogleFonts.poppins(
                               fontSize: screenWidth * 0.05,
                               fontWeight: FontWeight.w500,
@@ -129,7 +181,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
                             height: screenWidth * 0.1,
                           ),
                           Text(
-                            workCount.toString(),
+                            widget.workCount.toString(),
                             style: GoogleFonts.poppins(
                               fontSize: screenWidth * 0.05,
                               fontWeight: FontWeight.w500,
@@ -166,7 +218,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
                 Image.asset('assets/tel.png', width: screenWidth * 0.05, height: screenWidth * 0.1),
                 SizedBox(width: screenWidth * 0.02),
                 Text(
-                  phone,
+                  widget.phone,
                   style: GoogleFonts.poppins(
                     fontSize: screenWidth * 0.04,
                     fontWeight: FontWeight.w500,
@@ -177,7 +229,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
           ),
           SizedBox(height: screenHeight * 0.03),
           GestureDetector(
-            onTap: onPrestation,
+            onTap: widget.onPrestation,
             child: Container(
               width: screenWidth * 0.9,
               height: screenHeight * 0.055,
@@ -210,7 +262,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
           ),
           SizedBox(height: screenHeight * 0.03),
           GestureDetector(
-            onTap: onComment,
+            onTap: widget.onComment,
             child: Container(
               width: screenWidth * 0.9,
               height: screenHeight * 0.055,
@@ -250,7 +302,7 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(screenWidth * 0.05),
               border: Border.all(color: Colors.blue),
-              color: isVehicled ? const Color(0xFF7CF6A5) : Colors.red.withOpacity(0.5),
+              color: widget.isVehicled ? const Color(0xFF7CF6A5) : Colors.red.withOpacity(0.5),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -276,41 +328,43 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: onContact,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF3E69FE),
-                    borderRadius: BorderRadius.circular(screenWidth * 0.06),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenWidth * 0.04),
-                  child: Text(
-                    'Contacter',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: screenWidth * 0.06),
-              GestureDetector(
                 onTap: () {
-                  // FirebaseAuth.instance.signOut();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                  Bloquer( adresse: adresse, idartisan: userID, imageurl: photoPath, nomartisan: name, phone: phone, domaine: domaine, rating: rating, workcount: workCount, vehicule: isVehicled, tokenClient: '',)),
-                  );
+                  if (bloque) {
+                    bloqueDebloque(widget.userID);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const GestionArtisansPage(),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Bloquer(
+                          email:widget.email,
+                          adresse: widget.adresse,
+                          idartisan: widget.userID,
+                          imageurl: widget.photoPath,
+                          nomartisan: widget.name,
+                          phone: widget.phone,
+                          domaine: widget.domaine,
+                          rating: widget.rating,
+                          workcount: widget.workCount,
+                          vehicule: widget.isVehicled,
+                        ),
+                      ),
+                    );
+                  }
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFF0000),
+                    color: bloque ? Colors.green : const Color(0xFFFF0000), // Vert pour débloquer, Rouge pour bloquer
                     borderRadius: BorderRadius.circular(screenWidth * 0.06),
                   ),
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08, vertical: screenWidth * 0.04),
                   child: Text(
-                    'Bloquer',
+                    bloque ? 'Débloquer' : 'Bloquer', // Texte change selon l'état de blocage
                     style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -321,7 +375,6 @@ class ProfileBody2CoteAdmin extends StatelessWidget {
             ],
           ),
         ],
-      ),
     );
   }
 }

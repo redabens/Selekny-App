@@ -32,7 +32,6 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
   //---------------LES FONCTION GETTERS---------------------------------------------------
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final DemandeClientService _DemandeAccepteeService = DemandeClientService();
   final ModifPrixService _modifPrixService = ModifPrixService();
 
@@ -137,7 +136,6 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -186,9 +184,10 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage(),),
                 );
+
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -210,8 +209,8 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/demandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -232,8 +231,8 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
                 );
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.040,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -255,7 +254,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -307,7 +306,7 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                      'Vous n''avez aucune demande acceptée.',
+                      'Vous n\'avez aucune demande acceptée.',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -328,7 +327,6 @@ class _DemandeAccepteePageState extends State<DemandeAccepteePage> {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
       // Extract values from the data map using null check operator
-      String demandeID = document.id;
       String userID = _firebaseAuth.currentUser!.uid; // 'IiRyRcvHOzgjrRX8GgD4M5kAEiJ3';
       String domaineID = data['iddomaine']; // Handle null with an empty string
       String PrestationID = data['idprestation']; // Handle null with an empty string

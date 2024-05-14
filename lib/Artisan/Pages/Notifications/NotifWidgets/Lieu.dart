@@ -32,8 +32,8 @@ class Lieu extends StatelessWidget {
                     text: adresse,
                     style: GoogleFonts.poppins(
                       color: Colors.black,
-                      fontSize: 12, // Adjust font size as needed
-                      fontWeight: FontWeight.w400,
+                      fontSize: 13, // Adjust font size as needed
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

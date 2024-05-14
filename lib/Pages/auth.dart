@@ -96,6 +96,7 @@ class FirebaseAuthService {
       userData = querySnapshot.docs.first.data();
     } else {
       print('No user found for email: $email');
+      return '';
     }
     print("Password recupere de firestore : ${userData['motDePasse']} ");
     return userData['motDePasse'];

@@ -5,9 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
-import 'package:reda/Client/Services/demande%20publication/DemandeClientService.dart';
 import 'package:reda/Client/Services/demande%20publication/DemandeEncours_service.dart';
-import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
 
 class Buttonrefuser extends StatefulWidget {
   final String idclient;
@@ -27,7 +25,7 @@ class ButtonrefuserState extends State<Buttonrefuser> {
     double screenWidth = MediaQuery.of(context).size.width; // Largeur de l'écran
     double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-        width: screenWidth*0.25,
+        width: screenWidth*0.225,
         height: screenHeight*0.07,
         decoration: BoxDecoration(
           color: const Color(0xFFF6F6F6),
@@ -47,14 +45,14 @@ class ButtonrefuserState extends State<Buttonrefuser> {
                 'refuser',
                 style: GoogleFonts.poppins(
                   color: Colors.black,
-                  fontSize: screenWidth*0.027,
+                  fontSize: screenWidth*0.026,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               SizedBox(width:screenWidth*0.01),
               Container(
-                height: 14,
-                width: 14,
+                height: 12,
+                width: 12,
                 child: const ImageIcon(
                   AssetImage('assets/close.png'),
                   color: Colors.black,

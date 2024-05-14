@@ -48,7 +48,6 @@ class Detailsbottom extends StatelessWidget {
               urgence: urgence, latitude: latitude,
               longitude: longitude, timestamp: timestamp,
               demandeid: demandeid, nomArtisan: nomArtisan, nomPrestation: '',), //hado bouton accepter refuser
-            const SizedBox(width: 8,),
           ],
         ),
     );

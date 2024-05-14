@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   late String currentUserID;
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: const Column(
@@ -24,19 +25,11 @@ class _HomePageState extends State<HomePage> {
           Header(type: 1,),
           SizedBox(height: 15), // Ajout d'un espace entre le header et le reste du contenu
           Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  Body(type: 1,),
-                ],
-              ),
-            ),
+            child: Body(type: 1,),
           ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-
         backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -57,7 +50,7 @@ class _HomePageState extends State<HomePage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/accueil.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -79,8 +72,8 @@ class _HomePageState extends State<HomePage> {
 
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/demandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -101,8 +94,8 @@ class _HomePageState extends State<HomePage> {
                 );
 
               },
-              child: Container(
-                height: 40,
+              child: SizedBox(
+                height: screenHeight*0.040,
                 child: Image.asset(
                   'assets/messages.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -124,7 +117,7 @@ class _HomePageState extends State<HomePage> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.03,
                 child: Image.asset(
                   'assets/profile.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
@@ -135,6 +128,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-    );
+      );
   }
 }

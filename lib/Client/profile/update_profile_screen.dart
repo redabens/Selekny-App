@@ -53,7 +53,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   String password = '';
   String confirmPassword = '';
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late UserRepository userRepository;
   late UserModel userModel;
@@ -460,6 +459,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 // Old password matches, proceed with further actions
                                 await saveChanges(); // Call the function to update user data
                                 print("Donnes mis a jour avec success");
+                                Navigator.pop(context);
                               }
                             } catch (e) {
                               // Handle re-authentication error

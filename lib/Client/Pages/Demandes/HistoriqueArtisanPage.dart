@@ -104,7 +104,6 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
   //-----------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -169,7 +168,7 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                        'Vous n''avez aucun Historique.',
+                        'Vous n\'avez aucun Historique.',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -188,8 +187,6 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-      String demandeID = document.id;
-      String artisanID = _firebaseAuth.currentUser!.uid;
       String domaineID = data['iddomaine'];
       String PrestationID = data['idprestation'];
       String clientID = data['idclient'];
@@ -248,7 +245,7 @@ class _HistoriqueArtisanPageState extends State<HistoriqueArtisanPage> {
                 color: Colors.grey[600],
               )
           )
-      );; // or some placeholder widget
+      ); // or some placeholder widget
     }
   }
 

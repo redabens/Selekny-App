@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reda/Pages/auth.dart';
-import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Pages/usermodel.dart';
 import 'package:reda/Services/ConvertAdr.dart';
-import '../WelcomeScreen.dart';
 import 'connexion.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,14 +32,13 @@ class InscriptionScreen extends StatefulWidget {
   const InscriptionScreen({super.key, required this.type});
 
   @override
-  _InscriptionScreenState createState() => _InscriptionScreenState();
+  State<InscriptionScreen> createState() => _InscriptionScreenState();
 }
 
 class _InscriptionScreenState extends State<InscriptionScreen> {
   final _formKey = GlobalKey<FormState>(); // Define _formKey here
 
   bool _showPassword = false;
-  // String _email = '';
   bool _loading = false;
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -89,7 +86,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
           if (user != null) {
             print("User successfully created");
-            UserRepository userRepository = UserRepository();
             widget.type == 1 ?
             Navigator.pushReplacement(
               context,

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 class DemandeEncoursService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Stream<QuerySnapshot> getDemandesEnCours() {
     final String currentUserId = _firebaseAuth.currentUser!.uid;

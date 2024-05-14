@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'AllSignalements_page.dart';
@@ -39,18 +40,18 @@ class DetailsSignalement extends StatefulWidget {
 
 
   @override
-  State<DetailsSignalement> createState() => _DetailsSignalementState();
+  _DetailsSignalementState createState() => _DetailsSignalementState();
 }
 
 class _DetailsSignalementState extends State<DetailsSignalement> {
   final SignalementsService _SignalementService = SignalementsService();
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: const MyAppBar(),
+      backgroundColor: Colors.white,
+      appBar: MyAppBar(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -112,10 +113,10 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 20),
                   Container(
                     child: Text(
-                      'Cet utilisateur a été signalé ${widget.nbsignalement -1} fois.',  // Utilisation du paramètre
+                      'Cet utilisateur a été signalé ${widget.nbsignalement-1} fois.',  // Utilisation du paramètre
                       style: GoogleFonts.poppins(
                         color: Colors.red,
                         fontSize: 12,
@@ -218,9 +219,9 @@ class _DetailsSignalementState extends State<DetailsSignalement> {
                             await  _SignalementService.deleteSignalement(widget.signalementID);
                             // await _SignalementService.incrementSignalement(widget.signalantID);
                             await Future.delayed(const Duration(milliseconds: 300));
-                            Navigator.pushReplacement(
+                            Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const AllSignalementsPage()),
+                              MaterialPageRoute(builder: (context) => AllSignalementsPage()),
                             );
                           },
                           child: Container(
@@ -298,10 +299,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Stack(
       children: [
         AppBar(
           automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
           title: Row(
             children: [
               Container(
@@ -325,7 +328,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                 ),
               ),
-              SizedBox(width: screenWidth*0.08),
+            SizedBox(width: screenWidth*0.08),
               Center(
                 child: Text(
                   'Détails du signalement',

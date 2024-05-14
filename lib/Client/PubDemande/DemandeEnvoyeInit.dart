@@ -1,5 +1,5 @@
-import 'dart:math';
 
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
@@ -69,7 +69,6 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
   @override
   void initState() {
     super.initState();
-    print('${widget.rayon}');
     _checkArtisansForLatestDemande();
   }
   Future<void> _checkArtisansForLatestDemande() async {
@@ -86,7 +85,6 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
     final demandeLong = demandeData['longitude'];
     String domainenom = '';
     // Filtrer les artisans à proximité
-    final artisansInRange = <DocumentSnapshot>[];
     try {
       final documentSnapshot = await FirebaseFirestore.instance
           .collection('Domaine')
