@@ -1,3 +1,5 @@
+
+
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -72,17 +74,17 @@ class ButtonaccepterState extends State<Buttonaccepter> {
           await getNomPrestationById(widget.iddomaine, widget.idprestation);
 
           NotificationServices.sendPushNotification(
-              token,
-              "Votre demande a été accepté par ${widget.nomArtisan}",
-              "Service demandé : $nomPrestation",);
-        _demandeClientService.sendDemandeClient(widget.datedebut, widget.datefin,
+            token,"AccepteParArtisan",
+            "Votre demande a été accepté par ${widget.nomArtisan}",
+            "Service demandé : $nomPrestation",);
+          _demandeClientService.sendDemandeClient(widget.datedebut, widget.datefin,
             widget.heuredebut, widget.heurefin,
             widget.adresse, widget.iddomaine,
             widget.idprestation, widget.idclient, FirebaseAuth.instance.currentUser!.uid,
             widget.urgence, widget.latitude, widget.longitude,);
-        _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-        _demandeEncoursService.deleteDemande(widget.demandeid);
-        await Future.delayed(const Duration(milliseconds: 100));
+          _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+          _demandeEncoursService.deleteDemande(widget.demandeid);
+          await Future.delayed(const Duration(milliseconds: 100));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +97,7 @@ class ButtonaccepterState extends State<Buttonaccepter> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-             SizedBox(width:screenWidth*0.01),
+            SizedBox(width:screenWidth*0.01),
             Container(
               height: 14,
               width: 14,

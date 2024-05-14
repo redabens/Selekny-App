@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/PubDemande/DemandeEnvoyeInit.dart';
@@ -11,6 +12,7 @@ class Suivant extends StatelessWidget {
   final Demande demande;
   final Date datedebut;
   final Date datefin;
+  final int rayon;
   const Suivant({
     super.key,
     required this.prestationID,
@@ -18,6 +20,7 @@ class Suivant extends StatelessWidget {
     required this.datedebut,
     required this.datefin,
     required this.domaineId,
+    required this.rayon,
   });
 
   // final VoidCallback onPressed;
@@ -44,7 +47,8 @@ class Suivant extends StatelessWidget {
                   demande.heure_fin);
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => DemandeEnvoye(prestationID: prestationID, domaineId: domaineId, demande: demande,)),
+                MaterialPageRoute(builder: (context) => DemandeEnvoye(prestationID: prestationID, domaineId: domaineId,
+                  demande: demande, rayon: rayon,)),
               );
             },
             style: ButtonStyle(
@@ -73,13 +77,9 @@ class Suivant extends StatelessWidget {
 
               ],
             ),
-
-          ),
-          SizedBox(height:screenHeight*0.070,),
+          )
         ],
-
       ),
-
     );
 
   }

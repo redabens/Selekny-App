@@ -10,7 +10,7 @@ import 'package:reda/Artisan/Pages/Profil/partie1Artisan.dart';
 import 'package:reda/Artisan/Pages/Profil/partie2Artisan.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 
-import '../Activité/Activitaujour.dart';
+import '../Activité/activiteaujour.dart';
 class ProfilArtisanPage extends StatefulWidget {
   const ProfilArtisanPage({super.key});
 

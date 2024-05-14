@@ -1,31 +1,34 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:reda/Artisan/Pages/Activité/Activitavenir.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
+import 'package:reda/Artisan/Pages/Profil/profileArtisan.dart';
+import 'package:reda/Pages/Chat/chatList_page.dart';
 import '../../../Client/Services/demande publication/RendezVous_Service.dart';
-import '../../../Pages/Chat/chatList_page.dart';
-import '../Profil/profileArtisan.dart';
-import 'Activitaujour.dart';
-import 'ActiviteWidget/Infoboxavenir.dart';
+import 'Activitavenir.dart';
+import 'InfoBoxaujour.dart';
 
-class ActivitAvenirPage extends StatefulWidget {
-  const ActivitAvenirPage({
-    super.key,
-  });
+class ActiviteaujourPage extends StatefulWidget {
+  const ActiviteaujourPage({super.key});
+
   @override
-  State<ActivitAvenirPage> createState() => _ActivitAvenirPageState();
+  State<ActiviteaujourPage> createState() => _ActiviteaujourPageState();
 }
-class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
+
+class _ActiviteaujourPageState extends State<ActiviteaujourPage> {
   int _currentIndex = 0;
-  bool isAvenir = true;
+  bool isAujourdhui = true;
   final RendezVousService _rendezVousService = RendezVousService();
   DateTime now = DateTime.now();
-  void _onItemTap(bool isAvenir) {
+  void _onItemTap(bool isAujourdhui) {
     setState(() {
-      isAvenir = isAvenir;
+      this.isAujourdhui = isAujourdhui;
     });
   }
   Future<String> getUserPathImage(String userID) async {
@@ -111,33 +114,70 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
       return ''; // Return empty string on error
     }
   }
+  bool hasPassedDate(String dateString) {
+    // Parse the date string from Firestore
+    try {
+      final formatter = DateFormat('dd MMMM yyyy');
+      final parsedDate = formatter.parse(dateString);
+      // Obtenir la date d'aujourd'hui à minuit
+      final midnightToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      return parsedDate.isBefore(midnightToday); // Retourne vrai si la date est avant aujourd'hui à minuit
+    } on FormatException catch (e) {
+      print('Error parsing date string: $e');
+      // Gérer l'erreur de formatage de manière élégante (par exemple, retourner faux ou lancer une exception)
+      return false;
+    }
+  }
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : ${token}");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      body:Column(
-        children: [
-          SizedBox(height: screenHeight*0.02),
-          AppBar(
-            elevation: 0.0,
-            backgroundColor: Colors.white,
-            title: Text(
-              'Activité',
-              style: GoogleFonts.poppins(
-                fontSize: screenWidth*0.07,
-                fontWeight: FontWeight.w700,
+      body: Column(
+          children: [
+            AppBar(
+              elevation: 0.0,
+              backgroundColor: Colors.white,
+              title: Text(
+                'Activité',
+                style: GoogleFonts.poppins(
+                  fontSize: screenWidth*0.07,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
+              automaticallyImplyLeading: false,
+              centerTitle: true,
             ),
-            automaticallyImplyLeading: false,
-            centerTitle: true,
-          ),
-          _buildDescription(),
-           SizedBox(height: screenHeight*0.02),
-          _buildSelectionRow(),
-          Expanded(child: _buildRendezVousList(),)
-        ],
+            _buildDescription(),
+            SizedBox(height:screenHeight*0.02),
+            _buildSelectionRow(),
+
+            Expanded(child: _buildRendezVousList(),)
+          ]
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFF8F8F8),
@@ -155,7 +195,7 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ActivitAvenirPage()),
+                  MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
                 );
 
               },
@@ -183,7 +223,7 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
 
               },
               child: Container(
-                height: screenHeight*0.035,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'assets/Ademandes.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -254,20 +294,29 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
 
         final documents = snapshot.data!.docs;
         String formattedDate = DateFormat('dd MMMM yyyy').format(now);
-        // Filter documents based on urgency (urgence == false)
-        final nonUrgentDocuments = documents.where((doc) {
+        final filteredDocuments = documents.where((doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          return data['datedebut'] != formattedDate;
-        });
+          return !hasPassedDate(data['datedebut']);
+        }).toList();
+        final urgentDocuments = filteredDocuments.where((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
+          return data['datedebut'] == formattedDate;
+        }).toList();
+        for (var document in documents) {
+          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+          if (hasPassedDate(data['datedebut'])) {
+            _rendezVousService.deleteRendezVousID(document.id);
+          }
+        }
         // Print details of each non-urgent document (optional)
-        for (var doc in nonUrgentDocuments) {
+        for (var doc in urgentDocuments) {
           print("Document Data (non-urgent): ${doc.data()}");
         }
 
         return FutureBuilder<List<Widget>>(
           future: Future.wait(
-            nonUrgentDocuments.map((document) => _buildRendezVousItem(document)),
+            urgentDocuments.map((document) => _buildRendezVousItem(document)),
           ),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
@@ -299,19 +348,26 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
   // build message item
   Future<Widget> _buildRendezVousItem(DocumentSnapshot document) async {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    print('${data['idclient']} et ${data['idprestation']} et ${data['iddomaine']}');
     String image = await getUserPathImage(data['idclient']);
-    String nomprestation = await getNomPrestation(data['idprestation'], data['iddomaine']);
+    print("l'url:$image");
+    String nomprestation = await getNomPrestation(
+        data['idprestation'], data['iddomaine']);
+    print(nomprestation);
     String nomClient = await getNameUser(data['idclient']);
     String phone = await getPhoneUser(data['idclient']);
     bool vehicule = await getVehiculeUser(data['idclient']);
     final String sync = await getSyncDemande(data['timestamp']);
     String nomArtisan = await getNameUser(FirebaseAuth.instance.currentUser!.uid);
+    String tokenClient = await getTokenById(data['idclient']);
+    String tokenArtisan = await getTokenById(data['idartisan']);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          InfoBoxavenir(datedebut: data['datedebut'],
+          InfoBoxaujour(
+            datedebut: data['datedebut'],
             datefin: data['datefin'],
             prestation: nomprestation,
             heureDebut: data['heuredebut'],
@@ -331,52 +387,44 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
             sync: sync,
             nomArtisan: nomArtisan,
             idartisan: FirebaseAuth.instance.currentUser!.uid,
-            vehicule: vehicule,),
-         const SizedBox(height:10),
+            vehicule: vehicule, tokenClient: tokenClient, tokenArtisan: tokenArtisan,
+          ),
+          const SizedBox(height: 2,),
         ],
       ),
     );
   }
 
-//---------------------------------------------------------------------------------------------------
   Widget _buildSelectionRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: () {
-              _onItemTap(false);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
-              );
-            },
-            child: Column(
+            onTap: () => _onItemTap(true),
+            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/aujour.png',
-                      color: !isAvenir ? const Color(0xFFF5A529) : Colors.grey,
-                    ),
-                    const SizedBox(width: 7), // Espacement entre l'image et le texte
+                  children:[
+                    Image.asset('assets/aujour.png', color: isAujourdhui ? const Color(0xFFF5A529) : Colors.grey),
+                    const SizedBox(width:5),
                     Text(
                       'Aujourd\'hui',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
-                        color: !isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                        color: isAujourdhui ? const Color(0xFFF5A529) : Colors.grey,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+
+                const SizedBox(height: 10), // Espace entre le texte et la ligne
                 Container(
-                  height: !isAvenir ? 4: 1,
-                  color: !isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                  height: isAujourdhui ? 4 : 1, // Épaisseur de la ligne
+                  color: isAujourdhui ? const Color(0xFFF5A529) : Colors.grey,
                 ),
               ],
             ),
@@ -384,32 +432,32 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
         ),
         Expanded(
           child: GestureDetector(
-            onTap: () => _onItemTap(true),
-            child: Column(
+            onTap: () =>
+                Navigator.push(
+                    context, MaterialPageRoute(
+                    builder: (context) => const ActivitAvenirPage())),
+            child: Column( // Utiliser une colonne pour séparer le texte de la ligne
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/time.png',
-                      color: isAvenir ? const Color(0xFFF5A529) : Colors.grey,
-                    ),
-                    SizedBox(width:5),// Espacement entre l'image et le texte
-                    Text(
+                  children:[
+                    Image.asset('assets/time.png', color: isAujourdhui ? Colors.grey : const Color(0xFFF5A529) ),
+                    SizedBox(width:5),
+                    Text(textAlign: TextAlign.center,
                       'A venir',
-                      textAlign: TextAlign.center,
+
                       style: GoogleFonts.poppins(
-                        color: isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                        color: !isAujourdhui ? const Color(0xFFF5A529) : Colors.grey,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 16), // Espace entre le texte et la ligne
                 Container(
-                  height: isAvenir ? 4 : 1,
-                  color: isAvenir ? const Color(0xFFF5A529) : Colors.grey,
+                  height: isAujourdhui ? 1 : 4, // Épaisseur de la ligne
+                  color: !isAujourdhui? const Color(0xFFF5A529) : Colors.grey,
                 ),
               ],
             ),
@@ -418,6 +466,7 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
       ],
     );
   }
+
   Widget _buildDescription() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -437,11 +486,12 @@ class _ActivitAvenirPageState extends State<ActivitAvenirPage> {
                 ),
                 TextSpan(
                   text:
-                  ' Vous pouvez ici consulter vos Activtées, cela represente les jobs à faire dans les jours à venir.',
+                  ' Vous pouvez ici consulter vos Activtées, cela represente les jobs à faire aujourd\'hui.',
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w400,
-                    fontSize:12,
-                    color: Colors.black,),
+                    fontSize: 12,
+                    color: Colors.black,
+                  ),
                 ),
               ],
             ),

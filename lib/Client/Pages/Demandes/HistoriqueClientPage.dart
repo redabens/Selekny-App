@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -78,15 +79,38 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
       return '';
     }
   }
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : ${token}");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
+  }
   //-----------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // espace fo9 titre de la page
-          const SizedBox(height: 20.0),
           AppBar(
             elevation: 0.0,
             // Remove default shadow
@@ -106,10 +130,9 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
             ),
             centerTitle: true,
           ),
-          const SizedBox(height: 18),
+          SizedBox(height:screenHeight*0.02),
           _buildTitleAndDescription(), // le petit texte du début
-          const SizedBox(height: 10),
-          const SizedBox(height: 2),
+          SizedBox(height:screenHeight*0.01),
           Expanded(
             child: _buildHistoriqueClientList(),
           ),
@@ -156,15 +179,14 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
                     )
                 );
               }
-
               return ListView(children: snapshot.data!);
             });
-
       },
     );
   }
 
   Future<Widget> _buildHistoriqueClientItem(DocumentSnapshot document) async {
+    final screenHeight = MediaQuery.of(context).size.height;
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
       String demandeID = document.id;
@@ -190,30 +212,36 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
       String datefin = data['datefin'];
       String heureDebut = data['heuredebut'];
       String heureFin = data['heurefin'];
-      return Column(children:[
-        HistoriqueClient(domaine: domaine,
-          date: date,
-          heure: heure,
-          prix: prix,
-          prestation: prestation,
-          imageUrl: imageUrl,
-          nomArtisan: nomArtisan,
-          rating: rating,
-          phone: phone,
-          idclient: userID,
-          datefin: datefin,
-          heuredebut: heureDebut,
-          heurefin: heureFin,
-          idartisan: artisanID,
-          adresseartisan: adresseartisan,
-          workcount: workcount,
-          vehicule: vehicule,
-      ),
-    SizedBox(height:20),
-    ],
-    );
-    }
-    else {
+      String tokenArtisan = await getTokenById(data['idartisan']);
+      String tokenClient = await getTokenById(data['idclient']);
+      String nomClient = await getUserPathImage(data['idclient']);
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            HistoriqueClient(
+              domaine: domaine,
+              date: date,
+              heure: heure,
+              prix: prix,
+              prestation: prestation,
+              imageUrl: imageUrl,
+              nomArtisan: nomArtisan,
+              rating: rating,
+              phone: phone,
+              idclient: userID,
+              datefin: datefin,
+              heuredebut: heureDebut,
+              heurefin: heureFin,
+              idartisan: artisanID,
+              adresseartisan: adresseartisan,
+              workcount: workcount,
+              vehicule: vehicule, nomClient: nomClient,
+              tokenClient: tokenClient,tokenArtisan: tokenArtisan,),
+            SizedBox(height: screenHeight*0.015,),
+          ]
+      );
+    } else {
       // Handle the case where the document is null
       print('Error: Document is null for document ID: ${document.id}');
       return Center(
@@ -225,8 +253,7 @@ class _HistoriqueClientPageState extends State<HistoriqueClientPage> {
                 color: Colors.grey[600],
               )
           )
-      );
-      // or some placeholder widget
+      ); // or some placeholder widget
     }
   }
 

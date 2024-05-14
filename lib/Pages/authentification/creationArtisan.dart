@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/AjoutDomaine/ajouterDomaine.dart';
 import 'package:reda/Admin/Pages/artisaninscri.dart';
 import 'package:reda/Pages/auth.dart';
@@ -226,6 +227,8 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     var isDark = Theme.of(context).brightness == Brightness.dark;
     var textColor = isDark ? Colors.white : Colors.black.withOpacity(0.4);
 
@@ -235,7 +238,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
         backgroundColor: Colors.white,),
       body:SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
+          padding: const EdgeInsets.only(left: 35, right: 35, top: 40),
           child: Stack(
             children: [
               Positioned(
@@ -246,14 +249,14 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                   children: [
                     Image.asset(
                       'assets/logo.png',
-                      width: 85,
-                      height: 90,
+                      width: 82,
+                      height: 88,
                     ),
-                    const SizedBox(height: 3),
-                    const Text(
-                      'Creation compte Artisan',
-                      style: TextStyle(
-                        fontSize: 27,
+                     SizedBox(height:screenHeight*0.03),
+                    Text(
+                      'Creation compte artisan',
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -265,7 +268,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 85),
+                     SizedBox(height: screenHeight*0.11),
                     Form(
                       key: _formKey,
                       child: Column(
@@ -280,13 +283,14 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             },
                             decoration: InputDecoration(
                               labelText: 'Nom',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 14,
                                 color: textColor,
                               ),
                               border: const UnderlineInputBorder(),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                           SizedBox(height:screenHeight*0.02),
                           TextFormField(
                             controller: _adresseController,
                             validator: (value) {
@@ -297,14 +301,15 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             },
                             decoration: InputDecoration(
                               labelText: 'Adresse',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 14,
                                 color: textColor,
                               ),
                               border: const UnderlineInputBorder(),
                               suffixIcon: const Icon(Icons.location_pin),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                           SizedBox(height:screenHeight*0.01),
                           TextFormField(
                             controller: _numController,
                             validator: (value) {
@@ -327,12 +332,12 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                                 alignLeft: false,
                               ),
                             ),
-                            style: const TextStyle(
+                            style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold,
                             ),
                             keyboardType: TextInputType.phone,
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           DropdownButtonFormField<String>(
                             value: widget.domaine,
                             icon: const Icon(Icons.arrow_drop_down),
@@ -340,7 +345,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             elevation: 16,
                             decoration: InputDecoration(
                               labelText: 'Domaine',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.poppins(
                                 color: textColor,
                               ),
                               border: const UnderlineInputBorder(),
@@ -360,7 +365,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                                   (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-                                  child: Text(value),
+                                  child: Text(value,style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14)),
                                 );
                               },
                             ).toList(),
@@ -371,7 +376,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                               return null;
                             },
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           TextFormField(
                             controller: _emailController,
                             validator: (value) {
@@ -382,14 +387,15 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             },
                             decoration: InputDecoration(
                               labelText: 'Email',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 14,
                                 color: textColor,
                               ),
                               border: const UnderlineInputBorder(),
                               suffixIcon: const Icon(Icons.alternate_email),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           TextFormField(
                             controller: _passwordController,
                             validator: (value) {
@@ -400,7 +406,8 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             },
                             decoration: InputDecoration(
                               labelText: 'Créer mot de passe',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 14,
                                 color: textColor,
                               ),
                               border: const UnderlineInputBorder(),
@@ -419,7 +426,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             ),
                             obscureText: !_showPassword,
                           ),
-                          const SizedBox(height: 6),
+                          SizedBox(height:screenHeight*0.008),
                           TextFormField(
                             controller: _confirmPasswordController,
                             validator: (value) {
@@ -434,7 +441,8 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             },
                             decoration: InputDecoration(
                               labelText: 'Confirmer mot de passe',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 14,
                                 color: textColor,
                               ),
                               border: const UnderlineInputBorder(),
@@ -456,10 +464,14 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height:screenHeight*0.01),
                     DropdownButtonFormField<String>(
                       value: null,
-                      hint: const Text('Sélectionner les prestations'),
+                      hint:  Text(
+                          'Sélectionner les prestations',
+                        style: GoogleFonts.poppins(  fontSize: 14,
+                        fontWeight: FontWeight.w500),
+                      ),
                       onChanged: (String? newValue) {
                         setState(() {
                           if (newValue != null && newValue == 'Tout') {
@@ -479,7 +491,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                       items: [
                         const DropdownMenuItem<String>(
                           value: 'Tout',
-                          child: Text('Sélectionner tout'),
+                          child: Text('Sélectionner tout',),
                         ),
                         ...allPrestations.map<DropdownMenuItem<String>>(
                               (prestation) {
@@ -491,7 +503,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         ).toList(),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height:screenHeight*0.01),
                     Wrap(
                       spacing: 8.0,
                       runSpacing: 4.0,
@@ -506,7 +518,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         );
                       }).toList(),
                     ),
-                    const SizedBox(height: 25),
+                    SizedBox(height:screenHeight*0.03),
                     ElevatedButton(
                       onPressed: () async {
                         await handleSubmit();
@@ -528,6 +540,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         ),
                       ),
                       child: _loading
+
                           ? const SizedBox(
                         width: 20,
                         height: 20,
@@ -536,16 +549,16 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                           strokeWidth: 2,
                         ),
                       )
-                          : const Text(
+                          :  Text(
                         "Créer compte artisan",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height:screenHeight*0.01),
                   ],
                 ),
               ),
@@ -573,7 +586,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'icons/signalement.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -596,7 +609,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.04,
                 child: Image.asset(
                   'icons/gestion.png',
                   color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
@@ -618,7 +631,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -640,7 +653,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
 
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.04,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
                   color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,

@@ -72,6 +72,8 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
   }
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: MyAppBar(domaineID: widget.domaineID,),
       body:
@@ -86,35 +88,49 @@ class DetailsDemandeUrgenteState extends State<DetailsDemandeUrgente> {
             const SizedBox(width: 50, height: 25,),
             Urgence(domaineID: widget.domaineID,prestationID: widget.prestationID,nomprestation: widget.nomprestation,demande: demandeinit, urgence: urgence,),
             const SizedBox(width: 50, height: 25,),
-            /*Container(
-              width: double.infinity, // Prendre la largeur maximale disponible
+            Container(
+              width: screenWidth * 0.85, // Prendre la largeur maximale disponible
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: const Color(0xFFEBE5E5),
+                  width: 2.0,
+                ),
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  const Text('Rayon de recherche:'),
-              DropdownButton<int>(
-                  value: _rayonRecherche,
-                  items: [
-                  for (int i in [5, 10, 15, 20, 25, 30]) // Boucle pour générer les options
-                DropdownMenuItem(
-                  value: i,
-                  child: Text('$i km'),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Rayon de recherche:',
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontSize: screenWidth * 0.029,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  DropdownButton<int>(
+                    value: _rayonRecherche,
+                    items: [
+                      for (int i in [5, 10, 15, 20, 25, 30]) // Boucle pour générer les options
+                        DropdownMenuItem(
+                          value: i,
+                          child: Text('$i km'),
+                        ),
+                    ],
+                    onChanged: (int? nouveauRayon) {
+                      if (nouveauRayon != null) {
+                        setState(() {
+                          _rayonRecherche = nouveauRayon;
+                          print("$_rayonRecherche");
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-          ],
-          onChanged: (int? nouveauRayon) {
-            if (nouveauRayon != null) {
-              setState(() {
-                _rayonRecherche = nouveauRayon;
-              });
-            }
-          },
-        ),
-        ],
-      ),
-    ),
-            const SizedBox(width: 50, height: 25,),*/
-            Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datedebut, domaineId: widget.domaineID,),
+            const SizedBox(width: 50, height: 25,),
+            Suivant(prestationID: widget.prestationID,demande: demandeinit,datedebut: datedebut,datefin: datedebut, domaineId: widget.domaineID, rayon: _rayonRecherche,),
           ],
         ),
       ),

@@ -46,7 +46,7 @@ class DetSignalement extends StatelessWidget {
         );
       },
       child:Container(
-        width: MediaQuery.of(context).size.width * 0.95,
+        width: MediaQuery.of(context).size.width * 0.9,
         height: 80,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(

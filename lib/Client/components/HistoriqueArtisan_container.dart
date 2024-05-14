@@ -1,9 +1,13 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
 
 class HistoriqueArtisan extends StatefulWidget {
+  final String tokenClient;
+  final String nomArtisan;
+  final String tokenArtisan;
   final String domaine;
   final String location;
   final String date;
@@ -37,6 +41,9 @@ class HistoriqueArtisan extends StatefulWidget {
     required this.heuredebut,
     required this.heurefin,
     required this.vehicule,
+    required this.tokenClient,
+    required this.nomArtisan,
+    required this.tokenArtisan,
   });
   @override
   State<HistoriqueArtisan> createState() => _HistoriqueArtisanState();
@@ -46,6 +53,7 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
     double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
@@ -89,7 +97,7 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: screenHeight*0.01),
+                          SizedBox(height: screenHeight*0.01,),
                           Row(
                             children: [
                               const Icon(Icons.location_on, size: 21),
@@ -112,42 +120,34 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.01),
                           Text(
                             'Date du rendez-vous :',
                             style: GoogleFonts.poppins(
-                              fontSize: 14,
+                              fontSize: 12,
                             ),
                           ),
-
+                          SizedBox(height: screenHeight*0.005),
                           Row(
                             children: [
                               Image.asset('icons/calendrier.png',
-                                width: 20,
-                                height: 20,
+                                width: 15,
+                                height: 15,
                                 fit: BoxFit.cover,
                               ),
-                              const SizedBox(width: 6),
+                              SizedBox(width: screenWidth*0.025),
                               Text(
                                 widget.date,
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   color: Colors.black,
                                 ),
                               ),
                             ],
                           ),
-                           SizedBox(height:screenHeight*0.010),
-                          Text(
-                            widget.urgence ? "Urgente" : widget.heure,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: widget.urgence ? Colors.red : null,
-                            ),
-                          ),
-                          SizedBox(height:screenHeight*0.010),
+
+                          SizedBox(height:screenHeight*0.02),
                           Text(
                             widget.prix,
                             style: GoogleFonts.poppins(
@@ -169,7 +169,8 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage1(image: widget.imageUrl, nomClient: widget.nomClient,
-                                  phone: widget.phone, adress: widget.location, idclient: widget.idclient, isVehicled: widget.vehicule),
+                                  phone: widget.phone, adress: widget.location, idclient: widget.idclient, isVehicled: widget.vehicule,nomArtisan: widget.nomArtisan,
+                                  tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,),
                               ),); // Example navigation
                             },
                             child: Container(
@@ -205,14 +206,14 @@ class _HistoriqueArtisanState extends State<HistoriqueArtisan> {
                               fontSize: 12,
                             ),
                           ),
-                          SizedBox(height:screenHeight*0.010),
+                          SizedBox(height:screenHeight*0.01),
                           Row(
                             children: [
-                              const Icon(Icons.phone, size: 18),
+                              const Icon(Icons.phone, size: 12),
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 10,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

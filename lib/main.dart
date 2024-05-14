@@ -18,7 +18,7 @@ import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
-import 'Artisan/Pages/Activité/Activitaujour.dart';
+import 'Artisan/Pages/Activité/activiteaujour.dart';
 import 'firebase_options.dart';
 import 'dart:convert';
 User? currentUser = FirebaseAuth.instance.currentUser;

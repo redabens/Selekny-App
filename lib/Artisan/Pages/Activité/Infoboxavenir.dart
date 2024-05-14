@@ -1,16 +1,15 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../../Client/Services/demande publication/HistoriqueServices.dart';
 import '../../../../Client/Services/demande publication/RendezVous_Service.dart';
-
-import '../../ProfilClient/profilclient.dart';
-
+import '../ProfilClient/profilclient.dart';
 
 
-class InfoBoxaujour extends StatefulWidget {
+
+
+class InfoBoxavenir extends StatefulWidget {
   final String prestation;// c bon
   final String heureDebut;// c bon
   final String heureFin;// c bon
@@ -30,10 +29,12 @@ class InfoBoxaujour extends StatefulWidget {
   final String sync;  // c bon
   final String idartisan; // c bon
   final String nomArtisan;  // c bon
+  final String tokenClient;
+  final String tokenArtisan;
   final bool vehicule; // c bon
   final Timestamp timestamp; // c bon
-  const InfoBoxaujour({
-    super.key,
+
+  const InfoBoxavenir({super.key,
     required this.prestation,
     required this.heureDebut,
     required this.heureFin,
@@ -54,15 +55,14 @@ class InfoBoxaujour extends StatefulWidget {
     required this.idartisan,
     required this.nomArtisan,
     required this.vehicule,
-    required this.timestamp,
+    required this.timestamp, required this.tokenClient, required this.tokenArtisan,
   });
   @override
-  State<InfoBoxaujour> createState() => InfoBoxaujourState();
+  State<InfoBoxavenir> createState() => InfoBoxavenirState();
 }
 
-class InfoBoxaujourState extends State<InfoBoxaujour> {
+class InfoBoxavenirState extends State<InfoBoxavenir> {
   final RendezVousService _rendezVousService = RendezVousService();
-  final HistoriqueService _historiqueService = HistoriqueService();
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -84,16 +84,17 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical:12, horizontal: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                       SizedBox(width: screenWidth*0.04),
+                      SizedBox(width: screenWidth*0.03),
                       Image.asset('assets/cle.png', width: screenWidth*0.07, height:screenHeight*0.07),
                       SizedBox(width: screenWidth*0.03),
                       Expanded(
@@ -112,20 +113,22 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                         onTap: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ProfilePage1(image: widget.photoUrl, nomClient: widget.nomclient, phone: widget.phone, adress: widget.adresse, idclient: widget.idclient, isVehicled: widget.vehicule,),),
+                            MaterialPageRoute(builder: (context) => ProfilePage1(image: widget.photoUrl, nomClient: widget.nomclient, phone: widget.phone, adress: widget.adresse,
+                              idclient: widget.idclient, isVehicled: widget.vehicule,nomArtisan: widget.nomArtisan,
+                              tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,),),
                           );
                         }, // Wrap the widget with GestureDetector
                         child: Container(
-                          width: screenWidth*0.14,
-                          height: screenHeight*0.06,
+                          width: 48,
+                          height: 48,
                           //color: Colors.yellow,
                           child: widget.photoUrl != ''
                               ? ClipRRect(borderRadius: BorderRadius.circular(
                               48), // Ajout du BorderRadius
                             child: Image.network(
                               widget.photoUrl,
-                              width: screenWidth*0.14,
-                              height: screenHeight*0.06,
+                              width: 48,
+                              height: 48,
                               fit: BoxFit.cover,
                             ),
                           )
@@ -142,7 +145,7 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                   SizedBox(height: screenHeight*0.01),
                   Row(
                     children: [
-                      Image.asset('assets/adresse.png', width:20, height:20),
+                      Image.asset('assets/adresse.png', width: 20, height: 20),
                       SizedBox(width: screenWidth *0.01),
                       Expanded(
                         child: Text(
@@ -150,7 +153,6 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                           style: GoogleFonts.poppins(
                             fontSize: screenWidth*0.035,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black.withOpacity(0.8),
                           ),
                           overflow: TextOverflow.ellipsis,
                           softWrap: true,
@@ -159,11 +161,25 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                       ),
                     ],
                   ),
-                  SizedBox(height:screenHeight*0.01),
+                  SizedBox(height: screenHeight*0.01),
+                  Row(
+                    children: [
+                      Image.asset('assets/calendar.png', width: 20, height: 20),
+                      SizedBox(width: screenWidth *0.01),
+                      Text(
+                        "Le: ${widget.datedebut}",
+                        style: GoogleFonts.poppins(
+                          fontSize: screenWidth*0.035,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight*0.01),
                   Row(
                     children: [
                       Image.asset('assets/time.png', width: 20, height: 20),
-                      SizedBox(width: screenHeight*0.01),
+                      SizedBox(width: screenWidth *0.01),
                       Text(
                         "De: ${widget.heureDebut} à ${widget.heureFin}",
                         style: GoogleFonts.poppins(
@@ -171,9 +187,10 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      SizedBox(width:screenWidth*0.3),
+                      SizedBox(width:screenWidth*0.34),
                       if (widget.urgence) // Ajout du widget "Urgent" s'il est urgent
                         Container(
+
                           margin: const EdgeInsets.symmetric(horizontal: 4),
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
@@ -191,85 +208,46 @@ class InfoBoxaujourState extends State<InfoBoxaujour> {
                         ),
                     ],
                   ),
-                  SizedBox(height:screenHeight*0.010),
+                  SizedBox(height: screenHeight*0.01),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        width: screenWidth*0.25,
-                        height: screenHeight*0.04,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF24CC53),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextButton(
-                          onPressed:() async {
-                            _historiqueService.sendHistorique(widget.datedebut, widget.datefin, widget.heureDebut,
-                                widget.heureFin, widget.adresse, widget.iddomaine,
-                                widget.idprestation, widget.idclient, widget.idartisan,
-                                widget.urgence, widget.latitude, widget.longitude,widget.idartisan);
-                            _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-                            print('Traite avec success');
-                            await Future.delayed(const Duration(milliseconds: 100));
-                          },
-                          child:Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Traité',
-                                style: GoogleFonts.poppins(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: screenWidth*0.03,
-                                ),
-                              ),
-                              const SizedBox(width: 1),
-                              const Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                            ],
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: screenWidth*0.25,
+                          height: screenHeight*0.043,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity((0.1)),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                      ),
-                      SizedBox(width: screenWidth *0.01),
-                      Container(
-                        width: screenWidth*0.25,
-                        height: screenHeight*0.04,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity((0.1)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextButton(
-                          onPressed: () async {
-                            _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
-                            _rendezVousService.deleteRendezVous(widget.timestamp, widget.idclient);
-                            print('annuler avec success');
-                            await Future.delayed(const Duration(milliseconds: 100));
-                          }, // hna lazm quand on annule la classe Box Demande troh completement
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Annuler',
-                                style: GoogleFonts.poppins(
+                          child: TextButton(
+                            onPressed: () async {
+                              _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
+                              _rendezVousService.deleteRendezVous(widget.timestamp, widget.idclient);
+                              print('annuler avec success');
+                              await Future.delayed(const Duration(milliseconds: 100));
+                            }, // hna lazm quand on annule la classe Box Demande troh completement
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Annuler',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: screenWidth*0.03,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                const Icon(
+                                  Icons.close,
                                   color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: screenWidth*0.03,
+                                  size: 16,
                                 ),
-                              ),
-
-                              const Icon(
-                                Icons.close,
-                                color: Colors.black,
-                                size: 16,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ]
                   ),
                 ],
               ),

@@ -39,14 +39,6 @@ class ProfilePage1CoteAdmin extends StatelessWidget {
           address: adress,
           isVehicled: isVehicled,
           onContact: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChatPage(receiverUserID: idclient, currentUserId:FirebaseAuth.instance.currentUser!.uid,
-                  type: 2, userName: nomClient,
-                  profileImage: image, otheruserId: idclient, phone: phone, adresse: adress, domaine: 'domaine', rating: 4, workcount: 0, vehicule: isVehicled,), // Navigation to ContactPage
-              ),
-            );
           },
           onReport: () {
             Navigator.push(

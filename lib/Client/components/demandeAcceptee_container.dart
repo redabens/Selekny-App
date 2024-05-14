@@ -1,3 +1,4 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,9 @@ import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 
 class DetDemandeAcceptee extends StatefulWidget {
+  final String tokenClient;
+  final String nomClient;
+  final String tokenArtisan;
   final String domaine;
   final String location;
   final String date;
@@ -63,7 +67,7 @@ class DetDemandeAcceptee extends StatefulWidget {
     required this.heurefin,
     required this.idartisan,
     required this.timestamp,
-    required this.adresseartisan, required this.workcount, required this.vehicule,
+    required this.adresseartisan, required this.workcount, required this.vehicule, required this.nomClient, required this.tokenArtisan, required this.tokenClient,
   });
   @override
   State<DetDemandeAcceptee> createState() => _DetDemandeAccepteeState();
@@ -206,8 +210,10 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule), // Navigation to ContactPage
-                                ),
+                                  phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresseartisan,
+                                  workcount: widget.workcount, vehicule: widget.vehicule,nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
+                                  tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,), // Navigation to ContactPage
+                              ),
                               );
                               await Future.delayed(const Duration(milliseconds: 800));// Example navigation
                             },
@@ -217,23 +223,23 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  width: 1.0,
+                                  width: 0.1,
                                 ),
                               ),
                               child: widget.imageUrl != ''
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                     50), // Ajout du BorderRadius
-                                    child: Image.network(
-                                      widget.imageUrl,
-                                      width: 54,
-                                      height: 54,
-                                      fit: BoxFit.cover,
-                                  ),
+                                child: Image.network(
+                                  widget.imageUrl,
+                                  width: 54,
+                                  height: 54,
+                                  fit: BoxFit.cover,
+                                ),
                               )
                                   : Icon(
                                 Icons.account_circle,
-                                size: 54,
+                                size: 56,
                                 color: Colors.grey[400],
                               ),
                             ),
@@ -264,7 +270,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 11,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -289,7 +295,7 @@ class _DetDemandeAccepteeState extends State<DetDemandeAcceptee> {
                         await getNomPrestationById(widget.iddomaine, widget.idprestation);
 
                         NotificationServices.sendPushNotification(
-                            token,
+                            token,"ConfirmeParClient",
                             "Votre demande a été confirmé",
                             "Service demandé : $nomPrestation");
                         _rendezVousService.sendRendezVous(widget.datedebut, widget.datefin, widget.heuredebut, widget.heurefin, widget.location, widget.iddomaine, widget.idprestation, widget.idclient, widget.urgence, widget.latitude, widget.longitude,widget.idartisan,widget.idartisan);

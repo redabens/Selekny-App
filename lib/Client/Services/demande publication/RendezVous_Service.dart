@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,22 @@ class RendezVousService extends ChangeNotifier {
           print('${documentSnapshot.data()}');
           documentSnapshot.reference.delete();
         });
+      }
+    });
+    print('delete avec success art');
+    return Future.value(null);
+  }
+  Future<void> deleteRendezVousID(String demandid)async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Get the subcollection reference
+    final subcollectionRef =
+    firestore.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('RendezVous').doc(demandid);
+
+    // Perform the delete operation
+    subcollectionRef.get().then((querySnapshot) {
+      if (querySnapshot.exists) {
+        querySnapshot.reference.delete();
       }
     });
     print('delete avec success art');

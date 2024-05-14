@@ -15,7 +15,6 @@ class Prix extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: screenHeight*0.09,
       width: screenWidth*0.85,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),

@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reda/Artisan/Pages/ProfilClient/profilclient.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
@@ -8,10 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Services/notifications.dart';
 
 const Color myBlueColor = Color(0xFF3E69FE);
 
 class ChatPage extends StatefulWidget{
+  final String nomArtisan;
+  final String nomClient;
+  final String tokenArtisan;
+  final String tokenClient;
   final String userName;
   final String profileImage;
   final String otheruserId;
@@ -31,7 +38,9 @@ class ChatPage extends StatefulWidget{
     required this.type, required this.userName,
     required this.profileImage, required this.otheruserId,
     required this.phone, required this.adresse,
-    required this.domaine, required this.rating, required this.workcount, required this.vehicule,
+    required this.domaine, required this.rating, required this.workcount,
+    required this.vehicule, required this.nomArtisan,
+    required this.nomClient, required this.tokenArtisan, required this.tokenClient,
   });
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -92,9 +101,10 @@ class _ChatPageState extends State<ChatPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(    //otherUserId
-                          builder: (context) => ProfilePage2(idartisan: widget.otheruserId, imageurl: widget.profileImage,
-                              nomartisan: widget.userName, phone: widget.phone,
-                              domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse, workcount: widget.workcount, vehicule: widget.vehicule),
+                          builder: (context) => ProfilePage2(idartisan: widget.otheruserId, imageurl: widget.profileImage, phone: widget.phone,
+                            domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse, workcount: widget.workcount,
+                            vehicule: widget.vehicule,nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
+                            tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,),
                         ),
                       );
                     }else{
@@ -102,7 +112,8 @@ class _ChatPageState extends State<ChatPage> {
                         context,
                         MaterialPageRoute(    //otherUserId
                           builder: (context) => ProfilePage1(image: widget.profileImage, nomClient: widget.userName,
-                            phone: widget.phone, adress: widget.adresse, idclient: widget.otheruserId, isVehicled: widget.vehicule,),
+                            phone: widget.phone, adress: widget.adresse, idclient: widget.otheruserId, isVehicled: widget.vehicule,
+                            nomArtisan: widget.nomArtisan, tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,),
                         ),
                       );
                     } // Example action (replace with your desired functionality)
@@ -274,6 +285,12 @@ class _ChatPageState extends State<ChatPage> {
           GestureDetector(
             onTap: () {
               sendMessage();
+              if(widget.type == 1){
+                NotificationServices.sendPushNotification(widget.tokenArtisan,widget.nomClient ,_messageController.value.text,"Message");
+              }
+              else{
+                NotificationServices.sendPushNotification(widget.tokenClient,widget.nomArtisan ,_messageController.value.text,"Message");
+              }
             },
             child: Container(
               height: 44, // Increased size for better touch area

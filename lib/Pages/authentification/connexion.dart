@@ -6,7 +6,7 @@ import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:reda/main.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import '../../Artisan/Pages/Activité/Activitaujour.dart';
+import '../../Artisan/Pages/Activité/activiteaujour.dart';
 import 'forgotpassword.dart';
 import 'inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';

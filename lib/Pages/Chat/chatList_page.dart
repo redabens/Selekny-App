@@ -1,5 +1,6 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:reda/Artisan/Pages/Activit%C3%A9/Activit%C3%A9Avenir.dart';
 import 'package:reda/Artisan/Pages/Notifications/NotifUrgente.dart';
 import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
@@ -11,8 +12,7 @@ import 'package:reda/Services/chat/chatList_service.dart';
 import 'package:intl/intl.dart';
 import 'package:reda/Pages/Chat/chat_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../Artisan/Pages/Activité/Activitaujour.dart';
+import '../../Artisan/Pages/Activité/activiteaujour.dart';
 import '../../Artisan/Pages/Profil/profileArtisan.dart';
 import '../../Client/profile/profileClient.dart';
 
@@ -179,85 +179,108 @@ class _ChatListPageState extends State<ChatListPage> {
       return '';
     }
   }
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : $token");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
 
-          title:  Text(
-            'Messagerie',
-            style: GoogleFonts.poppins(
-              fontSize: 21,
-              fontWeight:  FontWeight.w800,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          bottom: const PreferredSize(
-            preferredSize: Size.fromHeight(9.0),
-            child: Divider(
-              color: Colors.white,
-              height: 1, // epaisseur du trait
-            ),
+        title:  Text(
+          'Messagerie',
+          style: GoogleFonts.poppins(
+            fontSize: 21,
+            fontWeight:  FontWeight.w800,
           ),
         ),
+        centerTitle: true,
         backgroundColor: Colors.white,
-        body: Column( // Use Column to stack elements vertically
-          children: [
-            Padding(
-                padding: const EdgeInsets.only(top: 16.0,
-                    left: 26,
-                    right: 26),
-                child: Container(
-                  width: screenWidth*0.92 ,
-                  height: 45.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30), // Set border radius
-                    border: Border.all(
-                      color: Colors.grey[300] ?? Colors.grey, // Set border color
-                      width: 2.0, // Set border widthS
-                    ),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(9.0),
+          child: Divider(
+            color: Colors.white,
+            height: 1, // epaisseur du trait
+          ),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      body: Column( // Use Column to stack elements vertically
+        children: [
+          Padding(
+              padding: const EdgeInsets.only(top: 16.0,
+                  left: 26,
+                  right: 26),
+              child: Container(
+                width: screenWidth*0.92 ,
+                height: 45.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30), // Set border radius
+                  border: Border.all(
+                    color: Colors.grey[300] ?? Colors.grey, // Set border color
+                    width: 2.0, // Set border widthS
                   ),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 12),
-                      Icon(Icons.search,
-                        color: Colors.grey[600],
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: TextField(
-                          onChanged: (value) {
-                            setState(() {
-                              searchText = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            hintText: 'Recherche',
-                            hintStyle: GoogleFonts.poppins(
-                              color: Colors.grey[400],
-                              fontWeight: FontWeight.w500,
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 12),
+                    Icon(Icons.search,
+                      color: Colors.grey[600],
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            searchText = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Recherche',
+                          hintStyle: GoogleFonts.poppins(
+                            color: Colors.grey[400],
+                            fontWeight: FontWeight.w500,
 
-                            ),
-                            border: InputBorder.none,
                           ),
+                          border: InputBorder.none,
                         ),
                       ),
-                    ],
-                  ),
-                )
-              // Rest of the body content (chat list, etc.)
-            ),
-            const SizedBox(height: 30),
-            Expanded(
-              child: _buildChatList(),
-            ),
-            const SizedBox(height: 10), // espace between les chat box
-          ],
-        ),
+                    ),
+                  ],
+                ),
+              )
+            // Rest of the body content (chat list, etc.)
+          ),
+          const SizedBox(height: 30),
+          Expanded(
+            child: _buildChatList(),
+          ),
+          const SizedBox(height: 10), // espace between les chat box
+        ],
+      ),
       bottomNavigationBar: widget.type == 1 ? BottomNavigationBar(
 
         backgroundColor: const Color(0xFFF8F8F8),
@@ -520,6 +543,10 @@ class _ChatListPageState extends State<ChatListPage> {
     String domaine = "";
     bool vehicule = false;
     int workcount = 0;
+    String nomArtisan = "";
+    String nomClient = "";
+    String tokenArtisan = "";
+    String tokenClient = "";
     //Teest to get the other user in the coversation
     try {
       if (data['user1'] == FirebaseAuth.instance.currentUser!.uid) {
@@ -531,22 +558,42 @@ class _ChatListPageState extends State<ChatListPage> {
         role = await getRoleUser(otherUserId);
         vehicule = await getVehiculeUser(otherUserId);
         if (role == 'artisan'){
+          nomArtisan = await getUserName(data['user2']);
+          tokenArtisan  = await getTokenById(data['user2']);
+          nomClient = await getUserName(data['user1']);
+          tokenClient = await getTokenById(data['user1']);
           rating = await getRatingUser(otherUserId);
           domaine = await getDomaineUser(otherUserId);
           workcount = await getWorkCountUser(otherUserId);
         }
+        else{
+          nomArtisan = await getUserName(data['user1']);
+          tokenArtisan  = await getTokenById(data['user1']);
+          nomClient = await getUserName(data['user2']);
+          tokenClient = await getTokenById(data['user2']);
+        }
       } else {
         otherUserId = data['user1'];
-        profileImage = await getUserPathImage(data['user1']);
         userName = await getUserName(data['user1']);
+        profileImage = await getUserPathImage(data['user1']);
         phone = await getPhoneUser(otherUserId);
         adresse = await getAdresseUser(otherUserId);
         role = await getRoleUser(otherUserId);
         vehicule = await getVehiculeUser(otherUserId);
         if (role == 'artisan'){
+          nomArtisan = await getUserName(data['user1']);
+          tokenArtisan  = await getTokenById(data['user1']);
+          nomClient = await getUserName(data['user2']);
+          tokenClient = await getTokenById(data['user2']);
           rating = await getRatingUser(otherUserId);
           domaine = await getDomaineUser(otherUserId);
           workcount = await getWorkCountUser(otherUserId);
+        }
+        else{
+          nomArtisan = await getUserName(data['user2']);
+          tokenArtisan  = await getTokenById(data['user2']);
+          nomClient = await getUserName(data['user1']);
+          tokenClient = await getTokenById(data['user1']);
         }
       }
     }catch (error) {
@@ -570,37 +617,45 @@ class _ChatListPageState extends State<ChatListPage> {
 
     return Container(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          InkWell(
-            onTap: () {
-              // Navigate to ChatPage with receiver's user ID
-              Navigator.push(
-                context,
-                MaterialPageRoute(    //otherUserId
-                  builder: (context) => ChatPage(receiverUserID: otherUserId , currentUserId: FirebaseAuth.instance.currentUser!.uid,
-                    type: widget.type, userName: userName,
-                    profileImage: profileImage,otheruserId: otherUserId,
-                    phone: phone, adresse: adresse,
-                    domaine: domaine, rating: rating, workcount: workcount, vehicule: vehicule,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () {
+                // Navigate to ChatPage with receiver's user ID
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(    //otherUserId
+                    builder: (context) => ChatPage(receiverUserID: otherUserId , currentUserId: FirebaseAuth.instance.currentUser!.uid,
+                      type: widget.type, userName: userName,
+                      profileImage: profileImage,otheruserId: otherUserId,
+                      phone: phone, adresse: adresse,
+                      domaine: domaine, rating: rating, workcount: workcount, vehicule: vehicule,
+                      nomArtisan: nomArtisan, nomClient: nomClient, tokenArtisan: tokenArtisan, tokenClient: tokenClient,
+                    ),
                   ),
-                ),
-              );
-            },
-            child: DetChatList(
-              userName: userName,
-              lastMsg: lastMsg,
-              profileImage: profileImage,
-              timestamp: lastMsgTime,
-              type: widget.type,
-              otheruserId: otherUserId,
-              phone: phone, adresse: adresse,
-              domaine: domaine, rating: rating,
-              workcount: workcount, vehicule: vehicule,
+                );
+              },
+              child: Column(
+                children:  [
+                  DetChatList(
+                    userName: userName,
+                    lastMsg: lastMsg,
+                    profileImage: profileImage,
+                    timestamp: lastMsgTime,
+                    type: widget.type,
+                    otheruserId: otherUserId,
+                    phone: phone, adresse: adresse,
+                    domaine: domaine, rating: rating,
+                    workcount: workcount, vehicule: vehicule,
+                    nomClient: nomClient, tokenArtisan: tokenArtisan,
+                    nomArtisan: nomArtisan, tokenClient: tokenClient,
+                  ),
+                  const SizedBox(height: 8,),
+                ],
+              ),
             ),
-          ),
-        ],
+          ]
       ),
     );
   }

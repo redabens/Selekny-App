@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,21 +6,24 @@ import 'package:reda/Admin/Services/signalement_service.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
 
 class Signaler extends StatefulWidget {
+  final String nomArtisan;
+  final String tokenClient;
+  final String nomClient;
+  final String tokenArtisan;
   final String idartisan;
   final String imageUrl;
-  final String nomartisan;
   final String phone;
   final String domaine;
   final double rating;
   final String adresseartisan;
   final int workcount;
   final bool vehicule;
-
   const Signaler({super.key,  required this.idartisan,
-    required this.imageUrl, required this.nomartisan,
+    required this.imageUrl,
     required this.phone, required this.domaine,
     required this.rating, required this.adresseartisan,
-    required this.workcount, required this.vehicule, });
+    required this.workcount, required this.vehicule, required this.nomClient, required this.tokenArtisan,
+    required this.nomArtisan, required this.tokenClient});
 
   @override
   _SignalerState createState() => _SignalerState();
@@ -61,9 +65,9 @@ class _SignalerState extends State<Signaler> {
         },
         child: Stack(
           children: [
-            ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-              nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine,
-              rating: widget.rating, adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule), // Page de profil en arrière-plan
+            ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl, phone: widget.phone, domaine: widget.domaine,
+              rating: widget.rating, adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
+              tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,), // Page de profil en arrière-plan
             Container(
               color: const Color.fromRGBO(128, 128, 128, 0.7), // Couleur grise semi-transparente
               width: double.infinity,
@@ -83,7 +87,7 @@ class _SignalerState extends State<Signaler> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Signalement de : ${widget.nomartisan}',
+                      'Signalement de : ${widget.nomArtisan}',
                       style: GoogleFonts.poppins(
                         fontSize: screenWidth * 0.04,
                         fontWeight: FontWeight.bold,
@@ -126,8 +130,10 @@ class _SignalerState extends State<Signaler> {
                           onTap:() {
                             _signalementsService.sendSignalement(_commentController.value.text.toString(), widget.idartisan, FirebaseAuth.instance.currentUser!.uid);
                             Navigator.pop(context, MaterialPageRoute(builder: (context)=> ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                              nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine,
-                              rating: widget.rating, adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,)),);  // Revenir à ProfilePage2
+                              phone: widget.phone, domaine: widget.domaine,
+                              rating: widget.rating, adresse: widget.adresseartisan, workcount: widget.workcount,
+                              vehicule: widget.vehicule,nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
+                              tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,)),);  // Revenir à ProfilePage2
                           },
                           child: Container(
                             decoration: BoxDecoration(

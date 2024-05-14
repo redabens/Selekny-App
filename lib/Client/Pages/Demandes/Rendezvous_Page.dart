@@ -1,7 +1,10 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.dart';
 import 'package:reda/Client/components/RendezVous_container.dart';
 import 'package:reda/Client/Services/demande publication/DemandeClientService.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,8 +21,8 @@ class _RendezVousPageState extends State<RendezVousPage> {
   //---------------LES FONCTION GETTERS---------------------------------------------------
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final DemandeClientService _DemandeAccepteeService = DemandeClientService();
+  final RendezVousService _rendezVousService = RendezVousService();
   final ModifPrixService _modifPrixService = ModifPrixService();
-
   // get le nom domaine de la demande acceptee
   Future<String> getDomaineDemande(String domaineID) async {
     final firestore = FirebaseFirestore.instance;
@@ -78,6 +81,43 @@ class _RendezVousPageState extends State<RendezVousPage> {
       return '';
     }
   }
+  bool hasPassedDate(String dateString) {
+    // Parse the date string from Firestore
+    try {
+      final formatter = DateFormat('dd MMMM yyyy');
+      final parsedDate = formatter.parse(dateString);
+      // Obtenir la date d'aujourd'hui à minuit
+      final midnightToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      return parsedDate.isBefore(midnightToday); // Retourne vrai si la date est avant aujourd'hui à minuit
+    } on FormatException catch (e) {
+      print('Error parsing date string: $e');
+      // Gérer l'erreur de formatage de manière élégante (par exemple, retourner faux ou lancer une exception)
+      return false;
+    }
+  }
+  Future<String> getTokenById(String id) async {
+    late String? token;
+    Map<String, dynamic> userData = {};
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+      if (documentSnapshot.exists) {
+        userData = documentSnapshot.data()!;
+        token = userData['token'];
+        print("Get token by id : ${token}");
+      }
+      if (token != null) {
+        return token;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      print("Erreur lors de la recuperation du token du user : ${e}");
+    }
+
+    return '';
+  }
   //-----------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
@@ -85,8 +125,6 @@ class _RendezVousPageState extends State<RendezVousPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // espace fo9 titre de la page
-          const SizedBox(height: 20.0),
           AppBar(
             elevation: 0.0,
             // Remove default shadow
@@ -100,23 +138,22 @@ class _RendezVousPageState extends State<RendezVousPage> {
             title: Text(
               'Rendez-Vous',
               style: GoogleFonts.poppins(
-                fontSize: 21,
+                fontSize: 24,
                 fontWeight: FontWeight.w900,
               ),
             ),
             centerTitle: true,
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 15),
           _buildTitleAndDescription(), // le petit texte du début
-          const SizedBox(height: 10),
-          const SizedBox(height: 2),
+          const SizedBox(height: 8,),
           Expanded(
             child: _buildRendezVousList(),
           ),
           const SizedBox(height: 10),
         ],
       ),
-      );
+    );
   }
 
   Widget _buildRendezVousList(){
@@ -130,13 +167,22 @@ class _RendezVousPageState extends State<RendezVousPage> {
           return const Text('Loading..');
         }
         final documents = snapshot.data!.docs;
-
+        final filteredDocuments = documents.where((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          return !hasPassedDate(data['datedebut']);
+        }).toList();
+        for (var document in documents) {
+          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+          if (hasPassedDate(data['datedebut'])) {
+            _rendezVousService.deleteRendezVousID(document.id);
+          }
+        }
         // Print details of each document
-        for (var doc in documents) {
+        for (var doc in filteredDocuments) {
           print("Document Data: ${doc.data()}");
         }
         return FutureBuilder<List<Widget>>(
-            future: Future.wait(snapshot.data!.docs.map((document) => _buildRendezVousItem(document))),
+            future: Future.wait(filteredDocuments.map((document) => _buildRendezVousItem(document))),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(child: Text('Error loading demandes encours:  ${snapshot.error}'));
@@ -147,14 +193,14 @@ class _RendezVousPageState extends State<RendezVousPage> {
               if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                      'Vous n\'avez aucun Rendez-vous.',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600],
+                        'Vous n''avez aucun Rendez-vous.',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                        )
                     )
-                )
-              );
+                );
               }
               return ListView(children: snapshot.data!);
             });
@@ -163,6 +209,7 @@ class _RendezVousPageState extends State<RendezVousPage> {
   }
 
   Future<Widget> _buildRendezVousItem(DocumentSnapshot document) async {
+    final screenHeight = MediaQuery.of(context).size.height;
     if (document.data() != null) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
       String demandeID = document.id;
@@ -193,36 +240,41 @@ class _RendezVousPageState extends State<RendezVousPage> {
       double latitude = data['latitude'];
       double longitude = data['longitude'];
       Timestamp timestamp = data['timestamp'];
-      return Column( // Wrap in a Column for vertical spacing
+      String tokenArtisan = await getTokenById(data['idartisan']);
+      String tokenClient = await getTokenById(data['idclient']);
+      String nomClient = await getUserPathImage(data['idclient']);
+      return Column(// Wrap in a Column for vertical spacing
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-        RendezVousClient(
-        domaine: domaine,
-        location: location,
-        date: date,
-        heure: heure,
-        prix: prix,
-        prestation: prestation,
-        imageUrl: imageUrl,
-        nomArtisan: nomArtisan,
-        rating: rating,
-        phone: phone,
-        urgence: urgence,
-        datedebut: date,
-        datefin: datefin,
-        iddomaine: domaineID,
-        idprestation: PrestationID,
-        idclient: userID,
-        heuredebut: heureDebut,
-        heurefin: heureFin,
-        latitude: latitude,
-        longitude: longitude,
-        idartisan: artisanID,
-        timestamp: timestamp,
-        adresseartisan: adresseartisan,
-        workcount: workcount,
-        vehicule: vehicule,
-      ),
-          const SizedBox(height: 10), // Add spacing between containers
+          RendezVousClient(
+            domaine: domaine,
+            location: location,
+            date: date,
+            heure: heure,
+            prix: prix,
+            prestation: prestation,
+            imageUrl: imageUrl,
+            nomArtisan: nomArtisan,
+            rating: rating,
+            phone: phone,
+            urgence: urgence,
+            datedebut: date,
+            datefin: datefin,
+            iddomaine: domaineID,
+            idprestation: PrestationID,
+            idclient: userID,
+            heuredebut: heureDebut,
+            heurefin: heureFin,
+            latitude: latitude,
+            longitude: longitude,
+            idartisan: artisanID,
+            timestamp: timestamp,
+            adresseartisan: adresseartisan,
+            workcount: workcount,
+            vehicule: vehicule, nomClient: nomClient,tokenArtisan: tokenArtisan,tokenClient: tokenClient,
+          ),
+          SizedBox(height: screenHeight*0.02,), // Add spacing between containers
         ],
       );
     } else {

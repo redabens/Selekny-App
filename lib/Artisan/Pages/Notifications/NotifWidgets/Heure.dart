@@ -1,12 +1,13 @@
+
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 class Heure extends StatelessWidget {
   final String heuredebut;
-  final int type;
   final bool urgence;
-  const Heure({super.key, required this.heuredebut,
-    required this.type, required this.urgence});
+  const Heure({super.key,
+    required this.heuredebut,
+    required this.urgence});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class Heure extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     return Container(
       width: screenWidth*0.72,
-     // color: Colors.yellow,
+      // color: Colors.yellow,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.start, // Align items to the start
         // crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,7 +40,7 @@ class Heure extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          type == 1 ? const SizedBox() : !urgence ? const SizedBox() : Stack(
+          Stack(
             children: [
               Container(
                 width: 80,
@@ -55,14 +56,14 @@ class Heure extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(width: 20,),
-                      Text(
-                        'Urgent',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                        ),
+                    Text(
+                      'Urgent',
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
                       ),
+                    ),
                   ],
                 ),
               ),

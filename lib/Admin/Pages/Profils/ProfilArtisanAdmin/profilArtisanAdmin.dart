@@ -55,24 +55,10 @@ class _ProfilePage2CoteAdminState extends State<ProfilePage2CoteAdmin> {
           workCount:widget.workcount,
           userID: widget.idartisan,
           onContact: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChatPage(receiverUserID: widget.idartisan, currentUserId: FirebaseAuth.instance.currentUser!.uid,
-                    type: 1, userName: widget.nomartisan, profileImage: widget.imageurl, otheruserId: widget.idartisan, phone: widget.phone,
-                    adresse: widget.adresse, domaine: widget.domaine, rating: widget.rating, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ContactPage
-              ),
-            );
+
           },
           onReport: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Signaler(idartisan: widget.idartisan, imageUrl: widget.imageurl,
-                  nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine,
-                  rating: widget.rating, adresseartisan: widget.adresse, workcount: widget.workcount, vehicule: widget.vehicule,), // Navigation to ReportPage
-              ),
-            );
+
           },
           onComment:(){
             Navigator.push(context,

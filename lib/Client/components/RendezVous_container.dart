@@ -1,4 +1,5 @@
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ import 'package:reda/Client/Services/demande%20publication/RendezVous_Service.da
 import 'package:reda/Pages/Commentaires/Ajouter_commentaire_page.dart';
 
 class RendezVousClient extends StatefulWidget {
+  final String tokenClient;
+  final String nomClient;
+  final String tokenArtisan;
   final String domaine;
   final String location;
   final String date;
@@ -64,7 +68,8 @@ class RendezVousClient extends StatefulWidget {
     required this.timestamp,
     required this.adresseartisan,
     required this.workcount,
-    required this.vehicule,
+    required this.vehicule, required this.nomClient,
+    required this.tokenArtisan, required this.tokenClient,
   });
   @override
   State<RendezVousClient> createState() => _RendezVousClientState();
@@ -77,6 +82,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(
         left: 22,
@@ -119,7 +125,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Row(
                             children: [
                               const Icon(Icons.location_on, size: 21),
@@ -142,7 +148,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             'Date du rendez-vous :',
                             style: GoogleFonts.poppins(
@@ -157,7 +163,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                                 height: 20,
                                 fit: BoxFit.cover,
                               ),
-                              const SizedBox(width: 6),
+                              SizedBox(width:screenWidth*0.02),
                               Text(
                                 widget.date,
                                 style: GoogleFonts.poppins(
@@ -168,7 +174,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             widget.urgence ? "Urgente" : widget.heure,
                             style: GoogleFonts.poppins(
@@ -177,7 +183,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               color: widget.urgence ? Colors.red : null,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Text(
                             widget.prix,
                             style: GoogleFonts.poppins(
@@ -207,8 +213,10 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
-                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule), // Navigation to ContactPage
+                                  phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
+                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,
+                                  nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
+                                  tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,), // Navigation to ContactPage
                               ),
                               ); // Example navigation
                             },
@@ -225,11 +233,11 @@ class _RendezVousClientState extends State<RendezVousClient> {
                                   ? ClipRRect(
                                 borderRadius: BorderRadius.circular(
                                     50), // Ajout du BorderRadius
-                                    child: Image.network(
-                                      widget.imageUrl,
-                                      width: 54,
-                                      height: 54,
-                                      fit: BoxFit.cover,
+                                child: Image.network(
+                                  widget.imageUrl,
+                                  width: 54,
+                                  height: 54,
+                                  fit: BoxFit.cover,
                                 ),
                               )
                                   : Icon(
@@ -245,7 +253,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                               fontSize: 12,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height:screenHeight*0.010),
                           Row(
                             children: [
                               const Icon(Icons.star, color: Colors.yellow, size: 20),
@@ -277,7 +285,6 @@ class _RendezVousClientState extends State<RendezVousClient> {
                   ],
                 ),
                 const SizedBox() ,
-
                 // !confirmed && cancelled ?
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -291,8 +298,8 @@ class _RendezVousClientState extends State<RendezVousClient> {
                         _DemandeClientService.deleteRendezVous(widget.timestamp, widget.idclient);
                         await Future.delayed(const Duration(milliseconds: 100));
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan, nomprestation: widget.prestation,),
-                        ),
+                          MaterialPageRoute(builder: (context) => AjouterCommentairePage(nomPrestataire: widget.nomArtisan, artisanID: widget.idartisan, nomprestation: widget.prestation,),
+                          ),
                         );
                       },
                       style: ButtonStyle(
@@ -313,7 +320,7 @@ class _RendezVousClientState extends State<RendezVousClient> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width:screenWidth*0.03),
                     OutlinedButton(
                       onPressed: () async{
                         _rendezVousService.deleteRendezVous(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);

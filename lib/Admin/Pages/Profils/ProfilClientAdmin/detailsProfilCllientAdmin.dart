@@ -225,6 +225,7 @@ class _ProfileBodyClientCoteAdminState extends State<ProfileBodyClientCoteAdmin>
                       builder: (context) => const GestionClientsPage(),
                     ),
                   );
+
                 } else {
                   Navigator.push(
                     context,

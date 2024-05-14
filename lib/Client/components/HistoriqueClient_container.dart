@@ -1,9 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/ProfilArtisan/profil.dart';
 
 class HistoriqueClient extends StatefulWidget {
+  final String tokenClient;
+  final String nomClient;
+  final String tokenArtisan;
   final String domaine;
   final String date;
   final String heure;
@@ -41,7 +43,7 @@ class HistoriqueClient extends StatefulWidget {
     required this.idartisan,
     required this.adresseartisan,
     required this.workcount,
-    required this.vehicule,
+    required this.vehicule, required this.nomClient, required this.tokenArtisan, required this.tokenClient,
   });
   @override
   State<HistoriqueClient> createState() => _HistoriqueClientState();
@@ -59,7 +61,6 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
       ),
       child: Stack(
         children: [
-
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -96,22 +97,23 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                           SizedBox(height: screenHeight*0.01),
+                           SizedBox(height: screenHeight*0.03,),
                           Text(
                             widget.prestation,
                             style: GoogleFonts.poppins(
-                              fontSize: screenWidth*0.035,
+                              fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: Colors.black.withOpacity(0.6), // Adjust opacity here (0.0 to 1.0)
                             ),
                           ),
-                          SizedBox(height:screenHeight*0.010),
+                          SizedBox(height:screenHeight*0.01),
                           Text(
                             'Date du rendez-vous :',
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                             ),
                           ),
+                          SizedBox(height: screenHeight*0.005),
                           Row(
                             children: [
                               Image.asset('icons/calendrier.png',
@@ -119,7 +121,7 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                                 height: 15,
                                 fit: BoxFit.cover,
                               ),
-                               SizedBox(width: screenWidth*0.02),
+                              SizedBox(width: screenWidth*0.025),
                               Text(
                                 widget.date,
                                 style: GoogleFonts.poppins(
@@ -142,7 +144,7 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                         ],
                       ),
                     ),
-                    const SizedBox(width:20),
+                    const Spacer(),
                     Expanded(
                       flex: 2,
                       child: Column(
@@ -154,14 +156,16 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                               // Your code to handle tap actions here (e.g., navigate to profile page)
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ProfilePage2(idartisan: widget.idartisan, imageurl: widget.imageUrl,
-                                  nomartisan: widget.nomArtisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
-                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule), // Navigation to ContactPage
-                               ),
+                                  phone: widget.phone, domaine: widget.domaine, rating: widget.rating,
+                                  adresse: widget.adresseartisan, workcount: widget.workcount, vehicule: widget.vehicule,
+                                  nomArtisan: widget.nomArtisan,nomClient: widget.nomClient,
+                                  tokenArtisan: widget.tokenArtisan,tokenClient: widget.tokenClient,), // Navigation to ContactPage
+                              ),
                               ); // Example navigation
                             },
                             child: Container(
-                              width: 50, // Ajustez selon vos besoins
-                              height: 50,
+                              width: 55, // Adjust as needed
+                              height: 55,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -169,45 +173,37 @@ class _HistoriqueClientState extends State<HistoriqueClient> {
                                 ),
                               ),
                               child: widget.imageUrl != ''
-                                  ? Container(
-                                width: 50, // Assurez-vous que c'est la même valeur que la largeur et la hauteur du conteneur parent
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: ClipOval(
-                                  child: Image.network(
-                                    widget.imageUrl,
-                                    width: 50,
-                                    height: 50,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  ? ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    50), // Ajout du BorderRadius
+                                child: Image.network(
+                                  widget.imageUrl,
+                                  width: 54,
+                                  height: 54,
+                                  fit: BoxFit.cover,
                                 ),
                               )
                                   : Icon(
                                 Icons.account_circle,
-                                size: 48,
+                                size: 54,
                                 color: Colors.grey[400],
-                              ), // Gestion du cas où imageUrl est vide
+                              ),
                             ),
                           ),
-                           SizedBox(height:screenHeight*0.005,),
-                          Expanded(child:
+                          SizedBox(height:screenHeight*0.02,),
                           Container(
-                            width: screenWidth*0.3,
+                            width: 80,
                             child: Text(
-                                widget.nomArtisan,
-                                style: GoogleFonts.poppins(
+                              widget.nomArtisan,
+                              style: GoogleFonts.poppins(
                                 fontSize: 12,
                               ),
                             ),
                           ),
-
-                              ),
-                          SizedBox(height: screenHeight*0.010),
+                          SizedBox(height:screenHeight*0.01),
                           Row(
                             children: [
-                              const Icon(Icons.phone, size: 18),
+                              const Icon(Icons.phone, size: 16),
                               Text(
                                 widget.phone,
                                 style: GoogleFonts.poppins(
