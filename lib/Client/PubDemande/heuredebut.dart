@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Client/components/Demande.dart';
 
-
-
-
 class De extends StatelessWidget {
   final Demande demande;
   const De({

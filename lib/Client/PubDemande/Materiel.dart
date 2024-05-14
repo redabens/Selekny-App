@@ -57,7 +57,7 @@ class Materiel extends StatelessWidget {
                 'Le matériel nécessaire :',
                 style: GoogleFonts.poppins(
                   color: Colors.black,
-                  fontSize: screenWidth * 0.035,
+                  fontSize: screenWidth * 0.03,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -68,7 +68,7 @@ class Materiel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-               SizedBox(width:screenWidth*0.090),
+              const SizedBox(width: 30),
               Expanded(
                 child: Text(
                   materiel,

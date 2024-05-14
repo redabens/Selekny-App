@@ -19,6 +19,13 @@ class MoisDebutState extends State<MoisDebut> {
   String _selectedMonthText = 'Mois'; // Variable pour stocker le texte du mois sélectionné
   int moisdebut = 0; // Variable pour stocker le mois sélectionné
   @override
+  void initState() {
+    super.initState();
+    DateTime currentDate = DateTime.now();
+    moisdebut = currentDate.month;
+    _selectedMonthText = _getMonthName(moisdebut).toString();
+  }
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -28,7 +35,7 @@ class MoisDebutState extends State<MoisDebut> {
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS
-          _showMonthPicker(context);
+          _showMonthPicker(context,moisdebut);
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
@@ -52,8 +59,9 @@ class MoisDebutState extends State<MoisDebut> {
     );
   }
 
-  void _showMonthPicker(BuildContext context) {
-    // Afficher un picker iOS pour choisir le mois
+  void _showMonthPicker(BuildContext context, int monthdebut) {
+    int initialIndex = monthdebut - 1;
+
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
@@ -62,19 +70,21 @@ class MoisDebutState extends State<MoisDebut> {
           color: Colors.white,
           child: CupertinoPicker(
             itemExtent: 40.0,
+            scrollController: FixedExtentScrollController(initialItem: initialIndex),
             onSelectedItemChanged: (int index) {
-              // Mettre à jour le mois sélectionné
               setState(() {
-                moisdebut = index + 1;
-                _selectedMonthText = _getMonthName(index + 1); // Mettre à jour le texte du mois sélectionné
-                widget.datedebut.setmois(_selectedMonthText);
+                monthdebut = index + 1;
+                _selectedMonthText = _getMonthName(monthdebut); // Mettre à jour le texte du mois sélectionné
+                widget.datedebut.setmois(monthdebut as String); // Mettre à jour le mois dans datedebut
               });
             },
             children: List<Widget>.generate(12, (int index) {
               // Générer la liste des mois de janvier à décembre
+              int monthNumber = index + 1;
+              String monthName = _getMonthName(monthNumber);
               return Center(
                 child: Text(
-                  _getMonthName(index + 1),
+                  monthName,
                   style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 15,
@@ -91,6 +101,7 @@ class MoisDebutState extends State<MoisDebut> {
       setState(() {});
     });
   }
+
 
   String _getMonthName(int monthIndex) {
     switch (monthIndex) {

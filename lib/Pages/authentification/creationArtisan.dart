@@ -273,6 +273,46 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                       key: _formKey,
                       child: Column(
                         children: [
+                          DropdownButtonFormField<String>(
+                            value: widget.domaine,
+                            icon: const Icon(Icons.arrow_drop_down),
+                            iconSize: 24,
+                            elevation: 16,
+                            decoration: InputDecoration(
+                              labelText: 'Domaine',
+                              labelStyle: GoogleFonts.poppins(
+                                color: textColor,
+                              ),
+                              border: const UnderlineInputBorder(),
+                            ),
+                            onChanged: (String? newValue) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => CreationArtisanPage(domaine: newValue!),),
+                              );
+                              setState(() {
+                                selectedDomaine.value = newValue ?? '';
+                                fetchPrestationsByDomaine(newValue ?? '');
+                                selectedPrestations.clear();
+                              });
+                            },
+
+                            items: domaines.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value,style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14)),
+                                );
+                              },
+                            ).toList(),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Veuillez sélectionner un domaine";
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height:screenHeight*0.01),
                           TextFormField(
                             controller: _nameController,
                             validator: (value) {
@@ -338,46 +378,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                             keyboardType: TextInputType.phone,
                           ),
                           SizedBox(height:screenHeight*0.01),
-                          DropdownButtonFormField<String>(
-                            value: widget.domaine,
-                            icon: const Icon(Icons.arrow_drop_down),
-                            iconSize: 24,
-                            elevation: 16,
-                            decoration: InputDecoration(
-                              labelText: 'Domaine',
-                              labelStyle: GoogleFonts.poppins(
-                                color: textColor,
-                              ),
-                              border: const UnderlineInputBorder(),
-                            ),
-                            onChanged: (String? newValue) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => CreationArtisanPage(domaine: newValue!),),
-                              );
-                              setState(() {
-                                selectedDomaine.value = newValue ?? '';
-                                fetchPrestationsByDomaine(newValue ?? '');
-                                selectedPrestations.clear();
-                              });
-                            },
 
-                            items: domaines.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value,style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14)),
-                                );
-                              },
-                            ).toList(),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Veuillez sélectionner un domaine";
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height:screenHeight*0.01),
                           TextFormField(
                             controller: _emailController,
                             validator: (value) {
@@ -470,8 +471,11 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                       value: null,
                       hint:  Text(
                           'Sélectionner les prestations',
-                        style: GoogleFonts.poppins(  fontSize: 14,
+                        style: GoogleFonts.poppins(  fontSize: 13,
                         fontWeight: FontWeight.w500),
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                        maxLines: 2,
                       ),
                       onChanged: (String? newValue) {
                         setState(() {
@@ -490,15 +494,15 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         });
                       },
                       items: [
-                        const DropdownMenuItem<String>(
+                         DropdownMenuItem<String>(
                           value: 'Tout',
-                          child: Text('Sélectionner tout',),
+                          child: Text('Sélectionner tout',style:GoogleFonts.poppins(fontSize: 13,fontWeight: FontWeight.w600)),
                         ),
                         ...allPrestations.map<DropdownMenuItem<String>>(
                               (prestation) {
                             return DropdownMenuItem<String>(
                               value: prestation,
-                              child: Text(prestation),
+                             child:Text(prestation,style: GoogleFonts.poppins(fontSize: 13),overflow:TextOverflow.ellipsis, softWrap: true, maxLines: 2),
                             );
                           },
                         ).toList(),
@@ -506,12 +510,14 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                     ),
                     SizedBox(height:screenHeight*0.01),
                     Wrap(
-                      spacing: 8.0,
+                      spacing: 2.0,
                       runSpacing: 4.0,
                       children: selectedPrestations.map((prestation) {
                         return Chip(
-                          label: Text(prestation),
-                          onDeleted: () {
+                          label: Expanded (child:Text(prestation,style: GoogleFonts.poppins(fontSize: 13),overflow:TextOverflow.ellipsis,
+                          softWrap: true,
+                          maxLines: 2,), ),
+                           onDeleted: () {
                             setState(() {
                               selectedPrestations.remove(prestation);
                             });
@@ -541,7 +547,6 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                         ),
                       ),
                       child: _loading
-
                           ? const SizedBox(
                         width: 20,
                         height: 20,

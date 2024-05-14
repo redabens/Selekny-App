@@ -635,6 +635,7 @@ class _ChatListPageState extends State<ChatListPage> {
                     ),
                   ),
                 );
+
               },
               child: Column(
                 children:  [

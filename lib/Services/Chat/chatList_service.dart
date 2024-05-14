@@ -50,6 +50,13 @@ class ChatListService extends ChangeNotifier {
         final List<QueryDocumentSnapshot> mergedSnapshots = [];
         mergedSnapshots.addAll(user1Snapshot.docs);
         mergedSnapshots.addAll(user2Snapshot.docs);
+
+        mergedSnapshots.sort((a, b) {
+          Timestamp timestampA = a['timestamp'];
+          Timestamp timestampB = b['timestamp'];
+          return timestampB.compareTo(timestampA); // Descending order by timestamp
+        });
+
         return mergedSnapshots;
       },
     );

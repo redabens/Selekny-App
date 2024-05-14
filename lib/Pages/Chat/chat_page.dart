@@ -223,7 +223,7 @@ class _ChatPageState extends State<ChatPage> {
           return const Text('Loading..');
         }
         return ListView(
-          reverse: false,
+          reverse: true,
           children: snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
         );
       },
@@ -274,7 +274,7 @@ class _ChatPageState extends State<ChatPage> {
                 controller: _messageController,
                 style: GoogleFonts.poppins(color: Colors.black, fontSize: 16),
                 decoration: InputDecoration(
-                  hintText: "  Écrire un message ...",
+                  hintText: "Écrire un message ...",
                   hintStyle: GoogleFonts.poppins(color: Colors.black.withOpacity(0.5), fontSize: 14,fontWeight: FontWeight.w500),
                   border: InputBorder.none, // No border
                 ),

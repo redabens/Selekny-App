@@ -17,7 +17,7 @@ class JourFin extends StatefulWidget {
 }
 
 class JourFinState extends State<JourFin> {
-  String _selectedDayText = 'Jour'; // Variable pour stocker le texte du jour sélectionné
+  String _selectedDayText = 'Jour'; // variable pour stocker le texte du jour sélectionné
   int jourfin = 0; // Variable pour stocker le jour sélectionné
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class JourFinState extends State<JourFin> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       height: screenHeight*0.035,
-      width: screenWidth*0.2,
+      width: screenWidth*0.18,
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS

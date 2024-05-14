@@ -20,7 +20,13 @@ class AnneeDebut extends StatefulWidget {
 class AnneeDebutState extends State<AnneeDebut> {
   String _selectedYearText = 'Année'; // Variable pour stocker le texte de l'année sélectionnée
   int anneedebut = 2024; // Variable pour stocker l'année sélectionnée
-
+  @override
+  void initState() {
+    super.initState();
+    int currentYear = DateTime.now().year;
+    anneedebut = currentYear;
+    _selectedYearText = currentYear.toString();
+  }
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -31,7 +37,7 @@ class AnneeDebutState extends State<AnneeDebut> {
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS
-          _showYearPicker(context);
+          _showYearPicker(context,anneedebut);
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
@@ -55,8 +61,8 @@ class AnneeDebutState extends State<AnneeDebut> {
     );
   }
 
-  void _showYearPicker(BuildContext context) {
-    // Afficher un picker iOS pour choisir l'année
+  void _showYearPicker(BuildContext context, int selectedYear) {
+    int initialIndex = 0; // Calculate initial index based on selected year
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
@@ -65,20 +71,22 @@ class AnneeDebutState extends State<AnneeDebut> {
           color: Colors.white,
           child: CupertinoPicker(
             itemExtent: 40.0,
+            scrollController: FixedExtentScrollController(initialItem: initialIndex),
             onSelectedItemChanged: (int index) {
-              // Mettre à jour l'année sélectionnée
+              // Update the selected year
               setState(() {
-                anneedebut = 2024 + index;
-                _selectedYearText = anneedebut.toString(); // Mettre à jour le texte de l'année sélectionnée
-                widget.datedebut.setannee(anneedebut);
+                int selectedYear = 2024 + index; // Calculate selected year based on index
+                _selectedYearText = selectedYear.toString(); // Update the selected year text
+                widget.datedebut.setannee(selectedYear); // Update the year in datedebut
               });
             },
             children: List<Widget>.generate(3, (int index) {
-              // Générer la liste des années 2024, 2025 et 2026
+              // Generate the list of years 2024, 2025, and 2026
+              int year = 2024 + index;
               return Center(
                 child: Text(
-                  (2024 + index).toString(),
-                  style: const TextStyle(fontSize: 20.0),
+                  year.toString(),
+                  style: GoogleFonts.poppins(fontSize: 20.0),
                 ),
               );
             }),
@@ -86,8 +94,9 @@ class AnneeDebutState extends State<AnneeDebut> {
         );
       },
     ).then((value) {
-      // Force la reconstruction du bouton après la sélection
+      // Force the button to rebuild after selection
       setState(() {});
     });
   }
+
 }

@@ -71,7 +71,7 @@ class Body extends StatelessWidget {
                   child: ImageList(type: type,),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(vertical: 9),
+                  margin: const EdgeInsets.symmetric(vertical: 5),
                   child: const Servicepop(),
                 ),
               ],

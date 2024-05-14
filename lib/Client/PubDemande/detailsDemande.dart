@@ -33,7 +33,7 @@ class DetailsDemande extends StatefulWidget {
 }
 
 class DetailsDemandeState extends State<DetailsDemande> {
-  String? materiel; // Declare materiel as nullable String
+  String? materiel;
   String? prix;
   late Demande demandeinit = Demande(id_Client: "", id_Prestation: "", urgence: false, date_debut: "", date_fin: "", heure_debut: "", heure_fin: "", adresse: '', id_Domaine: '');
   Date datedebut = Date();
@@ -44,14 +44,24 @@ class DetailsDemandeState extends State<DetailsDemande> {
   @override
   void initState() {
     super.initState();
-    // Fetch material on widget initialization
-    datedebut.setjour(1);
-    datedebut.setmois("");
-    datedebut.setannee(0);
+    DateTime now = DateTime.now();
+    datedebut.setjour(now.day);
+    datedebut.setmois(getMonthName(now.month));
+    datedebut.setannee(now.year);
+    print('================== $datedebut');
     datefin.setjour(1);
     datefin.setannee(0);
     datefin.setmois("");
     _fetchMaterial(widget.domaineID, widget.prestationID);
+  }
+
+  String getMonthName(int month) {
+    // fonction utilitaire pour obtenir le nom du mois à partir de son numéro
+    const List<String> months = [
+      'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+      'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+    ];
+    return months[month - 1];
   }
   Future<void> _fetchMaterial(String domaineID, String prestationID) async {
     try {

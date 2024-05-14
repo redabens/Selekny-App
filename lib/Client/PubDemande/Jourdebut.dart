@@ -1,10 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:reda/Client/components/Date.dart';
-
 
 
 class JourDebut extends StatefulWidget {
@@ -23,16 +20,24 @@ class JourDebutState extends State<JourDebut> {
   String _selectedDayText = 'Jour'; // Variable pour stocker le texte du jour sélectionné
   int jourdebut = 0; // Variable pour stocker le jour sélectionné
   @override
+  void initState() {
+    super.initState();
+
+    // Initialiser _selectedDayText avec la valeur initiale de datedebut
+    jourdebut = widget.datedebut.getjour(); // Obtenez la valeur du jour de datedebut
+    _selectedDayText = jourdebut.toString();
+  }
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       height: screenHeight*0.035,
-      width: screenWidth*0.2,
+      width: screenWidth*0.18,
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS
-          _showDayPicker(context);
+          _showDayPicker(context,jourdebut);
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
@@ -55,11 +60,14 @@ class JourDebutState extends State<JourDebut> {
         ),
       ),
 
+
     );
   }
 
-  void _showDayPicker(BuildContext context) {
-    // Afficher un picker iOS pour choisir le jour
+  void _showDayPicker(BuildContext context, int jourdebut) {
+    // Calculer l'index initial pour le jour sélectionné
+    int initialIndex = jourdebut - 1;
+
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
@@ -68,8 +76,8 @@ class JourDebutState extends State<JourDebut> {
           color: Colors.white,
           child: CupertinoPicker(
             itemExtent: 40.0,
+            scrollController: FixedExtentScrollController(initialItem: initialIndex),
             onSelectedItemChanged: (int index) {
-              // Mettre à jour le jour sélectionné
               setState(() {
                 jourdebut = index + 1;
                 _selectedDayText = index + 1 < 10 ? '0${(index + 1)}' : '${(index + 1)}'; // Mettre à jour le texte du jour sélectionné
@@ -81,7 +89,7 @@ class JourDebutState extends State<JourDebut> {
               return Center(
                 child: Text(
                   '${index + 1}',
-                  style: const TextStyle(fontSize: 20.0),
+                  style: GoogleFonts.poppins(fontSize: 20.0),
                 ),
               );
             }),
@@ -93,4 +101,5 @@ class JourDebutState extends State<JourDebut> {
       setState(() {});
     });
   }
+
 }
