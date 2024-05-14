@@ -9,15 +9,17 @@ class ProfileBodyClientCoteAdmin extends StatefulWidget {
   final String userID;
   final String photoPath;
   final String name;
+  final String email;
   final String phone;
   final String address;
   final bool isVehicled;
   final VoidCallback onContact;
   final VoidCallback onReport;
 
-  ProfileBodyClientCoteAdmin({
+  ProfileBodyClientCoteAdmin({super.key,
     required this.photoPath,
     required this.name,
+    required this.email,
     required this.phone,
     required this.address,
     required this.isVehicled,
@@ -104,7 +106,16 @@ class _ProfileBodyClientCoteAdminState extends State<ProfileBodyClientCoteAdmin>
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: screenHeight * 0.1),
+        SizedBox(height: screenHeight * 0.01),
+        Text(
+          widget.email,
+          style: GoogleFonts.poppins(
+            fontSize: screenWidth * 0.04,
+            fontWeight: FontWeight.w400,
+            color: Colors.black.withOpacity(0.7)
+          ),
+        ),
+        SizedBox(height: screenHeight * 0.07),
         Container(
           width: screenWidth * 0.9,
           height: screenHeight * 0.055,
@@ -134,7 +145,6 @@ class _ProfileBodyClientCoteAdminState extends State<ProfileBodyClientCoteAdmin>
         SizedBox(height: screenHeight * 0.04),
         Container(
           width: screenWidth * 0.9,
-
           padding: EdgeInsets.all(screenWidth * 0.03),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(screenWidth * 0.05),
@@ -230,7 +240,7 @@ class _ProfileBodyClientCoteAdminState extends State<ProfileBodyClientCoteAdmin>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BloquerClient(idclient: widget.userID, image: widget.photoPath, nomClient: widget.name, phone: widget.phone, adress: widget.address, isVehicled: widget.isVehicled,),
+                      builder: (context) => BloquerClient(idclient: widget.userID, image: widget.photoPath, nomClient: widget.name, phone: widget.phone, adress: widget.address, isVehicled: widget.isVehicled, email: widget.email,),
                     ),
                   );
                 }

@@ -127,7 +127,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
             title: Text(
               'Gestion des utilisateurs',
               style: GoogleFonts.poppins(
-                fontSize: 19,
+                fontSize: 18,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -324,8 +324,10 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
     String userName = "??????";
     String job = "?????";
     String phone = '0000';
+    String email = '';
     try {
       userName = data['nom'];
+      email = data['email'];
       job = 'Client';
       phone = data['numTel'];
       profileImage = await getUserPathImage(userID);
@@ -346,7 +348,7 @@ class _GestionClientsPageState extends State<GestionClientsPage> {
                   phone: phone,
                   adress: data['adresse'],
                   idclient: userID,
-                  isVehicled: data['vehicule'])
+                  isVehicled: data['vehicule'], email: email,)
           ),
         );
       },

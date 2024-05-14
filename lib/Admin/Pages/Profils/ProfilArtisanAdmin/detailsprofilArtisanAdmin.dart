@@ -8,6 +8,7 @@ class ProfileBody2CoteAdmin extends StatefulWidget {
   final String userID;
   final String adresse;
   final String photoPath;
+  final String email;
   final String name;
   final String domaine;
   final String phone;
@@ -22,6 +23,7 @@ class ProfileBody2CoteAdmin extends StatefulWidget {
   const ProfileBody2CoteAdmin({super.key,
     required this.photoPath,
     required this.name,
+    required this.email,
     required this.domaine,
     required this.phone,
     required this.isVehicled,
@@ -100,15 +102,24 @@ class _ProfileBody2CoteAdminState extends State<ProfileBody2CoteAdmin> {
             size: 65,
             color: Colors.grey[400],
           ),
-          SizedBox(height: screenHeight * 0.02), // Espacement proportionnel
+          SizedBox(height: screenHeight * 0.03), // Espacement proportionnel
           Text(
             widget.name,
             style: GoogleFonts.poppins(
-              fontSize: screenWidth * 0.05, // Taille de police proportionnelle
+              fontSize: screenWidth * 0.055, // Taille de police proportionnelle
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: screenHeight * 0.005),
+          SizedBox(height: screenHeight * 0.007),
+          Text(
+            widget.email,
+            style: GoogleFonts.poppins(
+                fontSize: screenWidth * 0.04,
+                fontWeight: FontWeight.w400,
+                color: Colors.black.withOpacity(0.7)
+            ),
+          ),
+          SizedBox(height: screenHeight * 0.01),
           Text(
             widget.domaine,
             style: GoogleFonts.poppins(
@@ -116,7 +127,7 @@ class _ProfileBody2CoteAdminState extends State<ProfileBody2CoteAdmin> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: screenHeight * 0.02),
+          SizedBox(height: screenHeight * 0.026),
           // Nouvelle section avec dimensionnement proportionnel
           Container(
             width: screenWidth * 0.9,
@@ -350,6 +361,7 @@ class _ProfileBody2CoteAdminState extends State<ProfileBody2CoteAdmin> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Bloquer(
+                          email:widget.email,
                           adresse: widget.adresse,
                           idartisan: widget.userID,
                           imageurl: widget.photoPath,

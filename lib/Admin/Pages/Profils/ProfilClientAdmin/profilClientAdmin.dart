@@ -9,11 +9,12 @@ class ProfilePage1CoteAdmin extends StatelessWidget {
   final String idclient;
   final String image;
   final String nomClient;
+  final String email;
   final String phone;
   final String adress;
   final bool isVehicled;
   const ProfilePage1CoteAdmin({super.key, required this.image,
-    required this.nomClient, required this.phone,
+    required this.nomClient, required this.phone, required this.email,
     required this.adress, required this.idclient, required this.isVehicled});
 
   @override
@@ -34,6 +35,7 @@ class ProfilePage1CoteAdmin extends StatelessWidget {
         child: ProfileBodyClientCoteAdmin(
           userID: idclient,
           photoPath: image,
+          email: email,
           name: nomClient,
           phone: phone,
           address: adress,
@@ -44,7 +46,7 @@ class ProfilePage1CoteAdmin extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BloquerClient(idclient: idclient, image: image, nomClient: nomClient, phone: phone, adress: adress, isVehicled: isVehicled)
+                builder: (context) => BloquerClient(idclient: idclient, image: image, nomClient: nomClient, phone: phone, adress: adress, isVehicled: isVehicled, email:email,)
               ),
             );
           },

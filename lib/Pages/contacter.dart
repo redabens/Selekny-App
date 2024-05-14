@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -22,9 +23,9 @@ class ContactUsPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
+        title:  Text(
           'Contactez-nous',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
         ),
       ),
       body: Column(

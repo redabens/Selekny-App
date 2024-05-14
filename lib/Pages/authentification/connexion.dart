@@ -1,12 +1,12 @@
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
+import 'package:reda/Artisan/Pages/Activit%C3%A9/activiteaujour.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/auth.dart';
 import 'package:reda/main.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import '../../Artisan/Pages/Activité/activiteaujour.dart';
 import 'forgotpassword.dart';
 import 'inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -134,6 +134,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     var isDark = Theme.of(context).brightness == Brightness.dark;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return SingleChildScrollView(
       child: Center(
@@ -149,10 +151,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 85,
                       height: 90,
                     ),
-                    const SizedBox(height: 5),
-                    const Text(
+                    SizedBox(height:screenHeight*0.04),
+                     Text(
                       'Connexion',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -171,13 +173,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 60),
+                      SizedBox(height: screenHeight*0.06),
 // Email field
                       TextFormField(
                         controller: _emailController,
                         decoration: InputDecoration(
                           labelText: 'Email',
-                          labelStyle: TextStyle(
+                          labelStyle: GoogleFonts.poppins(
                             color: isDark
                                 ? Colors.white
                                 : Colors.black.withOpacity(0.4),
@@ -192,13 +194,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: screenHeight*0.01),
 // Password field
                       TextFormField(
                         controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: 'Mot de passe',
-                          labelStyle: TextStyle(
+                          labelStyle: GoogleFonts.poppins(
                             color: isDark
                                 ? Colors.white
                                 : Colors.black.withOpacity(0.4),
@@ -225,21 +227,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 35),
-                      const SizedBox(
-                        height: 35,
-                      ),
+                      SizedBox(height:screenHeight*0.07),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 0),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 '• Choisissez votre statut :',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.bold,
                                   color: isDark
                                       ? Colors.white
@@ -249,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height:screenHeight*0.030),
 // ToggleSwitch
                           ToggleSwitch(
                             minWidth: 170.0,
@@ -274,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               });
                             },
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height:screenHeight*0.03),
 // Login button
                           ElevatedButton(
                             onPressed: (){
@@ -283,7 +280,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all<Size>(
-                                  const Size(216, 37)),
+                                  Size(screenWidth*0.5, 37)),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -294,22 +291,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const Color(0xFF3E69FE),
                               ),
                             ),
-                            child: const Text(
+                            child:  Text(
                               'Se connecter',
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
 
-                          const SizedBox(height: 20),
+                          SizedBox(height: screenHeight*0.030),
 
                           Center(
                             child: Text(
-                              '_____________________   ou   _____________________',
+                              '__________   ou   ___________',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: isDark
                                     ? Colors.white
                                     : Colors.black.withOpacity(0.35),
@@ -318,42 +315,42 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ), //
-                          const SizedBox(height: 20),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  shape: const CircleBorder(),
-                                  elevation: 8,
-                                ),
-                                child: const CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Icon(
-                                    Icons.facebook,
-                                    color: Colors.blue,
-                                  ),
+                          SizedBox(height: screenHeight*0.030),
+                          ElevatedButton(
+                            onPressed: (){
+                            },
+                            style: ButtonStyle(
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                  Size(screenWidth*0.8, 37)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(13.13),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  shape: const CircleBorder(),
-                                  elevation: 8, // Add shadow
-                                ),
-                                child: const CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Icon(
-                                    Icons.telegram_outlined, // icon google
-                                    color: Colors.lightBlue,
-                                  ),
-                                ),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color(0xFFD9D9D9),
                               ),
-                            ],
+                            ),
+                            // Espacement entre l'icône et le texte
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/google.png',height:18,width: 18,),
+                                SizedBox(width:12),
+                                Text(
+                                  'Se connecter avec Google',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height:screenHeight*0.03),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -369,7 +366,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 child: Text(
                                   'Mot de passe oublié?',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: isDark
                                         ? Colors.white
                                         : Colors.black.withOpacity(0.5),
@@ -377,7 +374,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 42),
+                              SizedBox(width:screenWidth*0.042),
                               TextButton(
                                 onPressed: () {
                                   Navigator.push(
@@ -389,7 +386,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 child: Text(
                                   "S'inscrire",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.bold,
                                     color: isDark
                                         ? Colors.white

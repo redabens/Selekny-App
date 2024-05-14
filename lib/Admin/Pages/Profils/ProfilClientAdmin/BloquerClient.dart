@@ -12,11 +12,12 @@ class BloquerClient extends StatefulWidget {
   final String idclient;
   final String image;
   final String nomClient;
+  final String email;
   final String phone;
   final String adress;
   final bool isVehicled;
 
-  const BloquerClient({Key? key, required this.idclient, required this.image, required this.nomClient, required this.phone, required this.adress, required this.isVehicled,}) : super(key: key);
+  const BloquerClient({Key? key, required this.idclient,  required this.email,required this.image, required this.nomClient, required this.phone, required this.adress, required this.isVehicled,}) : super(key: key);
 
   @override
   _BloquerClientState createState() => _BloquerClientState();
@@ -57,7 +58,7 @@ class _BloquerClientState extends State<BloquerClient> {
         },
         child: Stack(
           children: [
-            ProfilePage1CoteAdmin(image: widget.image, nomClient: widget.nomClient, phone: widget.phone, adress: widget.adress, idclient: widget.idclient, isVehicled: widget.isVehicled),
+            ProfilePage1CoteAdmin(image: widget.image, nomClient: widget.nomClient, phone: widget.phone, adress: widget.adress, idclient: widget.idclient, isVehicled: widget.isVehicled, email: widget.email,),
             Container(
               color: Color.fromRGBO(128, 128, 128, 0.7), // Semi-transparent gray overlay
               width: double.infinity,
@@ -122,7 +123,7 @@ class _BloquerClientState extends State<BloquerClient> {
                         SizedBox(width: screenWidth * 0.06),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pop(context); // Return to the previous page when "NON" is clicked
+                            Navigator.pop(context);
                           },
                           child: Container(
                             decoration: BoxDecoration(

@@ -119,7 +119,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
             title: Text(
               'Gestion des utilisateurs',
               style: GoogleFonts.poppins(
-                fontSize: 19,
+                fontSize: 18,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -320,8 +320,10 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
     String profileImage = ""; // Default image
     String userName = "??????";
     String job = "?????";
-
+    String email = '';
     try {
+      email =data['email'];
+      print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX$email');
       userName = await getUserName(userID);
       print("nom:$userName");
       job = await getUserJob(userID);
@@ -341,6 +343,7 @@ class _GestionArtisansPageState extends State<GestionArtisansPage> {
           context,
           MaterialPageRoute(
             builder: (context) => ProfilePage2CoteAdmin(
+              email: email,
               idartisan: document.id,
               imageurl: profileImage,
               nomartisan: userName,

@@ -361,6 +361,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                                 selectedPrestations.clear();
                               });
                             },
+
                             items: domaines.map<DropdownMenuItem<String>>(
                                   (String value) {
                                 return DropdownMenuItem<String>(

@@ -262,6 +262,7 @@ class HomeScreenState extends State<HomeScreen> {
                             'Custom Loading', // Balise sémantique pour l'accessibilité
                       )*/
           const WelcomePage()
+
               : */!isLogin
               ? const WelcomePage()
               : admin ?

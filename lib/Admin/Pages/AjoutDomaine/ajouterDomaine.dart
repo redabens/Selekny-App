@@ -1,4 +1,5 @@
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,7 +11,6 @@ import 'package:reda/Admin/Pages/Signalements/AllSignalements_page.dart';
 import 'package:reda/Admin/Services/Domaine_service.dart';
 import 'package:reda/Pages/authentification/creationArtisan.dart';
 import '../../../Pages/authentification/connexion2.dart';
-import '../deconnexion.dart';
 import 'ajouterbox.dart';
 import 'detaildubox.dart';
 import 'importerphoto.dart';
@@ -45,12 +45,49 @@ class DomainServicePageState extends State<DomainServicePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () {
-          FirebaseAuth.instance.signOut();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                const Deconnecter()),
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text("SE DECONNECTER"),
+              content: const Text(
+                "Êtes-vous sûr de vouloir vous déconnecter ?",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    // Fermer le dialogue
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "NON",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    // Déconnexion de l'utilisateur
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                        const LoginPage2(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "OUI",
+                    style: TextStyle(
+                      color: Colors.blue[800],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         },
           icon: Image.asset(
@@ -87,15 +124,14 @@ class DomainServicePageState extends State<DomainServicePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFFF8F8F8), // Couleur du fond de la barre de navigation
+        backgroundColor: const Color(0xFFF8F8F8),
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        type:
-        BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        currentIndex:
+        _currentIndex, // Assurez-vous de mettre l'index correct pour la page de profil
         iconSize: 30,
         items: [
-          // Navigation avec la barre inférieure
           BottomNavigationBarItem(
             icon: GestureDetector(
               onTap: () {
@@ -110,7 +146,7 @@ class DomainServicePageState extends State<DomainServicePage> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/signalement.png',
                   color: _currentIndex == 0 ? const Color(0xFF3E69FE) : Colors.black,
@@ -133,10 +169,12 @@ class DomainServicePageState extends State<DomainServicePage> {
                 );
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/gestion.png',
-                  color: _currentIndex == 1 ? const Color(0xFF3E69FE) : Colors.black,
+                  color: _currentIndex == 1
+                      ? const Color(0xFF3E69FE)
+                      : Colors.black,
                 ),
               ),
             ),
@@ -146,7 +184,7 @@ class DomainServicePageState extends State<DomainServicePage> {
             icon: GestureDetector(
               onTap: () {
                 setState(() {
-                  _currentIndex == 2;
+                  _currentIndex = 2;
                 });
                 Navigator.push(
                   context,
@@ -156,7 +194,7 @@ class DomainServicePageState extends State<DomainServicePage> {
                 );
               },
               child: Container(
-                height: 40,
+                height:screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutartisan.png',
                   color: _currentIndex == 2 ? const Color(0xFF3E69FE) : Colors.black,
@@ -169,20 +207,19 @@ class DomainServicePageState extends State<DomainServicePage> {
             icon: GestureDetector(
               onTap: () {
                 setState(() {
-                  _currentIndex==3;
+                  _currentIndex = 3;
                 });
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DomainServicePage(),
-                  ),
-                );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DomainServicePage(),
+                    ));
               },
               child: Container(
-                height: 40,
+                height: screenHeight*0.042,
                 child: Image.asset(
                   'icons/ajoutdomaine.png',
-                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black ,
+                  color: _currentIndex == 3 ? const Color(0xFF3E69FE) : Colors.black,
                 ),
               ),
             ),

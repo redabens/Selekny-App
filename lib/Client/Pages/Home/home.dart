@@ -124,7 +124,6 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilClientPage(),),
                 );
-
               },
               child: Container(
                 height: screenHeight*0.03,

@@ -184,6 +184,9 @@ flutter:
     - assets/time.png
     - assets/nettoyagesol.jpg
     - assets/calendar.png
+    - assets/google.png
+    - icons/ajoutimage.png
+    - assets/ajoutimage.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

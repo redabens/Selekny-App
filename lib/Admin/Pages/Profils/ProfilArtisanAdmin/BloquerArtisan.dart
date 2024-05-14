@@ -15,12 +15,13 @@ class Bloquer extends StatefulWidget {
   final String imageurl;
   final String nomartisan;
   final String phone;
+  final String email;
   final String domaine;
   final double rating;
   final int workcount;
   final bool vehicule;
 
-  const Bloquer({Key? key, required this.adresse, required this.idartisan, required this.imageurl, required this.nomartisan, required this.phone, required this.domaine, required this.rating, required this.workcount, required this.vehicule,}) : super(key: key);
+  const Bloquer({Key? key, required this.adresse, required this.email,required this.idartisan, required this.imageurl, required this.nomartisan, required this.phone, required this.domaine, required this.rating, required this.workcount, required this.vehicule,}) : super(key: key);
 
   @override
   _BloquerState createState() => _BloquerState();
@@ -62,7 +63,7 @@ class _BloquerState extends State<Bloquer> {
         },
         child: Stack(
           children: [
-             ProfilePage2CoteAdmin(idartisan: widget.idartisan, imageurl: widget.imageurl, nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse, workcount: widget.workcount, vehicule: widget.vehicule,), // Background page
+             ProfilePage2CoteAdmin(idartisan: widget.idartisan,email: widget.email, imageurl: widget.imageurl, nomartisan: widget.nomartisan, phone: widget.phone, domaine: widget.domaine, rating: widget.rating, adresse: widget.adresse, workcount: widget.workcount, vehicule: widget.vehicule,), // Background page
             Container(
               color: Color.fromRGBO(128, 128, 128, 0.7), // Semi-transparent gray overlay
               width: double.infinity,

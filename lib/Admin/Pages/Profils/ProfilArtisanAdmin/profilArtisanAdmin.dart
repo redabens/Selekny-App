@@ -15,13 +15,14 @@ class ProfilePage2CoteAdmin extends StatefulWidget {
   final String imageurl;
   final String nomartisan;
   final String phone;
+  final String email;
   final String domaine;
   final double rating;
   final int workcount;
   final bool vehicule;
   const ProfilePage2CoteAdmin({super.key, required this.idartisan,
     required this.imageurl, required this.nomartisan,
-    required this.phone, required this.domaine,
+    required this.phone, required this.domaine,required this.email,
     required this.rating, required this.adresse,
     required this.workcount, required this.vehicule});
   @override
@@ -54,6 +55,7 @@ class _ProfilePage2CoteAdminState extends State<ProfilePage2CoteAdmin> {
           isVehicled: widget.vehicule,
           workCount:widget.workcount,
           userID: widget.idartisan,
+          email: widget.email,
           onContact: () {
 
           },
