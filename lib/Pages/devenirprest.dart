@@ -52,26 +52,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                height: screenHeight*0.05,
-                width: screenHeight*0.05,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF3F3F3),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: IconButton( // Utilisez un IconButton au lieu d'un MaterialButton pour avoir l'icône
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_outlined,
-                    color: Color(0xFF33363F),
-                    size:25,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-
-              SizedBox(width:screenWidth*0.080),
               Center( // Centrer le texte horizontalement
                 child: Text(
                   'Devenir Prestataire',

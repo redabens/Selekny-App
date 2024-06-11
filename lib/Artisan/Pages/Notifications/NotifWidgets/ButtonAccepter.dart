@@ -81,8 +81,8 @@ class ButtonaccepterState extends State<Buttonaccepter> {
             widget.adresse, widget.iddomaine,
             widget.idprestation, widget.idclient, FirebaseAuth.instance.currentUser!.uid,
             widget.urgence, widget.latitude, widget.longitude,);
-          _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
           _demandeEncoursService.deleteDemande(widget.demandeid);
+          _demandeArtisanService.deleteDemandeArtisan(widget.timestamp, FirebaseAuth.instance.currentUser!.uid);
           await Future.delayed(const Duration(milliseconds: 100));
         },
         child: Row(

@@ -97,6 +97,14 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
             } on FirebaseAuthException catch (e) {
               print("Error adding document: $e");
             }
+            widget.type == 1 ?
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+            ):  Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage2()),
+            );
           } else {
             print("Some error happend");
           }
@@ -115,14 +123,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
       signUp();
       setState(() => _loading = false);
-      widget.type == 1 ?
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      ):  Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage2()),
-      );
     }
   }
 
