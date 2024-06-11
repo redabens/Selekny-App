@@ -64,18 +64,18 @@ class WelcomeScreen extends StatelessWidget {
                     },
                     style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all<Size>(const Size(330, 52)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          WidgetStateProperty.all<Size>(const Size(330, 52)),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(13.13),
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
+                      backgroundColor: WidgetStateProperty.all<Color>(
                         Colors.white,
                       ),
-                      elevation: MaterialStateProperty.all<double>(5),
+                      elevation: WidgetStateProperty.all<double>(5),
                       shadowColor:
-                          MaterialStateProperty.all<Color>(const Color(0xFF3E69FE)),
+                          WidgetStateProperty.all<Color>(const Color(0xFF3E69FE)),
                     ),
                     child: const Text(
                       'Se connecter',
@@ -97,18 +97,18 @@ class WelcomeScreen extends StatelessWidget {
                     },
                     style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all<Size>(const Size(330, 52)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          WidgetStateProperty.all<Size>(const Size(330, 52)),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.12),
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
+                      backgroundColor: WidgetStateProperty.all<Color>(
                         const Color(0xFF3E69FE),
                       ),
-                      elevation: MaterialStateProperty.all<double>(7),
+                      elevation: WidgetStateProperty.all<double>(7),
                       shadowColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
+                          WidgetStateProperty.all<Color>(Colors.black),
                     ),
                     child: const Text(
                       "S'inscrire",

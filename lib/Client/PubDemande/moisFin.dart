@@ -26,7 +26,7 @@ class MoisFinState extends State<MoisFin> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       height: screenHeight*0.035,
-      width: screenWidth*0.29,
+      width: screenWidth*0.28,
       child: ElevatedButton(
         onPressed: () {
           // Afficher le picker iOS
@@ -45,7 +45,7 @@ class MoisFinState extends State<MoisFin> {
           _selectedMonthText,
           textAlign: TextAlign.center,
           style: GoogleFonts.poppins(
-            color: Color(0xFF6D6D6D),
+            color: const Color(0xFF6D6D6D),
             fontSize: screenWidth*0.028,
             fontWeight: FontWeight.w700,
           ), // Afficher le texte du mois sélectionné ou "Mois"

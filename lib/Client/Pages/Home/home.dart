@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reda/Client/Pages/Demandes/demandeEncours_page.dart';
 import 'package:reda/Client/Pages/Home/header.dart';
 import 'package:reda/Client/Pages/Home/body.dart';
@@ -18,6 +19,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    // Ajoute un rappel de retour arrière spécifique à cette page
+    ModalRoute.of(context)?.addScopedWillPopCallback(() async {
+      // Quitter l'application lorsque le bouton de retour est pressé
+      SystemNavigator.pop();
+      return false;
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       body: const Column(
@@ -129,5 +136,12 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       );
+  }
+
+}
+class HomePageObserver extends NavigatorObserver {
+  @override
+  void didPop(Route route, Route? previousRoute) {
+      SystemNavigator.pop();
   }
 }

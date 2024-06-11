@@ -16,6 +16,7 @@ import 'package:reda/Client/Pages/Home/search.dart';
 import 'package:reda/Pages/Chat/chatList_page.dart';
 import 'package:reda/Pages/VousEtesBanni.dart';
 import 'package:reda/Pages/WelcomeScreen.dart';
+import 'package:reda/Pages/authentification/connexion2.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 import 'firebase_options.dart';
@@ -234,17 +235,7 @@ class HomeScreenState extends State<HomeScreen> {
       home: Container(
         color: Colors.white, // Couleur de l'arrière-plan de la page
         child: Center(
-          child: /*isLogin == null
-              ? /*const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Color(
-                            0xFF3E69FE)), // Couleur de remplissage de l'indicateur de chargement
-                        strokeWidth:
-                            3.0, // Épaisseur du cercle de l'indicateur de chargement
-                        semanticsLabel:
-                            'Custom Loading', // Balise sémantique pour l'accessibilité
-                      )*/
-          const WelcomePage()
-              : */!isLogin
+          child: !isLogin
               ? const WelcomePage()
               : admin ?
           const AllSignalementsPage()
@@ -252,7 +243,9 @@ class HomeScreenState extends State<HomeScreen> {
           const Banni()
               :(role == 'client')
               ?  const HomePage()
-              : const ActiviteaujourPage(),
+              : (role == 'artisan')
+              ? const ActiviteaujourPage()
+              : const LoginPage2(),
         ),
       ),
 
@@ -297,7 +290,6 @@ class HomeScreenState extends State<HomeScreen> {
   }
   void checkifadmin(){
     auth.authStateChanges().listen((User? user) async {
-      //if(FirebaseAuth.instance.currentUser != null) {
       if (user!.uid == 'jjjSB7ociHSHazUZ27iNYCiVCiD2') {
         setState(() {
           admin = true;

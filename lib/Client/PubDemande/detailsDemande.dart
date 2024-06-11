@@ -170,8 +170,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
               //SizedBox(width: 0),
               Container( // Enveloppez l'icône dans un Container pour créer un bouton carré
-                height:screenHeight* 0.05, // Définissez la hauteur et la largeur pour obtenir un bouton carré
-                width:screenWidth*0.1,
+                height:40, // Définissez la hauteur et la largeur pour obtenir un bouton carré
+                width:42,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF3F3F3),
                   borderRadius: BorderRadius.circular(15),

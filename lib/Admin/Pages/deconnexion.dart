@@ -73,7 +73,7 @@ class _DeconnecterState extends State<Deconnecter> {
                         GestureDetector(
                           onTap: () {
                             FirebaseAuth.instance.signOut();
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>

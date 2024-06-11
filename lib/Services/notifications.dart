@@ -73,7 +73,7 @@ class NotificationServices {
             .pushNamed("/AccepteParArtisan", arguments: notificationResponse);
         break;
     // Ajoutez d'autres cas pour d'autres types de notifications si nécessaire
-      case 'ConfirmeParClient':
+      case 'ConfirméParClient':
       // Par défaut, redirigez l'utilisateur vers une page générique
         navigatorkey.currentState!
             .pushNamed("/ConfirmeParClient", arguments: notificationResponse);

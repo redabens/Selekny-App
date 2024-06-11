@@ -174,7 +174,7 @@ class ConditionsGeneralesPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10), // Coins arrondis
                 ),
                 child: Text(
-                  'Vous n''avez aucun droit d''annuler une demande après son acceptation sauf si dans des cas critiques qui nécessitent une justification.',
+                  'Vous n\'avez aucun droit d\'annuler une demande après son acceptation sauf si dans des cas critiques qui nécessitent une justification.',
                   style: GoogleFonts.poppins(
                     fontSize: screenWidth*0.04,
                   ),

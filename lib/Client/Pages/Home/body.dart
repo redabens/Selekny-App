@@ -29,7 +29,7 @@ class Body extends StatelessWidget {
             ),
              SizedBox(height:screenHeight*0.020),
             Padding(
-              padding: const EdgeInsets.only(left: 24,top:10),
+              padding:EdgeInsets.only(left: screenWidth*0.05,top:screenWidth*0.002),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -37,7 +37,7 @@ class Body extends StatelessWidget {
                     'Services à domicile',
                     style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
-                   SizedBox(width:screenWidth*0.24), // Espace entre les deux textes
+                   SizedBox(width:screenWidth*0.23), // Espace entre les deux textes
                   GestureDetector(
                     onTap: () {
                       Navigator.push(

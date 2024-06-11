@@ -77,14 +77,16 @@ class _LoginScreenState extends State<LoginScreen> {
       if (emailexist) {
         await getUserRole(email);
         if (role == 'client') {
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const HomePage()),
+                (Route<dynamic> route) => false,
           );
         } else if (role == 'artisan') {
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const ActiviteaujourPage()),
+                (Route<dynamic> route) => false,
           );
         }
       } else {
@@ -94,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,
         );
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const InscriptionPage(type: 1)),
         );
@@ -157,9 +159,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       // Save the form data
-      final email = _emailController.value.text;
+      final email = _emailController.value.text.trim();
       print(email);
-      final password = _passwordController.value.text;
+      final password = _passwordController.value.text.trim();
       //  Authentification's functions
       await signin(email,password);
     }
@@ -313,15 +315,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               const HomeScreen();
                             },
                             style: ButtonStyle(
-                              minimumSize: MaterialStateProperty.all<Size>(
+                              minimumSize: WidgetStateProperty.all<Size>(
                                   Size(screenWidth*0.5, 37)),
-                              shape: MaterialStateProperty.all<
+                              shape: WidgetStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(13.13),
                                 ),
                               ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
+                              backgroundColor: WidgetStateProperty.all<Color>(
                                 const Color(0xFF3E69FE),
                               ),
                             ),
@@ -356,15 +358,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               authenticateWithGoogle();
                             },
                             style: ButtonStyle(
-                              minimumSize: MaterialStateProperty.all<Size>(
+                              minimumSize: WidgetStateProperty.all<Size>(
                                   Size(screenWidth*0.8, 37)),
-                              shape: MaterialStateProperty.all<
+                              shape: WidgetStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(13.13),
                                 ),
                               ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
+                              backgroundColor: WidgetStateProperty.all<Color>(
                                 const Color(0xFFDDDDDD),
                               ),
                             ),
@@ -393,7 +395,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
@@ -414,7 +416,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(width:screenWidth*0.042),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>

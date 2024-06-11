@@ -52,8 +52,8 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
   void handleSubmit() async {
     if (_formKey.currentState!.validate()) {
-      final email = _emailController.value.text;
-      final password = _passwordController.value.text;
+      final email = _emailController.value.text.trim();
+      final password = _passwordController.value.text.trim();
       final adresse = _adresseController.value.text;
       final number = _numController.value.text;
       final name = _nameController.value.text;
@@ -86,15 +86,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
           if (user != null) {
             print("User successfully created");
-            widget.type == 1 ?
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginPage()),
-            ):  Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginPage2()),
-            );
-
             try {
               await FirebaseFirestore.instance
                   .collection("users")
@@ -124,6 +115,14 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
       signUp();
       setState(() => _loading = false);
+      widget.type == 1 ?
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      ):  Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage2()),
+      );
     }
   }
 
@@ -181,7 +180,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                               return null;
                             },
                             decoration: InputDecoration(
-                              labelText: 'Nom',
+                              labelText: 'Nom et Prénom',
                               labelStyle: TextStyle(
                                 color: textColor,
                               ),
@@ -331,14 +330,14 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                       onPressed: () => handleSubmit(),
                       style: ButtonStyle(
                         minimumSize:
-                        MaterialStateProperty.all<Size>(const Size(350, 47)),
+                        WidgetStateProperty.all<Size>(const Size(350, 47)),
                         shape:
-                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                        WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(13.13),
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
+                        backgroundColor: WidgetStateProperty.all<Color>(
                           const Color(0xFF3E69FE),
                         ),
                       ),
@@ -391,8 +390,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Action when "Se connecter" is pressed
-                            // go to the LogIn page
                             widget.type == 1 ?
                             Navigator.pushReplacement(
                               context,

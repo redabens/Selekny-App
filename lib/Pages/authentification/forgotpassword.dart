@@ -137,17 +137,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       },
                       style: ButtonStyle(
                         shape:
-                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                        WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.10),
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
+                        backgroundColor: WidgetStateProperty.all<Color>(
                           const Color(0xFF3E69FE),
                         ),
-                        elevation: MaterialStateProperty.all<double>(7),
+                        elevation: WidgetStateProperty.all<double>(7),
                         shadowColor:
-                        MaterialStateProperty.all<Color>(Colors.black),
+                        WidgetStateProperty.all<Color>(Colors.black),
                       ),
                       child: _loading
                           ? const SizedBox(

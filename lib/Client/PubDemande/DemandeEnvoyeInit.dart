@@ -6,6 +6,7 @@ import 'package:reda/Artisan/Services/DemandeArtisanService.dart';
 import 'package:reda/Client/Pages/Home/home.dart';
 import 'package:reda/Client/components/Demande.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reda/Pages/aucunartisan.dart';
 import 'package:reda/Pages/user_repository.dart';
 import 'package:reda/Services/notifications.dart';
 
@@ -64,6 +65,7 @@ class DemandeEnvoye extends StatefulWidget {
 class DemandeEnvoyeState extends State<DemandeEnvoye> {
   final db = FirebaseFirestore.instance;
   final DemandeArtisanService _demandeArtisanService = DemandeArtisanService();
+  int counter = 0;
   bool empty = false; // Consider using a Stream to handle emptiness dynamically
 
   @override
@@ -133,7 +135,7 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
 
             await getNomPrestationById(
                 demandeData['id_Domaine'], demandeData['id_Prestation']);
-
+            counter++;
             print("Voici le service publie : $nomPrestation");
             NotificationServices.sendPushNotification(
                 token,"PublieDemande", "Offre d'un service $typeService", nomPrestation);
@@ -143,6 +145,13 @@ class DemandeEnvoyeState extends State<DemandeEnvoye> {
     });
     // Update the 'checked' value for the latest request after processing artisans
     await demandecol.doc(demandeData.id).update({'checked': true});
+    if(counter == 0){
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const AucunArtisan()),
+      );
+    }
     print('success');
     await Future.value(null);
   }

@@ -496,9 +496,7 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                       runSpacing: 4.0,
                       children: selectedPrestations.map((prestation) {
                         return Chip(
-                          label: Expanded (child:Text(prestation,style: GoogleFonts.poppins(fontSize: 13),overflow:TextOverflow.ellipsis,
-                            softWrap: true,
-                            maxLines: 2,), ),
+                          label:Text(prestation,style: GoogleFonts.poppins(fontSize: 13),overflow:TextOverflow.ellipsis,),
                           onDeleted: () {
                             setState(() {
                               selectedPrestations.remove(prestation);
@@ -518,13 +516,13 @@ class _CreationArtisanScreenState extends State<CreationArtisanScreen> {
                       },
                       style: ButtonStyle(
                         minimumSize:
-                        MaterialStateProperty.all<Size>(const Size(350, 47)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        WidgetStateProperty.all<Size>(const Size(350, 47)),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(13.13),
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
+                        backgroundColor: WidgetStateProperty.all<Color>(
                           const Color(0xFF3E69FE),
                         ),
                       ),
